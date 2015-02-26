@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\core\build\libs\core-1.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="83d59d5b229f36237ff71cce91b163df170c2944">
+        <dex dex="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\android\build\intermediates\pre-dexed\debug\core-1.0-bafc791d1a6af20aab04172db380f222560bfba4.jar" />
+    </item>
+    <item
+        jar="C:\Users\May Ying\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.5.3\903703e4eca4d27092cf61412b7a583aa26d14ad\gdx-backend-android-1.5.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="903703e4eca4d27092cf61412b7a583aa26d14ad">
+        <dex dex="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.5.3-87b8ae5157acbfb6a75e070d510cede78ec1eb70.jar" />
+    </item>
+    <item
+        jar="C:\Users\May Ying\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-box2d\1.5.3\52bc9ff881a6eb1731eb2f54b5016425cae05024\gdx-box2d-1.5.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="52bc9ff881a6eb1731eb2f54b5016425cae05024">
+        <dex dex="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\android\build\intermediates\pre-dexed\debug\gdx-box2d-1.5.3-fbc07dd2991982f6185bfd9ccaa18c71f304bfab.jar" />
+    </item>
+    <item
+        jar="C:\Users\May Ying\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.5.3\3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9\gdx-1.5.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9">
+        <dex dex="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-5dc8990d380ede8fb1e5544639aa509d9c1f1e06.jar" />
+    </item>
+
+</items>
