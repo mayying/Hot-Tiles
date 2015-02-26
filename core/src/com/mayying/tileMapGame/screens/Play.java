@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mayying.tileMapGame.entities.Player;
 
+
+// zhiweisucks
 /**
  * Created by May Ying on 24/2/2015.
  */
