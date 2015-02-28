@@ -1,6 +1,7 @@
 package com.mayying.tileMapGame.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,10 +16,12 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mayying.tileMapGame.entities.Bullet;
 import com.mayying.tileMapGame.entities.Player;
 
+import java.util.Vector;
 
-// zhiweisucksdfgudfghjdfghjk
+
 /**
  * Created by May Ying on 24/2/2015.
  */
@@ -29,7 +32,9 @@ public class Play implements Screen {
     private OrthographicCamera camera;
 
     private Player player;
-
+//    private Bullet bullet;
+    public static Vector<Bullet> bullets = new Vector<Bullet>();
+    private long lastPresed;
     @Override
     public void show() {
         // To load the map into TileMap class
@@ -57,6 +62,16 @@ public class Play implements Screen {
 
         renderer.getBatch().begin();
         player.draw(renderer.getBatch());
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE) && System.currentTimeMillis() - lastPresed > 200){
+            lastPresed = System.currentTimeMillis();
+            createNewBullet();
+        }
+        for(int i=0; i<bullets.size(); i++){
+            bullets.get(i).draw(renderer.getBatch());
+        }
+//        if(bullet!=null){
+//            bullet.draw(renderer.getBatch());
+//        }
         renderer.getBatch().end();
     }
 
@@ -92,5 +107,14 @@ public class Play implements Screen {
         map.dispose();
         renderer.dispose();
         player.getTexture().dispose();
+    }
+    public void createNewBullet(){
+        Bullet bullet = new Bullet(new Sprite(new Texture("img/shuriken.png")), 6, player ,2 ,(TiledMapTileLayer) map.getLayers().get(0));
+        bullets.add(bullet);
+    }
+    public static synchronized void removeBullet(Bullet bullet){
+        bullets.remove(bullet);
+        // causes the black box to appear, but probably necessary? not sure how garbage collection works
+        bullet.getTexture().dispose();
     }
 }

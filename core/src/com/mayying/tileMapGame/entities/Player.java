@@ -1,6 +1,7 @@
 package com.mayying.tileMapGame.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -32,7 +33,7 @@ public class Player extends Sprite {
 
     public void update(float delta) {
         // apply gravity
-        velocity.y -= gravity * delta;
+//        velocity.y -= gravity * delta;
 
         // clamp velocity
         if (velocity.y > speed)
@@ -44,8 +45,14 @@ public class Player extends Sprite {
         float oldX = getX(), oldY = getY(), tiledWidth = collisionLayer.getTileWidth(), tiledHeight = collisionLayer.getTileHeight();
         boolean collisionX = false, collisionY = false;
 
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+            velocity.x = -speed;
+        }else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+            velocity.x = speed;
+        }
+
         // move on x
-        //setX(getX() + velocity.x * delta);
+        setX(getX() + velocity.x * delta);
 
         try {
             if (velocity.x < 0) {
@@ -86,7 +93,7 @@ public class Player extends Sprite {
         velocity.x = 0;
 
         // move on y
-        //setY(getY() + velocity.y * delta);
+        setY(getY() + velocity.y * delta);
 
         try {
             if (velocity.y < 0) {
