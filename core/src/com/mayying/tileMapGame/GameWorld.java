@@ -17,8 +17,8 @@ import java.util.Vector;
 public class GameWorld {
     private Player player;
     //    private Bullet bullet;
-    public static Vector<Bullet> bullets = new Vector<Bullet>();
-    private long lastPresed;
+    public static Vector<Sprite> bullets = new Vector<Sprite>();
+
 
     private TiledMapTileLayer playableLayer;
 
@@ -34,27 +34,22 @@ public class GameWorld {
 
     public void drawAndUpdate(Batch batch){
         player.draw(batch);
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE) && System.currentTimeMillis() - lastPresed > 200){
-            lastPresed = System.currentTimeMillis();
-            createNewBullet();
-        }
         for(int i=0; i<bullets.size(); i++){
             bullets.get(i).draw(batch);
         }
-//        if(bullet!=null){
-//            bullet.draw(renderer.getBatch());
-//        }
     }
 
     public void dispose(){
         player.getTexture().dispose();
     }
 
+    public Player getPlayer(){
+        return player;
+    }
 
     //Custom Methods
-    public void createNewBullet(){
-        Bullet bullet = new Bullet(new Sprite(new Texture("img/shuriken.png")), 6, player ,2 ,playableLayer);
-        bullets.add(bullet);
+    public static synchronized void addInstanceToRenderList(Sprite s){
+        bullets.add(s);
     }
     public static synchronized void removeBullet(Bullet bullet){
         bullet.setAlpha(0);

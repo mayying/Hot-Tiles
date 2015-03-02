@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mayying.tileMapGame.InputHandler;
 import com.mayying.tileMapGame.entities.Bullet;
 import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.GameWorld;
@@ -51,6 +52,7 @@ public class Play implements Screen {
         camera.position.set(camera.viewportWidth/2,camera.viewportHeight/2,0);
 
         world = new GameWorld((TiledMapTileLayer) map.getLayers().get(0));
+        Gdx.input.setInputProcessor(new InputHandler(world.getPlayer()));
     }
 
     @Override
