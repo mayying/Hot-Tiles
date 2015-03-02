@@ -14,10 +14,12 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mayying.tileMapGame.entities.Bullet;
 import com.mayying.tileMapGame.entities.Player;
+import com.mayying.tileMapGame.GameWorld;
 
 import java.util.Vector;
 
@@ -30,11 +32,11 @@ public class Play implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
+    private FitViewport viewport;
 
-    private Player player;
-//    private Bullet bullet;
-    public static Vector<Bullet> bullets = new Vector<Bullet>();
-    private long lastPresed;
+    private GameWorld world;
+
+
     @Override
     public void show() {
         // To load the map into TileMap class
@@ -43,13 +45,12 @@ public class Play implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map);
 
         camera = new OrthographicCamera();
+        //camera.setToOrtho(false, 200,204);
+        viewport = new FitViewport(1200,720,camera);
+        viewport.apply();
+        camera.position.set(camera.viewportWidth/2,camera.viewportHeight/2,0);
 
-        player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(0));
-
-        System.out.println("player.getCollisionLayer().getWidth() " + player.getCollisionLayer().getWidth());
-
-        player.setPosition((player.getCollisionLayer().getWidth() - 5) * player.getCollisionLayer().getTileWidth(),
-              (player.getCollisionLayer().getHeight() - 2) * player.getCollisionLayer().getTileHeight());
+        world = new GameWorld((TiledMapTileLayer) map.getLayers().get(0));
     }
 
     @Override
@@ -61,30 +62,22 @@ public class Play implements Screen {
         renderer.render();
 
         renderer.getBatch().begin();
-        player.draw(renderer.getBatch());
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE) && System.currentTimeMillis() - lastPresed > 200){
-            lastPresed = System.currentTimeMillis();
-            createNewBullet();
-        }
-        for(int i=0; i<bullets.size(); i++){
-            bullets.get(i).draw(renderer.getBatch());
-        }
-//        if(bullet!=null){
-//            bullet.draw(renderer.getBatch());
-//        }
+        world.drawAndUpdate(renderer.getBatch());
         renderer.getBatch().end();
     }
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
-
-        TiledMapTileLayer layer0 = player.getCollisionLayer();
-        Vector3 center = new Vector3(layer0.getWidth() * layer0.getTileWidth() / 2, layer0.getHeight() * layer0.getTileHeight() / 2, 0);
-        camera.position.set(center);
-
-        camera.update();
+        viewport.update(width, height);
+        camera.position.set(camera.viewportWidth/2,camera.viewportHeight/2,0);
+//        camera.viewportWidth = width;
+//        camera.viewportHeight = height;
+//
+//        TiledMapTileLayer layer0 = player.getCollisionLayer();
+//        Vector3 center = new Vector3(layer0.getWidth() * layer0.getTileWidth() / 2, layer0.getHeight() * layer0.getTileHeight() / 2, 0);
+//        camera.position.set(center);
+//
+//        camera.update();
     }
 
     @Override
@@ -106,15 +99,6 @@ public class Play implements Screen {
     public void dispose() {
         map.dispose();
         renderer.dispose();
-        player.getTexture().dispose();
     }
-    public void createNewBullet(){
-        Bullet bullet = new Bullet(new Sprite(new Texture("img/shuriken.png")), 6, player ,2 ,(TiledMapTileLayer) map.getLayers().get(0));
-        bullets.add(bullet);
-    }
-    public static synchronized void removeBullet(Bullet bullet){
-        bullets.remove(bullet);
-        // causes the black box to appear, but probably necessary? not sure how garbage collection works
-        bullet.getTexture().dispose();
-    }
+
 }
