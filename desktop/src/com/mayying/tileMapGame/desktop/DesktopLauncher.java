@@ -7,10 +7,10 @@ import com.mayying.tileMapGame.TiledMapGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-       // config.height = 720;
-      //  config.width = 1280;
-        config.height = 1080;
-        config.width = 1920;
+        config.height = 720;
+        config.width = 1280;
+       // config.height = 1080;
+       // config.width = 1920;
         config.vSyncEnabled = true;
 		new LwjglApplication(new TiledMapGame(), config);
 	}
