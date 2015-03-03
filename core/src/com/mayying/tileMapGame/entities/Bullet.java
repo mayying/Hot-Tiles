@@ -1,7 +1,6 @@
 package com.mayying.tileMapGame.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -44,9 +43,9 @@ public class Bullet extends Sprite {
         distanceX = collisionLayer.getTileWidth() * numTiles;
         distanceY = collisionLayer.getTileHeight() * numTiles;
         // originate from player
-        this.setPosition(player.getX(), player.getY());
-
-
+//        this.setPosition(player.getX()+player.getWidth(), player.getY()-player.getHeight()/2);
+        this.setPosition(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/4);
+        
         switch (direction){
             case 8:
                 velocity.y = speed;
