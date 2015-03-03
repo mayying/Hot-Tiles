@@ -10,61 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f75184eb-7abc-43a3-bbf1-4b46b7b39042" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/img/bullet.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/xbox-buttons/out/buttons.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/img/shuriken.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/img/touchBackground.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/res/drawable-hdpi/touchBackground.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/img/touchKnob (Custom).png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/res/drawable-hdpi/touchKnob (Custom).png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/img/touchKnob.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/res/drawable-hdpi/touchKnob.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/xbox-buttons/in/xbox-controller-a-button-md.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/xbox-buttons/in/xbox-controller-b-button-md.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/xbox-buttons/in/xbox-controller-x-button-md.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/xbox-buttons/in/xbox-controller-y-button-md.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/FaceButton.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Touchpad.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/xbox-buttons/out/buttons.pack" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\gdx_1_5_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\gdx_1_5_3_sources.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\gdx_backend_gwt_1_5_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\gdx_backend_gwt_1_5_3_sources.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\gdx_backend_lwjgl_1_5_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\gdx_backend_robovm_1_5_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\gdx_box2d_1_5_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\gdx_box2d_1_5_3_sources.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\gdx_box2d_gwt_1_5_3_sources.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\gdx_box2d_platform_1_5_3_natives_desktop.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\gdx_platform_1_5_3_natives_desktop.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\gwt_servlet_2_6_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\gwt_user_2_6_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\jinput_2_0_5.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\jinput_platform_2_0_5_natives_linux.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\jinput_platform_2_0_5_natives_osx.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\jinput_platform_2_0_5_natives_windows.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\jlayer_1_0_1_gdx.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\jorbis_0_0_17.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\json_20090211.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\jutils_1_0_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\lwjgl_2_9_2.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\lwjgl_platform_2_9_2_natives_linux.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\lwjgl_platform_2_9_2_natives_osx.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\lwjgl_platform_2_9_2_natives_windows.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\lwjgl_util_2_9_2.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\robovm_cocoatouch_1_0_0_beta_03.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\robovm_objc_1_0_0_beta_03.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\robovm_rt_1_0_0_beta_03.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\validation_api_1_0_0_GA.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\.idea\libraries\validation_api_1_0_0_GA_sources.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\time2code\Hot-Tiles\android\assets\badlogic.jpg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Bullet.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Bullet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/Play.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/Play.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/android.iml" afterPath="$PROJECT_DIR$/android/android.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="TiledMapGame.iws" />
@@ -91,23 +36,21 @@
       <file leaf-file-name="Player.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="391" max-vertical-offset="2669">
+            <state vertical-scroll-proportion="0.0" vertical-offset="476" max-vertical-offset="2992">
               <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Play.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Play.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/Play.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.049881235" vertical-offset="2733" max-vertical-offset="4267">
-              <caret line="162" column="47" selection-start-line="162" selection-start-column="47" selection-end-line="162" selection-end-column="47" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="693" max-vertical-offset="4233">
+              <caret line="59" column="13" selection-start-line="59" selection-start-column="13" selection-end-line="59" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2010#2018#0" expanded="true" />
-                <element signature="e#8414#8415#0" expanded="true" />
-                <element signature="e#8439#8440#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -116,20 +59,17 @@
       <file leaf-file-name="TiledMapGame.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/TiledMapGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="94" max-vertical-offset="646">
+            <state vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="816">
               <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#425#426#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Bullet.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Bullet.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Bullet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="476" max-vertical-offset="1972">
+            <state vertical-scroll-proportion="0.0" vertical-offset="714" max-vertical-offset="1972">
               <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="47" selection-end-column="8" />
               <folding />
             </state>
@@ -139,7 +79,7 @@
       <file leaf-file-name="DesktopLauncher.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/desktop/src/com/mayying/tileMapGame/desktop/DesktopLauncher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
+            <state vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="340">
               <caret line="12" column="5" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
               <folding />
             </state>
@@ -154,6 +94,7 @@
     </FindUsagesManager>
   </component>
   <component name="Git.Settings">
+    <option name="UPDATE_TYPE" value="MERGE" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -2202,19 +2143,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -2240,6 +2168,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2403,7 +2344,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23257373" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32554746" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32554746" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" x="92" y="92" width="1182" height="544" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -2462,8 +2403,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2010#2018#0" expanded="true" />
-            <element signature="e#8414#8415#0" expanded="true" />
-            <element signature="e#8439#8440#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2498,8 +2437,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2010#2018#0" expanded="true" />
-            <element signature="e#8414#8415#0" expanded="true" />
-            <element signature="e#8439#8440#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2531,10 +2468,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="816">
           <caret line="7" column="48" selection-start-line="7" selection-start-column="48" selection-end-line="7" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#425#426#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2545,8 +2479,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2010#2018#0" expanded="true" />
-            <element signature="e#8414#8415#0" expanded="true" />
-            <element signature="e#8439#8440#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2578,10 +2510,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="816">
           <caret line="7" column="48" selection-start-line="7" selection-start-column="48" selection-end-line="7" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#425#426#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2592,8 +2521,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2010#2018#0" expanded="true" />
-            <element signature="e#8414#8415#0" expanded="true" />
-            <element signature="e#8439#8440#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2625,10 +2552,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="816">
           <caret line="7" column="48" selection-start-line="7" selection-start-column="48" selection-end-line="7" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#425#426#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2639,8 +2563,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2010#2018#0" expanded="true" />
-            <element signature="e#8414#8415#0" expanded="true" />
-            <element signature="e#8439#8440#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2672,10 +2594,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="816">
           <caret line="7" column="48" selection-start-line="7" selection-start-column="48" selection-end-line="7" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#425#426#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2686,8 +2605,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2010#2018#0" expanded="true" />
-            <element signature="e#8414#8415#0" expanded="true" />
-            <element signature="e#8439#8440#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2749,13 +2666,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Hot-Tiles.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.5.3/5ae3e32b01bcaa3d97d819b39c04da78d094563b/gdx-1.5.3-sources.jar!/com/badlogic/gdx/graphics/g2d/Sprite.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33179724" vertical-offset="2661" max-vertical-offset="10744">
@@ -2788,7 +2698,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1955">
           <caret line="14" column="36" selection-start-line="0" selection-start-column="0" selection-end-line="124" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2796,7 +2705,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="918">
           <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2820,7 +2728,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="6018">
           <caret line="65" column="47" selection-start-line="0" selection-start-column="0" selection-end-line="376" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2848,35 +2755,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Bullet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="476" max-vertical-offset="1972">
-          <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="47" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/TiledMapGame.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="94" max-vertical-offset="646">
           <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#425#426#0" expanded="true" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Hot-Tiles.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="644">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/Play.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.049881235" vertical-offset="2733" max-vertical-offset="4267">
-          <caret line="162" column="47" selection-start-line="162" selection-start-column="47" selection-end-line="162" selection-end-column="47" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="693" max-vertical-offset="4233">
+          <caret line="59" column="13" selection-start-line="59" selection-start-column="13" selection-end-line="59" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2010#2018#0" expanded="true" />
-            <element signature="e#8414#8415#0" expanded="true" />
-            <element signature="e#8439#8440#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Bullet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="476" max-vertical-offset="1972">
+          <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="47" selection-end-column="8" />
+          <folding />
         </state>
       </provider>
     </entry>
