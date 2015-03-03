@@ -38,37 +38,43 @@ public class Player extends Sprite {
         super.draw(batch);
     }
 
-    private void fireBullet(){
-        if (System.currentTimeMillis()-lastPressed>200){
+    private void fireBullet() {
+        if (System.currentTimeMillis() - lastPressed > 200) {
             lastPressed = System.currentTimeMillis();
-            Bullet bullet = new Bullet(new Sprite(new Texture("img/shuriken.png")), facing, this ,2 ,collisionLayer);
+            Bullet bullet = new Bullet(new Sprite(new Texture("img/shuriken.png")), facing, this, 2, collisionLayer);
             GameWorld.addInstanceToRenderList(bullet);
         }
     }
 
-    public void spacePressed(){
+    public void spacePressed() {
         fireBullet();
     }
-    public void rightPressed(){
+
+    public void rightPressed() {
         velocity.x = speed;
         facing = 6;
     }
-    public void leftPressed(){
+
+    public void leftPressed() {
         velocity.x = -speed;
         facing = 4;
     }
-    public void upPressed(){
+
+    public void upPressed() {
         velocity.y = speed;
         facing = 8;
     }
-    public void downPressed(){
+
+    public void downPressed() {
         velocity.y = -speed;
         facing = 2;
     }
-    public void leftRightReleased(){
+
+    public void leftRightReleased() {
         velocity.x = 0;
     }
-    public void upDownReleased(){
+
+    public void upDownReleased() {
         velocity.y = 0;
     }
 
