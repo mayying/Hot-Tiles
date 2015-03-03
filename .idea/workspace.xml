@@ -14,41 +14,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.mayying.tileMapGame.android" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f75184eb-7abc-43a3-bbf1-4b46b7b39042" name="Default" comment="Added splash screen">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/img/bullet.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/xbox-buttons/out/buttons.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/img/shuriken.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/img/touchBackground.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/img/touchKnob (Custom).png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/img/touchKnob.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/xbox-buttons/in/xbox-controller-a-button-md.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/xbox-buttons/in/xbox-controller-b-button-md.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/xbox-buttons/in/xbox-controller-x-button-md.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/xbox-buttons/in/xbox-controller-y-button-md.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Bullet.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/FaceButton.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/GameWorld.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/InputHandler.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Touchpad.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/xbox-buttons/out/buttons.pack" />
-      <change type="DELETED" beforePath="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\.idea\libraries\gdx_backend_android_1_5_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\android\assets\badlogic.jpg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/model_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/model_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/desktop/src/com/mayying/tileMapGame/desktop/DesktopLauncher.java" afterPath="$PROJECT_DIR$/desktop/src/com/mayying/tileMapGame/desktop/DesktopLauncher.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/Play.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/Play.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Player.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/TiledMapGame.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/TiledMapGame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/android.iml" afterPath="$PROJECT_DIR$/android/android.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/core.iml" afterPath="$PROJECT_DIR$/core/core.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/desktop/desktop.iml" afterPath="$PROJECT_DIR$/desktop/desktop.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/html/html.iml" afterPath="$PROJECT_DIR$/html/html.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ios/ios.iml" afterPath="$PROJECT_DIR$/ios/ios.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+    <list default="true" id="f75184eb-7abc-43a3-bbf1-4b46b7b39042" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="TiledMapGame.iws" />
@@ -105,7 +71,7 @@
       <file leaf-file-name="Player.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.4691358" vertical-offset="102" max-vertical-offset="3230">
+            <state vertical-scroll-proportion="1.4736842" vertical-offset="102" max-vertical-offset="3230">
               <caret line="41" column="56" selection-start-line="41" selection-start-column="56" selection-end-line="41" selection-end-column="56" />
               <folding />
             </state>
@@ -2441,14 +2407,18 @@
       <created>1425362086828</created>
       <updated>1425362086828</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Merge master and powerups&#10;">
+      <created>1425365296189</created>
+      <updated>1425365296189</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="699" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32841328" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32841328" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32841328" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2458,7 +2428,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32841328" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32656828" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32656828" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32841328" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6107011" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2496,7 +2466,8 @@
     <MESSAGE value="mayyingsucks&#10;" />
     <MESSAGE value="sdfgh" />
     <MESSAGE value="Added splash screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added splash screen" />
+    <MESSAGE value="Merge master and powerups&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge master and powerups&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -2876,7 +2847,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.4691358" vertical-offset="102" max-vertical-offset="3230">
+        <state vertical-scroll-proportion="1.4736842" vertical-offset="102" max-vertical-offset="3230">
           <caret line="41" column="56" selection-start-line="41" selection-start-column="56" selection-end-line="41" selection-end-column="56" />
           <folding />
         </state>
