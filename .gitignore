@@ -45,3 +45,5 @@ Temporary Items
 *.class
 Hot-Tiles.iml
 .idea/workspace.xml
+*.properties
+.idea/workspace.xml

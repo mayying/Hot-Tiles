@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
-import com.mayying.tileMapGame.screens.Play;
+import com.mayying.tileMapGame.GameWorld;
 
 /**
  * Created by User on 28/2/15.
@@ -85,7 +85,7 @@ public class Bullet extends Sprite {
 //            Play.bullets.remove(this);
 
 
-            Play.removeBullet(this);
+            GameWorld.removeBullet(this);
         }
 
 
