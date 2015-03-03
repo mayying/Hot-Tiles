@@ -1,6 +1,8 @@
 package com.mayying.tileMapGame.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -9,16 +11,19 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by May Ying on 24/2/2015.
  */
-public class Player extends Sprite {
+public class Player extends Sprite implements InputProcessor {
 
     /**
      * the movement velocity
      */
     private Vector2 velocity = new Vector2();
 
-    private float speed = 60 * 2, gravity = 60 * 1.6f;
+    private float speed = 60 * 2, gravity = 60 * 1.8f;
+
+    private boolean canJump;
 
     private TiledMapTileLayer collisionLayer;
+    private TiledMapTileLayer tiledMapTileLayer;
 
     public Player(Sprite sprite, TiledMapTileLayer collisionLayer) {
         super(sprite);
@@ -45,38 +50,12 @@ public class Player extends Sprite {
         boolean collisionX = false, collisionY = false;
 
         // move on x
-        //setX(getX() + velocity.x * delta);
-
+        setX(getX() + velocity.x * delta);
         try {
-            if (velocity.x < 0) {
-                // top left
-                collisionX = collisionLayer.getCell((int) (getX() / tiledWidth), (int) ((getY() + getHeight()) / tiledHeight))
-                        .getTile().getProperties().containsKey("blocked");
-
-                // middle left
-                if (!collisionX)
-                    collisionX = collisionLayer.getCell((int) (getX() / tiledWidth), (int) ((getY() + getHeight() / 2) / tiledHeight))
-                            .getTile().getProperties().containsKey("blocked");
-
-                // bottom left
-                if (!collisionX)
-                    collisionX = collisionLayer.getCell((int) (getX() / tiledWidth), (int) ((getY() / tiledHeight)))
-                            .getTile().getProperties().containsKey("blocked");
-
-            } else if (velocity.x > 0) {
-                // top right
-                collisionX = collisionLayer.getCell((int) ((getX() + getWidth()) / tiledWidth), (int) ((getY() + getHeight()) / tiledHeight))
-                        .getTile().getProperties().containsKey("blocked");
-
-                // middle right
-                collisionX = collisionLayer.getCell((int) ((getX() + getWidth()) / tiledWidth), (int) (((getY() + getHeight()) / 2) / tiledHeight))
-                        .getTile().getProperties().containsKey("blocked");
-
-                // bottom right
-                collisionX = collisionLayer.getCell((int) ((getX() + getWidth()) / tiledWidth), (int) (getY() / tiledHeight))
-                        .getTile().getProperties().containsKey("blocked");
-
-            }
+            if (velocity.x < 0)  // going left
+                collisionX = collidesLeft();
+            else if (velocity.x > 0)
+                collisionX = collidesRight();
         } catch (NullPointerException e) {
             e.getMessage();
         }
@@ -86,39 +65,15 @@ public class Player extends Sprite {
         velocity.x = 0;
 
         // move on y
-        //setY(getY() + velocity.y * delta);
+        setY(getY() + velocity.y * delta);
 
         try {
-            if (velocity.y < 0) {
-                // bottom left
-                collisionY = collisionLayer.getCell((int) (getX() / tiledWidth), (int) (getY() / tiledHeight))
-                        .getTile().getProperties().containsKey("blocked");
+            if (velocity.y < 0)  // going down
+                canJump = collisionY = collidesBottom();
 
-                // bottom middle
-                if (!collisionY)
-                    collisionY = collisionLayer.getCell((int) ((getX() + getWidth() / 2) / tiledWidth), (int) (getY() / tiledHeight))
-                            .getTile().getProperties().containsKey("blocked");
+            else if (velocity.y > 0)  // going up
+                collisionY = collidesTop();
 
-                // bottom right
-                if (!collisionY)
-                    collisionY = collisionLayer.getCell((int) ((getX() + getWidth()) / tiledWidth), (int) (getY() / tiledHeight))
-                            .getTile().getProperties().containsKey("blocked");
-
-            } else if (velocity.y > 0) {
-                // top left
-                collisionY = collisionLayer.getCell((int) (getX() / tiledWidth), (int) ((getY() + getHeight()) / tiledHeight))
-                        .getTile().getProperties().containsKey("blocked");
-
-                // top middle
-                if (!collisionY)
-                    collisionY = collisionLayer.getCell((int) ((getX() + getWidth() / 2) / tiledWidth), (int) ((getY() + getHeight() / 2) / tiledHeight))
-                            .getTile().getProperties().containsKey("blocked");
-
-                // top right
-                if (!collisionY)
-                    collisionY = collisionLayer.getCell((int) ((getX() + getWidth()) / tiledWidth), (int) ((getY() + getHeight()) / tiledHeight))
-                            .getTile().getProperties().containsKey("blocked");
-            }
         } catch (NullPointerException e) {
             e.getMessage();
         }
@@ -134,7 +89,49 @@ public class Player extends Sprite {
     }
 
     public void setCollisionLayer(TiledMapTileLayer collisionLayer) {
-        this.collisionLayer = collisionLayer;
+        tiledMapTileLayer = this.collisionLayer = collisionLayer;
+    }
+
+    public boolean collidesRight() {
+        boolean collides = false;
+
+        for (float step = 0; step < getHeight(); step += collisionLayer.getTileHeight() / 2)
+            if (collides = isCellBlocked(getX() + getWidth(), getY() + step))
+                break;
+        return collides;
+    }
+
+    public boolean collidesLeft() {
+        boolean collides = false;
+
+        for (float step = 0; step < getHeight(); step += collisionLayer.getTileHeight() / 2)
+            if (collides = isCellBlocked(getX(), getY() + step))
+                break;
+        return collides;
+    }
+
+    public boolean collidesTop() {
+        boolean collides = false;
+
+        for (float step = 0; step < getWidth(); step += collisionLayer.getTileWidth() / 2)
+            if (collides = isCellBlocked(getX() + step, getY() + getHeight()))
+                break;
+        return collides;
+    }
+
+    public boolean collidesBottom() {
+        boolean collides = false;
+
+        for (float step = 0; step < getWidth(); step += collisionLayer.getTileWidth() / 2) {
+            if (collides = isCellBlocked(getX() + step, getY()))
+                break;
+        }
+        return collides;
+    }
+
+    private boolean isCellBlocked(float x, float y) {
+        TiledMapTileLayer.Cell cell = collisionLayer.getCell((int) (x / collisionLayer.getTileWidth()), (int) (y / collisionLayer.getTileHeight()));
+        return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
     }
 
     public Vector2 getVelocity() {
@@ -159,5 +156,63 @@ public class Player extends Sprite {
 
     public void setGravity(float gravity) {
         this.gravity = gravity;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        switch (keycode) {
+            case Input.Keys.W:
+                if(canJump) {
+                    velocity.y = speed;
+                    canJump = false;
+                }
+                break;
+            case Input.Keys.A:
+                velocity.x = -speed;
+                break;
+            case Input.Keys.D:
+                velocity.x = speed;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        switch (keycode) {
+            case Input.Keys.A:
+            case Input.Keys.D:
+                velocity.x = 0;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }

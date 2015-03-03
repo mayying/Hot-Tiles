@@ -7,13 +7,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mayying.tileMapGame.screens.Play;
+import com.mayying.tileMapGame.screens.Splash;
 
 public class TiledMapGame extends Game {
-	
-	@Override
-	public void create () {
-        setScreen(new Play());
-	}
+
+    @Override
+    public void create() {
+        setScreen(new Splash());
+    }
 
     @Override
     public void dispose() {
@@ -31,9 +32,9 @@ public class TiledMapGame extends Game {
     }
 
     @Override
-	public void render () {
+    public void render() {
         super.render();
-	}
+    }
 
     @Override
     public void resize(int width, int height) {
