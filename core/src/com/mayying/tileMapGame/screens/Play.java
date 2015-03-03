@@ -17,6 +17,12 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mayying.tileMapGame.InputHandler;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -24,6 +30,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.mayying.tileMapGame.entities.Bullet;
 import com.mayying.tileMapGame.entities.Player;
+import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.Touchpad;
 
 import java.util.Vector;
@@ -52,6 +59,10 @@ public class Play implements Screen {
     Skin skin;
     TextureAtlas buttonAtlas;
     BitmapFont font;
+    private FitViewport viewport;
+
+    private GameWorld world;
+
 
     private Player player;
     //    private Bullet bullet;
@@ -66,9 +77,16 @@ public class Play implements Screen {
         float aspectRatio=(float) Gdx.graphics.getWidth()/(float)Gdx.graphics.getHeight();
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
+        //camera.setToOrtho(false, 200,204);
+        viewport = new FitViewport(1200,720,camera);
+        viewport.apply();
+        camera.position.set(camera.viewportWidth/2,camera.viewportHeight/2,0);
         camera.setToOrtho(false,1600,900);
         setStage();
 
+        world = new GameWorld((TiledMapTileLayer) map.getLayers().get(0));
+        // TODO - Merge input processors for joystick and world / Refactor joystick into world so it receives input / Use Stage for game logic
+        Gdx.input.setInputProcessor(new InputHandler(world.getPlayer()));
 
         player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(0));
 
@@ -187,20 +205,25 @@ public class Play implements Screen {
             lastPresed = System.currentTimeMillis();
             createNewBullet();
         }
-        for(int i=0; i<bullets.size(); i++){
-            bullets.get(i).draw(renderer.getBatch());
-        }
-        // Player should be here so that the projectiles will be rendered with a lower z-index
-        player.draw(renderer.getBatch());
+//        for(int i=0; i<bullets.size(); i++){
+//            bullets.get(i).draw(renderer.getBatch());
+//        }
+//        // Player should be here so that the projectiles will be rendered with a lower z-index
+//        player.draw(renderer.getBatch());
 //        if(bullet!=null){
 //            bullet.draw(renderer.getBatch());
 //        }
+        world.drawAndUpdate(renderer.getBatch());
         renderer.getBatch().end();
         stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
+        // Luccan's edit
+//        viewport.update(width, height);
+//        camera.position.set(camera.viewportWidth/2,camera.viewportHeight/2,0);
+        // Original below
         camera.viewportWidth = width;
         camera.viewportHeight = height;
 
