@@ -48,3 +48,6 @@ Hot-Tiles.iml
 *.properties
 .idea/workspace.xml
 .idea/workspace.xml
+local.properties
+.idea/misc.xml
+*.iml
