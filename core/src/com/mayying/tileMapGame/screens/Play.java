@@ -77,7 +77,7 @@ public class Play implements Screen {
         float aspectRatio=(float) Gdx.graphics.getWidth()/(float)Gdx.graphics.getHeight();
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
-        //camera.setToOrtho(false, 200,204);
+//        camera.setToOrtho(false, 200,204);
         viewport = new FitViewport(1200,720,camera);
         viewport.apply();
         camera.position.set(camera.viewportWidth/2,camera.viewportHeight/2,0);
@@ -221,15 +221,15 @@ public class Play implements Screen {
     @Override
     public void resize(int width, int height) {
         // Luccan's edit
-//        viewport.update(width, height);
-//        camera.position.set(camera.viewportWidth/2,camera.viewportHeight/2,0);
+        viewport.update(width, height);
+        camera.position.set(camera.viewportWidth/2,camera.viewportHeight/2,0);
         // Original below
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
-
-        TiledMapTileLayer layer0 = player.getCollisionLayer();
-        Vector3 center = new Vector3(layer0.getWidth() * layer0.getTileWidth() / 2, layer0.getHeight() * layer0.getTileHeight() / 2, 0);
-        camera.position.set(center);
+//        camera.viewportWidth = width;
+//        camera.viewportHeight = height;
+//
+//        TiledMapTileLayer layer0 = player.getCollisionLayer();
+//        Vector3 center = new Vector3(layer0.getWidth() * layer0.getTileWidth() / 2, layer0.getHeight() * layer0.getTileHeight() / 2, 0);
+//        camera.position.set(center);
 
         camera.update();
     }
