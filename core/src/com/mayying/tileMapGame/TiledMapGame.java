@@ -8,7 +8,8 @@ public class TiledMapGame extends Game {
 
     @Override
     public void create() {
-        setScreen(new Splash());
+        setScreen(new Play());
+//        setScreen(new Splash());
     }
 
     @Override

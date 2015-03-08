@@ -37,6 +37,9 @@ public class GameWorld {
             bullets.get(i).draw(batch);
         }
         player.draw(batch);
+        if(player.isHit(240, 240)){
+            Gdx.app.log("asd", "pewpew");
+        }
     }
 
     public void dispose(){

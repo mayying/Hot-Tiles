@@ -23,13 +23,15 @@ public class Player extends Sprite {
 
     private TiledMapTileLayer collisionLayer;
 
-    private long lastPressed;
+    private long lastPressed = 0l;
     private int facing;
+
+    private Player lastHitBy;
+    private long lastHitTime = 0l; // in case of null pointer or whatever
 
     public Player(Sprite sprite, TiledMapTileLayer collisionLayer) {
         super(sprite);
         this.collisionLayer = collisionLayer;
-        lastPressed = System.currentTimeMillis();
         facing = 6;
     }
 
@@ -78,6 +80,22 @@ public class Player extends Sprite {
         velocity.y = 0;
     }
 
+    public boolean isHit(float x, float y){
+        //bottom right
+        float x_1= getX()+getWidth()/2;
+        float y_1 = getY()-getHeight()/2;
+
+        //top left
+        float x_2= getX()-getWidth()/2;
+        float y_2 = getY()+getHeight()/2;
+//        Gdx.app.log("Player","X-Bounds: "+ x_2 + " - "+ x_1 + ((x - x_2)<= getWidth() && (x - x_2) >= 0));
+//        Gdx.app.log("Player","Y-Bounds: "+ y_1 + " - "+ y_2 + ((y - y_1)>= 0 && (y-y_1)<=getHeight()));
+
+        return ((x - x_2)<= getWidth() && (x - x_2) >= 0) &&
+                ((y - y_1)>= 0 && (y-y_1)<=getHeight());
+
+    }
+
     public void update(float delta) {
         // apply gravity
 //        velocity.y -= gravity * delta;
@@ -87,7 +105,7 @@ public class Player extends Sprite {
 //            velocity.y = speed;
 //        else if (velocity.y < -speed)
 //            velocity.y = -speed;
-
+        //TODO - Check for every bullet, laser beam, mine etc whether it was a hit
         // save old position
         float oldX = getX(), oldY = getY(), tiledWidth = collisionLayer.getTileWidth(), tiledHeight = collisionLayer.getTileHeight();
         boolean collisionX = false, collisionY = false;
@@ -213,5 +231,15 @@ public class Player extends Sprite {
 
     public void setGravity(float gravity) {
         this.gravity = gravity;
+    }
+
+    public void setLastHitBy(Player lastHitBy) {
+        this.lastHitBy = lastHitBy;
+        this.lastHitTime = System.currentTimeMillis();
+    }
+
+    public Player getLastHitBy() {
+        // Setting 3 seconds now
+        return (lastHitTime - System.currentTimeMillis()) <= 3000l?lastHitBy:null;
     }
 }
