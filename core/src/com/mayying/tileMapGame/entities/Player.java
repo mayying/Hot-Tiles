@@ -106,99 +106,21 @@ public class Player extends Sprite {
 //        else if (velocity.y < -speed)
 //            velocity.y = -speed;
         //TODO - Check for every bullet, laser beam, mine etc whether it was a hit
+
+        // TODO - Do bullets after it is confirmed that synchronization wont pose an issue
         // save old position
         float oldX = getX(), oldY = getY(), tiledWidth = collisionLayer.getTileWidth(), tiledHeight = collisionLayer.getTileHeight();
         boolean collisionX = false, collisionY = false;
 
-//        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-//            velocity.x = -speed;
-//        }else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-//            velocity.x = speed;
-//        }
 
         // move on x
         setX(getX() + velocity.x * delta);
 
-        try {
-            if (velocity.x < 0) {
-                // top left
-                collisionX = collisionLayer.getCell((int) (getX() / tiledWidth), (int) ((getY() + getHeight()) / tiledHeight))
-                        .getTile().getProperties().containsKey("blocked");
-
-                // middle left
-                if (!collisionX)
-                    collisionX = collisionLayer.getCell((int) (getX() / tiledWidth), (int) ((getY() + getHeight() / 2) / tiledHeight))
-                            .getTile().getProperties().containsKey("blocked");
-
-                // bottom left
-                if (!collisionX)
-                    collisionX = collisionLayer.getCell((int) (getX() / tiledWidth), (int) ((getY() / tiledHeight)))
-                            .getTile().getProperties().containsKey("blocked");
-
-            } else if (velocity.x > 0) {
-                // top right
-                collisionX = collisionLayer.getCell((int) ((getX() + getWidth()) / tiledWidth), (int) ((getY() + getHeight()) / tiledHeight))
-                        .getTile().getProperties().containsKey("blocked");
-
-                // middle right
-                collisionX = collisionLayer.getCell((int) ((getX() + getWidth()) / tiledWidth), (int) (((getY() + getHeight()) / 2) / tiledHeight))
-                        .getTile().getProperties().containsKey("blocked");
-
-                // bottom right
-                collisionX = collisionLayer.getCell((int) ((getX() + getWidth()) / tiledWidth), (int) (getY() / tiledHeight))
-                        .getTile().getProperties().containsKey("blocked");
-
-            }
-        } catch (NullPointerException e) {
-            e.getMessage();
-        }
-
-        if (collisionX)
-            setX(oldX);
-//        velocity.x = 0;
 
         // move on y
         setY(getY() + velocity.y * delta);
 
-        try {
-            if (velocity.y < 0) {
-                // bottom left
-                collisionY = collisionLayer.getCell((int) (getX() / tiledWidth), (int) (getY() / tiledHeight))
-                        .getTile().getProperties().containsKey("blocked");
 
-                // bottom middle
-                if (!collisionY)
-                    collisionY = collisionLayer.getCell((int) ((getX() + getWidth() / 2) / tiledWidth), (int) (getY() / tiledHeight))
-                            .getTile().getProperties().containsKey("blocked");
-
-                // bottom right
-                if (!collisionY)
-                    collisionY = collisionLayer.getCell((int) ((getX() + getWidth()) / tiledWidth), (int) (getY() / tiledHeight))
-                            .getTile().getProperties().containsKey("blocked");
-
-            } else if (velocity.y > 0) {
-                // top left
-                collisionY = collisionLayer.getCell((int) (getX() / tiledWidth), (int) ((getY() + getHeight()) / tiledHeight))
-                        .getTile().getProperties().containsKey("blocked");
-
-                // top middle
-                if (!collisionY)
-                    collisionY = collisionLayer.getCell((int) ((getX() + getWidth() / 2) / tiledWidth), (int) ((getY() + getHeight() / 2) / tiledHeight))
-                            .getTile().getProperties().containsKey("blocked");
-
-                // top right
-                if (!collisionY)
-                    collisionY = collisionLayer.getCell((int) ((getX() + getWidth()) / tiledWidth), (int) ((getY() + getHeight()) / tiledHeight))
-                            .getTile().getProperties().containsKey("blocked");
-            }
-        } catch (NullPointerException e) {
-            e.getMessage();
-        }
-
-        if (collisionY) {
-            setY(oldY);
-//            velocity.y = 0;
-        }
     }
 
     public TiledMapTileLayer getCollisionLayer() {
