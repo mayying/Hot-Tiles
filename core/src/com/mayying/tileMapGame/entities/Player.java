@@ -1,7 +1,6 @@
 package com.mayying.tileMapGame.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -33,6 +32,22 @@ public class Player extends Sprite {
         super(sprite);
         this.collisionLayer = collisionLayer;
         facing = 6;
+    }
+
+    public Vector2 getPosition(int x, int y) {
+        Vector2 vector2 = new Vector2();
+        vector2.x = collisionLayer.getTileWidth() / 2 - getWidth() / 2;
+        vector2.y = 200 + getHeight() + collisionLayer.getTileHeight() / 2;
+
+        if (x != 0) {
+            vector2.x += collisionLayer.getTileWidth() * x;
+        }
+
+        if (y != 0) {
+            vector2.y += collisionLayer.getTileHeight() * y;
+        }
+
+        return vector2;
     }
 
     public void draw(Batch batch) {
@@ -109,18 +124,90 @@ public class Player extends Sprite {
 
         // TODO - Do bullets after it is confirmed that synchronization wont pose an issue
         // save old position
-        float oldX = getX(), oldY = getY(), tiledWidth = collisionLayer.getTileWidth(), tiledHeight = collisionLayer.getTileHeight();
+        float oldX = getX(), oldY = getY();
         boolean collisionX = false, collisionY = false;
+    }
+
+//        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+//            velocity.x = -speed;
+//        }else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+//            velocity.x = speed;
+//        }
+
+//        // move on x
+//        setX(getX() + velocity.x * delta);
+//
+//        try {
+//            if (velocity.x < 0) // going left
+//                collisionX = collidesLeft();
+//            else if (velocity.x > 0) // going right
+//                collisionX = collidesRight();
+//
+//            // react to x collision
+//            if (collisionX) {
+//                setX(oldX);
+//                velocity.x = 0;
+//            }
+//        } catch (NullPointerException e) {
+//            e.getMessage();
+//        }
+//
+//        // move on y
+//        // setY(getY() + velocity.y * delta);
+//
+//        try {
+//            if (velocity.y < 0) // going down
+//                collisionY = collidesBottom();
+//            else if (velocity.y > 0) // going up
+//                collisionY = collidesTop();
+//
+//            // react to y collision
+//            if (collisionY) {
+//                setY(oldY);
+//                velocity.y = 0;
+//            }
+//        } catch (NullPointerException e) {
+//            e.getMessage();
+//        }
+//
+//
+//    }
+//        // move on y
+//        setY(getY() + velocity.y * delta);
 
 
-        // move on x
-        setX(getX() + velocity.x * delta);
+    private boolean isCellBlocked(float x, float y) {
+        TiledMapTileLayer.Cell cell = collisionLayer.getCell((int) (x / collisionLayer.getTileWidth()), (int) (y / collisionLayer.getTileHeight()));
+        return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
+    }
 
+    public boolean collidesRight() {
+        for (float step = 0; step < getHeight(); step += collisionLayer.getTileHeight() / 2)
+            if (isCellBlocked(getX() + getWidth(), getY() + step))
+                return true;
+        return false;
+    }
 
-        // move on y
-        setY(getY() + velocity.y * delta);
+    public boolean collidesLeft() {
+        for (float step = 0; step < getHeight(); step += collisionLayer.getTileHeight() / 2)
+            if (isCellBlocked(getX(), getY() + step))
+                return true;
+        return false;
+    }
 
+    public boolean collidesTop() {
+        for (float step = 0; step < getWidth(); step += collisionLayer.getTileWidth() / 2)
+            if (isCellBlocked(getX() + step, getY() + getHeight()))
+                return true;
+        return false;
 
+    }
+
+    public boolean collidesBottom() {
+        for (float step = 0; step < getWidth(); step += collisionLayer.getTileWidth() / 2)
+            if (isCellBlocked(getX() + step, getY()))
+                return true;
+        return false;
     }
 
     public TiledMapTileLayer getCollisionLayer() {

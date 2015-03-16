@@ -2,46 +2,46 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\core\build\libs\core-1.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="ad7f5bc5f6cd68d1ba8a1471043e6b174f0a2fd9">
-        <dex dex="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\android\build\intermediates\pre-dexed\debug\core-1.0-bafc791d1a6af20aab04172db380f222560bfba4.jar" />
-    </item>
-    <item
-        jar="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\libs\tween-engine-api-sources.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="b471c161e1bd73eb4a762a35d75b40eb5b4de3a1">
-        <dex dex="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\android\build\intermediates\pre-dexed\debug\tween-engine-api-sources-7042f379801de69a8a294bce302eac7634189a34.jar" />
-    </item>
-    <item
-        jar="C:\Users\May Ying\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-box2d\1.5.3\52bc9ff881a6eb1731eb2f54b5016425cae05024\gdx-box2d-1.5.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="52bc9ff881a6eb1731eb2f54b5016425cae05024">
-        <dex dex="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\android\build\intermediates\pre-dexed\debug\gdx-box2d-1.5.3-fbc07dd2991982f6185bfd9ccaa18c71f304bfab.jar" />
-    </item>
-    <item
-        jar="C:\Users\May Ying\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.5.3\3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9\gdx-1.5.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9">
-        <dex dex="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-5dc8990d380ede8fb1e5544639aa509d9c1f1e06.jar" />
-    </item>
-    <item
-        jar="C:\Users\May Ying\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.5.3\903703e4eca4d27092cf61412b7a583aa26d14ad\gdx-backend-android-1.5.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="903703e4eca4d27092cf61412b7a583aa26d14ad">
-        <dex dex="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.5.3-87b8ae5157acbfb6a75e070d510cede78ec1eb70.jar" />
-    </item>
-    <item
-        jar="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\libs\tween-engine-api.jar"
+        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\libs\tween-engine-api.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="8be8beb70b7ccae059d523e56670f6e44fb1821f">
-        <dex dex="C:\Users\May Ying\AndroidStudioApplication\TiledMapGame\android\build\intermediates\pre-dexed\debug\tween-engine-api-6e46d1cf9af375f93f64f9bfe3c91bf129ee8a86.jar" />
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-6aa53bbfa243d3849ae8c7cf068afb0902c35b6c.jar" />
+    </item>
+    <item
+        jar="C:\Users\May\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-box2d\1.5.3\52bc9ff881a6eb1731eb2f54b5016425cae05024\gdx-box2d-1.5.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="52bc9ff881a6eb1731eb2f54b5016425cae05024">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-box2d-1.5.3-4d0db40b6ad7e9f127a9e09978c42e6f0d10719b.jar" />
+    </item>
+    <item
+        jar="C:\Users\May\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.5.3\903703e4eca4d27092cf61412b7a583aa26d14ad\gdx-backend-android-1.5.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="903703e4eca4d27092cf61412b7a583aa26d14ad">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.5.3-9d6a16be9c2184798103c3cafe53451e202aa843.jar" />
+    </item>
+    <item
+        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\libs\tween-engine-api-sources.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b471c161e1bd73eb4a762a35d75b40eb5b4de3a1">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-sources-97f832bc16b83be87a0da65e3805d7f95e1ce0f8.jar" />
+    </item>
+    <item
+        jar="C:\Users\May\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.5.3\3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9\gdx-1.5.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-38166ae41fdb97bfafc7ed7a5b1e8141b30b7bc8.jar" />
+    </item>
+    <item
+        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\core\build\libs\core-1.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b0453d686c1213c946674945a36a27dc62fb328c">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\core-1.0-5a3adb6bbec24ec12b8671ce083d06e11f14e0a7.jar" />
     </item>
 
 </items>

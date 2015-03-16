@@ -1,9 +1,11 @@
 package com.mayying.tileMapGame.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.mayying.tileMapGame.GameWorld;
 
 /**
  * Created by HtooWaiYan on 2/26/2015.
@@ -19,7 +21,7 @@ public class Touchpad {
     private Texture test;
 
 
-    public Touchpad(){
+    public Touchpad(GameWorld world) {
         //Create a touchpad skin
         touchpadSkin = new Skin();
 
@@ -42,11 +44,12 @@ public class Touchpad {
 
         //Create new TouchPad with the created style
         touchpad = new com.badlogic.gdx.scenes.scene2d.ui.Touchpad(10, touchpadStyle);
-        //setBounds(x,y,width,height)
-
+        // touchpad.setBounds(20, -10, Gdx.graphics.getHeight() - world.getPlayer().getCollisionLayer().getTileHeight() * 5 - world.getPlayer().getHeight() / 2, Gdx.graphics.getHeight() - world.getPlayer().getCollisionLayer().getTileHeight() * 5 - world.getPlayer().getHeight() / 2);
+        //touchpad.setBounds(-20 , -20, world.getPlayer().getCollisionLayer().getTileHeight() * 3, world.getPlayer().getCollisionLayer().getTileHeight() * 3);
+        touchpad.setBounds(-20, -20, Gdx.graphics.getHeight()/3, Gdx.graphics.getHeight()/3);
     }
 
-    public com.badlogic.gdx.scenes.scene2d.ui.Touchpad getTouchpad(){
+    public com.badlogic.gdx.scenes.scene2d.ui.Touchpad getTouchpad() {
         return touchpad;
     }
 

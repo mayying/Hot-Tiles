@@ -11,7 +11,7 @@ import com.mayying.tileMapGame.GameWorld;
  * Created by User on 28/2/15.
  */
 // Simple powerup in the form of shooting projectiles
-    // TODO-  landmine powerups
+// TODO-  landmine powerups
 public class Bullet extends Sprite {
 
     private static final String TAG = "Bullet";
@@ -19,16 +19,18 @@ public class Bullet extends Sprite {
     private float speed = 180 * 2, gravity = 60 * 1.6f;
     private TiledMapTileLayer collisionLayer;
     private Player player;
-    private int direction ;
+    private int direction;
     private float distanceX;
     private float distanceY;
     private float travelledX;
     private float travelledY;
 //    private
+
     /**
      * Creates a general bullet object with specified sprite, direction, and Player
      * (to get position and get bullet owner for killcount?)
-     *  Abstract away other stuff as necessary depending on future powerup ideas
+     * Abstract away other stuff as necessary depending on future powerup ideas
+     *
      * @param sprite    TEH SPRITE
      * @param direction Direction indicated by 8426 int (see numpad)
      * @param player    the player shooting this. X and Y coords are obtained from player
@@ -43,10 +45,12 @@ public class Bullet extends Sprite {
         distanceX = collisionLayer.getTileWidth() * numTiles;
         distanceY = collisionLayer.getTileHeight() * numTiles;
         // originate from player
-//        this.setPosition(player.getX()+player.getWidth(), player.getY()-player.getHeight()/2);
-        this.setPosition(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/4);
-        
-        switch (direction){
+        // this.setPosition(player.getX()+player.getWidth(), player.getY()-player.getHeight()/2);
+        // this.setPosition(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 4);
+        this.setPosition(player.getX(), player.getY() + player.getHeight() / 4);
+
+
+        switch (direction) {
             case 8:
                 velocity.y = speed;
                 break;
@@ -71,14 +75,14 @@ public class Bullet extends Sprite {
     public void update(float delta) {
         // while bullet life not ended and no collision with players
 
-        if(isAlive()) {
+        if (isAlive()) {
 //            Gdx.app.log(TAG, "moving bullet");
             // move on x
             setX(getX() + velocity.x * delta);
             travelledX += velocity.x * delta;
             setY(getY() + velocity.y * delta);
             travelledY += velocity.y * delta;
-        }else{
+        } else {
             // dispose of this thing?
 //            this.getTexture().dispose();
             // Don't think there's a difference between these 2

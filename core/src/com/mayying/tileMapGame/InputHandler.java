@@ -1,8 +1,11 @@
 package com.mayying.tileMapGame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mayying.tileMapGame.entities.Player;
+import com.mayying.tileMapGame.entities.Touchpad;
 
 /**
  * Created by Luccan on 2/3/2015.
@@ -10,22 +13,24 @@ import com.mayying.tileMapGame.entities.Player;
 public class InputHandler implements InputProcessor {
 
     private Player player;
+    private Touchpad touchpad;
+    private Stage stage;
 
-    public InputHandler(Player player){
+    public InputHandler(Player player) {
         this.player = player;
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        if (Input.Keys.RIGHT == keycode){
+        if (Input.Keys.RIGHT == keycode) {
             player.rightPressed();
-        } else if (Input.Keys.LEFT == keycode){
+        } else if (Input.Keys.LEFT == keycode) {
             player.leftPressed();
-        } else if (Input.Keys.UP == keycode){
+        } else if (Input.Keys.UP == keycode) {
             player.upPressed();
-        } else if (Input.Keys.DOWN == keycode){
+        } else if (Input.Keys.DOWN == keycode) {
             player.downPressed();
-        } else if (Input.Keys.SPACE == keycode){
+        } else if (Input.Keys.SPACE == keycode) {
             player.spacePressed();
         }
         return false;
@@ -33,9 +38,9 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-        if (Input.Keys.LEFT == keycode || Input.Keys.RIGHT == keycode){
+        if (Input.Keys.LEFT == keycode || Input.Keys.RIGHT == keycode) {
             player.leftRightReleased();
-        } else if (Input.Keys.UP == keycode || Input.Keys.DOWN == keycode){
+        } else if (Input.Keys.UP == keycode || Input.Keys.DOWN == keycode) {
             player.upDownReleased();
         }
         return false;
