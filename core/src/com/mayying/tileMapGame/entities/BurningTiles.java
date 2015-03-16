@@ -43,22 +43,24 @@ public class BurningTiles {
         }
     }
 
-    public void render(int delay) {
-        if (count > 30 * delay) {
+    public void render(float delta, int delay) {
+       // Gdx.app.log(count + "", "count");
+        if (count > 20 * delay) {
             currentAnimationFrame++;
             if (currentAnimationFrame == 1) {
                 // Gdx.app.log(elapsedSinceAnimation + "", "elapsedSinceANimation");
-                xCoord = new Random().nextInt(world.getPlayer().getCollisionLayer().getWidth());
-                yCoord = new Random().nextInt(world.getPlayer().getCollisionLayer().getHeight() - 2);
-                foreground.setCell(xCoord, yCoord + 2, cell);
-                cell = foreground.getCell(xCoord, yCoord + 2);
+                xCoord = new Random().nextInt(world.getPlayer().getCollisionLayer().getWidth() - 5);
+                yCoord = new Random().nextInt(world.getPlayer().getCollisionLayer().getHeight());
+                foreground.setCell(xCoord + 3, yCoord, cell);
+                cell = foreground.getCell(xCoord + 3, yCoord);
             }
             updateFireAnimation(currentAnimationFrame);
             // Gdx.app.log(world.getPlayer().getCollisionLayer().getHeight() + "", yCoord + 3 + "");
 
             count = 0;
         }
-        count++;
+        count++;//= delta;
+        Gdx.app.log(count + "", "count---------------------");
     }
 
     private void updateFireAnimation(Integer frame) {
@@ -70,12 +72,27 @@ public class BurningTiles {
             return;
         } else{
             TiledMapTile newTile = fireTiles.get(frame.toString());
-            // Gdx.app.log(frame + "", "frame");
-            // Gdx.app.log(newTile + "", "newTile");
             cell.setTile(newTile);
         }
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 

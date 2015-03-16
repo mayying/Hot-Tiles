@@ -1,11 +1,10 @@
 package com.mayying.tileMapGame;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.mayying.tileMapGame.entities.MyTouchpad;
 import com.mayying.tileMapGame.entities.Player;
-import com.mayying.tileMapGame.entities.Touchpad;
 
 /**
  * Created by Luccan on 2/3/2015.
@@ -13,7 +12,7 @@ import com.mayying.tileMapGame.entities.Touchpad;
 public class InputHandler implements InputProcessor {
 
     private Player player;
-    private Touchpad touchpad;
+    private MyTouchpad myTouchpad;
     private Stage stage;
 
     public InputHandler(Player player) {
