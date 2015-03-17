@@ -25,24 +25,13 @@ public class MyTouchpad {
     private Drawable touchBackground;
     private Drawable touchKnob;
     private Skin touchpadSkin;
-    private Texture test;
-    private GameWorld world;
-    private TextButton buttonA, buttonB;//, buttonX, buttonY;
-    private TextButton.TextButtonStyle textButtonStyleA, textButtonStyleB;// textButtonStyleX, textButtonStyleY;
-    private Skin skin;
-    private TextureAtlas buttonAtlas;
-    private BitmapFont font;
-
-    private long lastPressed;
 
     public Touchpad getTouchpad() {
         return touchpad;
     }
 
-    public MyTouchpad(GameWorld world) {
+    public MyTouchpad() {
         //Create a touchpad skin
-
-        this.world = world;
         touchpadSkin = new Skin();
 
         //Set background image
@@ -71,61 +60,55 @@ public class MyTouchpad {
         touchKnob.setMinWidth(100);
 
     }
+//
+//    public Stage getStage() {
+//        return stage;
+//    }
 
-    public Stage getStage() {
-        return stage;
-    }
+//    public void setStage() {
+//        stage = new Stage();
+//        stage.addActor(touchpad);
+//        Gdx.input.setInputProcessor(stage);
+//
+//        //creating buttons
+//        skin = new Skin();
+//        buttonAtlas = new TextureAtlas(Gdx.files.internal("xbox-buttons/out/buttons.pack"));
+//        skin.addRegions(buttonAtlas);
+//        font = new BitmapFont();
+//        textButtonStyleA = new TextButton.TextButtonStyle();
+//        textButtonStyleB = new TextButton.TextButtonStyle();
+//
+//        textButtonStyleA.font = textButtonStyleB.font = font; //= textButtonStyleX.font = textButtonStyleY.font ;
+//        textButtonStyleA.up = skin.getDrawable("xbox-controller-a-button-md");
+//        textButtonStyleA.down = skin.getDrawable("xbox-controller-b-button-md");
+//        textButtonStyleB.up = skin.getDrawable("xbox-controller-b-button-md");
+//
+//        buttonA = new TextButton("", textButtonStyleA);
+//        buttonB = new TextButton("", textButtonStyleB);
+//
+//        buttonA.setBounds(Gdx.graphics.getWidth() - world.getPlayer().getWidth() * 2 - 20, world.getPlayer().getHeight() + 70, world.getPlayer().getWidth() * 2, world.getPlayer().getHeight() + 50);
+//        buttonB.setBounds(Gdx.graphics.getWidth() - world.getPlayer().getWidth() * 2 - 20, 5, world.getPlayer().getWidth() * 2, world.getPlayer().getHeight() + 50);
+//
+//        stage.addActor(buttonA);
+//        stage.addActor(buttonB);
+////        stage.addActor(buttonX);
+////        stage.addActor(buttonY);
+//        buttonA.addListener(new InputListener() {
+//            @Override
+//            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+//                return true;
+//            }
+//
+//            @Override
+//            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+//                if (System.currentTimeMillis() - lastPressed > 200) {
+//                    //  lastPressed = System.currentTimeMillis();
+//                    world.getPlayer().spacePressed();
+////                    createNewBullet();
+//                }
+//
+//            }
+//        });
 
-    public void setStage() {
-        stage = new Stage();
-        stage.addActor(touchpad);
-        Gdx.input.setInputProcessor(stage);
-
-        //creating buttons
-        skin = new Skin();
-        buttonAtlas = new TextureAtlas(Gdx.files.internal("xbox-buttons/out/buttons.pack"));
-        skin.addRegions(buttonAtlas);
-        font = new BitmapFont();
-        textButtonStyleA = new TextButton.TextButtonStyle();
-        textButtonStyleB = new TextButton.TextButtonStyle();
-//        textButtonStyleX = new TextButton.TextButtonStyle();
-//        textButtonStyleY = new TextButton.TextButtonStyle();
-        textButtonStyleA.font = textButtonStyleB.font = font; //= textButtonStyleX.font = textButtonStyleY.font ;
-        textButtonStyleA.up = skin.getDrawable("xbox-controller-a-button-md");
-        textButtonStyleA.down = skin.getDrawable("xbox-controller-b-button-md");
-        textButtonStyleB.up = skin.getDrawable("xbox-controller-b-button-md");
-//        textButtonStyleX.up = skin.getDrawable("xbox-controller-x-button-md");
-//        textButtonStyleY.up = skin.getDrawable("xbox-controller-y-button-md");
-        buttonA = new TextButton("", textButtonStyleA);
-        buttonB = new TextButton("", textButtonStyleB);
-//        buttonX = new TextButton("", textButtonStyleX);
-//        buttonY = new TextButton("", textButtonStyleY);
-        buttonA.setBounds(Gdx.graphics.getWidth() - world.getPlayer().getWidth() * 4 - 40, 5, world.getPlayer().getWidth() * 2, world.getPlayer().getHeight() + 50);
-        buttonB.setBounds(Gdx.graphics.getWidth() - world.getPlayer().getWidth() * 2 - 20, 5, world.getPlayer().getWidth() * 2, world.getPlayer().getHeight() + 50);
-//        buttonX.setBounds(490, 80, 70, 70);
-//        buttonY.setBounds(550, 140, 70, 70);
-        stage.addActor(buttonA);
-        stage.addActor(buttonB);
-//        stage.addActor(buttonX);
-//        stage.addActor(buttonY);
-        buttonA.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (System.currentTimeMillis() - lastPressed > 200) {
-                    //  lastPressed = System.currentTimeMillis();
-                    world.getPlayer().spacePressed();
-//                    createNewBullet();
-                }
-
-            }
-        });
-
-
-    }
 
 }

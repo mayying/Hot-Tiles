@@ -9,9 +9,10 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.BurningTiles;
+
+import java.util.ArrayList;
 
 
 /**
@@ -22,10 +23,15 @@ public class Play implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-
     private FitViewport viewport;
+
     private GameWorld world;
-    private BurningTiles burningTiles, burningTiles2;
+    private GameScreenRightSideBar rSideBar;
+
+    private ArrayList<BurningTiles> burningTiles;
+    private int count = 0, currentAnimationFrame = 1, animatingFrame = 0;
+    private float spawnNewTile = 0f, animationFrameTime = 0f;
+    private boolean cont;
 
     @Override
     public void show() {
@@ -33,21 +39,18 @@ public class Play implements Screen {
         map = new TmxMapLoader().load("map/map70x70.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
 
-
         camera = new OrthographicCamera();
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2 /*+ 100 + (world.getPlayer().getHeight() / 2)*/, 0);
         //camera.setToOrtho(false, 1600, 900);
 
-        world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"), camera);
+        world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"));
+        rSideBar = new GameScreenRightSideBar(world);
+        rSideBar.create();
 
         viewport = new FitViewport(1280, 720, camera);
         viewport.apply();
 
-        burningTiles = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
-        burningTiles.create();
-
-        burningTiles2 = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
-        burningTiles2.create();
+        burningTiles = new ArrayList<BurningTiles>();
 
         //  Gdx.input.setInputProcessor(new InputHandler(world.getPlayer()));
     }
@@ -55,6 +58,7 @@ public class Play implements Screen {
 
     @Override
     public void render(float delta) {
+
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -66,13 +70,28 @@ public class Play implements Screen {
 
         // Screen
 
+
         world.playerMovement();
         world.drawAndUpdate(renderer.getBatch());
 
-        burningTiles.render(delta, 1);
-        burningTiles2.render(delta, 2);
+        spawnNewTile += delta;
+        animationFrameTime += delta;
+//        Gdx.app.log("i", i + "");
+//        Gdx.app.log(GameScreenRightSideBar.timeLeft / 100.0f + "", " GameScreenRightSideBar.timeLeft / 100.0f");
+        if (spawnNewTile >= GameScreenRightSideBar.timeLeft / 100.0f) {
+            Gdx.app.log("count", count + "");
+            burningTiles.add(new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground")));
+            burningTiles.get(count).create();
+            spawnNewTile = 0;
+            count++;
+        }
+
+        for (int i = 0; i < burningTiles.size(); i++){
+            burningTiles.get(i).render(delta, 1);
+        }
+
         renderer.getBatch().end();
-        world.getMyStage().draw();
+        rSideBar.render(delta);
     }
 
     @Override
@@ -103,6 +122,6 @@ public class Play implements Screen {
         map.dispose();
         renderer.dispose();
         world.getPlayer().getTexture().dispose();
-        world.getMyStage().dispose();
+        rSideBar.dispose();
     }
 }

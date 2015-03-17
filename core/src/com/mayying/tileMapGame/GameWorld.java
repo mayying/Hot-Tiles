@@ -12,6 +12,7 @@ import com.mayying.tileMapGame.entities.Bullet;
 import com.mayying.tileMapGame.entities.Mine;
 import com.mayying.tileMapGame.entities.MyTouchpad;
 import com.mayying.tileMapGame.entities.Player;
+import com.mayying.tileMapGame.screens.GameScreenRightSideBar;
 
 import java.util.Random;
 import java.util.Vector;
@@ -22,9 +23,9 @@ import java.util.Vector;
 public class GameWorld {
     private Player player;
     private MyTouchpad myTouchpad;
-    private OrthographicCamera camera;
     private Rectangle playerBound, screenBound;
     private TiledMapTileLayer playableLayer;
+
 
     public static Vector<Sprite> bullets = new Vector<Sprite>();
     public static Vector<Mine> mines = new Vector<Mine>();
@@ -32,17 +33,15 @@ public class GameWorld {
     private int countX = 0, countY = 0;
 
 
-    public GameWorld(TiledMapTileLayer playableLayer, OrthographicCamera camera) {
+    public GameWorld(TiledMapTileLayer playableLayer) {
         this.playableLayer = playableLayer;
-        this.camera = camera;
 
         player = new Player(new Sprite(new Texture("img/player3_2.png")), playableLayer);
         int xCoordinate = new Random().nextInt(getPlayer().getCollisionLayer().getWidth() - 5);
         int yCoordinate = new Random().nextInt(getPlayer().getCollisionLayer().getHeight());
         player.setPosition(player.getPosition(xCoordinate, yCoordinate).x, player.getPosition(xCoordinate, yCoordinate).y);
 
-        myTouchpad = new MyTouchpad(this);
-        myTouchpad.setStage();
+        myTouchpad = new MyTouchpad();
 
         setScreenBound();
         setPlayerBound();
@@ -101,9 +100,6 @@ public class GameWorld {
         }
     }
 
-    public Stage getMyStage() {
-        return myTouchpad.getStage();
-    }
 
     private void setPlayerBound() {
         playerBound = getPlayer().getBoundingRectangle();
