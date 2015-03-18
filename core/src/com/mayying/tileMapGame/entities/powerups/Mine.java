@@ -1,4 +1,4 @@
-package com.mayying.tileMapGame.entities;
+package com.mayying.tileMapGame.entities.powerups;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -6,20 +6,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.GameWorld;
-
-import java.util.concurrent.Semaphore;
+import com.mayying.tileMapGame.entities.Player;
 
 /**
  * Created by User on 10/3/15.
  */
-public class Mine  extends Sprite implements Collidable {
+public class Mine extends Sprite implements Collidable, Usable {
     Player player;
     TiledMapTileLayer collisionLayer;
     long mineCreated = 0l;
-    boolean isAlive = true;
-    int count = 0;
-    private static final Object lock = new Object();
-    private static final Semaphore sem = new Semaphore(1);
     public Mine(Sprite sprite, Player player, TiledMapTileLayer collisionLayer) {
         super(sprite);
         // Must only draw to this player, specify by player index in main draw method?
@@ -27,7 +22,7 @@ public class Mine  extends Sprite implements Collidable {
         this.collisionLayer = collisionLayer;
         // originate from player
         this.setPosition(player.getX(), player.getY());
-        mineCreated = System.currentTimeMillis();
+//        mineCreated = System.currentTimeMillis();
     }
 
     @Override
@@ -35,7 +30,7 @@ public class Mine  extends Sprite implements Collidable {
         update();
         super.draw(batch);
     }
-
+    // Override this method if you want to do more than just checking collisions
     public void update() {
         // TODO - get device ID to check if this mine is owned by the current player
 
@@ -45,11 +40,10 @@ public class Mine  extends Sprite implements Collidable {
 
 
     }
-
+    // Override this method to desired mine behavior
     @Override
     public void onCollisionDetected(Player hitPlayer) {
-
-        Gdx.app.log("Mine", "Cheekababoom");
+//        Gdx.app.log("Mine", "Cheekababoom");
         GameWorld.removeMine(this);
         // TODO - KD logic for players, depending on the subclass type of mine
     }
@@ -60,7 +54,7 @@ public class Mine  extends Sprite implements Collidable {
         if(System.currentTimeMillis() - mineCreated > 2000l) {
             // Call this method in update
             Vector2 pos = getCellFromPosition(Math.round(this.getX()), Math.round(this.getY()));
-            Gdx.app.log("Mine Position", pos.toString());
+//            Gdx.app.log("Mine Position", pos.toString());
 
             // For all Players...
             if (getCellFromPosition(Math.round(player.getX()), Math.round(player.getY())).equals(pos)) {
@@ -85,5 +79,14 @@ public class Mine  extends Sprite implements Collidable {
         }
 
         return vector2;
+    }
+
+    @Override
+    public void use() {
+        // To Delay the mine before it can explode
+        mineCreated = System.currentTimeMillis();
+
+        // Add to render list
+        GameWorld.addMine(this);
     }
 }

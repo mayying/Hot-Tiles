@@ -11,16 +11,12 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.BurningTiles;
-import com.mayying.tileMapGame.entities.Mine;
+import com.mayying.tileMapGame.entities.powerups.Blackout;
+import com.mayying.tileMapGame.entities.powerups.FreezeMine;
+import com.mayying.tileMapGame.entities.powerups.Mine;
 
 
 import java.util.ArrayList;
@@ -87,7 +83,7 @@ public class Play implements Screen {
 //        Gdx.app.log("i", i + "");
 //        Gdx.app.log(GameScreenRightSideBar.timeLeft / 100.0f + "", " GameScreenRightSideBar.timeLeft / 100.0f");
         if (spawnNewTile >= GameScreenRightSideBar.timeLeft / 100.0f) {
-            Gdx.app.log("count", count + "");
+//            Gdx.app.log("count", count + "");
             burningTiles.add(new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground")));
             burningTiles.get(count).create();
             spawnNewTile = 0;
@@ -97,19 +93,28 @@ public class Play implements Screen {
         for (int i = 0; i < burningTiles.size(); i++){
             burningTiles.get(i).render(delta, 1);
         }
-      
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) GameWorld.setBlackout();
+//        Gdx.input.isKeyJustPressed()
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) new Blackout().use();
         // Must make sure this is discrete
-        if(Gdx.input.isKeyPressed(Input.Keys.X)) {
-            if(System.currentTimeMillis() - lastPressed > 1000l) {
-                GameWorld.addMine(
-                        new Mine(new Sprite(new Texture("img/shuriken.png")),
-                                world.getPlayer(),
-                                (TiledMapTileLayer) map.getLayers().get(0)
-                        ));
-                lastPressed = System.currentTimeMillis();
-            }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.X)){
+//            new Mine(new Sprite(new Texture("img/shuriken.png")),
+//                    world.getPlayer(),
+//                    (TiledMapTileLayer) map.getLayers().get(0)
+//            ).use();
+            new FreezeMine(new Sprite(new Texture("img/shuriken.png")),
+                    world.getPlayer(),
+                    (TiledMapTileLayer) map.getLayers().get(0)
+            ).use();
         }
+//        if(Gdx.input.isKeyPressed(Input.Keys.X)) {
+//            if(System.currentTimeMillis() - lastPressed > 1000l) {
+//                        new Mine(new Sprite(new Texture("img/shuriken.png")),
+//                                world.getPlayer(),
+//                                (TiledMapTileLayer) map.getLayers().get(0)
+//                        ).use();
+//                lastPressed = System.currentTimeMillis();
+//            }
+//        }
 
         renderer.getBatch().end();
         rSideBar.render(delta);

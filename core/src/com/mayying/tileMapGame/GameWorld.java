@@ -1,21 +1,18 @@
 package com.mayying.tileMapGame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.mayying.tileMapGame.entities.Bullet;
-import com.mayying.tileMapGame.entities.Mine;
+import com.mayying.tileMapGame.entities.powerups.Bullet;
+import com.mayying.tileMapGame.entities.powerups.DelayedThread;
+import com.mayying.tileMapGame.entities.powerups.Mine;
 import com.mayying.tileMapGame.entities.MyTouchpad;
 import com.mayying.tileMapGame.entities.Player;
-import com.mayying.tileMapGame.screens.GameScreenRightSideBar;
 
 import java.util.Random;
 import java.util.Vector;
@@ -30,16 +27,15 @@ public class GameWorld {
     private Rectangle playerBound, screenBound;
     private TiledMapTileLayer playableLayer;
     private int countX = 0, countY = 0;
-
     public static Vector<Sprite> bullets = new Vector<Sprite>();
     public static Vector<Mine> mines = new Vector<Mine>();
     static boolean blackout = false;
-    static long blackoutTime = 0l;
-
-
-
+    private float TILE_WIDTH;
+    private float TILE_HEIGHT;
     public GameWorld(TiledMapTileLayer playableLayer) {
+
         this.playableLayer = playableLayer;
+
 
         player = new Player(new Sprite(new Texture("img/player3_2.png")), playableLayer);
         int xCoordinate = new Random().nextInt(getPlayer().getCollisionLayer().getWidth() - 5);
@@ -50,6 +46,10 @@ public class GameWorld {
 
         setScreenBound();
         setPlayerBound();
+
+        // Constants
+        this.TILE_WIDTH = playableLayer.getTileWidth();
+        this.TILE_HEIGHT = playableLayer.getTileHeight();
     }
 
     public void drawAndUpdate(Batch batch) {
@@ -71,45 +71,44 @@ public class GameWorld {
             shapeRenderer.setColor(new Color(Color.BLACK));
             shapeRenderer.rect(120, 0, 1000, 720);
             shapeRenderer.end();
-            if(System.currentTimeMillis() - blackoutTime > 2000l) blackout = false;
         }
     }
-
+    // Should separate into collision/bounds logic and update movement so that when we factor in concurrent
+    // updates from server we can just update movement via setX / setY
+    // Movement logic shouldn't be here. OH WELL
     public void playerMovement() {
-        float screenLeft = screenBound.getX() + getPlayer().getCollisionLayer().getTileWidth() * 3;
+        float screenLeft = screenBound.getX() + TILE_WIDTH * 3;
         float screenBottom = screenBound.getY();
         float screenTop = screenBound.getHeight();// + (world.getPlayer().getHeight() / 2);
-        float screenRight = screenBound.getWidth() - getPlayer().getCollisionLayer().getTileWidth() * 2;
+        float screenRight = screenBound.getWidth() - TILE_HEIGHT * 2;
 
         float newX = player.getX();
         float newY = player.getY();
         if (getMyTouchpad().getTouchpad().getKnobPercentX() > 0.5) {
-            newX += getPlayer().getCollisionLayer().getTileWidth();
-            getPlayer().rightPressed();
+            // add back in leftpressed rightpressed etc for direction, if we are using the bullets and stuff
+            newX += TILE_WIDTH * player.getSpeed();
+
         } else if (getMyTouchpad().getTouchpad().getKnobPercentX() < -0.5) {
-            newX -= getPlayer().getCollisionLayer().getTileWidth();
-            getPlayer().leftPressed();
+            newX -= TILE_WIDTH * player.getSpeed();
         }
 
         if (getMyTouchpad().getTouchpad().getKnobPercentY() > 0.5) {
-            newY += getPlayer().getCollisionLayer().getTileHeight();
-            getPlayer().upPressed();
+            newY += TILE_HEIGHT * player.getSpeed();
         } else if (getMyTouchpad().getTouchpad().getKnobPercentY() < -0.5) {
-            newY -= getPlayer().getCollisionLayer().getTileHeight();
-            getPlayer().downPressed();
+            newY -= TILE_HEIGHT * player.getSpeed();
         }
 
         countX++;
         countY++;
 
         if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
-            if (getMyTouchpad().getTouchpad().getKnobPercentX() != 0 && countX > 30) {
+            if (myTouchpad.getTouchpad().getKnobPercentX() != 0 && countX > 30) {
                 getPlayer().setX(newX);
                 countX = 0;
             }
         }
         if (newY >= screenBottom && newY <= screenTop) {
-            if (getMyTouchpad().getTouchpad().getKnobPercentY() != 0 && countY > 30) {
+            if (myTouchpad.getTouchpad().getKnobPercentY() != 0 && countY > 30) {
                 getPlayer().setY(newY);
                 countY = 0;
             }
@@ -150,9 +149,17 @@ public class GameWorld {
         bullet.getTexture().dispose();
     }
 
-    public static void setBlackout(){
-        blackoutTime = System.currentTimeMillis();
-        blackout = true;
+    public static void setBlackout(long millis){
+        if(!blackout) {
+            blackout = true;
+            new DelayedThread(millis) {
+                @Override
+                public void run() {
+                    super.run();
+                    blackout = false;
+                }
+            }.start();
+        }
     }
 
     public static synchronized void addMine(Mine mine){mines.add(mine);}
