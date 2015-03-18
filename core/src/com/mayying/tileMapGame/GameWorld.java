@@ -21,7 +21,7 @@ import java.util.Vector;
  * Created by Luccan on 2/3/2015.
  */
 public class GameWorld {
-    private Player player;
+    private static Player player; // static cause i'm lazy. Replace with array of all players in game.
     // Better to separate into bullets and mines for now to decouple so we can do stuff like remove all mines or whatever
     private MyTouchpad myTouchpad;
     private Rectangle playerBound, screenBound;
@@ -128,7 +128,7 @@ public class GameWorld {
         return myTouchpad;
     }
 
-    public Player getPlayer() {
+    public static Player getPlayer() {
         return player;
     }
 
@@ -169,4 +169,6 @@ public class GameWorld {
         mine.setAlpha(0);
         mines.remove(mine);
     }
+
+
 }

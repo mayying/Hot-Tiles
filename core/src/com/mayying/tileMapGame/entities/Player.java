@@ -161,4 +161,5 @@ public class Player extends Sprite {
     public float getSpeed() {
         return speed;
     }
+
 }
