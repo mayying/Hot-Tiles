@@ -29,7 +29,7 @@ public class GameWorld {
     private MyTouchpad myTouchpad;
     private Rectangle playerBound, screenBound;
     private TiledMapTileLayer playableLayer;
-
+    private int countX = 0, countY = 0;
 
     public static Vector<Sprite> bullets = new Vector<Sprite>();
     public static Vector<Mine> mines = new Vector<Mine>();
