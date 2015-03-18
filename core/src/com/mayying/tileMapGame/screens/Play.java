@@ -1,11 +1,16 @@
 package com.mayying.tileMapGame.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -19,6 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.BurningTiles;
+import com.mayying.tileMapGame.entities.Mine;
 import com.mayying.tileMapGame.entities.Touchpad;
 
 
@@ -197,7 +203,24 @@ public class Play implements Screen {
                 countY = 0;
             }
         }
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) GameWorld.setBlackout();
+        // Must make sure this is discrete
+        if(Gdx.input.isKeyPressed(Input.Keys.X)) {
+            if(System.currentTimeMillis() - lastPressed > 1000l) {
+                GameWorld.addMine(
+                        new Mine(new Sprite(new Texture("img/shuriken.png")),
+                                world.getPlayer(),
+                                (TiledMapTileLayer) map.getLayers().get(0)
+                        ));
+                lastPressed = System.currentTimeMillis();
+            }
+        }
 
+//        ShapeRenderer shapeRenderer = new ShapeRenderer();
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//        shapeRenderer.setColor(new Color(Color.BLACK));
+//        shapeRenderer.rect(0, 0, 480, 480);
+//        shapeRenderer.end();
         world.drawAndUpdate(renderer.getBatch());
 
 

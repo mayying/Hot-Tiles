@@ -34,6 +34,7 @@ public class Player extends Sprite {
         facing = 6;
     }
 
+
     public Vector2 getPosition(int x, int y) {
         Vector2 vector2 = new Vector2();
         vector2.x = collisionLayer.getTileWidth() / 2 - getWidth() / 2;
