@@ -10,6 +10,8 @@ import com.mayying.tileMapGame.GameWorld;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by May on 14/3/2015.
@@ -21,7 +23,8 @@ public class BurningTiles {
     TiledMapTileSet tileset;
     TiledMapTileLayer.Cell cell;
     Map<String, TiledMapTile> fireTiles;
-    int count = 0, currentAnimationFrame = 0, xCoord, yCoord;
+    float count = 0f;
+    int currentAnimationFrame = 0, xCoord, yCoord;
 
 
     public BurningTiles(TiledMap fireTile, GameWorld world, TiledMapTileLayer foreground) {
@@ -33,7 +36,7 @@ public class BurningTiles {
     }
 
     public void create() {
-       // tileset = fireTile.getTileSets().getTileSet("fire");
+        // tileset = fireTile.getTileSets().getTileSet("fire");
         tileset = fireTile.getTileSets().getTileSet("tile");
         for (TiledMapTile tile : tileset) {
             Object property = tile.getProperties().get("fireframe");
@@ -43,39 +46,40 @@ public class BurningTiles {
         }
     }
 
-    public void render(int delay) {
-        if (count > 30 * delay) {
+    public void render(float delta, int delay) {
+        // Gdx.app.log(count + "", "count");
+        if (count > 1f * delay) {
             currentAnimationFrame++;
             if (currentAnimationFrame == 1) {
                 // Gdx.app.log(elapsedSinceAnimation + "", "elapsedSinceANimation");
-                xCoord = new Random().nextInt(world.getPlayer().getCollisionLayer().getWidth());
-                yCoord = new Random().nextInt(world.getPlayer().getCollisionLayer().getHeight() - 2);
-                foreground.setCell(xCoord, yCoord + 2, cell);
-                cell = foreground.getCell(xCoord, yCoord + 2);
+                xCoord = new Random().nextInt(world.getPlayer().getCollisionLayer().getWidth() - 5);
+                yCoord = new Random().nextInt(world.getPlayer().getCollisionLayer().getHeight());
+                foreground.setCell(xCoord + 3, yCoord, cell);
+                cell = foreground.getCell(xCoord + 3, yCoord);
             }
             updateFireAnimation(currentAnimationFrame);
             // Gdx.app.log(world.getPlayer().getCollisionLayer().getHeight() + "", yCoord + 3 + "");
 
-            count = 0;
+            count = 0.0f;
         }
-        count++;
+        count += delta;
+       // Gdx.app.log(count + "", "count---------------------");
     }
 
     private void updateFireAnimation(Integer frame) {
         // Gdx.app.log(frame + "", "frame");
         if (frame > fireTiles.size()) {
-            currentAnimationFrame = 0;
+            //currentAnimationFrame = 0;
             cell.setTile(null);
             cell = new TiledMapTileLayer.Cell();
             return;
-        } else{
+        } else {
             TiledMapTile newTile = fireTiles.get(frame.toString());
-            // Gdx.app.log(frame + "", "frame");
-            // Gdx.app.log(newTile + "", "newTile");
             cell.setTile(newTile);
         }
 
     }
+
 
 }
 
