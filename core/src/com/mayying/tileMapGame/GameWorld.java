@@ -1,18 +1,17 @@
 package com.mayying.tileMapGame;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
+import com.mayying.tileMapGame.entities.MyTouchpad;
+import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.Mine;
-import com.mayying.tileMapGame.entities.MyTouchpad;
-import com.mayying.tileMapGame.entities.Player;
 
 import java.util.Random;
 import java.util.Vector;
@@ -30,26 +29,27 @@ public class GameWorld {
     public static Vector<Sprite> bullets = new Vector<Sprite>();
     public static Vector<Mine> mines = new Vector<Mine>();
     static boolean blackout = false;
-    private float TILE_WIDTH;
-    private float TILE_HEIGHT;
+    public static float TILE_WIDTH;
+    public static float TILE_HEIGHT;
+
     public GameWorld(TiledMapTileLayer playableLayer) {
 
         this.playableLayer = playableLayer;
 
-
         player = new Player(new Sprite(new Texture("img/player3_2.png")), playableLayer);
-        int xCoordinate = new Random().nextInt(getPlayer().getCollisionLayer().getWidth() - 5);
-        int yCoordinate = new Random().nextInt(getPlayer().getCollisionLayer().getHeight());
+        int xCoordinate = new Random().nextInt(getPlayer().getCollisionLayer().getWidth() - 8);
+        int yCoordinate = new Random().nextInt(getPlayer().getCollisionLayer().getHeight() - 2);
+//        int xCoordinate = 0;
+//        int yCoordinate = 7;
         player.setPosition(player.getPosition(xCoordinate, yCoordinate).x, player.getPosition(xCoordinate, yCoordinate).y);
 
         myTouchpad = new MyTouchpad();
-
-        setScreenBound();
-        setPlayerBound();
-
         // Constants
         this.TILE_WIDTH = playableLayer.getTileWidth();
         this.TILE_HEIGHT = playableLayer.getTileHeight();
+
+        setScreenBound();
+        setPlayerBound();
     }
 
     public void drawAndUpdate(Batch batch) {
@@ -64,7 +64,7 @@ public class GameWorld {
         }
 
 
-        if(blackout) {
+        if (blackout) {
             // This causes Player object to disappear for some reason
             ShapeRenderer shapeRenderer = new ShapeRenderer();
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -73,14 +73,15 @@ public class GameWorld {
             shapeRenderer.end();
         }
     }
+
     // Should separate into collision/bounds logic and update movement so that when we factor in concurrent
     // updates from server we can just update movement via setX / setY
     // Movement logic shouldn't be here. OH WELL
     public void playerMovement() {
-        float screenLeft = screenBound.getX() + TILE_WIDTH * 3;
+        float screenLeft = screenBound.getX();
         float screenBottom = screenBound.getY();
-        float screenTop = screenBound.getHeight();// + (world.getPlayer().getHeight() / 2);
-        float screenRight = screenBound.getWidth() - TILE_HEIGHT * 2;
+        float screenTop = screenBottom + screenBound.getHeight();// + (world.getPlayer().getHeight() / 2);
+        float screenRight = screenLeft + screenBound.getWidth();
 
         float newX = player.getX();
         float newY = player.getY();
@@ -121,7 +122,7 @@ public class GameWorld {
     }
 
     private void setScreenBound() {
-        screenBound = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        screenBound = new Rectangle(4 * TILE_WIDTH, TILE_HEIGHT, 10 * TILE_WIDTH, 8 * TILE_HEIGHT);
     }
 
     public MyTouchpad getMyTouchpad() {
@@ -138,19 +139,20 @@ public class GameWorld {
         bullets.add(s);
     }
 
-    public static synchronized void addBullet(Bullet bullet){
+    public static synchronized void addBullet(Bullet bullet) {
 //        Bullet bullet = new Bullet(new Sprite(new Texture("img/shuriken.png")), 6, world.getPlayer(), 2, (TiledMapTileLayer) map.getLayers().get(0));
         bullets.add(bullet);
     }
-    public static synchronized void removeBullet(Bullet bullet){
+
+    public static synchronized void removeBullet(Bullet bullet) {
         bullet.setAlpha(0);
         bullets.remove(bullet);
         // causes the black box to appear, but probably necessary? not sure how garbage collection works
         bullet.getTexture().dispose();
     }
 
-    public static void setBlackout(long millis){
-        if(!blackout) {
+    public static void setBlackout(long millis) {
+        if (!blackout) {
             blackout = true;
             new DelayedThread(millis) {
                 @Override
@@ -162,9 +164,11 @@ public class GameWorld {
         }
     }
 
-    public static synchronized void addMine(Mine mine){mines.add(mine);}
+    public static synchronized void addMine(Mine mine) {
+        mines.add(mine);
+    }
 
-    public static synchronized void removeMine(Mine mine){
+    public static synchronized void removeMine(Mine mine) {
         mine.getTexture().dispose();
         mine.setAlpha(0);
         mines.remove(mine);

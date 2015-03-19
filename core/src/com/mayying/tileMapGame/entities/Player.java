@@ -16,7 +16,7 @@ import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 public class Player extends Sprite {
 
     private Vector2 velocity = new Vector2();
-//    private final float SPEED_NORMAL = 60*2;
+    //    private final float SPEED_NORMAL = 60*2;
     private float speed = 1;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
     private int facing;
@@ -35,8 +35,8 @@ public class Player extends Sprite {
 
     public Vector2 getPosition(int x, int y) {
         Vector2 vector2 = new Vector2();
-        vector2.x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 3);
-        vector2.y = getHeight() + collisionLayer.getTileHeight() / 2 + collisionLayer.getTileHeight() * y;
+        vector2.x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 4);
+        vector2.y = collisionLayer.getTileHeight() / 4 + collisionLayer.getTileHeight() * (y + 1);
 
         return vector2;
     }
@@ -122,29 +122,29 @@ public class Player extends Sprite {
         // User can only be inflicted with one speed modifier at any time. Reduce complexity of code
         // and eliminate interaction for when user is frozen and then inverted or something like that.
         // TL;DR GOT LAZY
-       if(speed == 1){
-           //TODO - last hit logic
+        if (speed == 1) {
+            //TODO - last hit logic
 //        setLastHitBy();
-           // other freezing animations?
-           setSpeed(0);
-           new DelayedThread(2000l){
-               @Override
-               public void run() {
-                   super.run();
-                   setSpeed(1);
-               }
-           }.start();
+            // other freezing animations?
+            setSpeed(0);
+            new DelayedThread(2000l) {
+                @Override
+                public void run() {
+                    super.run();
+                    setSpeed(1);
+                }
+            }.start();
 
-       }
+        }
     }
 
-    public void invert(long millis){
-        if(speed == 1){
+    public void invert(long millis) {
+        if (speed == 1) {
             //TODO - last hit logic
 //        setLastHitBy();
             // other freezing animations?
             setSpeed(-1);
-            new DelayedThread(2000l){
+            new DelayedThread(2000l) {
                 @Override
                 public void run() {
                     super.run();
@@ -153,6 +153,7 @@ public class Player extends Sprite {
             }.start();
         }
     }
+
     // 1 for normal, 0 to stop, -1 to invert, 0.5 to slow??
     public void setSpeed(float speed) {
         this.speed = speed;

@@ -11,52 +11,59 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.BurningTiles;
 import com.mayying.tileMapGame.entities.powerups.Blackout;
 import com.mayying.tileMapGame.entities.powerups.FreezeMine;
-import com.mayying.tileMapGame.entities.powerups.Mine;
-
-
-import java.util.ArrayList;
 
 /**
  * Created by May Ying on 24/2/2015.
  */
 
 public class Play implements Screen {
+    public static final int V_WIDTH = 1260, V_HEIGHT = 700;
+
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
-    private OrthographicCamera camera;
-    private FitViewport viewport;
+    private OrthographicCamera camera, hudCamera;
+    private StretchViewport viewport;
+
     private GameWorld world;
     private GameScreenRightSideBar rSideBar;
-    private long lastPressed;
-    private ArrayList<BurningTiles> burningTiles;
-    private int count = 0, currentAnimationFrame = 1, animatingFrame = 0;
-    private float spawnNewTile = 0f, animationFrameTime = 0f;
-    private boolean cont;
+
+    private BurningTiles[] burningTiles;
+    private int count = 0;
+    private float spawnNewTile = 0f;
 
     @Override
     public void show() {
         // To load the map into TileMap class
-        map = new TmxMapLoader().load("map/map70x70.tmx");
+        map = new TmxMapLoader().load("map/gmap70x70.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
 
         camera = new OrthographicCamera();
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2 /*+ 100 + (world.getPlayer().getHeight() / 2)*/, 0);
-        //camera.setToOrtho(false, 1600, 900);
+        //camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+        camera.setToOrtho(false, V_WIDTH, V_HEIGHT);
 
-        world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"));
-        rSideBar = new GameScreenRightSideBar(world);
-        rSideBar.create();
+        hudCamera = new OrthographicCamera();
+        hudCamera.setToOrtho(false, V_WIDTH, V_HEIGHT);
 
-        viewport = new FitViewport(1280, 720, camera);
+        // camera.setToOrtho(false, 1280, 720);
+        viewport = new StretchViewport(1260, 700, camera);
         viewport.apply();
 
-        burningTiles = new ArrayList<BurningTiles>();
+        world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"));
+        rSideBar = new GameScreenRightSideBar(world, hudCamera);
+        rSideBar.create();
 
+        burningTiles = new BurningTiles[80];
+        for (int i = 0; i < burningTiles.length; i++) {
+            burningTiles[i] = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
+            burningTiles[i].create();
+        }
+        // burningTiles = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
+        // burningTiles.create();
         //  Gdx.input.setInputProcessor(new InputHandler(world.getPlayer()));
     }
 
@@ -73,48 +80,32 @@ public class Play implements Screen {
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("Foreground"));
 
         // Screen
-
-
         world.playerMovement();
         world.drawAndUpdate(renderer.getBatch());
 
         spawnNewTile += delta;
-        animationFrameTime += delta;
 //        Gdx.app.log("i", i + "");
 //        Gdx.app.log(GameScreenRightSideBar.timeLeft / 100.0f + "", " GameScreenRightSideBar.timeLeft / 100.0f");
-        if (spawnNewTile >= GameScreenRightSideBar.timeLeft / 100.0f) {
-//            Gdx.app.log("count", count + "");
-            burningTiles.add(new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground")));
-            burningTiles.get(count).create();
+        if (spawnNewTile >= Math.log10(0.02f * (GameScreenRightSideBar.timeLeft + 10000))
+                && count < burningTiles.length) {
             spawnNewTile = 0;
             count++;
         }
 
-        for (int i = 0; i < burningTiles.size(); i++){
-            burningTiles.get(i).render(delta, 1);
+        for (int i = 0; i < count; i++) {
+            //Gdx.app.log("count", count + "");
+            burningTiles[i].render(delta, 1);
         }
 //        Gdx.input.isKeyJustPressed()
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) new Blackout().use();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) new Blackout().use();
         // Must make sure this is discrete
-        if(Gdx.input.isKeyJustPressed(Input.Keys.X)){
-//            new Mine(new Sprite(new Texture("img/shuriken.png")),
-//                    world.getPlayer(),
-//                    (TiledMapTileLayer) map.getLayers().get(0)
-//            ).use();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+
             new FreezeMine(new Sprite(new Texture("img/shuriken.png")),
-                    world.getPlayer(),
-                    (TiledMapTileLayer) map.getLayers().get(0)
+                    world.getPlayer(), (TiledMapTileLayer) map.getLayers().get(0)
             ).use();
         }
-//        if(Gdx.input.isKeyPressed(Input.Keys.X)) {
-//            if(System.currentTimeMillis() - lastPressed > 1000l) {
-//                        new Mine(new Sprite(new Texture("img/shuriken.png")),
-//                                world.getPlayer(),
-//                                (TiledMapTileLayer) map.getLayers().get(0)
-//                        ).use();
-//                lastPressed = System.currentTimeMillis();
-//            }
-//        }
+
 
         renderer.getBatch().end();
         rSideBar.render(delta);
@@ -123,7 +114,6 @@ public class Play implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
-        //camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2 + (world.getPlayer().getHeight() / 2), 0);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         camera.update();
     }

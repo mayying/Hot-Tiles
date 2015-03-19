@@ -1,22 +1,21 @@
 package com.mayying.tileMapGame.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.GameWorld;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.mayying.tileMapGame.entities.MyTouchpad;
 
 
 /**
@@ -35,20 +34,22 @@ public class GameScreenRightSideBar {
     private GameWorld world;
     private TextButtonStyle textButtonStyleA, textButtonStyleB;
     private TextButton buttonA, buttonB;
+    private OrthographicCamera hudCamera;
 
     volatile static int timeLeft = 1;
 
     private float gameTime = 1 * 60 + 30;
     private int min, sec;
 
-    GameScreenRightSideBar(GameWorld world) {
+    GameScreenRightSideBar(GameWorld world, OrthographicCamera hudCamera) {
         this.world = world;
+        this.hudCamera = hudCamera;
         min = 1;
         sec = 30;
     }
 
     public void create() {
-        stage = new Stage();
+        stage = new Stage(new ExtendViewport(Play.V_WIDTH, Play.V_HEIGHT, hudCamera));
 
         Gdx.input.setInputProcessor(stage);
 
@@ -56,10 +57,10 @@ public class GameScreenRightSideBar {
         skin = new Skin(buttonAtlas);
         // container for all UI widgets
         table = new Table(skin);
-        table.setBounds(world.getPlayer().getCollisionLayer().getTileWidth() * 16 + world.getPlayer().getWidth() / 2,
-                world.getPlayer().getCollisionLayer().getTileHeight() * 8,
-                world.getPlayer().getCollisionLayer().getTileWidth() * 2,
-                world.getPlayer().getCollisionLayer().getTileWidth() * 2);
+        table.setBounds(GameWorld.TILE_WIDTH * 15,
+                GameWorld.TILE_HEIGHT * 9,
+                GameWorld.TILE_WIDTH,
+                GameWorld.TILE_WIDTH);
 
         black = new BitmapFont(Gdx.files.internal("font/black.fnt"), false);
 
@@ -86,7 +87,7 @@ public class GameScreenRightSideBar {
 
         // putting stuff together
         table.add(heading);
-        table.row();
+        table.row().size(100);
         table.add(buttonA).size(50,50);
         table.row();
         table.add(buttonB).size(50,50);
