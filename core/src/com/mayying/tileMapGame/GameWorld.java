@@ -12,9 +12,9 @@ import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.Mine;
+import com.mayying.tileMapGame.entities.powerups.SpawnPowerUps;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Vector;
 
 /**
@@ -33,6 +33,7 @@ public class GameWorld {
     static boolean blackout = false;
     public static float TILE_WIDTH;
     public static float TILE_HEIGHT;
+    private SpawnPowerUps spawnPowerUps;
 
     public GameWorld(TiledMapTileLayer playableLayer) {
 
@@ -50,6 +51,7 @@ public class GameWorld {
         screenBound = new Rectangle(4 * TILE_WIDTH, TILE_HEIGHT, 10 * TILE_WIDTH, 8 * TILE_HEIGHT);
 
         setPlayerBound();
+        spawnPowerUps=new SpawnPowerUps(playableLayer,player);
     }
 
     public void drawAndUpdate(Batch batch) {
@@ -65,6 +67,7 @@ public class GameWorld {
         for (int i = 0; i < mines.size(); i++) {
             mines.get(i).draw(batch);
         }
+        spawnPowerUps.draw(batch);
 
 
         if (blackout) {

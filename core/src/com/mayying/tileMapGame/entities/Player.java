@@ -9,7 +9,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
+import com.mayying.tileMapGame.entities.powerups.PowerUp;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -30,12 +32,14 @@ public class Player extends Sprite {
     private boolean isFrozen = false; // for freezing animation and stuff?
     private boolean isInverted = false;
     private boolean isInvulnerable = false;
+    public ArrayList<PowerUp> powerUpList;
 
     public Player(Sprite sprite, TiledMapTileLayer collisionLayer, GameWorld gameWorld) {
         super(sprite);
         this.collisionLayer = collisionLayer;
         facing = 6;
         this.gameWorld = gameWorld;
+        powerUpList=new ArrayList<PowerUp>();
     }
 
 
@@ -224,4 +228,25 @@ public class Player extends Sprite {
         setPosition(getPosition(xCoordinate, yCoordinate).x, getPosition(xCoordinate, yCoordinate).y);
         gameWorld.addPlayer(this);
     }
+
+    public void addPowerUp(PowerUp powerUp){
+        powerUpList.add(powerUp);
+    }
+
+    public int getPowerUpList(){
+        return powerUpList.size();
+    }
+
+    public boolean canPickPowerUp(){
+        if(getPowerUpList()<2){
+            return true;
+        }
+        return false;
+    }
+
+    public ArrayList<PowerUp> getArraylist(){
+        return powerUpList;
+    }
+
+
 }
