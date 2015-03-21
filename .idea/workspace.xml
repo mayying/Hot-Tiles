@@ -1989,7 +1989,11 @@
       <created>1426958463818</created>
       <updated>1426958463818</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Added Random PowerUps Spawn">
+      <created>1426958497365</created>
+      <updated>1426958497365</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
