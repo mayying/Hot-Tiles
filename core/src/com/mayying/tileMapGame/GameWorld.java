@@ -13,6 +13,7 @@ import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.Mine;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Vector;
 
@@ -21,6 +22,7 @@ import java.util.Vector;
  */
 public class GameWorld {
     private static Player player; // static cause i'm lazy. Replace with array of all players in game.
+    private final ArrayList<Player> players = new ArrayList<Player>();
     // Better to separate into bullets and mines for now to decouple so we can do stuff like remove all mines or whatever
     private MyTouchpad myTouchpad;
     private Rectangle playerBound;
@@ -35,17 +37,15 @@ public class GameWorld {
     public GameWorld(TiledMapTileLayer playableLayer) {
 
 
-        player = new Player(new Sprite(new Texture("img/player3_2.png")), playableLayer);
-        int xCoordinate = new Random().nextInt(getPlayer().getCollisionLayer().getWidth() - 8);
-        int yCoordinate = new Random().nextInt(getPlayer().getCollisionLayer().getHeight() - 2);
-//        int xCoordinate = 0;
-//        int yCoordinate = 7;
-        player.setPosition(player.getPosition(xCoordinate, yCoordinate).x, player.getPosition(xCoordinate, yCoordinate).y);
+        player = new Player(new Sprite(new Texture("img/player3_2.png")), playableLayer, this);
+
+        player.spawn();
+        // TODO - create additional threads to manage the other player's interactions, positions etc
 
         myTouchpad = new MyTouchpad();
         // Constants
-        this.TILE_WIDTH = playableLayer.getTileWidth();
-        this.TILE_HEIGHT = playableLayer.getTileHeight();
+        TILE_WIDTH = playableLayer.getTileWidth();
+        TILE_HEIGHT = playableLayer.getTileHeight();
 
         screenBound = new Rectangle(4 * TILE_WIDTH, TILE_HEIGHT, 10 * TILE_WIDTH, 8 * TILE_HEIGHT);
 
@@ -57,7 +57,10 @@ public class GameWorld {
             bullets.get(i).draw(batch);
         }
 
-        player.draw(batch);
+        for (int i=0; i<players.size(); i++){
+            players.get(i).draw(batch);
+        }
+
 
         for (int i = 0; i < mines.size(); i++) {
             mines.get(i).draw(batch);
@@ -168,6 +171,18 @@ public class GameWorld {
         mine.getTexture().dispose();
         mine.setAlpha(0);
         mines.remove(mine);
+    }
+
+    public void removePlayer(Player player){
+        synchronized (players) {
+            players.remove(player);
+        }
+    }
+
+    public void addPlayer(Player player){
+        synchronized (players){
+            players.add(player);
+        }
     }
 
 

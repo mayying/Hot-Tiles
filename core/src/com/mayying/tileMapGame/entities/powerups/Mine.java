@@ -44,6 +44,7 @@ public class Mine extends Sprite implements Collidable, Usable {
     @Override
     public void onCollisionDetected(Player hitPlayer) {
 //        Gdx.app.log("Mine", "Cheekababoom");
+        // TODO - invulnerability check
         GameWorld.removeMine(this);
         // TODO - KD logic for players, depending on the subclass type of mine
     }
@@ -57,6 +58,7 @@ public class Mine extends Sprite implements Collidable, Usable {
 //            Gdx.app.log("Mine Position", pos.toString());
 
             // For all Players...
+            // am not sure if this is the most efficient way to check
             if (getCellFromPosition(Math.round(player.getX()), Math.round(player.getY())).equals(pos)) {
                 onCollisionDetected(player);
             }
@@ -82,7 +84,7 @@ public class Mine extends Sprite implements Collidable, Usable {
     }
 
     @Override
-    public void use() {
+    public void use(Player[] players) {
         // To Delay the mine before it can explode
         mineCreated = System.currentTimeMillis();
 

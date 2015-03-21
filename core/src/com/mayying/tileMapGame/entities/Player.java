@@ -10,6 +10,8 @@ import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 
+import java.util.Random;
+
 /**
  * Created by May Ying on 24/2/2015.
  */
@@ -20,16 +22,20 @@ public class Player extends Sprite {
     private float speed = 1;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
     private int facing;
-
     private TiledMapTileLayer collisionLayer;
     private Player lastHitBy;
-    public boolean isFrozen; // for freezing animation and stuff?
-    public boolean isInverted = false;
+    private int kills;
+    private int deaths;
+    private GameWorld gameWorld;
+    private boolean isFrozen = false; // for freezing animation and stuff?
+    private boolean isInverted = false;
+    private boolean isInvulnerable = false;
 
-    public Player(Sprite sprite, TiledMapTileLayer collisionLayer) {
+    public Player(Sprite sprite, TiledMapTileLayer collisionLayer, GameWorld gameWorld) {
         super(sprite);
         this.collisionLayer = collisionLayer;
         facing = 6;
+        this.gameWorld = gameWorld;
     }
 
 
@@ -122,7 +128,7 @@ public class Player extends Sprite {
         // User can only be inflicted with one speed modifier at any time. Reduce complexity of code
         // and eliminate interaction for when user is frozen and then inverted or something like that.
         // TL;DR GOT LAZY
-        if (speed == 1) {
+        if (speed == 1 && !isInvulnerable) {
             //TODO - last hit logic
 //        setLastHitBy();
             // other freezing animations?
@@ -139,7 +145,7 @@ public class Player extends Sprite {
     }
 
     public void invert(long millis) {
-        if (speed == 1) {
+        if (speed == 1 && !isInvulnerable) {
             //TODO - last hit logic
 //        setLastHitBy();
             // other freezing animations?
@@ -163,4 +169,59 @@ public class Player extends Sprite {
         return speed;
     }
 
+    public void die(){
+        // Commits sudoku
+        if(!isInvulnerable) {
+            // Remove from render list,
+            gameWorld.removePlayer(this);
+
+            // Set Invulnerable for 4 secs
+            isInvulnerable = true;
+            new DelayedThread(4000l){
+                @Override
+                public void run() {
+                    super.run();
+                    isInvulnerable = false;
+                }
+            }.start();
+
+            // wait for 3 secs then choose a random location, add to render list
+            new DelayedThread(3000l){
+                @Override
+                public void run() {
+                    super.run();
+                    spawn();
+                }
+            }.start();
+
+            // TODO -update score based on last hit by field
+            deaths++;
+            Gdx.app.log("Player", "Player death count: " + deaths);
+        }else{
+            Gdx.app.log("Player", "Player death count: " + deaths);
+        }
+
+    }
+
+    public void shield() {
+        // Bubble sprite or something?
+        Gdx.app.log("Player", "player shielded");
+        if(!isInvulnerable) {
+            isInvulnerable = true;
+            new DelayedThread(5000l) {
+                @Override
+                public void run() {
+                    super.run();
+                    isInvulnerable = false;
+                }
+            }.start();
+        }
+    }
+
+    public void spawn() {
+        int xCoordinate = new Random().nextInt(getCollisionLayer().getWidth() - 8);
+        int yCoordinate = new Random().nextInt(getCollisionLayer().getHeight() - 2);
+        setPosition(getPosition(xCoordinate, yCoordinate).x, getPosition(xCoordinate, yCoordinate).y);
+        gameWorld.addPlayer(this);
+    }
 }

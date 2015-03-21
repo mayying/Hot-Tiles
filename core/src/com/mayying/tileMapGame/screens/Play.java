@@ -94,15 +94,19 @@ public class Play implements Screen {
             burningTiles[i].render(delta, 1);
         }
 //        Gdx.input.isKeyJustPressed()
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) new Blackout().use();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) new Blackout().use(null);
         // Must make sure this is discrete
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-
             new FreezeMine(new Sprite(new Texture("img/shuriken.png")),
                     world.getPlayer(), (TiledMapTileLayer) map.getLayers().get(0)
-            ).use();
+            ).use(null);
         }
-
+        if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+            GameWorld.getPlayer().die();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
+            GameWorld.getPlayer().shield();
+        }
 
         renderer.getBatch().end();
         rSideBar.render(delta);
