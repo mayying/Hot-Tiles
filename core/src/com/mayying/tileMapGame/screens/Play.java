@@ -26,7 +26,7 @@ public class Play implements Screen {
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
-    private OrthographicCamera camera, hudCamera;
+    private OrthographicCamera camera;
     private StretchViewport viewport;
 
     private GameWorld world;
@@ -46,15 +46,12 @@ public class Play implements Screen {
         //camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         camera.setToOrtho(false, V_WIDTH, V_HEIGHT);
 
-        hudCamera = new OrthographicCamera();
-        hudCamera.setToOrtho(false, V_WIDTH, V_HEIGHT);
-
         // camera.setToOrtho(false, 1280, 720);
         viewport = new StretchViewport(1260, 700, camera);
         viewport.apply();
 
         world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"));
-        rSideBar = new GameScreenRightSideBar(world, hudCamera);
+        rSideBar = new GameScreenRightSideBar(world);
         rSideBar.create();
 
         burningTiles = new BurningTiles[80];

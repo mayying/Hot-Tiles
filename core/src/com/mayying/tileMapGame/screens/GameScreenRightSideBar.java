@@ -1,19 +1,20 @@
 package com.mayying.tileMapGame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.GameWorld;
 
@@ -26,26 +27,27 @@ import com.mayying.tileMapGame.GameWorld;
 public class GameScreenRightSideBar {
 
     private Stage stage;
-    private Table table;
-    private BitmapFont black;
     private Label heading;
-    private Skin skin;
-    private TextureAtlas buttonAtlas;
     private GameWorld world;
-    private TextButtonStyle textButtonStyleA, textButtonStyleB;
     private TextButton buttonA, buttonB;
     private OrthographicCamera hudCamera;
+    private final Rectangle screenBound;
 
     volatile static int timeLeft = 1;
 
     private float gameTime = 1 * 60 + 30;
+    private final float aspectRatio;
     private int min, sec;
 
-    GameScreenRightSideBar(GameWorld world, OrthographicCamera hudCamera) {
+    GameScreenRightSideBar(GameWorld world) {
         this.world = world;
-        this.hudCamera = hudCamera;
+        hudCamera = new OrthographicCamera();
         min = 1;
         sec = 30;
+        screenBound = new Rectangle(GameWorld.screenBound.getX() + GameWorld.screenBound.getWidth() + GameWorld.TILE_WIDTH,
+                0, GameWorld.TILE_WIDTH * 3,
+                GameWorld.TILE_HEIGHT * 10);
+        aspectRatio = screenBound.getWidth() / screenBound.getHeight();
     }
 
     public void create() {
@@ -53,47 +55,43 @@ public class GameScreenRightSideBar {
 
         Gdx.input.setInputProcessor(stage);
 
-        buttonAtlas = new TextureAtlas(Gdx.files.internal("xbox-buttons/out/buttons.pack"));
-        skin = new Skin(buttonAtlas);
+        TextureAtlas buttonAtlas = new TextureAtlas(Gdx.files.internal("skin/powerupSkin.txt"));
+        Skin skin = new Skin(Gdx.files.internal("skin/gameSkin.json"), buttonAtlas);
+
         // container for all UI widgets
-        table = new Table(skin);
-        table.setBounds(GameWorld.TILE_WIDTH * 15,
-                GameWorld.TILE_HEIGHT * 9,
-                GameWorld.TILE_WIDTH,
-                GameWorld.TILE_WIDTH);
+        Table table = new Table(skin);
+        Table tableBtm = new Table(skin);
 
-        black = new BitmapFont(Gdx.files.internal("font/black.fnt"), false);
+        table.setBounds(screenBound.getX(), screenBound.getY() + 4 * screenBound.getHeight() / 5,
+                screenBound.getWidth(), screenBound.getHeight() / 5);
+        table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/skinTime.png"))));
+        tableBtm.setBounds(screenBound.getX(), screenBound.getY(),
+                screenBound.getWidth(), screenBound.getHeight() / 4);
 
-        textButtonStyleA = new TextButtonStyle();
-        textButtonStyleB = new TextButton.TextButtonStyle();
+        // table.setDebug(true);
+        // tableBtm.setDebug(true);
 
-        textButtonStyleA.up = skin.getDrawable("xbox-controller-a-button-md");
-        textButtonStyleA.down = skin.getDrawable("xbox-controller-b-button-md");
-        textButtonStyleB.up = skin.getDrawable("xbox-controller-b-button-md");
-        textButtonStyleA.font = textButtonStyleB.font = black;
+        table.top();
+        tableBtm.bottom();
 
-        buttonA = new TextButton("", textButtonStyleA);
-        buttonB = new TextButton("", textButtonStyleB);
-        //buttonA.setBounds(Gdx.graphics.getWidth() - world.getPlayer().getWidth() * 2 - 20, world.getPlayer().getHeight() + 70, world.getPlayer().getWidth() * 2, world.getPlayer().getHeight() + 50);
-        //buttonB.setBounds(Gdx.graphics.getWidth() - world.getPlayer().getWidth() * 2 - 20, 5, world.getPlayer().getWidth() * 2, world.getPlayer().getHeight() + 50);
-        //buttonA.setSize(20,20);
-        //buttonB.setSize(20,20);
+        Label timeLeft = new Label("Time Left", skin);
+        timeLeft.setAlignment(Align.top);
+        heading = new Label(min + " : " + sec, skin);
+        heading.setAlignment(Align.top);
 
-
-        // creating heading
-        LabelStyle timerStyle = new LabelStyle(black, Color.BLACK);
-
-        heading = new Label(min + " : " + sec, timerStyle);
+        buttonA = new TextButton("", skin);
+        buttonB = new TextButton("", skin);
 
         // putting stuff together
+        table.align(Align.center);
+        table.add(timeLeft).bottom().row();
         table.add(heading);
-        table.row().size(100);
-        table.add(buttonA).size(50,50);
-        table.row();
-        table.add(buttonB).size(50,50);
-        table.row();
+
+        tableBtm.add(buttonA).expandX().right().row();
+        tableBtm.add(buttonB).expandX().left();
 
         stage.addActor(table);
+        stage.addActor(tableBtm);
         stage.addActor(world.getMyTouchpad().getTouchpad());
 
         buttonA.addListener(new InputListener() {
@@ -121,11 +119,9 @@ public class GameScreenRightSideBar {
 
     }
 
-    public void dispose(){
+    public void dispose() {
         stage.dispose();
     }
-
-
 
 
 }

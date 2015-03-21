@@ -23,8 +23,8 @@ public class GameWorld {
     private static Player player; // static cause i'm lazy. Replace with array of all players in game.
     // Better to separate into bullets and mines for now to decouple so we can do stuff like remove all mines or whatever
     private MyTouchpad myTouchpad;
-    private Rectangle playerBound, screenBound;
-    private TiledMapTileLayer playableLayer;
+    private Rectangle playerBound;
+    public static Rectangle screenBound;
     private int countX = 0, countY = 0;
     public static Vector<Sprite> bullets = new Vector<Sprite>();
     public static Vector<Mine> mines = new Vector<Mine>();
@@ -34,7 +34,6 @@ public class GameWorld {
 
     public GameWorld(TiledMapTileLayer playableLayer) {
 
-        this.playableLayer = playableLayer;
 
         player = new Player(new Sprite(new Texture("img/player3_2.png")), playableLayer);
         int xCoordinate = new Random().nextInt(getPlayer().getCollisionLayer().getWidth() - 8);
@@ -48,7 +47,8 @@ public class GameWorld {
         this.TILE_WIDTH = playableLayer.getTileWidth();
         this.TILE_HEIGHT = playableLayer.getTileHeight();
 
-        setScreenBound();
+        screenBound = new Rectangle(4 * TILE_WIDTH, TILE_HEIGHT, 10 * TILE_WIDTH, 8 * TILE_HEIGHT);
+
         setPlayerBound();
     }
 
@@ -119,10 +119,6 @@ public class GameWorld {
 
     private void setPlayerBound() {
         playerBound = getPlayer().getBoundingRectangle();
-    }
-
-    private void setScreenBound() {
-        screenBound = new Rectangle(4 * TILE_WIDTH, TILE_HEIGHT, 10 * TILE_WIDTH, 8 * TILE_HEIGHT);
     }
 
     public MyTouchpad getMyTouchpad() {
