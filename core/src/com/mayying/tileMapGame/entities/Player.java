@@ -37,13 +37,15 @@ public class Player extends Sprite {
     public Player(Sprite sprite, TiledMapTileLayer collisionLayer, GameWorld gameWorld) {
         super(sprite);
         this.collisionLayer = collisionLayer;
+
+
         facing = 6;
         this.gameWorld = gameWorld;
         powerUpList=new ArrayList<PowerUp>();
     }
 
 
-    public Vector2 getPosition(int x, int y) {
+    public Vector2 setPlayerPosition(int x, int y) {
         Vector2 vector2 = new Vector2();
         vector2.x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 4);
         vector2.y = collisionLayer.getTileHeight() / 4 + collisionLayer.getTileHeight() * (y + 1);
@@ -51,6 +53,12 @@ public class Player extends Sprite {
         return vector2;
     }
 
+    public Vector2 getPlayerPosition(){
+        Vector2 vector2 = new Vector2();
+        vector2.x = (float)(Math.floor(getX()/70f) - 4);
+        vector2.y = (float) (Math.floor(getY()/70f) - 1);
+        return vector2;
+    }
 
     public void draw(Batch batch) {
         update(Gdx.graphics.getDeltaTime());
@@ -225,7 +233,9 @@ public class Player extends Sprite {
     public void spawn() {
         int xCoordinate = new Random().nextInt(getCollisionLayer().getWidth() - 8);
         int yCoordinate = new Random().nextInt(getCollisionLayer().getHeight() - 2);
-        setPosition(getPosition(xCoordinate, yCoordinate).x, getPosition(xCoordinate, yCoordinate).y);
+        setPosition(setPlayerPosition(xCoordinate, yCoordinate).x, setPlayerPosition(xCoordinate, yCoordinate).y);
+        Gdx.app.log(setPlayerPosition(xCoordinate, yCoordinate).x + "", "getX()");
+        Gdx.app.log(setPlayerPosition(xCoordinate, yCoordinate).y + "", "getY()");
         gameWorld.addPlayer(this);
     }
 

@@ -39,13 +39,13 @@ public class SpawnPowerUps {
             int j = new Random().nextInt(playableLayer.getHeight()-2);
 
 
-            landmine = new LandMine(i, j, new Texture("img/mine (Custom).png"), playableLayer);
+            landmine = new LandMine(i, j, new Texture("img/shuriken.png"), playableLayer);
             landmine.setRandomSpawnTime();
             poweruplist.add(landmine);
 
 
         ///
-        TestPowerUp blackout=new TestPowerUp(new Random().nextInt(playableLayer.getWidth() - 8),new Random().nextInt(playableLayer.getHeight()-2),new Texture("img/mario_mushroom (Custom).png"), playableLayer);
+        TestPowerUp blackout=new TestPowerUp(new Random().nextInt(playableLayer.getWidth() - 8),new Random().nextInt(playableLayer.getHeight()-2),new Texture("img/shuriken.png"), playableLayer);
         blackout.setRandomSpawnTime();
         poweruplist.add(blackout);
         ////
@@ -61,7 +61,7 @@ public class SpawnPowerUps {
         playerBound=player.getBoundingRectangle();
         if(poweruplist.size()==1){
 
-            LandMine mine=new LandMine(new Random().nextInt(playableLayer.getWidth() - 8), new Random().nextInt(playableLayer.getHeight()-2), new Texture("img/mario_mushroom (Custom).png"), playableLayer);
+            LandMine mine=new LandMine(new Random().nextInt(playableLayer.getWidth() - 8), new Random().nextInt(playableLayer.getHeight()-2), new Texture("img/shuriken.png"), playableLayer);
             mine.setRandomSpawnTime();
             poweruplist.add(mine);
         }

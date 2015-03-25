@@ -32,7 +32,7 @@ public class Play implements Screen {
     private StretchViewport viewport;
 
     private GameWorld world;
-    private GameScreenRightSideBar rSideBar;
+    private SideBar rSideBar;
 
     private BurningTiles[] burningTiles;
     private int count = 0;
@@ -53,7 +53,7 @@ public class Play implements Screen {
         viewport.apply();
 
         world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"));
-        rSideBar = new GameScreenRightSideBar(world);
+        rSideBar = new SideBar(world);
         rSideBar.create();
 
         burningTiles = new BurningTiles[80];
@@ -85,7 +85,7 @@ public class Play implements Screen {
         spawnNewTile += delta;
 //        Gdx.app.log("i", i + "");
 //        Gdx.app.log(GameScreenRightSideBar.timeLeft / 100.0f + "", " GameScreenRightSideBar.timeLeft / 100.0f");
-        if (spawnNewTile >= Math.log10(0.02f * (GameScreenRightSideBar.timeLeft + 10000))
+        if (spawnNewTile >= Math.log10(0.02f * (SideBar.timeLeft + 10000))
                 && count < burningTiles.length) {
             spawnNewTile = 0;
             count++;
