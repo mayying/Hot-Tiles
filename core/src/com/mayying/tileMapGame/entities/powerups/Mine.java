@@ -54,14 +54,10 @@ public class Mine extends Sprite implements Collidable, Usable {
         // Mine takes 2 seconds before activating
         if(System.currentTimeMillis() - mineCreated > 2000l) {
             // Call this method in update
-            Vector2 pos = getCellFromPosition(Math.round(this.getX()), Math.round(this.getY()));
-//            Gdx.app.log("Mine Position", pos.toString());
 
-            // For all Players...
-            // am not sure if this is the most efficient way to check
-            if (getCellFromPosition(Math.round(player.getX()), Math.round(player.getY())).equals(pos)) {
-                onCollisionDetected(player);
-            }
+
+            // TODO - For all Players...
+            if(this.getX() == player.getX() && this.getY() == player.getY())onCollisionDetected(player);
         }
 
     }

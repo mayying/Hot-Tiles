@@ -95,25 +95,24 @@ public class Play implements Screen {
             //Gdx.app.log("count", count + "");
             burningTiles[i].render(delta, 1);
         }
-//        Gdx.input.isKeyJustPressed()
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-
-                    new Blackout().use(null);
-
+            new Blackout().use(null);
         }
         // Must make sure this is discrete
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-            Gdx.app.log("Space","pressed");
-            Gdx.app.log("PowerUps", String.valueOf(world.getPlayer().getArraylist().size()));
-            for(PowerUp i:world.getPlayer().getArraylist()) {
-                if(i.getClass().equals(LandMine.class)) {
-                    new FreezeMine(new Sprite(new Texture("img/shuriken.png")),
-                    world.getPlayer(), (TiledMapTileLayer) map.getLayers().get(0)
-            ).use(null);
-                 world.getPlayer().getArraylist().remove(i);
-                 break;
-                }
-            }
+                                new FreezeMine(new Sprite(new Texture("img/shuriken.png")),
+                    world.getPlayer(), (TiledMapTileLayer) map.getLayers().get(0)).use(null);
+//            Gdx.app.log("Space","pressed");
+//            Gdx.app.log("PowerUps", String.valueOf(world.getPlayer().getArraylist().size()));
+//            for(PowerUp i:world.getPlayer().getArraylist()) {
+//                if(i.getClass().equals(LandMine.class)) {
+//                    new FreezeMine(new Sprite(new Texture("img/shuriken.png")),
+//                    world.getPlayer(), (TiledMapTileLayer) map.getLayers().get(0)
+//            ).use(null);
+//                 world.getPlayer().getArraylist().remove(i);
+//                 break;
+//                }
+//            }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
             GameWorld.getPlayer().die();

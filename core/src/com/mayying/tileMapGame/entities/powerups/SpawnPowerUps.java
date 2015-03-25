@@ -38,7 +38,7 @@ public class SpawnPowerUps {
             int i = new Random().nextInt(playableLayer.getWidth() - 8);
             int j = new Random().nextInt(playableLayer.getHeight()-2);
 
-
+        // PLEASE ADD THE IMAGE FILES TO GIT IF YOU WANNA USE A CUSTOM ONE
             landmine = new LandMine(i, j, new Texture("img/shuriken.png"), playableLayer);
             landmine.setRandomSpawnTime();
             poweruplist.add(landmine);
@@ -77,7 +77,7 @@ public class SpawnPowerUps {
                 player.addPowerUp(i);
             }
 
-                Gdx.app.log("bound",(String) String.valueOf(Intersector.overlaps(playerBound, i.getBound())));
+//                Gdx.app.log("bound",(String) String.valueOf(Intersector.overlaps(playerBound, i.getBound())));
             }
 
 

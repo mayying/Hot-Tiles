@@ -210,7 +210,7 @@ public class Player extends Sprite {
             deaths++;
             Gdx.app.log("Player", "Player death count: " + deaths);
         }else{
-            Gdx.app.log("Player", "Player death count: " + deaths);
+            Gdx.app.log("Player", "Player is dead");
         }
 
     }
@@ -234,8 +234,8 @@ public class Player extends Sprite {
         int xCoordinate = new Random().nextInt(getCollisionLayer().getWidth() - 8);
         int yCoordinate = new Random().nextInt(getCollisionLayer().getHeight() - 2);
         setPosition(setPlayerPosition(xCoordinate, yCoordinate).x, setPlayerPosition(xCoordinate, yCoordinate).y);
-        Gdx.app.log(getPlayerPosition().x + "", "getX()");
-        Gdx.app.log(getPlayerPosition().y + "", "getY()");
+//        Gdx.app.log(getPlayerPosition().x + "", "getX()");
+//        Gdx.app.log(getPlayerPosition().y + "", "getY()");
         gameWorld.addPlayer(this);
     }
 
