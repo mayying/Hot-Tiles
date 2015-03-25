@@ -1,0 +1,81 @@
+skin.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+skinRect210x140
+  rotate: false
+  xy: 2, 288
+  size: 210, 140
+  orig: 210, 140
+  offset: 0, 0
+  index: -1
+skinRound140x140
+  rotate: false
+  xy: 74, 146
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+skinRound210x210
+  rotate: false
+  xy: 2, 712
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+skinSquare280x210
+  rotate: false
+  xy: 2, 430
+  size: 210, 280
+  orig: 210, 280
+  offset: 0, 0
+  index: -1
+skinSquare45x45
+  rotate: false
+  xy: 2, 2
+  size: 45, 45
+  orig: 45, 45
+  offset: 0, 0
+  index: -1
+skinSquare70x70
+  rotate: false
+  xy: 2, 146
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+skinSquareClose70x70
+  rotate: false
+  xy: 114, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+skinSquareQuestion70x70
+  rotate: false
+  xy: 2, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+skinSquareSoundOff70x70
+  rotate: false
+  xy: 146, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+skinSquareSoundOn70x70
+  rotate: false
+  xy: 74, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+touchKnob
+  rotate: false
+  xy: 49, 2
+  size: 63, 63
+  orig: 63, 63
+  offset: 0, 0
+  index: -1
