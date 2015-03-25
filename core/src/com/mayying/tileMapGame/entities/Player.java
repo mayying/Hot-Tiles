@@ -210,7 +210,7 @@ public class Player extends Sprite {
             deaths++;
             Gdx.app.log("Player", "Player death count: " + deaths);
         }else{
-            Gdx.app.log("Player", "Player is dead");
+            Gdx.app.log("Player", "Player invulnerable");
         }
 
     }
