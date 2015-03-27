@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.GameWorld;
@@ -19,8 +20,7 @@ import java.util.Random;
  */
 public class Player extends Sprite {
 
-    private Vector2 velocity = new Vector2();
-    //    private final float SPEED_NORMAL = 60*2;
+    private final TextureAtlas playerAtlas;
     private float speed = 1, animationTime = 0;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
     private int facing;
@@ -29,18 +29,30 @@ public class Player extends Sprite {
     private int kills;
     private int deaths;
     private GameWorld gameWorld;
-    private boolean isFrozen = false; // for freezing animation and stuff?
-    private boolean isInverted = false;
-    private boolean isInvulnerable = false;
-    private Animation forward;
+    private boolean isFrozen = false,isInverted = false,isInvulnerable = false; // for freezing animation and stuff?
+
+    private Animation forward, backward,left,right;
     public ArrayList<String> powerUpList;
 
-    public Player(Animation forward, TiledMapTileLayer collisionLayer, GameWorld gameWorld) {
-        super(forward.getKeyFrame(0));
+
+    public Player(TextureAtlas atlas,TiledMapTileLayer collisionLayer, GameWorld gameWorld) {
+        super(new Animation(1 / 2f, atlas.findRegions("player_2_forward")).getKeyFrame(0));
         this.collisionLayer = collisionLayer;
         this.gameWorld = gameWorld;
         facing = 8;
         powerUpList = new ArrayList<String>();
+
+        // Movement Animations
+        this.playerAtlas = atlas;
+        forward = new Animation(1 / 2f, playerAtlas.findRegions("player_2_forward"));
+        backward = new Animation(1 / 2f, playerAtlas.findRegions("player_2_backward"));
+        left = new Animation(1 / 2f, playerAtlas.findRegions("player_2_left"));
+        right = new Animation(1 / 2f, playerAtlas.findRegions("player_2_right"));
+        forward.setPlayMode(Animation.PlayMode.LOOP);
+        backward.setPlayMode(Animation.PlayMode.LOOP);
+        left.setPlayMode(Animation.PlayMode.LOOP);
+        right.setPlayMode(Animation.PlayMode.LOOP);
+
     }
 
 
@@ -94,19 +106,30 @@ public class Player extends Sprite {
     }
 
     public void upPressed() {
-        facing = 2;
+        facing = 8;
+
     }
 
     public void downPressed() {
-        facing = 8;
-    }
+        facing = 2;
 
-    public void leftRightReleased() {
-        velocity.x = 0;
     }
-
-    public void upDownReleased() {
-        velocity.y = 0;
+    public void animate(float delta){
+        animationTime += delta;
+        switch (facing){
+            case 2:
+                this.setRegion(forward.getKeyFrame(animationTime));
+                break;
+            case 4:
+                this.setRegion(left.getKeyFrame(animationTime));
+                break;
+            case 6:
+                this.setRegion(right.getKeyFrame(animationTime));
+                break;
+            case 8:
+                this.setRegion(backward.getKeyFrame(animationTime));
+                break;
+        }
     }
 
     public boolean isHit(float x, float y) {

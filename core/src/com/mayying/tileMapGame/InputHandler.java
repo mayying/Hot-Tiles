@@ -37,11 +37,11 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-        if (Input.Keys.LEFT == keycode || Input.Keys.RIGHT == keycode) {
-            player.leftRightReleased();
-        } else if (Input.Keys.UP == keycode || Input.Keys.DOWN == keycode) {
-            player.upDownReleased();
-        }
+//        if (Input.Keys.LEFT == keycode || Input.Keys.RIGHT == keycode) {
+//            player.leftRightReleased();
+//        } else if (Input.Keys.UP == keycode || Input.Keys.DOWN == keycode) {
+//            player.upDownReleased();
+//        }
         return false;
     }
 

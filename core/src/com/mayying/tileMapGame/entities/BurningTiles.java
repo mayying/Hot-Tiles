@@ -66,7 +66,7 @@ public class BurningTiles implements Collidable{
             count = 0.0f;
         }
         count += delta;
-       // Gdx.app.log(count + "", "count---------------------");
+        // Gdx.app.log(count + "", "count---------------------");
     }
 
     @Override

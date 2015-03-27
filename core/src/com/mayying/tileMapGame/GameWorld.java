@@ -57,19 +57,8 @@ public class GameWorld {
 
 
     public GameWorld(TiledMapTileLayer playableLayer) {
-        //player = new Player(new Sprite(new Texture("img/player2_2.png")), playableLayer, this);
         playerAtlas = new TextureAtlas("img/player2.txt");
-
-        forward = new Animation(1 / 2f, playerAtlas.findRegions("player_2_forward"));
-        backward = new Animation(1 / 2f, playerAtlas.findRegions("player_2_backward"));
-        left = new Animation(1 / 2f, playerAtlas.findRegions("player_2_left"));
-        right = new Animation(1 / 2f, playerAtlas.findRegions("player_2_right"));
-        forward.setPlayMode(Animation.PlayMode.LOOP);
-        backward.setPlayMode(Animation.PlayMode.LOOP);
-        left.setPlayMode(Animation.PlayMode.LOOP);
-        right.setPlayMode(Animation.PlayMode.LOOP);
-
-        player = new Player(forward, playableLayer, this);
+        player = new Player(playerAtlas, playableLayer, this);
         player.spawn();
         // TODO - create additional threads to manage the other player's interactions, positions etc
 
@@ -179,9 +168,11 @@ public class GameWorld {
             // add back in leftpressed rightpressed etc for direction, if we are using the bullets and stuff
             newX += TILE_WIDTH * player.getSpeed();
             getPlayer().rightPressed();
+
         } else if (velocity.x < -0.5) {
             newX -= TILE_WIDTH * player.getSpeed();
             getPlayer().leftPressed();
+
         } else if (velocity.y > 0.5) {
             newY += TILE_HEIGHT * player.getSpeed();
             getPlayer().upPressed();
@@ -189,6 +180,8 @@ public class GameWorld {
             newY -= TILE_HEIGHT * player.getSpeed();
             getPlayer().downPressed();
         }
+        // Animate player movement
+        if(velocity.x > 0.5 || velocity.x <-0.5 || velocity.y > 0.5 || velocity.y <-0.5) getPlayer().animate(delta);
 
         countX++;
         countY++;
@@ -205,10 +198,6 @@ public class GameWorld {
                 countY = 0;
             }
         }
-
-        animationTime += delta;
-        getPlayer().setRegion(getPlayer().getFacing() == 4 ? left.getKeyFrame(animationTime) : getPlayer().getFacing() == 6 ?
-                right.getKeyFrame(animationTime) : getPlayer().getFacing() == 2 ? backward.getKeyFrame(animationTime) : forward.getKeyFrame(animationTime));
 
 
 
