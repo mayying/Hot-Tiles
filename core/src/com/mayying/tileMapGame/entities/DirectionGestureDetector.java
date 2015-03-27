@@ -6,46 +6,21 @@ import com.badlogic.gdx.input.GestureDetector;
  * Created by HtooWaiYan on 14-Mar-15.
  */
 public class DirectionGestureDetector extends GestureDetector {
-    public static Player player;
-    public static class DirectionListener {
-        void onLeft() {
-//            player.stop();
-            player.leftPressed();
-        }
 
-        void onRight(){
-//            player.stop();
-            player.rightPressed();
-        }
+    public interface DirectionListener {
+        void onLeft();
 
+        void onRight();
 
-        void onUp(){
-//            player.stop();
-            player.upPressed();
-        };
+        void onUp();
 
-        void onDown(){
-//            player.stop();
-            player.downPressed();
-        };
-
-//        void stop(){
-//            player.stop();
-//        }
+        void onDown();
     }
-//    public interface DirectionListener {
-//        void onLeft();
-//
-//        void onRight();
-//
-//        void onUp();
-//
-//        void onDown();
-//    }
 
-    public DirectionGestureDetector(DirectionListener directionListener,Player player) {
+    public DirectionGestureDetector(DirectionListener directionListener) {
         super(new DirectionGestureListener(directionListener));
-        this.player=player;
+
+
     }
 
     private static class DirectionGestureListener extends GestureAdapter{
@@ -54,9 +29,6 @@ public class DirectionGestureDetector extends GestureDetector {
         public DirectionGestureListener(DirectionListener directionListener){
             this.directionListener = directionListener;
         }
-
-
-
 
         @Override
         public boolean fling(float velocityX, float velocityY, int button) {
@@ -77,5 +49,6 @@ public class DirectionGestureDetector extends GestureDetector {
         }
 
     }
+
 
 }

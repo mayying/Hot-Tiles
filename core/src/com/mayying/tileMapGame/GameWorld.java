@@ -7,10 +7,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
+import com.mayying.tileMapGame.entities.DirectionGestureDetector;
 import com.mayying.tileMapGame.entities.MyTouchpad;
 import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
+import com.mayying.tileMapGame.entities.powerups.DirectionListener;
 import com.mayying.tileMapGame.entities.powerups.Mine;
 import com.mayying.tileMapGame.entities.powerups.SpawnPowerUps;
 
@@ -35,6 +37,13 @@ public class GameWorld {
     public static float TILE_HEIGHT;
     private SpawnPowerUps spawnPowerUps;
 
+
+    // swiping
+    private DirectionGestureDetector directionGestureDetector;
+    private DirectionListener directionListener;
+
+
+
     public GameWorld(TiledMapTileLayer playableLayer) {
 
 
@@ -51,10 +60,57 @@ public class GameWorld {
         screenBound = new Rectangle(4 * TILE_WIDTH, TILE_HEIGHT, 10 * TILE_WIDTH, 8 * TILE_HEIGHT);
 
         setPlayerBound();
-        spawnPowerUps=new SpawnPowerUps(playableLayer,player);
+        spawnPowerUps=new SpawnPowerUps(playableLayer,getPlayer());
+
+
+        directionGestureDetector=new DirectionGestureDetector(new DirectionGestureDetector.DirectionListener() {
+            float screenLeft = screenBound.getX();
+            float screenBottom = screenBound.getY();
+            float screenTop = screenBottom + screenBound.getHeight();// + (world.getPlayer().getHeight() / 2);
+            float screenRight = screenLeft + screenBound.getWidth();
+
+            float newX = getPlayer().getX();
+            float newY = getPlayer().getY();
+
+            @Override
+            public void onLeft() {
+                newX -= TILE_WIDTH * player.getSpeed();
+                if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
+                    getPlayer().setX(newX);
+                }
+            }
+
+            @Override
+            public void onRight() {
+                newX += TILE_WIDTH * player.getSpeed();
+                if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
+                    getPlayer().setX(newX);
+                }
+            }
+
+            @Override
+            public void onUp() {
+
+                newY += TILE_HEIGHT * player.getSpeed();
+                if (newY >= screenBottom && newY <= screenTop) {
+                    getPlayer().setY(newY);
+                }
+            }
+
+            @Override
+            public void onDown() {
+                newY -= TILE_HEIGHT * player.getSpeed();
+                if (newY >= screenBottom && newY <= screenTop) {
+                    getPlayer().setY(newY);
+                }
+            }
+        });
+
+
     }
 
     public void drawAndUpdate(Batch batch) {
+        spawnPowerUps.draw(batch);
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).draw(batch);
         }
@@ -67,7 +123,8 @@ public class GameWorld {
         for (int i = 0; i < mines.size(); i++) {
             mines.get(i).draw(batch);
         }
-        spawnPowerUps.draw(batch);
+
+
 
 
         if (blackout) {
@@ -89,8 +146,8 @@ public class GameWorld {
         float screenTop = screenBottom + screenBound.getHeight();// + (world.getPlayer().getHeight() / 2);
         float screenRight = screenLeft + screenBound.getWidth();
 
-        float newX = player.getX();
-        float newY = player.getY();
+        float newX = getPlayer().getX();
+        float newY = getPlayer().getY();
         if (getMyTouchpad().getTouchpad().getKnobPercentX() > 0.5) {
             // add back in leftpressed rightpressed etc for direction, if we are using the bullets and stuff
             newX += TILE_WIDTH * player.getSpeed();
@@ -120,6 +177,88 @@ public class GameWorld {
                 countY = 0;
             }
         }
+
+
+
+//        directionListener =new DirectionGestureDetector.DirectionListener() {
+//            float screenLeft = screenBound.getX();
+//            float screenBottom = screenBound.getY();
+//            float screenTop = screenBottom + screenBound.getHeight();// + (world.getPlayer().getHeight() / 2);
+//            float screenRight = screenLeft + screenBound.getWidth();
+//
+//            float newX = getPlayer().getX();
+//            float newY = getPlayer().getY();
+//
+//            @Override
+//            public void onLeft() {
+//                newX -= TILE_WIDTH * player.getSpeed();
+//                if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
+//                    getPlayer().setX(newX);
+//                }
+//            }
+//
+//            @Override
+//            public void onRight() {
+//                newX += TILE_WIDTH * player.getSpeed();
+//                if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
+//                    getPlayer().setX(newX);
+//                }
+//            }
+//
+//            @Override
+//            public void onUp() {
+//
+//                newY += TILE_HEIGHT * player.getSpeed();
+//                if (newY >= screenBottom && newY <= screenTop) {
+//                    getPlayer().setY(newY);
+//                }
+//            }
+//
+//            @Override
+//            public void onDown() {
+//                newY -= TILE_HEIGHT * player.getSpeed();
+//                if (newY >= screenBottom && newY <= screenTop) {
+//                    getPlayer().setY(newY);
+//                }
+//            }
+//        };
+
+//        directionListener=new DirectionGestureDetector.DirectionListener() {
+//            @Override
+//            public void onLeft() {
+//                newX -= TILE_WIDTH * player.getSpeed();
+//                if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
+//                    getPlayer().setX(newX);
+//                }
+//            }
+//
+//            @Override
+//            public void onRight() {
+//                newX += TILE_WIDTH * player.getSpeed();
+//                if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
+//                    getPlayer().setX(newX);
+//                }
+//            }
+//
+//            @Override
+//            public void onUp() {
+//
+//                newY += TILE_HEIGHT * player.getSpeed();
+//                if (newY >= screenBottom && newY <= screenTop) {
+//                    getPlayer().setY(newY);
+//                }
+//            }
+//
+//            @Override
+//            public void onDown() {
+//                newY -= TILE_HEIGHT * player.getSpeed();
+//                if (newY >= screenBottom && newY <= screenTop) {
+//                    getPlayer().setY(newY);
+//                }
+//            }
+//        };
+
+
     }
 
 
@@ -188,5 +327,18 @@ public class GameWorld {
         }
     }
 
+//    public void swipe(){
+//        InputMultiplexer inputMultiplexer=new InputMultiplexer();
+//        Stage stage=new Stage();
+//        stage.addActor(getMyTouchpad().getTouchpad());
+//
+//        inputMultiplexer.addProcessor(stage);
+//        inputMultiplexer.addProcessor(directionGestureDetector);
+//        Gdx.input.setInputProcessor(inputMultiplexer);
+//    }
+
+    public DirectionGestureDetector getDirectionGestureDetector(){
+        return directionGestureDetector;
+    }
 
 }

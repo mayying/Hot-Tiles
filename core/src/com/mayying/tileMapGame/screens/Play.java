@@ -16,8 +16,6 @@ import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.BurningTiles;
 import com.mayying.tileMapGame.entities.powerups.Blackout;
 import com.mayying.tileMapGame.entities.powerups.FreezeMine;
-import com.mayying.tileMapGame.entities.powerups.LandMine;
-import com.mayying.tileMapGame.entities.powerups.PowerUp;
 
 /**
  * Created by May Ying on 24/2/2015.
@@ -64,6 +62,7 @@ public class Play implements Screen {
         // burningTiles = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
         // burningTiles.create();
         //  Gdx.input.setInputProcessor(new InputHandler(world.getPlayer()));
+//        world.swipe();
     }
 
 
@@ -95,24 +94,25 @@ public class Play implements Screen {
             //Gdx.app.log("count", count + "");
             burningTiles[i].render(delta, 1);
         }
+//        Gdx.input.isKeyJustPressed()
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            new Blackout().use(null);
+
+                    new Blackout().use(null);
+
         }
         // Must make sure this is discrete
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-                                new FreezeMine(new Sprite(new Texture("img/shuriken.png")),
-                    world.getPlayer(), (TiledMapTileLayer) map.getLayers().get(0)).use(null);
-//            Gdx.app.log("Space","pressed");
-//            Gdx.app.log("PowerUps", String.valueOf(world.getPlayer().getArraylist().size()));
-//            for(PowerUp i:world.getPlayer().getArraylist()) {
-//                if(i.getClass().equals(LandMine.class)) {
-//                    new FreezeMine(new Sprite(new Texture("img/shuriken.png")),
-//                    world.getPlayer(), (TiledMapTileLayer) map.getLayers().get(0)
-//            ).use(null);
-//                 world.getPlayer().getArraylist().remove(i);
-//                 break;
-//                }
-//            }
+            Gdx.app.log("X","pressed");
+            Gdx.app.log("PowerUps", String.valueOf(world.getPlayer().getArraylist().size()));
+            for(String i:world.getPlayer().getArraylist()) {
+                if(i.equals("Mine")) {
+                    new FreezeMine(new Sprite(new Texture("img/shuriken.png")),
+                    world.getPlayer(), (TiledMapTileLayer) map.getLayers().get(0)
+            ).use(null);
+                 world.getPlayer().getArraylist().remove(i);
+                 break;
+                }
+            }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
             GameWorld.getPlayer().die();

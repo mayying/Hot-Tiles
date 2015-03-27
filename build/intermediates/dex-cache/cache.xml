@@ -2,46 +2,46 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\libs\tween-engine-api.jar"
+        jar="C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\libs\tween-engine-api.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="8be8beb70b7ccae059d523e56670f6e44fb1821f">
-        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-6aa53bbfa243d3849ae8c7cf068afb0902c35b6c.jar" />
+        <dex dex="C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-8b44d15495671021172a14cfb89079d059e747a8.jar" />
     </item>
     <item
-        jar="C:\Users\May\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-box2d\1.5.3\52bc9ff881a6eb1731eb2f54b5016425cae05024\gdx-box2d-1.5.3.jar"
+        jar="C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\core\build\libs\core-1.0.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="52bc9ff881a6eb1731eb2f54b5016425cae05024">
-        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-box2d-1.5.3-4d0db40b6ad7e9f127a9e09978c42e6f0d10719b.jar" />
+        sha1="16f549fb4b89d614514361a0e641ed1a06777d96">
+        <dex dex="C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\android\build\intermediates\pre-dexed\debug\core-1.0-28ef4b6a8fedef0635f6c9370e1a4ea1f51ed6e8.jar" />
     </item>
     <item
-        jar="C:\Users\May\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.5.3\903703e4eca4d27092cf61412b7a583aa26d14ad\gdx-backend-android-1.5.3.jar"
+        jar="C:\Users\HtooWaiYan\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.5.3\903703e4eca4d27092cf61412b7a583aa26d14ad\gdx-backend-android-1.5.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="903703e4eca4d27092cf61412b7a583aa26d14ad">
-        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.5.3-9d6a16be9c2184798103c3cafe53451e202aa843.jar" />
+        <dex dex="C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.5.3-6a2b65c2d6c71d8f13e7e3e8d1496472aa09f009.jar" />
     </item>
     <item
-        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\libs\tween-engine-api-sources.jar"
+        jar="C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\libs\tween-engine-api-sources.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="b471c161e1bd73eb4a762a35d75b40eb5b4de3a1">
-        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-sources-97f832bc16b83be87a0da65e3805d7f95e1ce0f8.jar" />
+        <dex dex="C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-sources-bba2c818f824634b207690771c0545df07f84635.jar" />
     </item>
     <item
-        jar="C:\Users\May\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.5.3\3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9\gdx-1.5.3.jar"
+        jar="C:\Users\HtooWaiYan\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.5.3\3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9\gdx-1.5.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9">
-        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-38166ae41fdb97bfafc7ed7a5b1e8141b30b7bc8.jar" />
+        <dex dex="C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-6611a61b824296f683e2b469dbcbe4ca7bd96001.jar" />
     </item>
     <item
-        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\core\build\libs\core-1.0.jar"
+        jar="C:\Users\HtooWaiYan\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-box2d\1.5.3\52bc9ff881a6eb1731eb2f54b5016425cae05024\gdx-box2d-1.5.3.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="fe49f32051543280052939484a9e720e2b72c873">
-        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\core-1.0-5a3adb6bbec24ec12b8671ce083d06e11f14e0a7.jar" />
+        sha1="52bc9ff881a6eb1731eb2f54b5016425cae05024">
+        <dex dex="C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-box2d-1.5.3-91cb303e9dc975600273e0c28813788a31162cc8.jar" />
     </item>
 
 </items>

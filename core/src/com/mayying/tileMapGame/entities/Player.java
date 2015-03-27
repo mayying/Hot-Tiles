@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
-import com.mayying.tileMapGame.entities.powerups.PowerUp;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -32,7 +31,7 @@ public class Player extends Sprite {
     private boolean isFrozen = false; // for freezing animation and stuff?
     private boolean isInverted = false;
     private boolean isInvulnerable = false;
-    public ArrayList<PowerUp> powerUpList;
+    public ArrayList<String> powerUpList;
 
     public Player(Sprite sprite, TiledMapTileLayer collisionLayer, GameWorld gameWorld) {
         super(sprite);
@@ -41,7 +40,7 @@ public class Player extends Sprite {
 
         facing = 6;
         this.gameWorld = gameWorld;
-        powerUpList=new ArrayList<PowerUp>();
+        powerUpList=new ArrayList<String>();
     }
 
 
@@ -239,7 +238,7 @@ public class Player extends Sprite {
         gameWorld.addPlayer(this);
     }
 
-    public void addPowerUp(PowerUp powerUp){
+    public void addPowerUp(String powerUp){
         powerUpList.add(powerUp);
     }
 
@@ -254,7 +253,7 @@ public class Player extends Sprite {
         return false;
     }
 
-    public ArrayList<PowerUp> getArraylist(){
+    public ArrayList<String> getArraylist(){
         return powerUpList;
     }
 

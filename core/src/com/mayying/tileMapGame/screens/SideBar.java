@@ -1,6 +1,7 @@
 package com.mayying.tileMapGame.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
@@ -49,8 +50,15 @@ public class SideBar {
 
     public void create() {
         stage = new Stage(new ExtendViewport(Play.V_WIDTH, Play.V_HEIGHT, hudCamera));
+        InputMultiplexer inputMultiplexer=new InputMultiplexer();
+//        Stage stage=new Stage();
+//        stage.addActor(getMyTouchpad().getTouchpad());
+//
+        inputMultiplexer.addProcessor(stage);
+        inputMultiplexer.addProcessor(world.getDirectionGestureDetector());
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
-        Gdx.input.setInputProcessor(stage);
+//        Gdx.input.setInputProcessor(stage);
 
         TextureAtlas buttonAtlas = new TextureAtlas(Gdx.files.internal("skin/skin.txt"));
         Skin skin = new Skin(Gdx.files.internal("skin/gameSkin.json"), buttonAtlas);
