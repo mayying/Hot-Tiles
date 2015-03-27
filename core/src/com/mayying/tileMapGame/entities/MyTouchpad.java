@@ -10,20 +10,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
  */
 public class MyTouchpad {
     private Touchpad touchpad;
+    private final Skin touchPadSkin;
 
-    public Touchpad getTouchpad() {
+    public Touchpad getTouchPad() {
         return touchpad;
     }
 
     public MyTouchpad() {
-        //Create a touchpad skin
-        TextureAtlas touchpadAtlas = new TextureAtlas(Gdx.files.internal("skin/skin.txt"));
-        Skin touchpadSkin = new Skin(Gdx.files.internal("skin/gameSkin.json"), touchpadAtlas);
-
-        //Create new TouchPad with the created style
-        touchpad = new Touchpad(10, touchpadSkin);
-
-       // touchpad.setBounds(30, 30, 140, 140);
+        touchPadSkin = new Skin(Gdx.files.internal("skin/gameSkin.json"), new TextureAtlas(Gdx.files.internal("skin/skin.txt")));
+        touchpad = new Touchpad(10, touchPadSkin);
 
     }
 

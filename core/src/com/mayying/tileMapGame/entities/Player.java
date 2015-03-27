@@ -2,6 +2,7 @@ package com.mayying.tileMapGame.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -20,7 +21,7 @@ public class Player extends Sprite {
 
     private Vector2 velocity = new Vector2();
     //    private final float SPEED_NORMAL = 60*2;
-    private float speed = 1;
+    private float speed = 1, animationTime = 0;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
     private int facing;
     private TiledMapTileLayer collisionLayer;
@@ -31,16 +32,15 @@ public class Player extends Sprite {
     private boolean isFrozen = false; // for freezing animation and stuff?
     private boolean isInverted = false;
     private boolean isInvulnerable = false;
+    private Animation forward;
     public ArrayList<String> powerUpList;
 
-    public Player(Sprite sprite, TiledMapTileLayer collisionLayer, GameWorld gameWorld) {
-        super(sprite);
+    public Player(Animation forward, TiledMapTileLayer collisionLayer, GameWorld gameWorld) {
+        super(forward.getKeyFrame(0));
         this.collisionLayer = collisionLayer;
-
-
-        facing = 6;
         this.gameWorld = gameWorld;
-        powerUpList=new ArrayList<String>();
+        facing = 8;
+        powerUpList = new ArrayList<String>();
     }
 
 
@@ -52,16 +52,21 @@ public class Player extends Sprite {
         return vector2;
     }
 
-    public Vector2 getPlayerPosition(){
+    public Vector2 getPlayerPosition() {
         Vector2 vector2 = new Vector2();
-        vector2.x = (float)(Math.floor(getX()/70f) - 4);
-        vector2.y = (float) (Math.floor(getY()/70f) - 1);
+        vector2.x = (float) (Math.floor(getX() / 70f) - 4);
+        vector2.y = (float) (Math.floor(getY() / 70f) - 1);
         return vector2;
     }
 
     public void draw(Batch batch) {
-        update(Gdx.graphics.getDeltaTime());
+        // Gdx.app.log(isInvulnerable + "", "isVulnerable");
+        if (isInvulnerable) {
+            this.setAlpha(0.7f);
+        } else
+            this.setAlpha(1);
         super.draw(batch);
+
     }
 
     private void fireBullet() {
@@ -76,6 +81,10 @@ public class Player extends Sprite {
         fireBullet();
     }
 
+    public int getFacing() {
+        return facing;
+    }
+
     public void rightPressed() {
         facing = 6;
     }
@@ -85,11 +94,11 @@ public class Player extends Sprite {
     }
 
     public void upPressed() {
-        facing = 8;
+        facing = 2;
     }
 
     public void downPressed() {
-        facing = 2;
+        facing = 8;
     }
 
     public void leftRightReleased() {
@@ -180,15 +189,15 @@ public class Player extends Sprite {
         return speed;
     }
 
-    public void die(){
+    public void die() {
         // Commits sudoku
-        if(!isInvulnerable) {
+        if (!isInvulnerable) {
             // Remove from render list,
             gameWorld.removePlayer(this);
 
             // Set Invulnerable for 4 secs
             isInvulnerable = true;
-            new DelayedThread(4000l){
+            new DelayedThread(4000l) {
                 @Override
                 public void run() {
                     super.run();
@@ -197,7 +206,7 @@ public class Player extends Sprite {
             }.start();
 
             // wait for 3 secs then choose a random location, add to render list
-            new DelayedThread(3000l){
+            new DelayedThread(1000l) {
                 @Override
                 public void run() {
                     super.run();
@@ -217,7 +226,7 @@ public class Player extends Sprite {
     public void shield() {
         // Bubble sprite or something?
         Gdx.app.log("Player", "player shielded");
-        if(!isInvulnerable) {
+        if (!isInvulnerable) {
             isInvulnerable = true;
             new DelayedThread(5000l) {
                 @Override
@@ -242,12 +251,12 @@ public class Player extends Sprite {
         powerUpList.add(powerUp);
     }
 
-    public int getPowerUpList(){
+    public int getPowerUpList() {
         return powerUpList.size();
     }
 
-    public boolean canPickPowerUp(){
-        if(getPowerUpList()<2){
+    public boolean canPickPowerUp() {
+        if (getPowerUpList() < 2) {
             return true;
         }
         return false;

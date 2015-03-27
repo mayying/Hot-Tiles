@@ -1,0 +1,60 @@
+player2.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+player_2_backward
+  rotate: false
+  xy: 2, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 1
+player_2_backward
+  rotate: false
+  xy: 74, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 2
+player_2_forward
+  rotate: false
+  xy: 146, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 1
+player_2_forward
+  rotate: false
+  xy: 2, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 2
+player_2_left
+  rotate: false
+  xy: 74, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 1
+player_2_left
+  rotate: false
+  xy: 146, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 2
+player_2_right
+  rotate: false
+  xy: 2, 146
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 1
+player_2_right
+  rotate: false
+  xy: 74, 146
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: 2

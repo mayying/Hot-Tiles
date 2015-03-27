@@ -53,10 +53,10 @@ public class Bullet extends Sprite {
 
         switch (direction) {
             case 8:
-                velocity.y = speed;
+                velocity.y = -speed;
                 break;
             case 2:
-                velocity.y = -speed;
+                velocity.y = speed;
                 break;
             case 4:
                 velocity.x = -speed;

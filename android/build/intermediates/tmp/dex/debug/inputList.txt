@@ -1,7 +1,7 @@
-C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\android\build\intermediates\classes\debug
-C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\android\build\intermediates\pre-dexed\debug\core-1.0-28ef4b6a8fedef0635f6c9370e1a4ea1f51ed6e8.jar
-C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-8b44d15495671021172a14cfb89079d059e747a8.jar
-C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-sources-bba2c818f824634b207690771c0545df07f84635.jar
-C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-box2d-1.5.3-91cb303e9dc975600273e0c28813788a31162cc8.jar
-C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.5.3-6a2b65c2d6c71d8f13e7e3e8d1496472aa09f009.jar
-C:\Users\HtooWaiYan\Desktop\ISTD\hottiles\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-6611a61b824296f683e2b469dbcbe4ca7bd96001.jar
+C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\classes\debug
+C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\core-1.0-5a3adb6bbec24ec12b8671ce083d06e11f14e0a7.jar
+C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-6aa53bbfa243d3849ae8c7cf068afb0902c35b6c.jar
+C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-sources-97f832bc16b83be87a0da65e3805d7f95e1ce0f8.jar
+C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-box2d-1.5.3-4d0db40b6ad7e9f127a9e09978c42e6f0d10719b.jar
+C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.5.3-9d6a16be9c2184798103c3cafe53451e202aa843.jar
+C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-38166ae41fdb97bfafc7ed7a5b1e8141b30b7bc8.jar

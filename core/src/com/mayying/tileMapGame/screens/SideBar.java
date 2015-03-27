@@ -3,7 +3,9 @@ package com.mayying.tileMapGame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -13,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.GameWorld;
 
@@ -25,7 +28,7 @@ import com.mayying.tileMapGame.GameWorld;
 public class SideBar {
 
     private Stage stage;
-    private Label timer, scoreboard, description;
+    private Label timer, scoreboard, descriptionImg, descriptionText;
     private GameWorld world;
     private TextButton buttonA, buttonB, sound, question, close;
     private OrthographicCamera hudCamera;
@@ -68,7 +71,7 @@ public class SideBar {
         table.setFillParent(true);
         table.setBounds(0, 0, Play.V_WIDTH, Play.V_HEIGHT);
         table.align(Align.top);
-        table.setDebug(true);
+        // table.setDebug(true);
         // tableBtm.setDebug(true);
 
         timer = new Label("Time Left\n" + min + " : " + sec, skin, "timer");
@@ -80,28 +83,34 @@ public class SideBar {
 
         scoreboard = new Label("Score Board", skin, "scoreboard");
 
-        description = new Label("", skin, "description");
+        descriptionImg = new Label("Your Mother", skin, "description");
+        descriptionText = new Label("Bounce", skin, "description");
 
-        world.getMyTouchpad().getTouchpad().setPosition(0, 0);
+        world.getMyTouchPad().getTouchPad().setPosition(0, 0);
 
         buttonA = new TextButton("", skin);
         buttonB = new TextButton("", skin);
 
         Table subTable = new Table();
-        subTable.add(buttonA).right().expandX().width(105).height(140).row();
-        subTable.add(buttonB).left().expandX().width(105).height(140).row();
+        subTable.add(buttonA).right().expandX().width(140).height(140).row();
+        subTable.add(buttonB).left().expandX().width(140).height(140).row();
+
+        Table descriptionTable = new Table();
+        descriptionTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/skinSquare280x210.png"))));
+        descriptionTable.add(descriptionImg).top().row();
+        descriptionTable.add(descriptionText);
 
         // putting stuff together
         //table.align(Align.center);
-        table.add(timer).top().left().expandX().height(140).width(210);
+        table.add(timer).top().left().expandX().padTop(10).height(140).width(210);
         table.add(sound).top();
         table.add(question).top();
         table.add(close).top().row();
 
         table.add(scoreboard).left().expandX().height(280).width(210);
-        table.add(description).fill().colspan(3).row();
+        table.add(descriptionTable).fill().colspan(3).row();
 
-        table.add(world.getMyTouchpad().getTouchpad()).left().expandY().width(210);
+        table.add(world.getMyTouchPad().getTouchPad()).left().expandY().width(210);
         table.add(subTable).fill().colspan(3);
 
         //tableBtm.add(buttonA).expandX().right().row();

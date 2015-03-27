@@ -12,12 +12,12 @@ import com.mayying.tileMapGame.entities.Player;
 public class InputHandler implements InputProcessor {
 
     private Player player;
-    private MyTouchpad myTouchpad;
+    private MyTouchpad myTouchPad;
     private Stage stage;
 
-    public InputHandler(Player player) {
-        this.player = player;
-    }
+//    public InputHandler(Player player) {
+//        this.player = player;
+//    }
 
     @Override
     public boolean keyDown(int keycode) {

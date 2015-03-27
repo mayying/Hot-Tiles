@@ -78,7 +78,7 @@ public class Play implements Screen {
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("Foreground"));
 
         // Screen
-        world.playerMovement();
+        world.playerMovement(delta);
         world.drawAndUpdate(renderer.getBatch());
 
         spawnNewTile += delta;
@@ -151,7 +151,7 @@ public class Play implements Screen {
     public void dispose() {
         map.dispose();
         renderer.dispose();
-        world.getPlayer().getTexture().dispose();
+        world.getPlayerAtlas().dispose();
         rSideBar.dispose();
     }
 }

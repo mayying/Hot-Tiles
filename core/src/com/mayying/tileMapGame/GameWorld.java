@@ -1,23 +1,26 @@
 package com.mayying.tileMapGame;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.entities.DirectionGestureDetector;
 import com.mayying.tileMapGame.entities.MyTouchpad;
 import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
-import com.mayying.tileMapGame.entities.powerups.DirectionListener;
 import com.mayying.tileMapGame.entities.powerups.Mine;
 import com.mayying.tileMapGame.entities.powerups.SpawnPowerUps;
 
 import java.util.ArrayList;
 import java.util.Vector;
+
+//import com.mayying.tileMapGame.entities.powerups.DirectionListener;
 
 /**
  * Created by Luccan on 2/3/2015.
@@ -26,8 +29,16 @@ public class GameWorld {
     private static Player player; // static cause i'm lazy. Replace with array of all players in game.
     private final ArrayList<Player> players = new ArrayList<Player>();
     // Better to separate into bullets and mines for now to decouple so we can do stuff like remove all mines or whatever
-    private MyTouchpad myTouchpad;
+    private MyTouchpad myTouchPad;
     private Rectangle playerBound;
+
+    private float animationTime = 0;
+
+    public TextureAtlas getPlayerAtlas() {
+        return playerAtlas;
+    }
+
+    private TextureAtlas playerAtlas;
     public static Rectangle screenBound;
     private int countX = 0, countY = 0;
     public static Vector<Sprite> bullets = new Vector<Sprite>();
@@ -36,23 +47,33 @@ public class GameWorld {
     public static float TILE_WIDTH;
     public static float TILE_HEIGHT;
     private SpawnPowerUps spawnPowerUps;
+    private Animation forward, backward, left, right;
 
 
     // swiping
     private DirectionGestureDetector directionGestureDetector;
-    private DirectionListener directionListener;
+//    private DirectionListener directionListener;
 
 
 
     public GameWorld(TiledMapTileLayer playableLayer) {
+        //player = new Player(new Sprite(new Texture("img/player2_2.png")), playableLayer, this);
+        playerAtlas = new TextureAtlas("img/player2.txt");
 
+        forward = new Animation(1 / 2f, playerAtlas.findRegions("player_2_forward"));
+        backward = new Animation(1 / 2f, playerAtlas.findRegions("player_2_backward"));
+        left = new Animation(1 / 2f, playerAtlas.findRegions("player_2_left"));
+        right = new Animation(1 / 2f, playerAtlas.findRegions("player_2_right"));
+        forward.setPlayMode(Animation.PlayMode.LOOP);
+        backward.setPlayMode(Animation.PlayMode.LOOP);
+        left.setPlayMode(Animation.PlayMode.LOOP);
+        right.setPlayMode(Animation.PlayMode.LOOP);
 
-        player = new Player(new Sprite(new Texture("img/player3_2.png")), playableLayer, this);
-
+        player = new Player(forward, playableLayer, this);
         player.spawn();
         // TODO - create additional threads to manage the other player's interactions, positions etc
 
-        myTouchpad = new MyTouchpad();
+        myTouchPad = new MyTouchpad();
         // Constants
         TILE_WIDTH = playableLayer.getTileWidth();
         TILE_HEIGHT = playableLayer.getTileHeight();
@@ -115,7 +136,7 @@ public class GameWorld {
             bullets.get(i).draw(batch);
         }
 
-        for (int i=0; i<players.size(); i++){
+        for (int i = 0; i < players.size(); i++) {
             players.get(i).draw(batch);
         }
 
@@ -123,6 +144,7 @@ public class GameWorld {
         for (int i = 0; i < mines.size(); i++) {
             mines.get(i).draw(batch);
         }
+        spawnPowerUps.draw(batch);
 
 
 
@@ -140,7 +162,12 @@ public class GameWorld {
     // Should separate into collision/bounds logic and update movement so that when we factor in concurrent
     // updates from server we can just update movement via setX / setY
     // Movement logic shouldn't be here. OH WELL
-    public void playerMovement() {
+    public void playerMovement(float delta) {
+        Vector2 velocity = new Vector2();
+
+        velocity.x = getMyTouchPad().getTouchPad().getKnobPercentX();
+        velocity.y = getMyTouchPad().getTouchPad().getKnobPercentY();
+
         float screenLeft = screenBound.getX();
         float screenBottom = screenBound.getY();
         float screenTop = screenBottom + screenBound.getHeight();// + (world.getPlayer().getHeight() / 2);
@@ -148,35 +175,41 @@ public class GameWorld {
 
         float newX = getPlayer().getX();
         float newY = getPlayer().getY();
-        if (getMyTouchpad().getTouchpad().getKnobPercentX() > 0.5) {
+        if (velocity.x > 0.5) {
             // add back in leftpressed rightpressed etc for direction, if we are using the bullets and stuff
             newX += TILE_WIDTH * player.getSpeed();
-
-        } else if (getMyTouchpad().getTouchpad().getKnobPercentX() < -0.5) {
+            getPlayer().rightPressed();
+        } else if (velocity.x < -0.5) {
             newX -= TILE_WIDTH * player.getSpeed();
-        }
-
-        if (getMyTouchpad().getTouchpad().getKnobPercentY() > 0.5) {
+            getPlayer().leftPressed();
+        } else if (velocity.y > 0.5) {
             newY += TILE_HEIGHT * player.getSpeed();
-        } else if (getMyTouchpad().getTouchpad().getKnobPercentY() < -0.5) {
+            getPlayer().upPressed();
+        } else if (velocity.y < -0.5) {
             newY -= TILE_HEIGHT * player.getSpeed();
+            getPlayer().downPressed();
         }
 
         countX++;
         countY++;
 
         if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
-            if (myTouchpad.getTouchpad().getKnobPercentX() != 0 && countX > 30) {
+            if (myTouchPad.getTouchPad().getKnobPercentX() != 0 && countX > 17) {
                 getPlayer().setX(newX);
                 countX = 0;
             }
         }
         if (newY >= screenBottom && newY <= screenTop) {
-            if (myTouchpad.getTouchpad().getKnobPercentY() != 0 && countY > 30) {
+            if (myTouchPad.getTouchPad().getKnobPercentY() != 0 && countY > 17) {
                 getPlayer().setY(newY);
                 countY = 0;
             }
         }
+
+        animationTime += delta;
+        getPlayer().setRegion(getPlayer().getFacing() == 4 ? left.getKeyFrame(animationTime) : getPlayer().getFacing() == 6 ?
+                right.getKeyFrame(animationTime) : getPlayer().getFacing() == 2 ? backward.getKeyFrame(animationTime) : forward.getKeyFrame(animationTime));
+
 
 
 
@@ -266,8 +299,8 @@ public class GameWorld {
         playerBound = getPlayer().getBoundingRectangle();
     }
 
-    public MyTouchpad getMyTouchpad() {
-        return myTouchpad;
+    public MyTouchpad getMyTouchPad() {
+        return myTouchPad;
     }
 
     public static Player getPlayer() {
@@ -315,14 +348,14 @@ public class GameWorld {
         mines.remove(mine);
     }
 
-    public void removePlayer(Player player){
+    public void removePlayer(Player player) {
         synchronized (players) {
             players.remove(player);
         }
     }
 
-    public void addPlayer(Player player){
-        synchronized (players){
+    public void addPlayer(Player player) {
+        synchronized (players) {
             players.add(player);
         }
     }

@@ -1,7 +1,5 @@
 package com.mayying.tileMapGame.entities;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -58,7 +56,6 @@ public class BurningTiles implements Collidable{
                 foreground.setCell(xCoord + 4, yCoord + 1, cell);
                 cell = foreground.getCell(xCoord + 4, yCoord + 1);
             }else if(currentAnimationFrame >= 9){
-
                 collisionCheck();
             }
 
@@ -80,7 +77,6 @@ public class BurningTiles implements Collidable{
 
     @Override
     public void collisionCheck() {
-
 
         Vector2 pos = new Vector2(xCoord, yCoord);
 //        Gdx.app.log("Tile Coords: ",xCoord+", "+yCoord);

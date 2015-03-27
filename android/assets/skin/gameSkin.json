@@ -10,7 +10,7 @@
     "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
         "timer":        { "font": "black", "fontColor": "white", "background": "skinRect210x140"}
         "scoreboard":   { "font": "black", "fontColor": "white"}
-        "description":  { "font": "black", "fontColor": "white", "background": "skinSquare280x210"}
+        "description":  { "font": "black", "fontColor": "white"}
     },
 
     "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
