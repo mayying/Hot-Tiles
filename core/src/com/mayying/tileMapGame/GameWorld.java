@@ -50,6 +50,7 @@ public class GameWorld {
 
     // swiping
     private DirectionGestureDetector directionGestureDetector;
+    public static float delta;
 
 
 
@@ -76,77 +77,56 @@ public class GameWorld {
             float screenTop = screenBottom + screenBound.getHeight();// + (world.getPlayer().getHeight() / 2);
             float screenRight = screenLeft + screenBound.getWidth();
 
-            float newX = getPlayer().getX();
-            float newY = getPlayer().getY();
+            float newX;
+            float newY;
+            float x=delta;
 
             @Override
             public void onLeft() {
-                if(player.getRespawn()){
-                    newX = getPlayer().getX();
-                    newY = getPlayer().getY();
-                    player.setRespawn();
-                }
+
+                newX = getPlayer().getX();
+                newY = getPlayer().getY();
                 newX -= TILE_WIDTH * player.getSpeed();
+                player.leftPressed();
+                player.animate(delta);
                 if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
                     getPlayer().setX(newX);
-                }
-
-                else{
-                    newX = getPlayer().getX();
-                    newY = getPlayer().getY();
                 }
             }
 
             @Override
             public void onRight() {
-                if(player.getRespawn()){
-                    newX = getPlayer().getX();
-                    newY = getPlayer().getY();
-                    player.setRespawn();
-                }
+                newX = getPlayer().getX();
+                newY = getPlayer().getY();
                 newX += TILE_WIDTH * player.getSpeed();
+                player.rightPressed();
+                player.animate(delta);
                 if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
                     getPlayer().setX(newX);
-                }
-
-                else{
-                    newX = getPlayer().getX();
-                    newY = getPlayer().getY();
                 }
             }
 
             @Override
             public void onUp() {
-                if(player.getRespawn()){
-                    newX = getPlayer().getX();
-                    newY = getPlayer().getY();
-                    player.setRespawn();
-                }
-
+                newX = getPlayer().getX();
+                newY = getPlayer().getY();
                 newY += TILE_HEIGHT * player.getSpeed();
+                player.upPressed();
+                player.animate(delta);
                 if (newY >= screenBottom && newY <= screenTop) {
                     getPlayer().setY(newY);
-                }
-                else{
-                    newX = getPlayer().getX();
-                    newY = getPlayer().getY();
                 }
             }
 
             @Override
             public void onDown() {
-                if(player.getRespawn()){
-                    newX = getPlayer().getX();
-                    newY = getPlayer().getY();
-                    player.setRespawn();
-                }
+                newX = getPlayer().getX();
+                newY = getPlayer().getY();
                 newY -= TILE_HEIGHT * player.getSpeed();
+                player.downPressed();
+                player.animate(delta);
                 if (newY >= screenBottom && newY <= screenTop) {
                     getPlayer().setY(newY);
-                }
-                else{
-                    newX = getPlayer().getX();
-                    newY = getPlayer().getY();
                 }
             }
         });
@@ -187,6 +167,7 @@ public class GameWorld {
     // updates from server we can just update movement via setX / setY
     // Movement logic shouldn't be here. OH WELL
     public void playerMovement(float delta) {
+        this.delta=delta;
         Vector2 velocity = new Vector2();
 
         velocity.x = getMyTouchPad().getTouchPad().getKnobPercentX();
@@ -233,87 +214,6 @@ public class GameWorld {
                 countY = 0;
             }
         }
-
-
-
-
-//        directionListener =new DirectionGestureDetector.DirectionListener() {
-//            float screenLeft = screenBound.getX();
-//            float screenBottom = screenBound.getY();
-//            float screenTop = screenBottom + screenBound.getHeight();// + (world.getPlayer().getHeight() / 2);
-//            float screenRight = screenLeft + screenBound.getWidth();
-//
-//            float newX = getPlayer().getX();
-//            float newY = getPlayer().getY();
-//
-//            @Override
-//            public void onLeft() {
-//                newX -= TILE_WIDTH * player.getSpeed();
-//                if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
-//                    getPlayer().setX(newX);
-//                }
-//            }
-//
-//            @Override
-//            public void onRight() {
-//                newX += TILE_WIDTH * player.getSpeed();
-//                if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
-//                    getPlayer().setX(newX);
-//                }
-//            }
-//
-//            @Override
-//            public void onUp() {
-//
-//                newY += TILE_HEIGHT * player.getSpeed();
-//                if (newY >= screenBottom && newY <= screenTop) {
-//                    getPlayer().setY(newY);
-//                }
-//            }
-//
-//            @Override
-//            public void onDown() {
-//                newY -= TILE_HEIGHT * player.getSpeed();
-//                if (newY >= screenBottom && newY <= screenTop) {
-//                    getPlayer().setY(newY);
-//                }
-//            }
-//        };
-
-//        directionListener=new DirectionGestureDetector.DirectionListener() {
-//            @Override
-//            public void onLeft() {
-//                newX -= TILE_WIDTH * player.getSpeed();
-//                if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
-//                    getPlayer().setX(newX);
-//                }
-//            }
-//
-//            @Override
-//            public void onRight() {
-//                newX += TILE_WIDTH * player.getSpeed();
-//                if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
-//                    getPlayer().setX(newX);
-//                }
-//            }
-//
-//            @Override
-//            public void onUp() {
-//
-//                newY += TILE_HEIGHT * player.getSpeed();
-//                if (newY >= screenBottom && newY <= screenTop) {
-//                    getPlayer().setY(newY);
-//                }
-//            }
-//
-//            @Override
-//            public void onDown() {
-//                newY -= TILE_HEIGHT * player.getSpeed();
-//                if (newY >= screenBottom && newY <= screenTop) {
-//                    getPlayer().setY(newY);
-//                }
-//            }
-//        };
 
 
     }
