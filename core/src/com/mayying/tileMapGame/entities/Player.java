@@ -33,6 +33,7 @@ public class Player extends Sprite {
 
     private Animation forward, backward,left,right;
     public ArrayList<String> powerUpList;
+    private boolean respawn;
 
 
     public Player(TextureAtlas atlas,TiledMapTileLayer collisionLayer, GameWorld gameWorld) {
@@ -242,6 +243,7 @@ public class Player extends Sprite {
             Gdx.app.log("Player", "Player death count: " + deaths);
         }else{
             Gdx.app.log("Player", "Player invulnerable");
+            respawn=true;
         }
 
     }
@@ -289,5 +291,11 @@ public class Player extends Sprite {
         return powerUpList;
     }
 
+    public void setRespawn(){
+        respawn=false;
+    }
 
+    public boolean getRespawn(){
+        return respawn;
+    }
 }

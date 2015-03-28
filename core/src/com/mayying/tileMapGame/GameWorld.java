@@ -20,8 +20,6 @@ import com.mayying.tileMapGame.entities.powerups.SpawnPowerUps;
 import java.util.ArrayList;
 import java.util.Vector;
 
-//import com.mayying.tileMapGame.entities.powerups.DirectionListener;
-
 /**
  * Created by Luccan on 2/3/2015.
  */
@@ -52,7 +50,6 @@ public class GameWorld {
 
     // swiping
     private DirectionGestureDetector directionGestureDetector;
-//    private DirectionListener directionListener;
 
 
 
@@ -84,34 +81,72 @@ public class GameWorld {
 
             @Override
             public void onLeft() {
+                if(player.getRespawn()){
+                    newX = getPlayer().getX();
+                    newY = getPlayer().getY();
+                    player.setRespawn();
+                }
                 newX -= TILE_WIDTH * player.getSpeed();
                 if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
                     getPlayer().setX(newX);
+                }
+
+                else{
+                    newX = getPlayer().getX();
+                    newY = getPlayer().getY();
                 }
             }
 
             @Override
             public void onRight() {
+                if(player.getRespawn()){
+                    newX = getPlayer().getX();
+                    newY = getPlayer().getY();
+                    player.setRespawn();
+                }
                 newX += TILE_WIDTH * player.getSpeed();
                 if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
                     getPlayer().setX(newX);
+                }
+
+                else{
+                    newX = getPlayer().getX();
+                    newY = getPlayer().getY();
                 }
             }
 
             @Override
             public void onUp() {
+                if(player.getRespawn()){
+                    newX = getPlayer().getX();
+                    newY = getPlayer().getY();
+                    player.setRespawn();
+                }
 
                 newY += TILE_HEIGHT * player.getSpeed();
                 if (newY >= screenBottom && newY <= screenTop) {
                     getPlayer().setY(newY);
                 }
+                else{
+                    newX = getPlayer().getX();
+                    newY = getPlayer().getY();
+                }
             }
 
             @Override
             public void onDown() {
+                if(player.getRespawn()){
+                    newX = getPlayer().getX();
+                    newY = getPlayer().getY();
+                    player.setRespawn();
+                }
                 newY -= TILE_HEIGHT * player.getSpeed();
                 if (newY >= screenBottom && newY <= screenTop) {
                     getPlayer().setY(newY);
+                }
+                else{
+                    newX = getPlayer().getX();
+                    newY = getPlayer().getY();
                 }
             }
         });
