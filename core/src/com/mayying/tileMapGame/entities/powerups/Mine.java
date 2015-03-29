@@ -31,9 +31,6 @@ public class Mine extends Sprite implements Collidable, Usable {
     }
     // Override this method if you want to do more than just checking collisions
     public void update() {
-        // TODO - get device ID to check if this mine is owned by the current player
-
-        //TODO -  show the mine by setting alpha?
         // Trigger mine if player on top
         collisionCheck();
 
@@ -42,9 +39,7 @@ public class Mine extends Sprite implements Collidable, Usable {
     // Override this method to desired mine behavior
     @Override
     public void onCollisionDetected(Player hitPlayer) {
-//        Gdx.app.log("Mine", "Cheekababoom");
-        // TODO - invulnerability check
-        GameWorld.removeMine(this);
+        if (!hitPlayer.isInvulnerable) GameWorld.removeMine(this);
         // TODO - KD logic for players, depending on the subclass type of mine
     }
 
@@ -52,31 +47,17 @@ public class Mine extends Sprite implements Collidable, Usable {
     public void collisionCheck() {
         // Mine takes 2 seconds before activating
         if(System.currentTimeMillis() - mineCreated > 2000l) {
-            // Call this method in update
-
-
-            // TODO - For all Players...
-            if(this.getX() == player.getX() && this.getY() == player.getY())onCollisionDetected(player);
+            // Check for every player because only this device sees the mine, it has to tell the server if the mine hits.
+            for(int i=0; i<GameWorld.getNumPlayers(); i++) {
+                Player p = GameWorld.getPlayer(i);
+                if (this.getX() == p.getX() && this.getY() == p.getY())
+                    onCollisionDetected(p);
+            }
         }
 
     }
 
-    // Should probably refactor this into a Utility class but whatever
-    private Vector2 getCellFromPosition(int x, int y) {
-        Vector2 vector2 = new Vector2();
-        vector2.x = collisionLayer.getTileWidth() / 2 - getWidth() / 2;
-        vector2.y = 200 + getHeight() + collisionLayer.getTileHeight() / 2;
 
-        if (x != 0) {
-            vector2.x += collisionLayer.getTileWidth() * x;
-        }
-
-        if (y != 0) {
-            vector2.y += collisionLayer.getTileHeight() * y;
-        }
-
-        return vector2;
-    }
 
     @Override
     public void use(Player[] players) {

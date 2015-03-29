@@ -14,6 +14,6 @@ public class ControlInverter implements Usable {
     @Override
     public void use(Player[] players) {
         for(int i = 0; i < players.length; i++)
-            players[i].invert(2000l);
+            players[i].invert();
     }
 }

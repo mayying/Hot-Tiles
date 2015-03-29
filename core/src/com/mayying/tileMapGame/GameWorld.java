@@ -25,7 +25,7 @@ import java.util.Vector;
  */
 public class GameWorld {
     private static Player player; // static cause i'm lazy. Replace with array of all players in game.
-    private final ArrayList<Player> players = new ArrayList<Player>();
+    private static final ArrayList<Player> players = new ArrayList<Player>();
     // Better to separate into bullets and mines for now to decouple so we can do stuff like remove all mines or whatever
     private MyTouchpad myTouchPad;
     private Rectangle playerBound;
@@ -227,9 +227,21 @@ public class GameWorld {
         return myTouchPad;
     }
 
+    /**
+     * @return Player of the current device.
+     */
     public static Player getPlayer() {
         return player;
     }
+
+    /**
+     *
+     * @param idx player's index
+     * @return player of specified index
+     */
+    public static Player getPlayer(int idx){return players.get(idx);}
+
+    public static int getNumPlayers(){return players.size();}
 
     // Custom Methods
     // Currently unused to prevent excessive coupling
@@ -249,10 +261,10 @@ public class GameWorld {
         bullet.getTexture().dispose();
     }
 
-    public static void setBlackout(long millis) {
+    public static void setBlackout() {
         if (!blackout) {
             blackout = true;
-            new DelayedThread(millis) {
+            new DelayedThread(3000l) {
                 @Override
                 public void run() {
                     super.run();
@@ -298,4 +310,10 @@ public class GameWorld {
         return directionGestureDetector;
     }
 
+    public static void setPlayerPosition(int playerIndex, Vector2 pos) {
+        Player p = players.get(playerIndex);
+        if(p!=null) {
+            p.setPosition(pos.x, pos.y);
+        }
+    }
 }

@@ -68,12 +68,7 @@ public class SpawnPowerUps {
             else if(id.equals("ControlInverter")){
                 PowerUpTexture=new Texture("img/shuriken.png");
             }
-//            switch (id){
-//                case "Mine": PowerUpTexture=new Texture("img/shuriken.png");break;
-//                case "FreezeMine": PowerUpTexture=new Texture("img/shuriken.png");break;
-//                case "Invulnerability": PowerUpTexture=new Texture("img/shuriken.png");break;
-//                case "ControlInverter": PowerUpTexture=new Texture("img/shuriken.png");break;
-//            }
+
 
             this.sprite=new Sprite(PowerUpTexture);
 

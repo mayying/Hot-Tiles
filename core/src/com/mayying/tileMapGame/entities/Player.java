@@ -29,8 +29,8 @@ public class Player extends Sprite {
     private int kills;
     private int deaths;
     private GameWorld gameWorld;
-    private boolean isFrozen = false,isInverted = false,isInvulnerable = false; // for freezing animation and stuff?
-
+    private boolean isFrozen = false,isInverted = false; // for freezing animation and stuff?
+    public boolean isInvulnerable = false;
     private Animation forward, backward,left,right;
     public ArrayList<String> powerUpList;
 
@@ -107,12 +107,10 @@ public class Player extends Sprite {
 
     public void upPressed() {
         facing = 8;
-
     }
 
     public void downPressed() {
         facing = 2;
-
     }
     public void animate(float delta){
         animationTime += delta;
@@ -167,6 +165,10 @@ public class Player extends Sprite {
         return (lastHitTime - System.currentTimeMillis()) <= 3000l ? lastHitBy : null;
     }
 
+    public void freeze(){
+        this.freeze(2000l);
+    }
+
     public void freeze(long millis) {
         // User can only be inflicted with one speed modifier at any time. Reduce complexity of code
         // and eliminate interaction for when user is frozen and then inverted or something like that.
@@ -187,7 +189,7 @@ public class Player extends Sprite {
         }
     }
 
-    public void invert(long millis) {
+    public void invert() {
         if (speed == 1 && !isInvulnerable) {
             //TODO - last hit logic
 //        setLastHitBy();
@@ -212,8 +214,53 @@ public class Player extends Sprite {
         return speed;
     }
 
-    public void die() {
+    /**
+     * Kills the player. Use only if this is the device's player. Probably only use this for testing.
+     * @return a Vector2 of where the player will respawn
+     */
+    public Vector2 die() {
         // Commits sudoku
+        if (!isInvulnerable) {
+            // Remove from render list,
+            gameWorld.removePlayer(this);
+
+            // Set Invulnerable for 4 secs
+            isInvulnerable = true;
+            new DelayedThread(4000l) {
+                @Override
+                public void run() {
+                    super.run();
+                    isInvulnerable = false;
+                }
+            }.start();
+            final int xCoordinate = new Random().nextInt(getCollisionLayer().getWidth() - 8);
+            final int yCoordinate = new Random().nextInt(getCollisionLayer().getHeight() - 2);
+            // wait for 3 secs then choose a random location, add to render list
+            new DelayedThread(1000l) {
+                @Override
+                public void run() {
+                    super.run();
+                    spawn(xCoordinate, yCoordinate);
+                }
+            }.start();
+
+            // TODO -update score based on last hit by field
+            deaths++;
+//            Gdx.app.log("Player", "Player death count: " + deaths);
+            return new Vector2(xCoordinate, yCoordinate);
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * Kills player and forces the player to spawn at x,y. Use this in response to server message.
+     * Choose the random coordinates locally and broadcast the coordinates, used by other clients to
+     * call this method.
+     * @param x
+     * @param y
+     */
+    public void dieAndSpawnAt(final int x, final int y){
         if (!isInvulnerable) {
             // Remove from render list,
             gameWorld.removePlayer(this);
@@ -233,18 +280,16 @@ public class Player extends Sprite {
                 @Override
                 public void run() {
                     super.run();
-                    spawn();
+                    spawn(x, y);
                 }
             }.start();
 
             // TODO -update score based on last hit by field
             deaths++;
-            Gdx.app.log("Player", "Player death count: " + deaths);
+//            Gdx.app.log("Player", "Player death count: " + deaths);
         }else{
-            Gdx.app.log("Player", "Player invulnerable");
 
         }
-
     }
 
     public void shield() {
@@ -262,12 +307,27 @@ public class Player extends Sprite {
         }
     }
 
+    /**
+     * Spawns player at a random spot. Use if this player is the user's character. Probably only use for testing.
+     */
     public void spawn() {
         int xCoordinate = new Random().nextInt(getCollisionLayer().getWidth() - 8);
         int yCoordinate = new Random().nextInt(getCollisionLayer().getHeight() - 2);
-        setPosition(setPlayerPosition(xCoordinate, yCoordinate).x, setPlayerPosition(xCoordinate, yCoordinate).y);
+        Vector2 worldCoords = setPlayerPosition(xCoordinate, yCoordinate);
+        setPosition(worldCoords.x, worldCoords.y);
 //        Gdx.app.log(getPlayerPosition().x + "", "getX()");
 //        Gdx.app.log(getPlayerPosition().y + "", "getY()");
+        gameWorld.addPlayer(this);
+    }
+
+    /**
+     * Spawns a player at x, y. Specifically for server's use.
+     * @param xCoordinate the x coordinate
+     * @param yCoordinate the y coordinate
+     */
+    public void spawn(int xCoordinate, int yCoordinate){
+        Vector2 worldCoords = setPlayerPosition(xCoordinate, yCoordinate);
+        setPosition(worldCoords.x, worldCoords.y);
         gameWorld.addPlayer(this);
     }
 

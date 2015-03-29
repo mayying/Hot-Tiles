@@ -80,7 +80,7 @@ public class BurningTiles implements Collidable{
 
         Vector2 pos = new Vector2(xCoord, yCoord);
 //        Gdx.app.log("Tile Coords: ",xCoord+", "+yCoord);
-        // TODO - Change to factor in all Players...
+        // Only check for this device's player, let the server update us if other players are burning
         Player player = GameWorld.getPlayer();
 
         Vector2 playerPos = player.getPlayerPosition();
@@ -91,23 +91,7 @@ public class BurningTiles implements Collidable{
 
     }
 
-    // Should probably refactor this into a Utility class but whatever
-    private Vector2 getCellFromPosition(int x, int y) {
-        Vector2 vector2 = new Vector2();
-        Player player = GameWorld.getPlayer();
-        TiledMapTileLayer collisionLayer = player.getCollisionLayer();
-        vector2.x = collisionLayer.getTileWidth() / 2 - player.getWidth() / 2;
-        vector2.y = 200 + collisionLayer.getTileHeight() + player.getHeight() / 2;
 
-        if (x != 0) {
-            vector2.x += collisionLayer.getTileWidth() * x;
-        }
-
-        if (y != 0) {
-            vector2.y += collisionLayer.getTileHeight() * y;
-        }
-        return vector2;
-    }
 
     private void updateFireAnimation(Integer frame) {
         // Gdx.app.log(frame + "", "frame");

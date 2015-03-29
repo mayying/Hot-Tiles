@@ -24,7 +24,7 @@ public class Blackout implements Usable {
     }
     @Override
     public void use(Player[] players) {
-        GameWorld.setBlackout(3000l);
+        GameWorld.setBlackout();
     }
 
 
