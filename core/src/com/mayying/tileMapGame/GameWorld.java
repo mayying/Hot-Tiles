@@ -179,13 +179,13 @@ public class GameWorld {
         countX++;
         countY++;
 
-        if (!Player.isDead && newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
+        if (!getPlayer().isDead && newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
             if (myTouchPad.getTouchPad().getKnobPercentX() != 0 && countX > 17) {
                 getPlayer().setX(newX);
                 countX = 0;
             }
         }
-        if (!Player.isDead && newY >= screenBottom && newY <= screenTop) {
+        if (!getPlayer().isDead && newY >= screenBottom && newY <= screenTop) {
             if (myTouchPad.getTouchPad().getKnobPercentY() != 0 && countY > 17) {
                 getPlayer().setY(newY);
                 countY = 0;

@@ -30,8 +30,8 @@ public class Player extends Sprite {
     private float speed = 1, animationTime = 0;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
     private int facing, kills, deaths;
-    private boolean isFrozen = false, isInverted = false;
-    public static boolean isDead = false, isInvulnerable = false; // for freezing animation and stuff?
+    private boolean isFrozen = false, isInverted = false;// for freezing animation and stuff?
+    public boolean isInvulnerable = false, isDead = false;
 
     public Player(TextureAtlas atlas, TiledMapTileLayer collisionLayer, GameWorld gameWorld) {
         super(new Animation(1 / 2f, atlas.findRegions("player_3_forward")).getKeyFrame(0));
@@ -211,11 +211,11 @@ public class Player extends Sprite {
                 public void run() {
                     gameWorld.addPlayer(getPlayer());
                     Jukebox.play("fire");
-                    getPlayer().setIsDead(true);
+
                     super.run();
                     Jukebox.stop("fire");
                     gameWorld.removePlayer(getPlayer());
-                    getPlayer().setIsDead(false);
+                    isDead = false;
                     spawn(xCoordinate, yCoordinate);
                 }
             }.start();
