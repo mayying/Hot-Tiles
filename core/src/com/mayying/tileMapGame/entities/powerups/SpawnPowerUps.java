@@ -49,7 +49,7 @@ public class SpawnPowerUps implements Collidable{
                 id = stringID.get(new Random().nextInt(stringID.size() - 1));
 
                 // Spawn random powerup texture
-                if(id.equals("Mine")){
+                if(id.equals("FireMine")){
                     PowerUpTexture=new Texture("img/shuriken.png");
                 }
                 else if(id.equals("FreezeMine")){
@@ -59,6 +59,12 @@ public class SpawnPowerUps implements Collidable{
                     PowerUpTexture=new Texture("img/shuriken.png");
                 }
                 else if(id.equals("ControlInverter")){
+                    PowerUpTexture=new Texture("img/shuriken.png");
+                }
+                else if(id.equals("Swap")){
+                    PowerUpTexture=new Texture("img/shuriken.png");
+                }
+                else if(id.equals("Blackout")){
                     PowerUpTexture=new Texture("img/shuriken.png");
                 }
                 this.sprite=new Sprite(PowerUpTexture);
