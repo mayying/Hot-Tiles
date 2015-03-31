@@ -37,7 +37,7 @@ public class SpawnPowerUps implements Collidable{
         this.player=player;
 
         // powerup stringID list
-        stringID = Arrays.asList("Mine","FreezeMine","Invulnerability","ControlInverter");
+        stringID = Arrays.asList("Mine","FreezeMine","Invulnerability","ControlInverter","Swap","Blackout");
         sprite=new Sprite();
     }
 
