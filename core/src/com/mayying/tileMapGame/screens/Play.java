@@ -112,10 +112,10 @@ public class Play implements Screen {
             }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
-            GameWorld.getPlayer().die();
+//            GameWorld.getPlayer().die();
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
-            GameWorld.getPlayer().shield();
+//            GameWorld.getPlayer().shield();
         }
 
         renderer.getBatch().end();

@@ -80,7 +80,7 @@ public class BurningTiles implements Collidable{
         Vector2 pos = new Vector2(xCoord, yCoord);
 //        Gdx.app.log("Tile Coords: ",xCoord+", "+yCoord);
         // Only check for this device's player, let the server update us if other players are burning
-        Player player = GameWorld.getPlayer();
+        Player player = world.getPlayer();
 
         Vector2 playerPos = player.getPlayerPosition();
 //        Gdx.app.log("Player Coords: ", playerPos.toString());

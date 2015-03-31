@@ -2,79 +2,142 @@ skin.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+blackoutBtn
+  rotate: false
+  xy: 2, 2
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+blackoutImg
+  rotate: false
+  xy: 144, 2
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: -1
+confusedBtn
+  rotate: false
+  xy: 2, 144
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+confusedImg
+  rotate: false
+  xy: 144, 144
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: -1
+freezemineBtn
+  rotate: false
+  xy: 2, 286
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+freezemineImg
+  rotate: false
+  xy: 144, 286
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: -1
+shieldBtn
+  rotate: false
+  xy: 2, 428
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+shieldImg
+  rotate: false
+  xy: 144, 428
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: -1
 skinRect210x140
   rotate: false
-  xy: 2, 288
+  xy: 2, 570
   size: 210, 140
   orig: 210, 140
   offset: 0, 0
   index: -1
 skinRound140x140
   rotate: false
-  xy: 74, 146
+  xy: 2, 712
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 skinRound210x210
   rotate: false
-  xy: 2, 712
+  xy: 2, 854
   size: 210, 210
   orig: 210, 210
   offset: 0, 0
   index: -1
 skinSquare280x210
   rotate: false
-  xy: 2, 430
+  xy: 2, 1066
   size: 210, 280
   orig: 210, 280
   offset: 0, 0
   index: -1
-skinSquare45x45
-  rotate: false
-  xy: 2, 2
-  size: 45, 45
-  orig: 45, 45
-  offset: 0, 0
-  index: -1
 skinSquare70x70
   rotate: false
-  xy: 2, 146
+  xy: 2, 1348
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareClose70x70
   rotate: false
-  xy: 114, 2
+  xy: 74, 1348
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareQuestion70x70
   rotate: false
-  xy: 2, 74
+  xy: 146, 1348
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareSoundOff70x70
   rotate: false
-  xy: 146, 74
+  xy: 2, 1420
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareSoundOn70x70
   rotate: false
-  xy: 74, 74
+  xy: 74, 1420
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
+swapBtn
+  rotate: false
+  xy: 2, 1492
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+swapImg
+  rotate: false
+  xy: 144, 1492
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: -1
 touchKnob
   rotate: false
-  xy: 49, 2
+  xy: 2, 1634
   size: 63, 63
   orig: 63, 63
   offset: 0, 0

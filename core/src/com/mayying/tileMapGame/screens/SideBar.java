@@ -4,17 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.GameWorld;
@@ -29,13 +33,16 @@ public class SideBar {
 
     private Stage stage;
     private Label timer, scoreboard, descriptionImg, descriptionText;
+    private Skin skin;
     private GameWorld world;
-    private TextButton buttonA, buttonB, sound, question, close;
+    private ImageButton buttonA, buttonB, sound, question, close;
     private OrthographicCamera hudCamera;
     private final Rectangle screenBound;
+    private LabelStyle labelStyle;
     //  public static Touchpad touchpad;
 
     volatile static int timeLeft = 1;
+    private int numOfPowerUp = 0;
 
     private float gameTime = 1 * 60 + 30;
     private int min, sec;
@@ -48,14 +55,12 @@ public class SideBar {
         screenBound = new Rectangle(GameWorld.screenBound.getX() + GameWorld.screenBound.getWidth() + GameWorld.TILE_WIDTH,
                 0, GameWorld.TILE_WIDTH * 3,
                 GameWorld.TILE_HEIGHT * 10);
-        //aspectRatio = screenBound.getWidth() / screenBound.getHeight();
+        labelStyle = new Label.LabelStyle();
     }
 
     public void create() {
         stage = new Stage(new ExtendViewport(Play.V_WIDTH, Play.V_HEIGHT, hudCamera));
         InputMultiplexer inputMultiplexer=new InputMultiplexer();
-//        Stage stage=new Stage();
-//        stage.addActor(getMyTouchpad().getTouchpad());
 //
         inputMultiplexer.addProcessor(stage);
         inputMultiplexer.addProcessor(world.getDirectionGestureDetector());
@@ -64,7 +69,7 @@ public class SideBar {
 //        Gdx.input.setInputProcessor(stage);
 
         TextureAtlas buttonAtlas = new TextureAtlas(Gdx.files.internal("skin/skin.txt"));
-        Skin skin = new Skin(Gdx.files.internal("skin/gameSkin.json"), buttonAtlas);
+        skin = new Skin(Gdx.files.internal("skin/gameSkin.json"), buttonAtlas);
 
         // container for all UI widgets
         Table table = new Table(skin);
@@ -77,28 +82,39 @@ public class SideBar {
         timer = new Label("Time Left\n" + min + " : " + sec, skin, "timer");
         timer.setAlignment(Align.center);
 
-        sound = new TextButton("", skin, "sound");
-        question = new TextButton("", skin, "question");
-        close = new TextButton("", skin, "close");
+        sound = new ImageButton(skin, "sound");
+        question = new ImageButton(skin, "question");
+        close = new ImageButton(skin, "close");
+        close.addListener(new ClickListener(){
+           public void clicked(InputEvent event, float x, float y){
+               Gdx.app.exit();
+           }
+        });
 
         scoreboard = new Label("Score Board", skin, "scoreboard");
 
-        descriptionImg = new Label("Your Mother", skin, "description");
-        descriptionText = new Label("Bounce", skin, "description");
+        descriptionImg = new Label("", skin, "description");
+        descriptionImg.setAlignment(Align.bottom);
+        descriptionText = new Label("", skin, "description");
+        descriptionText.setWrap(true);
+        descriptionText.setAlignment(Align.top);
+        // descriptionText.setAlignment(Align.center);
+        descriptionText.setFontScale(0.75f);
 
         world.getMyTouchPad().getTouchPad().setPosition(0, 0);
 
-        buttonA = new TextButton("", skin);
-        buttonB = new TextButton("", skin);
+        buttonA = new ImageButton(skin);
+        buttonB = new ImageButton(skin);
 
         Table subTable = new Table();
-        subTable.add(buttonA).right().expandX().width(140).height(140).row();
+        subTable.add(buttonA).right().expandX().expandY().width(140).height(140).center().row();
         subTable.add(buttonB).left().expandX().width(140).height(140).row();
 
         Table descriptionTable = new Table();
         descriptionTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/skinSquare280x210.png"))));
-        descriptionTable.add(descriptionImg).top().row();
-        descriptionTable.add(descriptionText);
+        descriptionTable.add(descriptionImg).padTop(40).width(90).height(90).row();
+        descriptionTable.add(descriptionText).expandY().width(150).height(140).top().center();
+        // descriptionTable.setDebug(true);
 
         // putting stuff together
         //table.align(Align.center);
@@ -113,12 +129,7 @@ public class SideBar {
         table.add(world.getMyTouchPad().getTouchPad()).left().expandY().width(210);
         table.add(subTable).fill().colspan(3);
 
-        //tableBtm.add(buttonA).expandX().right().row();
-        //tableBtm.add(buttonB).expandX().left();
-
         stage.addActor(table);
-        //stage.addActor(tableBtm);
-//        stage.addActor(touchpad);
 
         buttonA.addListener(new InputListener() {
             @Override
@@ -128,7 +139,7 @@ public class SideBar {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                world.getPlayer().spacePressed();
+//                world.getPlayer().spacePressed();
             }
         });
 
@@ -142,7 +153,27 @@ public class SideBar {
         int seconds = (int) (gameTime - minutes * 60.0f);
         timeLeft = minutes * 60 + seconds;
         timer.setText("Time Left\n" + String.format("%02d : %02d", minutes, seconds));
+//        Gdx.app.log(world.getPlayer().canPickPowerUp() + " canPickPowerUp() ", world.pickUpPowerUp() + " pickUpPowerUp()");
+        if (world.pickUpPowerUp()){
+            numOfPowerUp++;
+            descriptionText.setText(world.getPowerUp().getName() + "\n" + world.getPowerUp().getDescription());
+            labelStyle.background = skin.getDrawable(world.getPowerUp().getFilename());
+            labelStyle.font = new BitmapFont(Gdx.files.internal("font/black.fnt"));
+            descriptionImg.setStyle(labelStyle);
 
+            ImageButtonStyle imageButtonStyle = new ImageButtonStyle();
+            imageButtonStyle.imageUp = skin.getDrawable(world.getPowerUp().getFilenameBtn());
+            Gdx.app.log(numOfPowerUp + "",world.getPowerUp().getFilenameBtn() + "");
+            imageButtonStyle.imageChecked = skin.getDrawable("skinRound140x140");
+
+            if(numOfPowerUp == 1){
+                buttonA.setStyle(imageButtonStyle);
+            }else if(numOfPowerUp == 2){
+                buttonB.setStyle(imageButtonStyle);
+            }
+
+
+        }
     }
 
     public void dispose() {

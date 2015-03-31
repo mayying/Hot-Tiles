@@ -14,6 +14,7 @@ import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.Mine;
+import com.mayying.tileMapGame.entities.powerups.PowerUp;
 import com.mayying.tileMapGame.entities.powerups.SpawnPowerUps;
 
 import java.util.ArrayList;
@@ -23,10 +24,11 @@ import java.util.Vector;
  * Created by Luccan on 2/3/2015.
  */
 public class GameWorld {
-    private static Player player; // static cause i'm lazy. Replace with array of all players in game.
+    private Player player; // static cause i'm lazy. Replace with array of all players in game.
     // Better to separate into bullets and mines for now to decouple so we can do stuff like remove all mines or whatever
     private MyTouchpad myTouchPad;
     private SpawnPowerUps spawnPowerUps;
+    private PowerUp powerUp;
 
     // Better to separate into bullets and mines for now to decouple so we can do stuff like remove all mines or whatever
     public static Rectangle screenBound;
@@ -53,7 +55,7 @@ public class GameWorld {
 
         screenBound = new Rectangle(4 * TILE_WIDTH, TILE_HEIGHT, 10 * TILE_WIDTH, 8 * TILE_HEIGHT);
         myTouchPad = new MyTouchpad();
-        spawnPowerUps = new SpawnPowerUps(playableLayer, getPlayer());
+        spawnPowerUps = new SpawnPowerUps(playableLayer, this);
 
         setPlayerBound();
 
@@ -116,6 +118,10 @@ public class GameWorld {
         });
     }
 
+    public PowerUp getPowerUp() {
+        return powerUp;
+    }
+
     public void drawAndUpdate(Batch batch) {
         spawnPowerUps.draw(batch);
         for (int i = 0; i < bullets.size(); i++) {
@@ -129,7 +135,7 @@ public class GameWorld {
         for (int i = 0; i < mines.size(); i++) {
             mines.get(i).draw(batch);
         }
-        spawnPowerUps.draw(batch);
+        powerUp = spawnPowerUps.getPowerUp();
 
 
         if (blackout) {
@@ -173,8 +179,8 @@ public class GameWorld {
             getPlayer().downPressed();
         }
         // Animate player movement
-       // if (velocity.x > 0.5 || velocity.x < -0.5 || velocity.y > 0.5 || velocity.y < -0.5)
-            getPlayer().animate(delta);
+        // if (velocity.x > 0.5 || velocity.x < -0.5 || velocity.y > 0.5 || velocity.y < -0.5)
+        getPlayer().animate(delta);
 
         countX++;
         countY++;
@@ -205,9 +211,15 @@ public class GameWorld {
     /**
      * @return Player of the current device.
      */
-    public static Player getPlayer() {
+    public Player getPlayer() {
         return player;
     }
+
+    public boolean pickUpPowerUp() {
+        return spawnPowerUps.isPowerUpPickedUp();
+    }
+
+    ;
 
     public DirectionGestureDetector getDirectionGestureDetector() {
         return directionGestureDetector;
@@ -218,13 +230,16 @@ public class GameWorld {
     }
 
     /**
-     *
      * @param idx player's index
      * @return player of specified index
      */
-    public static Player getPlayer(int idx){return players.get(idx);}
+    public static Player getPlayer(int idx) {
+        return players.get(idx);
+    }
 
-    public static int getNumPlayers(){return players.size();}
+    public static int getNumPlayers() {
+        return players.size();
+    }
 
     // Custom Methods
     // Currently unused to prevent excessive coupling
@@ -291,7 +306,7 @@ public class GameWorld {
 
     public static void setPlayerPosition(int playerIndex, Vector2 pos) {
         Player p = players.get(playerIndex);
-        if(p!=null) {
+        if (p != null) {
             p.setPosition(pos.x, pos.y);
         }
     }

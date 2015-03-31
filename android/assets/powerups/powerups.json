@@ -1,0 +1,39 @@
+{
+"powerups": [
+
+{
+	"filenameVector"    : "blackout.png",
+	"filenameBtn"       : "blackoutBtn",
+	"filename"          : "blackoutImg",
+	"name"              : "Blackout",
+	"description"       : "Causes enemy to go blind",
+},
+{
+	"filenameVector"    : "confused.png",
+	"filenameBtn"       : "confusedBtn",
+	"filename"          : "confusedImg",
+	"name"              : "Confusion",
+	"description"       : "Confuse all enemies by inverting their control",
+},
+{
+	"filenameVector"    : "freezemine.png",
+	"filenameBtn"       : "freezemineBtn",
+	"filename"          : "freezemineImg",
+	"name"              : "Freeze Mine",
+	"description"       : "Lays a remote mine that freezes enemy when stepped on",
+},
+{
+	"filenameVector"    : "shield.png",
+	"filenameBtn"       : "shieldBtn",
+	"filename"          : "shieldImg",
+	"name"              : "Shield",
+	"description"       : "Invulnerable to all damages for 2 seconds",
+},
+{
+	"filenameVector"    : "swap.png",
+	"filenameBtn"       : "swapBtn",
+	"filename"          : "swapImg",
+    "name"              : "Swap",
+    "description"       : "Exchange your position with your enemy's",
+}]
+}
