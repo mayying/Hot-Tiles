@@ -146,7 +146,6 @@ public class GameWorld {
     // updates from server we can just update movement via setX / setY
     // Movement logic shouldn't be here. OH WELL
     public void playerMovement(float delta) {
-        this.delta = delta;
         Vector2 velocity = new Vector2();
 
         velocity.x = getMyTouchPad().getTouchPad().getKnobPercentX();

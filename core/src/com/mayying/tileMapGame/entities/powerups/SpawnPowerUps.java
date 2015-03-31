@@ -103,7 +103,7 @@ public class SpawnPowerUps {
                 setPickup(true);        // powerups is picked up
                 setDraw(false);         // if picked up, stop drawing
                 setCreated(false);      // cuz need to create new sprite
-                Gdx.app.log("Pickup","true");
+                Gdx.app.log("Powerup",id + " picked up.");
             }
         }
 
@@ -119,7 +119,7 @@ public class SpawnPowerUps {
             if(getDraw()) {
                 // the powerup will stay for 3 s on screen then disappear
                 Spawntime+=(Gdx.graphics.getDeltaTime());
-                if (Spawntime <= 3) {
+                if (Spawntime <= 6) {
                     sprite.draw(batch);
                 } else {
 
