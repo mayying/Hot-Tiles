@@ -1,7 +1,6 @@
 package com.mayying.tileMapGame;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -25,53 +24,40 @@ import java.util.Vector;
  */
 public class GameWorld {
     private static Player player; // static cause i'm lazy. Replace with array of all players in game.
-    private static final ArrayList<Player> players = new ArrayList<Player>();
     // Better to separate into bullets and mines for now to decouple so we can do stuff like remove all mines or whatever
     private MyTouchpad myTouchPad;
-    private Rectangle playerBound;
+    private SpawnPowerUps spawnPowerUps;
 
-    private float animationTime = 0;
-
-    public TextureAtlas getPlayerAtlas() {
-        return playerAtlas;
-    }
-
-    private TextureAtlas playerAtlas;
+    // Better to separate into bullets and mines for now to decouple so we can do stuff like remove all mines or whatever
     public static Rectangle screenBound;
-    private int countX = 0, countY = 0;
     public static Vector<Sprite> bullets = new Vector<Sprite>();
     public static Vector<Mine> mines = new Vector<Mine>();
-    static boolean blackout = false;
-    public static float TILE_WIDTH;
-    public static float TILE_HEIGHT;
-    private SpawnPowerUps spawnPowerUps;
-    private Animation forward, backward, left, right;
 
-
-    // swiping
     private DirectionGestureDetector directionGestureDetector;
-    public static float delta;
+    private Rectangle playerBound;
+    private TextureAtlas playerAtlas;
 
-
+    public static float TILE_WIDTH, TILE_HEIGHT, delta;
+    private static final ArrayList<Player> players = new ArrayList<Player>();
+    private static boolean blackout = false;
+    private int countX = 0, countY = 0;
 
     public GameWorld(TiledMapTileLayer playableLayer) {
-        playerAtlas = new TextureAtlas("img/player2.txt");
+        playerAtlas = new TextureAtlas("img/player3.txt");
         player = new Player(playerAtlas, playableLayer, this);
         player.spawn();
         // TODO - create additional threads to manage the other player's interactions, positions etc
 
-        myTouchPad = new MyTouchpad();
-        // Constants
         TILE_WIDTH = playableLayer.getTileWidth();
         TILE_HEIGHT = playableLayer.getTileHeight();
 
         screenBound = new Rectangle(4 * TILE_WIDTH, TILE_HEIGHT, 10 * TILE_WIDTH, 8 * TILE_HEIGHT);
+        myTouchPad = new MyTouchpad();
+        spawnPowerUps = new SpawnPowerUps(playableLayer, getPlayer());
 
         setPlayerBound();
-        spawnPowerUps=new SpawnPowerUps(playableLayer,getPlayer());
 
-
-        directionGestureDetector=new DirectionGestureDetector(new DirectionGestureDetector.DirectionListener() {
+        directionGestureDetector = new DirectionGestureDetector(new DirectionGestureDetector.DirectionListener() {
             float screenLeft = screenBound.getX();
             float screenBottom = screenBound.getY();
             float screenTop = screenBottom + screenBound.getHeight();// + (world.getPlayer().getHeight() / 2);
@@ -79,7 +65,7 @@ public class GameWorld {
 
             float newX;
             float newY;
-            float x=delta;
+            float x = delta;
 
             @Override
             public void onLeft() {
@@ -87,8 +73,6 @@ public class GameWorld {
                 newX = getPlayer().getX();
                 newY = getPlayer().getY();
                 newX -= TILE_WIDTH * player.getSpeed();
-                player.leftPressed();
-                player.animate(delta);
                 if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
                     getPlayer().setX(newX);
                 }
@@ -130,8 +114,6 @@ public class GameWorld {
                 }
             }
         });
-
-
     }
 
     public void drawAndUpdate(Batch batch) {
@@ -144,13 +126,10 @@ public class GameWorld {
             players.get(i).draw(batch);
         }
 
-
         for (int i = 0; i < mines.size(); i++) {
             mines.get(i).draw(batch);
         }
         spawnPowerUps.draw(batch);
-
-
 
 
         if (blackout) {
@@ -167,7 +146,7 @@ public class GameWorld {
     // updates from server we can just update movement via setX / setY
     // Movement logic shouldn't be here. OH WELL
     public void playerMovement(float delta) {
-        this.delta=delta;
+        this.delta = delta;
         Vector2 velocity = new Vector2();
 
         velocity.x = getMyTouchPad().getTouchPad().getKnobPercentX();
@@ -184,11 +163,9 @@ public class GameWorld {
             // add back in leftpressed rightpressed etc for direction, if we are using the bullets and stuff
             newX += TILE_WIDTH * player.getSpeed();
             getPlayer().rightPressed();
-
         } else if (velocity.x < -0.5) {
             newX -= TILE_WIDTH * player.getSpeed();
             getPlayer().leftPressed();
-
         } else if (velocity.y > 0.5) {
             newY += TILE_HEIGHT * player.getSpeed();
             getPlayer().upPressed();
@@ -197,30 +174,29 @@ public class GameWorld {
             getPlayer().downPressed();
         }
         // Animate player movement
-        if(velocity.x > 0.5 || velocity.x <-0.5 || velocity.y > 0.5 || velocity.y <-0.5) getPlayer().animate(delta);
+       // if (velocity.x > 0.5 || velocity.x < -0.5 || velocity.y > 0.5 || velocity.y < -0.5)
+            getPlayer().animate(delta);
 
         countX++;
         countY++;
 
-        if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
+        if (!Player.isDead && newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
             if (myTouchPad.getTouchPad().getKnobPercentX() != 0 && countX > 17) {
                 getPlayer().setX(newX);
                 countX = 0;
             }
         }
-        if (newY >= screenBottom && newY <= screenTop) {
+        if (!Player.isDead && newY >= screenBottom && newY <= screenTop) {
             if (myTouchPad.getTouchPad().getKnobPercentY() != 0 && countY > 17) {
                 getPlayer().setY(newY);
                 countY = 0;
             }
         }
 
-
     }
 
-
-    private void setPlayerBound() {
-        playerBound = getPlayer().getBoundingRectangle();
+    public TextureAtlas getPlayerAtlas() {
+        return playerAtlas;
     }
 
     public MyTouchpad getMyTouchPad() {
@@ -232,6 +208,14 @@ public class GameWorld {
      */
     public static Player getPlayer() {
         return player;
+    }
+
+    public DirectionGestureDetector getDirectionGestureDetector() {
+        return directionGestureDetector;
+    }
+
+    private void setPlayerBound() {
+        playerBound = getPlayer().getBoundingRectangle();
     }
 
     /**
@@ -305,10 +289,6 @@ public class GameWorld {
 //        inputMultiplexer.addProcessor(directionGestureDetector);
 //        Gdx.input.setInputProcessor(inputMultiplexer);
 //    }
-
-    public DirectionGestureDetector getDirectionGestureDetector(){
-        return directionGestureDetector;
-    }
 
     public static void setPlayerPosition(int playerIndex, Vector2 pos) {
         Player p = players.get(playerIndex);

@@ -50,10 +50,8 @@ public class SpawnPowerUps {
     public void draw(Batch batch){
         playerbound=player.getBoundingRectangle();
         if(!created) {
-
             // picking random stringID from list
-            Random randomId = new Random();
-            id = stringID.get(randomId.nextInt(stringID.size() - 1));
+            id = stringID.get(new Random().nextInt(stringID.size() - 1));
 
             // Spawn random powerup texture
             if(id.equals("Mine")){

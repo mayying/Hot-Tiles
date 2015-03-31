@@ -7,6 +7,5 @@ import com.mayying.tileMapGame.entities.Player;
  */
 public interface Collidable {
     void onCollisionDetected(Player player);
-
     void collisionCheck();
 }

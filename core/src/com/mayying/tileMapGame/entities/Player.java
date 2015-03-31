@@ -19,24 +19,23 @@ import java.util.Random;
  * Created by May Ying on 24/2/2015.
  */
 public class Player extends Sprite {
+    private Player lastHitBy, currentPlayer;
+    private GameWorld gameWorld;
+    private TiledMapTileLayer collisionLayer;
 
     private final TextureAtlas playerAtlas;
+    private Animation forward, backward, left, right, burnt;
+
+    public ArrayList<String> powerUpList;
     private float speed = 1, animationTime = 0;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
-    private int facing;
-    private TiledMapTileLayer collisionLayer;
-    private Player lastHitBy;
-    private int kills;
-    private int deaths;
-    private GameWorld gameWorld;
-    private boolean isFrozen = false,isInverted = false; // for freezing animation and stuff?
-    public boolean isInvulnerable = false;
-    private Animation forward, backward,left,right;
-    public ArrayList<String> powerUpList;
+    private int facing, kills, deaths;
+    private boolean isFrozen = false, isInverted = false;
+    public static boolean isDead = false, isInvulnerable = false; // for freezing animation and stuff?
 
-
-    public Player(TextureAtlas atlas,TiledMapTileLayer collisionLayer, GameWorld gameWorld) {
-        super(new Animation(1 / 2f, atlas.findRegions("player_2_forward")).getKeyFrame(0));
+    public Player(TextureAtlas atlas, TiledMapTileLayer collisionLayer, GameWorld gameWorld) {
+        super(new Animation(1 / 2f, atlas.findRegions("player_3_forward")).getKeyFrame(0));
+        this.currentPlayer = this;
         this.collisionLayer = collisionLayer;
         this.gameWorld = gameWorld;
         facing = 8;
@@ -44,15 +43,16 @@ public class Player extends Sprite {
 
         // Movement Animations
         this.playerAtlas = atlas;
-        forward = new Animation(1 / 2f, playerAtlas.findRegions("player_2_forward"));
-        backward = new Animation(1 / 2f, playerAtlas.findRegions("player_2_backward"));
-        left = new Animation(1 / 2f, playerAtlas.findRegions("player_2_left"));
-        right = new Animation(1 / 2f, playerAtlas.findRegions("player_2_right"));
+        forward = new Animation(1 / 2f, playerAtlas.findRegions("player_3_forward"));
+        backward = new Animation(1 / 2f, playerAtlas.findRegions("player_3_backward"));
+        left = new Animation(1 / 2f, playerAtlas.findRegions("player_3_left"));
+        right = new Animation(1 / 2f, playerAtlas.findRegions("player_3_right"));
+        burnt = new Animation(1 / 6f, playerAtlas.findRegions("player_3_burnt"));
         forward.setPlayMode(Animation.PlayMode.LOOP);
         backward.setPlayMode(Animation.PlayMode.LOOP);
         left.setPlayMode(Animation.PlayMode.LOOP);
         right.setPlayMode(Animation.PlayMode.LOOP);
-
+        burnt.setPlayMode(Animation.PlayMode.LOOP);
     }
 
 
@@ -60,7 +60,6 @@ public class Player extends Sprite {
         Vector2 vector2 = new Vector2();
         vector2.x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 4);
         vector2.y = collisionLayer.getTileHeight() / 4 + collisionLayer.getTileHeight() * (y + 1);
-
         return vector2;
     }
 
@@ -72,13 +71,11 @@ public class Player extends Sprite {
     }
 
     public void draw(Batch batch) {
-        // Gdx.app.log(isInvulnerable + "", "isVulnerable");
         if (isInvulnerable) {
             this.setAlpha(0.7f);
         } else
             this.setAlpha(1);
         super.draw(batch);
-
     }
 
     private void fireBullet() {
@@ -106,30 +103,24 @@ public class Player extends Sprite {
     }
 
     public void upPressed() {
-        facing = 8;
+        facing = 2;
     }
 
     public void downPressed() {
-        facing = 2;
-    }
-    public void animate(float delta){
-        animationTime += delta;
-        switch (facing){
-            case 2:
-                this.setRegion(forward.getKeyFrame(animationTime));
-                break;
-            case 4:
-                this.setRegion(left.getKeyFrame(animationTime));
-                break;
-            case 6:
-                this.setRegion(right.getKeyFrame(animationTime));
-                break;
-            case 8:
-                this.setRegion(backward.getKeyFrame(animationTime));
-                break;
-        }
+        facing = 8;
     }
 
+    public void animate(float delta) {
+        animationTime += delta;
+        setRegion(isDead ? burnt.getKeyFrame(animationTime) : facing == 4 ? left.getKeyFrame(animationTime) : facing == 6 ? right.getKeyFrame(animationTime) :
+                facing == 2 ? backward.getKeyFrame(animationTime) : forward.getKeyFrame(animationTime));
+    }
+
+    public void setIsDead(boolean isDead) {
+        this.isDead = isDead;
+    }
+
+    // shuriken
     public boolean isHit(float x, float y) {
         //bottom right
         float x_1 = getX() + getWidth() / 2;
@@ -138,17 +129,9 @@ public class Player extends Sprite {
         //top left
         float x_2 = getX() - getWidth() / 2;
         float y_2 = getY() + getHeight() / 2;
-//        Gdx.app.log("Player","X-Bounds: "+ x_2 + " - "+ x_1 + ((x - x_2)<= getWidth() && (x - x_2) >= 0));
-//        Gdx.app.log("Player","Y-Bounds: "+ y_1 + " - "+ y_2 + ((y - y_1)>= 0 && (y-y_1)<=getHeight()));
 
         return ((x - x_2) <= getWidth() && (x - x_2) >= 0) &&
                 ((y - y_1) >= 0 && (y - y_1) <= getHeight());
-
-    }
-
-    public void update(float delta) {
-
-
     }
 
     public TiledMapTileLayer getCollisionLayer() {
@@ -165,9 +148,7 @@ public class Player extends Sprite {
         return (lastHitTime - System.currentTimeMillis()) <= 3000l ? lastHitBy : null;
     }
 
-    public void freeze(){
-        this.freeze(2000l);
-    }
+    public void freeze() { this.freeze(2000l); }
 
     public void freeze(long millis) {
         // User can only be inflicted with one speed modifier at any time. Reduce complexity of code
@@ -216,11 +197,28 @@ public class Player extends Sprite {
 
     /**
      * Kills the player. Use only if this is the device's player. Probably only use this for testing.
+     *
      * @return a Vector2 of where the player will respawn
      */
     public Vector2 die() {
         // Commits sudoku
         if (!isInvulnerable) {
+            isDead = true;
+            final int xCoordinate = new Random().nextInt(getCollisionLayer().getWidth() - 8);
+            final int yCoordinate = new Random().nextInt(getCollisionLayer().getHeight() - 2);
+            new DelayedThread(1500l, this) {
+                @Override
+                public void run() {
+                    gameWorld.addPlayer(getPlayer());
+                    Jukebox.play("fire");
+                    getPlayer().setIsDead(true);
+                    super.run();
+                    Jukebox.stop("fire");
+                    gameWorld.removePlayer(getPlayer());
+                    getPlayer().setIsDead(false);
+                    spawn(xCoordinate, yCoordinate);
+                }
+            }.start();
             // Remove from render list,
             gameWorld.removePlayer(this);
 
@@ -233,22 +231,14 @@ public class Player extends Sprite {
                     isInvulnerable = false;
                 }
             }.start();
-            final int xCoordinate = new Random().nextInt(getCollisionLayer().getWidth() - 8);
-            final int yCoordinate = new Random().nextInt(getCollisionLayer().getHeight() - 2);
+
             // wait for 3 secs then choose a random location, add to render list
-            new DelayedThread(1000l) {
-                @Override
-                public void run() {
-                    super.run();
-                    spawn(xCoordinate, yCoordinate);
-                }
-            }.start();
 
             // TODO -update score based on last hit by field
             deaths++;
 //            Gdx.app.log("Player", "Player death count: " + deaths);
             return new Vector2(xCoordinate, yCoordinate);
-        }else{
+        } else {
             return null;
         }
     }
@@ -257,10 +247,11 @@ public class Player extends Sprite {
      * Kills player and forces the player to spawn at x,y. Use this in response to server message.
      * Choose the random coordinates locally and broadcast the coordinates, used by other clients to
      * call this method.
+     *
      * @param x
      * @param y
      */
-    public void dieAndSpawnAt(final int x, final int y){
+    public void dieAndSpawnAt(final int x, final int y) {
         if (!isInvulnerable) {
             // Remove from render list,
             gameWorld.removePlayer(this);
@@ -287,7 +278,7 @@ public class Player extends Sprite {
             // TODO -update score based on last hit by field
             deaths++;
 //            Gdx.app.log("Player", "Player death count: " + deaths);
-        }else{
+        } else {
 
         }
     }
@@ -313,25 +304,29 @@ public class Player extends Sprite {
     public void spawn() {
         int xCoordinate = new Random().nextInt(getCollisionLayer().getWidth() - 8);
         int yCoordinate = new Random().nextInt(getCollisionLayer().getHeight() - 2);
+        setPosition(setPlayerPosition(xCoordinate, yCoordinate).x, setPlayerPosition(xCoordinate, yCoordinate).y);
         Vector2 worldCoords = setPlayerPosition(xCoordinate, yCoordinate);
         setPosition(worldCoords.x, worldCoords.y);
 //        Gdx.app.log(getPlayerPosition().x + "", "getX()");
 //        Gdx.app.log(getPlayerPosition().y + "", "getY()");
         gameWorld.addPlayer(this);
+        isDead = false;
     }
 
     /**
      * Spawns a player at x, y. Specifically for server's use.
+     *
      * @param xCoordinate the x coordinate
      * @param yCoordinate the y coordinate
      */
-    public void spawn(int xCoordinate, int yCoordinate){
+    public void spawn(int xCoordinate, int yCoordinate) {
         Vector2 worldCoords = setPlayerPosition(xCoordinate, yCoordinate);
         setPosition(worldCoords.x, worldCoords.y);
         gameWorld.addPlayer(this);
+        isDead = false;
     }
 
-    public void addPowerUp(String powerUp){
+    public void addPowerUp(String powerUp) {
         powerUpList.add(powerUp);
     }
 
@@ -346,8 +341,7 @@ public class Player extends Sprite {
         return false;
     }
 
-    public ArrayList<String> getArraylist(){
+    public ArrayList<String> getArraylist() {
         return powerUpList;
     }
-
 }

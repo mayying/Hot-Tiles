@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.BurningTiles;
+import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.entities.powerups.Blackout;
 import com.mayying.tileMapGame.entities.powerups.FreezeMine;
 
@@ -43,10 +44,8 @@ public class Play implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map);
 
         camera = new OrthographicCamera();
-        //camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         camera.setToOrtho(false, V_WIDTH, V_HEIGHT);
 
-        // camera.setToOrtho(false, 1280, 720);
         viewport = new StretchViewport(1260, 700, camera);
         viewport.apply();
 
@@ -59,6 +58,8 @@ public class Play implements Screen {
             burningTiles[i] = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
             burningTiles[i].create();
         }
+
+        Jukebox.load("sounds/fire.mp3", "fire");
         // burningTiles = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
         // burningTiles.create();
         //  Gdx.input.setInputProcessor(new InputHandler(world.getPlayer()));
@@ -82,8 +83,6 @@ public class Play implements Screen {
         world.drawAndUpdate(renderer.getBatch());
 
         spawnNewTile += delta;
-//        Gdx.app.log("i", i + "");
-//        Gdx.app.log(GameScreenRightSideBar.timeLeft / 100.0f + "", " GameScreenRightSideBar.timeLeft / 100.0f");
         if (spawnNewTile >= Math.log10(0.02f * (SideBar.timeLeft + 10000))
                 && count < burningTiles.length) {
             spawnNewTile = 0;
@@ -91,26 +90,24 @@ public class Play implements Screen {
         }
 
         for (int i = 0; i < count; i++) {
-            //Gdx.app.log("count", count + "");
-            burningTiles[i].render(delta, 1);
+            burningTiles[i].render(delta);
         }
-//        Gdx.input.isKeyJustPressed()
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 
-                    new Blackout().use(null);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            new Blackout().use(null);
 
         }
         // Must make sure this is discrete
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-            Gdx.app.log("X","pressed");
+            Gdx.app.log("X", "pressed");
             Gdx.app.log("PowerUps", String.valueOf(world.getPlayer().getArraylist().size()));
-            for(String i:world.getPlayer().getArraylist()) {
-                if(i.equals("Mine")) {
+            for (String i : world.getPlayer().getArraylist()) {
+                if (i.equals("Mine")) {
                     new FreezeMine(new Sprite(new Texture("img/shuriken.png")),
-                    world.getPlayer(), (TiledMapTileLayer) map.getLayers().get(0)
-            ).use(null);
-                 world.getPlayer().getArraylist().remove(i);
-                 break;
+                            world.getPlayer(), (TiledMapTileLayer) map.getLayers().get(0)
+                    ).use(null);
+                    world.getPlayer().getArraylist().remove(i);
+                    break;
                 }
             }
         }
@@ -134,12 +131,10 @@ public class Play implements Screen {
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override

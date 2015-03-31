@@ -45,9 +45,9 @@ public class BurningTiles implements Collidable{
         }
     }
 
-    public void render(float delta, int delay) {
+    public void render(float delta) {
         // Gdx.app.log(count + "", "count");
-        if (count > 0.2f * delay) {
+        if (count > 0.2f) {
             currentAnimationFrame++;
             if (currentAnimationFrame == 1) {
                 // Gdx.app.log(elapsedSinceAnimation + "", "elapsedSinceANimation");
@@ -66,7 +66,6 @@ public class BurningTiles implements Collidable{
             count = 0.0f;
         }
         count += delta;
-        // Gdx.app.log(count + "", "count---------------------");
     }
 
     @Override
