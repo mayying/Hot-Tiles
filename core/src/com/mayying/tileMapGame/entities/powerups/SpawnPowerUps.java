@@ -7,6 +7,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.Player;
+import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
+import com.mayying.tileMapGame.entities.powerups.factory.PowerUpFactory;
 
 import java.util.Random;
 
@@ -18,20 +20,16 @@ public class SpawnPowerUps implements Collidable {
     private PowerUp powerUp;
     private GameWorld world;
     private TiledMapTileLayer tileLayer;
-    private float spawnTime;        // the time period powerup appear in map(3 s)
-    private float countTime;        // count time until random spawn time
-    private float randomSpawnTime;  // waiting time until sprite appears after creating sprite
+    private float spawnTime, countTime, randomSpawnTime;
     private int state = 0; // 0 - !created, 1 - created, 2 - drawn, 3 - clean up
     private Sprite sprite;          // powerup sprite
     private boolean powerUpIsPickedUp = false;
-    Vector2 position = new Vector2();
-    Vector2 coords = new Vector2(); // matrix coords
+    Vector2 position = new Vector2(), coords = new Vector2();
 
     public SpawnPowerUps(TiledMapTileLayer tileLayer, GameWorld world) {
         this.tileLayer = tileLayer;
         this.world = world;
         powerUpFactory = PowerUpFactory.getInstance();
-        // powerup stringID list
         sprite = new Sprite();
     }
 
@@ -53,7 +51,7 @@ public class SpawnPowerUps implements Collidable {
 
                 position.x = tileLayer.getTileWidth() / 2 - sprite.getWidth() / 2 + tileLayer.getTileWidth() * (coords.x + 4);
                 position.y = tileLayer.getTileHeight() / 4 + tileLayer.getTileHeight() * (coords.y + 1);
-                Gdx.app.log(powerUp.getName() + " position", coords.x + ", " + coords.y);
+//                Gdx.app.log(powerUp.getName() + " position", coords.x + ", " + coords.y);
                 sprite.setPosition(position.x, position.y);
                 spawnTime = 0;        // count until 3s
                 countTime = 0;
@@ -61,9 +59,9 @@ public class SpawnPowerUps implements Collidable {
                 break;
 
             case 1:
-                //created
+                // created
                 // check whether the sprite is ready to spawn/ be drawn
-                if (countTime < randomSpawnTime + 0.1 && countTime > randomSpawnTime - 0.1) {
+                if (countTime > randomSpawnTime) {
                     state++; //drawn
                 } else {
                     countTime += Gdx.graphics.getDeltaTime();
@@ -83,7 +81,6 @@ public class SpawnPowerUps implements Collidable {
                 collisionCheck();
                 break;
         }
-
     }
 
     @Override
@@ -114,7 +111,7 @@ public class SpawnPowerUps implements Collidable {
         return powerUp;
     }
 
-    public boolean isPowerUpPickedUp(){
+    public boolean isPowerUpPickedUp() {
         return powerUpIsPickedUp;
     }
 }

@@ -14,8 +14,8 @@ import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.Mine;
-import com.mayying.tileMapGame.entities.powerups.PowerUp;
 import com.mayying.tileMapGame.entities.powerups.SpawnPowerUps;
+import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 
 import java.util.ArrayList;
 import java.util.Vector;
