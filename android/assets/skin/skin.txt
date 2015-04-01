@@ -131,8 +131,8 @@ swapBtn
 swapImg
   rotate: false
   xy: 144, 1492
-  size: 90, 90
-  orig: 90, 90
+  size: 85, 85
+  orig: 85, 85
   offset: 0, 0
   index: -1
 touchKnob

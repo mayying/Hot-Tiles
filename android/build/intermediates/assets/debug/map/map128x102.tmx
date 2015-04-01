@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="10" height="7" tilewidth="128" tileheight="102" nextobjectid="1">
- <tileset firstgid="1" name="tiles" tilewidth="128" tileheight="102">
-  <image source="tiles128x102.png" width="128" height="102"/>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="10" height="7" tilewidth="128" tileheight="102" nextobjectid="31">
+ <tileset firstgid="1" name="tile" tilewidth="128" tileheight="102">
+  <image source="tile.png" width="256" height="108"/>
  </tileset>
- <layer name="Tile Layer 1" width="10" height="7">
+ <tileset firstgid="3" name="fire" tilewidth="128" tileheight="102">
+  <image source="fire2.png" width="512" height="102"/>
+  <tile id="1">
+   <properties>
+    <property name="fireframe" value="3"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="fireframe" value="2"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="fireframe" value="1"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Background" width="10" height="7">
   <data encoding="base64" compression="zlib">
-   eJxjZGBgYBzFGBgAJ+wARw==
+   eJxjZmBgYB4GmNoAAGu8AJc=
+  </data>
+ </layer>
+ <layer name="Foreground" width="10" height="7">
+  <data encoding="base64" compression="zlib">
+   eJxjYBhagBmKcYlTCwMADVQAQw==
   </data>
  </layer>
 </map>
