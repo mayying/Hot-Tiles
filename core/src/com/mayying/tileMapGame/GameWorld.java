@@ -316,7 +316,7 @@ public class GameWorld {
             p.setPosition(pos.x, pos.y);
         }
     }
-
+//asdasd
     public Player getDevicePlayer() {
         return devicePlayer;
     }
