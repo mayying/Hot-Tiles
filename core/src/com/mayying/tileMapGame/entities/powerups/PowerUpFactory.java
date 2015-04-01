@@ -33,3 +33,7 @@ public class PowerUpFactory {
 
 
 }
+
+class PowerUpPrototype {
+    public String filenameVector, filenameBtn, filename, name, description;
+}

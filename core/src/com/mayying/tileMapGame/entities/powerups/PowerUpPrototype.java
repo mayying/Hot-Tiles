@@ -5,6 +5,3 @@ package com.mayying.tileMapGame.entities.powerups;
  */
 
 // wrapper class for JSON
-public class PowerUpPrototype {
-    public String filenameVector, filenameBtn, filename, name, description;
-}
