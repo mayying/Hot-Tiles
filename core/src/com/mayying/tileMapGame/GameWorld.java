@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.entities.DirectionGestureDetector;
 import com.mayying.tileMapGame.entities.MyTouchpad;
 import com.mayying.tileMapGame.entities.Player;
+import com.mayying.tileMapGame.entities.ScoreBoard;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.Mine;
@@ -43,11 +44,15 @@ public class GameWorld {
     private static final ArrayList<Player> players = new ArrayList<Player>();
     private static boolean blackout = false;
     private int countX = 0, countY = 0;
+    private Player devicePlayer;
 
     public GameWorld(TiledMapTileLayer playableLayer) {
         playerAtlas = new TextureAtlas("img/player3.txt");
         player = new Player(playerAtlas, playableLayer, this);
         player.spawn();
+        devicePlayer = players.get(0);
+        ScoreBoard scoreBoard = ScoreBoard.getInstance();
+        scoreBoard.register(player);
         // TODO - create additional threads to manage the other player's interactions, positions etc
 
         TILE_WIDTH = playableLayer.getTileWidth();
@@ -208,16 +213,12 @@ public class GameWorld {
         return myTouchPad;
     }
 
-    /**
-     * @return Player of the current device.
-     */
-    public Player getPlayer() {
-        return player;
-    }
+
 
     public boolean pickUpPowerUp() {
         return spawnPowerUps.isPowerUpPickedUp();
     }
+
 
     public DirectionGestureDetector getDirectionGestureDetector() {
         return directionGestureDetector;
@@ -225,6 +226,13 @@ public class GameWorld {
 
     private void setPlayerBound() {
         playerBound = getPlayer().getBoundingRectangle();
+    }
+
+    /**
+     * @return Player of the current device.
+     */
+    public Player getPlayer() {
+        return player;
     }
 
     /**
@@ -307,5 +315,9 @@ public class GameWorld {
         if (p != null) {
             p.setPosition(pos.x, pos.y);
         }
+    }
+//asdasd
+    public Player getDevicePlayer() {
+        return devicePlayer;
     }
 }
