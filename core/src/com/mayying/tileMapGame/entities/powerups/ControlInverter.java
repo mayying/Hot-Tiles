@@ -1,5 +1,6 @@
 package com.mayying.tileMapGame.entities.powerups;
 
+import com.badlogic.gdx.Gdx;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.Player;
 
@@ -13,7 +14,10 @@ import com.mayying.tileMapGame.entities.Player;
 public class ControlInverter implements Usable {
     @Override
     public void use(Player[] players) {
-        for(int i = 0; i < players.length; i++)
-            players[i].invert();
+        Gdx.app.log("Disabled", "ControlInverter does nothing locally.");
+//        for(int i = 0; i < players.length; i++)
+        // TODO  - send Invert move
+//        GameWorld.getCurrentPlayer().invert();
+        GameWorld.getPlayer(0).invert();
     }
 }

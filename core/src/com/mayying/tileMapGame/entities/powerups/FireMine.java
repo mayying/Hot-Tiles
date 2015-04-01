@@ -15,6 +15,6 @@ public class FireMine extends Mine {
     @Override
     public void onCollisionDetected(Player hitPlayer) {
         super.onCollisionDetected(hitPlayer);
-        hitPlayer.die();
+        hitPlayer.burn(0);
     }
 }

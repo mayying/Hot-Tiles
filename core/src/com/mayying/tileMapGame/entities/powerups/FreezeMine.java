@@ -21,6 +21,7 @@ public class FreezeMine extends Mine {
     public void onCollisionDetected(Player hitPlayer) {
         super.onCollisionDetected(hitPlayer);
 //        Gdx.app.log("Freeze Mine","BLINGLINGLING");
-        hitPlayer.freeze(2000l);
+        // TODO - Send server move
+        hitPlayer.freeze(0);
     }
 }

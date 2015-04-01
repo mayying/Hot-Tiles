@@ -30,15 +30,6 @@ public class DelayedThread extends Thread {
 
     @Override
     public void run() {
-
-//        while(!isInterrupted() && System.currentTimeMillis() - start < delay) {
-//            try {
-//                sleep(100l);
-//            } catch (InterruptedException e) {
-//                Gdx.app.log("Delay Thread", "Interrupted");
-//                return;
-//            }
-//        }
         synchronized (this) {
             try {
                 wait(delay);
