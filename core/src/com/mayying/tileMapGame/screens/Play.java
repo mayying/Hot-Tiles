@@ -106,7 +106,7 @@ public class Play implements Screen {
                     new FreezeMine(new Sprite(new Texture("img/shuriken.png")),
                             world.getPlayer(), (TiledMapTileLayer) map.getLayers().get(0)
                     ).use(null);
-                    world.getPlayer().getPowerUpList().remove(i);
+                    world.getPlayer().removePowerUp(i);
                     break;
                 }
             }

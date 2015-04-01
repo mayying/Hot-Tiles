@@ -347,18 +347,18 @@ public class Player extends Sprite {
         powerUpList.add(powerUp);
     }
 
-    public int getPowerUpList() {
-        return powerUpList.size();
+    public void removePowerUp(String powerUp) {
+        powerUpList.remove(powerUp);
+    }
+
+    public ArrayList<String> getPowerUpList() {
+        return new ArrayList<>(powerUpList);
     }
 
     public boolean canPickPowerUp() {
-        if (getPowerUpList() < 2) {
+        if (getPowerUpList().size() < 2) {
             return true;
         }
         return false;
-    }
-
-    public ArrayList<String> getArraylist() {
-        return powerUpList;
     }
 }
