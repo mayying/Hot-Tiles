@@ -1,0 +1,31 @@
+Mines
+1) Player uses Mine power up
+2) Power up is placed locally, only player's device knows
+3) Device checks for collision constantly
+4) Device informs server of any collisions with the ID of the current player (for last hit)
+5) Opp Device calls freeze on its player if a message is received
+
+Blackout
+1) Player uses Blackout power up
+2) Device informs server of the use, sending in the ID of the current player
+3) Nothing happens locally but other players experience TNB Blackout
+
+Confusion
+Similar to Blackout
+
+Shield (TODO)
+1) Player uses Shield power up
+2) Device informs server of the use, sending in ID of the player
+3) Other devices run player.shield()
+
+BurningTiles
+1) Device only checks for itself
+2) Device updates itself if any player dies from fire. (Animation only)
+
+
+Notes:
+die() method is used if the player dies locally. A vector2 of the player's respawn coordinates is broadcast
+over the server. The device then broadcasts a message with the vector2, as well as score update.
+
+dieAndRespawn() is called when a device receives the broadcast that someone has died, and will respawn elsewhere.
+Only called by the MessageParser
