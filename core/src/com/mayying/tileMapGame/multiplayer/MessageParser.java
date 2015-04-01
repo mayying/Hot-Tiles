@@ -63,6 +63,7 @@ public class MessageParser {
                         GameWorld.getPlayer(Integer.valueOf(message[3])).dieAndSpawnAt(Integer.valueOf(message[3]), Integer.valueOf(message[4]));
                         break;
                     case "fireMine":
+                        // Get player and burn, logic similar to freeze mine
                         break;
                 }
                 break;
