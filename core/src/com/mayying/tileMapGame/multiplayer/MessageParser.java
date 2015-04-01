@@ -53,7 +53,7 @@ public class MessageParser {
                     case "invert":
                         // Format: "effect","invert", [user] (for last hit purpose)
                         // Invert player's controls. Check for device's player's index if necessary
-                        world.getPlayer().invert();
+                        world.getDevicePlayer().invert();
                         world.getDevicePlayer().setLastHitBy(GameWorld.getPlayer(Integer.valueOf(message[3])));
                         break;
 
