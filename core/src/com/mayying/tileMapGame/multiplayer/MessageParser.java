@@ -65,6 +65,9 @@ public class MessageParser {
                     case "fireMine":
                         // Get player and burn, logic similar to freeze mine
                         break;
+                    case "shield":
+                        //for animation
+                        break;
                 }
                 break;
             case "score":

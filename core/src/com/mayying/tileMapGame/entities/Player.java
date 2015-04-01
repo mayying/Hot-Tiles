@@ -29,7 +29,7 @@ public class Player extends Sprite {
     public ArrayList<String> powerUpList;
     private float speed = 1, animationTime = 0;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
-    private int facing, kills, deaths, listIndex = 0;
+    private int facing, kills, deaths;
     private boolean isFrozen = false, isInverted = false;// for freezing animation and stuff?
     public boolean isInvulnerable = false, isDead = false;
 
@@ -39,7 +39,7 @@ public class Player extends Sprite {
         this.collisionLayer = collisionLayer;
         this.gameWorld = gameWorld;
         facing = 8;
-        powerUpList = new ArrayList<>();
+        powerUpList = new ArrayList<String>();
 
         // Movement Animations
         this.playerAtlas = atlas;
@@ -148,7 +148,14 @@ public class Player extends Sprite {
         return (lastHitTime - System.currentTimeMillis()) <= 3000l ? lastHitBy : null;
     }
 
-    public void freeze() {
+    public void burn(int idx){
+        // For fire mine, mainly to set last hit
+        setLastHitBy(GameWorld.getPlayer(idx));
+        die();
+    }
+
+    public void freeze(int idx) {
+        setLastHitBy(GameWorld.getPlayer(idx)); //static cause i'm lazy
         this.freeze(2000l);
     }
 
@@ -173,10 +180,8 @@ public class Player extends Sprite {
     }
 
     public void invert() {
+        // Last hit is set when called by message parser
         if (speed == 1 && !isInvulnerable) {
-            //TODO - last hit logic
-//        setLastHitBy();
-            // other freezing animations?
             setSpeed(-1);
             new DelayedThread(2000l) {
                 @Override
@@ -198,7 +203,8 @@ public class Player extends Sprite {
     }
 
     /**
-     * Kills the player. Use only if this is the device's player. Probably only use this for testing.
+     * Kills the player. Use only if this is the device's player. Used on player of current device.
+     * Update the scoreboard, then sends the Vector2 spawn coordinates and updated score over the server.
      *
      * @return a Vector2 of where the player will respawn
      */
@@ -213,7 +219,6 @@ public class Player extends Sprite {
                 public void run() {
                     gameWorld.addPlayer(getPlayer());
                     Jukebox.play("fire");
-
                     super.run();
                     Jukebox.stop("fire");
                     gameWorld.removePlayer(getPlayer());
@@ -234,16 +239,26 @@ public class Player extends Sprite {
                 }
             }.start();
 
-            // wait for 3 secs then choose a random location, add to render list
-
-            // TODO -update score based on last hit by field
-            deaths++;
+            // Update score (local + server)
+            updateScore();
+            // TODO - Update score in other devices
 //            Gdx.app.log("Player", "Player death count: " + deaths);
             return new Vector2(xCoordinate, yCoordinate);
         } else {
             return null;
         }
     }
+
+    private void updateScore() {
+        Player lastHit = getLastHitBy();
+        ScoreBoard scoreBoard = ScoreBoard.getInstance();
+        if (lastHit != null) {
+            scoreBoard.incrementKills(1);
+        }
+        scoreBoard.incrementDeath(0);
+    }
+
+
 
     /**
      * Kills player and forces the player to spawn at x,y. Use this in response to server message.
@@ -329,32 +344,21 @@ public class Player extends Sprite {
     }
 
     public void addPowerUp(String powerUp) {
-        if (powerUpList.isEmpty())
-            powerUpList.add(powerUp);
-        else {
-            for (int i = 0; i < powerUpList.size(); i++) {
-                Gdx.app.log(i + "", i + "string here ");
-                if (powerUpList.get(i) == null) {
-                    powerUpList.add(i, powerUp);
-                    Gdx.app.log(powerUpList.get(i) + "", powerUpList.get(i) + "string here ");
-                    break;
-                }
-            }
-        }
+        powerUpList.add(powerUp);
     }
 
-    public void removePowerUp(String powerUp) {
-        powerUpList.remove(powerUp);
-    }
-
-    public ArrayList<String> getPowerUpList() {
-        return new ArrayList<>(powerUpList);
+    public int getPowerUpList() {
+        return powerUpList.size();
     }
 
     public boolean canPickPowerUp() {
-        if (getPowerUpList().size() < 3) {
+        if (getPowerUpList() < 2) {
             return true;
         }
         return false;
+    }
+
+    public ArrayList<String> getArraylist() {
+        return powerUpList;
     }
 }
