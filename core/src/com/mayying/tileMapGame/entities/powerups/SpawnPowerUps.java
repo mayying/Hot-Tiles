@@ -93,8 +93,8 @@ public class SpawnPowerUps implements Collidable {
     public void onCollisionDetected(Player player) {
 //        Gdx.app.log("Player", "Player die from fire Q_Q");
         if (player.canPickPowerUp()) {
-            powerUpIsPickedUp = true;
             player.addPowerUp(powerUp.getName());
+            powerUpIsPickedUp = true;
             state = 0; // picked up, restart state
             Gdx.app.log("Powerup", powerUp.getName() + " picked up.");
         }
@@ -110,7 +110,6 @@ public class SpawnPowerUps implements Collidable {
         if (playerPos.equals(this.coords)) {
             onCollisionDetected(player);
         }
-
     }
 
     public PowerUp getPowerUp() {

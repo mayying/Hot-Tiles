@@ -39,10 +39,9 @@ public class SideBar {
     private OrthographicCamera hudCamera;
     private final Rectangle screenBound;
     private LabelStyle labelStyle;
-    //  public static Touchpad touchpad;
+    private Boolean[] containsPU;
 
     volatile static int timeLeft = 1;
-    private int numOfPowerUp = 0;
 
     private float gameTime = 1 * 60 + 30;
     private int min, sec;
@@ -56,6 +55,7 @@ public class SideBar {
                 0, GameWorld.TILE_WIDTH * 3,
                 GameWorld.TILE_HEIGHT * 10);
         labelStyle = new Label.LabelStyle();
+        containsPU = new Boolean[2];
     }
 
     public void create() {
@@ -104,7 +104,37 @@ public class SideBar {
         world.getMyTouchPad().getTouchPad().setPosition(0, 0);
 
         buttonA = new ImageButton(skin);
+        buttonA.setDisabled(true);
+        buttonA.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                buttonA.setDisabled(true);
+                buttonA.setChecked(true);
+//                world.getPlayer().spacePressed();
+            }
+        });
         buttonB = new ImageButton(skin);
+        buttonB.setDisabled(true);
+        buttonB.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                buttonB.setDisabled(true);
+                buttonB.setChecked(true);
+//                world.getPlayer().spacePressed();
+            }
+        });
 
         Table subTable = new Table();
         subTable.add(buttonA).right().expandX().expandY().width(140).height(140).center().row();
@@ -131,24 +161,6 @@ public class SideBar {
 
         stage.addActor(table);
 
-        buttonA.addListener(new InputListener() {
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if(!buttonA.isDisabled()) {
-                    buttonA.setDisabled(true);
-                    buttonA.setChecked(true);
-                    numOfPowerUp--;
-                }
-//                world.getPlayer().spacePressed();
-            }
-        });
 
     }
 
@@ -162,7 +174,6 @@ public class SideBar {
         timer.setText("Time Left\n" + String.format("%02d : %02d", minutes, seconds));
 //        Gdx.app.log(world.getPlayer().canPickPowerUp() + " canPickPowerUp() ", world.pickUpPowerUp() + " pickUpPowerUp()");
         if (world.pickUpPowerUp()) {
-            numOfPowerUp++;
             descriptionText.setText(world.getPowerUp().getName() + "\n" + world.getPowerUp().getDescription());
             labelStyle.background = skin.getDrawable(world.getPowerUp().getFilename());
             labelStyle.font = new BitmapFont(Gdx.files.internal("font/black.fnt"));
@@ -170,20 +181,21 @@ public class SideBar {
 
             ImageButtonStyle imageButtonStyle = new ImageButtonStyle();
             imageButtonStyle.imageUp = skin.getDrawable(world.getPowerUp().getFilenameBtn());
-            Gdx.app.log(numOfPowerUp + "", world.getPowerUp().getFilenameBtn() + "");
+            Gdx.app.log("", world.getPowerUp().getFilenameBtn() + "");
             imageButtonStyle.imageChecked = skin.getDrawable("skinRound140x140");
-            Gdx.app.log(numOfPowerUp + " numOfPowerUp ", "");
-            if (numOfPowerUp == 1) {
-                Gdx.app.log(buttonA.isDisabled()
-                        + " buttonA.isDisabled()", buttonA.isChecked() + " buttonA.isChecked()");
+            Gdx.app.log(" sidebar ", "");
+
+            if (buttonA.isDisabled()) {
                 buttonA.setDisabled(false);
                 buttonA.setChecked(false);
                 buttonA.setStyle(imageButtonStyle);
 
-            } else if (numOfPowerUp == 2) {
+            } else if (buttonB.isDisabled()) {
+                buttonB.setDisabled(false);
+                buttonB.setChecked(false);
                 buttonB.setStyle(imageButtonStyle);
-            }
 
+            }
 
         }
     }
