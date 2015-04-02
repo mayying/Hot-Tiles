@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class Jukebox {
     private static HashMap<String, Sound> sounds;
-
+    private static boolean mute = false;
     static {
         sounds = new HashMap<String, Sound>();
     }
@@ -21,9 +21,13 @@ public class Jukebox {
     }
 
     public static void play(String name) {
-        sounds.get(name).play();
+        if(!mute) {
+            sounds.get(name).play();
+        }
     }
-
+    public static void toggleMute(){
+        mute = !mute;
+    }
     public static void loop(String name) {
         sounds.get(name).loop();
     }

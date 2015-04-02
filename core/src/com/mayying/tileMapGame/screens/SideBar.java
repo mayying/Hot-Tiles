@@ -22,6 +22,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.GameWorld;
+import com.mayying.tileMapGame.entities.Jukebox;
+import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 
 
 /**
@@ -84,6 +86,13 @@ public class SideBar {
         timer.setAlignment(Align.center);
 
         sound = new ImageButton(skin, "sound");
+
+        sound.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Jukebox.toggleMute();
+            }
+        });
         question = new ImageButton(skin, "question");
         close = new ImageButton(skin, "close");
         close.addListener(new ClickListener() {
@@ -116,8 +125,11 @@ public class SideBar {
                 Gdx.app.log("what", "ever");
                 buttonA.setDisabled(true);
                 buttonA.setChecked(true);
-                world.getDevicePlayer().getPowerUpList().get(0).action();
-                world.getDevicePlayer().removePowerUp(world.getDevicePlayer().getPowerUpList().get(0));
+                PowerUp p = world.getDevicePlayer().getPowerUp(0);
+                if(p!=null) {
+                    p.action();
+                    world.getDevicePlayer().removePowerUp(0);
+                }
             }
         });
         buttonB = new ImageButton(skin);
@@ -133,8 +145,11 @@ public class SideBar {
                 Gdx.app.log("what", "ever232323");
                 buttonB.setDisabled(true);
                 buttonB.setChecked(true);
-                world.getDevicePlayer().getPowerUpList().get(1).action();
-                world.getDevicePlayer().removePowerUp(world.getDevicePlayer().getPowerUpList().get(1));
+                PowerUp p = world.getDevicePlayer().getPowerUp(1);
+                if(p!=null) {
+                    p.action();
+                    world.getDevicePlayer().removePowerUp(1);
+                }
             }
         });
 

@@ -14,6 +14,7 @@ import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -27,7 +28,7 @@ public class Player extends Sprite {
     private final TextureAtlas playerAtlas;
     private Animation forward, backward, left, right, burnt;
 
-    public ArrayList<PowerUp> powerUpList;
+    public PowerUp[] powerUpList = new PowerUp[2];
     private float speed = 1, animationTime = 0;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
     private int facing, kills, deaths;
@@ -40,9 +41,6 @@ public class Player extends Sprite {
         this.collisionLayer = collisionLayer;
         this.gameWorld = gameWorld;
         facing = 8;
-        powerUpList = new ArrayList<PowerUp>();
-        powerUpList.add(null);
-        powerUpList.add(null);
 
         // Movement Animations
         this.playerAtlas = atlas;
@@ -347,32 +345,34 @@ public class Player extends Sprite {
 
 
     public void addPowerUp(PowerUp powerUp) {
-        for (PowerUp p : powerUpList) {
-            if (p == null) {
-                powerUpList.add(powerUp);
+        for (int i=0; i<powerUpList.length; i++) {
+            if (powerUpList[i] == null) {
+                powerUpList[i] = powerUp;
                 break;
             }
         }
 
-        Gdx.app.log(powerUpList.toString() + "PLayer", powerUp.getName() + " powerUp");
+        Gdx.app.log("Player", "Picked up: "+powerUp.getName() + " powerUp");
+        Gdx.app.log("Player",Arrays.toString(powerUpList) + "PLayer");
 
     }
 
-    public void removePowerUp(PowerUp powerUp) {
-        int pos = powerUpList.indexOf(powerUp);
-        powerUpList.remove(powerUp);
-        powerUpList.add(pos, null);
-        Gdx.app.log("powerUp", powerUp.getName() + "powerup");
+    public void removePowerUp(int idx) {
+        Gdx.app.log("Player", "Removed: "+powerUpList[idx].getName());
+        powerUpList[idx] = null;
     }
 
 
-    public ArrayList<PowerUp> getPowerUpList() {
-        return new ArrayList<>(powerUpList);
+    public PowerUp getPowerUp(int idx){
+        return powerUpList[idx];
     }
+//    public ArrayList<PowerUp> getPowerUpList() {
+//        return new ArrayList<>(powerUpList);
+//    }
 
     public boolean canPickPowerUp() {
-        for (PowerUp p : powerUpList) {
-            if (p == null)
+        for (int i=0; i<powerUpList.length; i++) {
+            if (powerUpList[i] == null)
                 return true;
         }
         return false;
