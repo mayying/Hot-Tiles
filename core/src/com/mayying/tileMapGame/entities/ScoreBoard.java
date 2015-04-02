@@ -1,7 +1,5 @@
 package com.mayying.tileMapGame.entities;
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -47,7 +45,7 @@ public class ScoreBoard {
     // Updates positions/sorting in scoreboard
     private void updateScores(){
         Collections.sort(scores);
-        Gdx.app.log("Scores",scores.toString());
+//        Gdx.app.log("Scores",scores.toString());
     }
 
     private class Score implements  Comparable{

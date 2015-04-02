@@ -1,12 +1,9 @@
 package com.mayying.tileMapGame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -15,8 +12,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.BurningTiles;
 import com.mayying.tileMapGame.entities.Jukebox;
-import com.mayying.tileMapGame.entities.powerups.Blackout;
-import com.mayying.tileMapGame.entities.powerups.FreezeMine;
 
 /**
  * Created by May Ying on 24/2/2015.
@@ -93,30 +88,30 @@ public class Play implements Screen {
             burningTiles[i].render(delta);
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            new Blackout().use(null);
-
-        }
-        // Must make sure this is discrete
-        if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-            Gdx.app.log("X", "pressed");
-
-            for (String i : world.getPlayer().getPowerUpList()) {
-                if (i.equals("Mine")) {
-                    new FreezeMine(new Sprite(new Texture("img/shuriken.png")),
-                            world.getPlayer(), (TiledMapTileLayer) map.getLayers().get(0)
-                    ).use(null);
-                    world.getPlayer().removePowerUp(i);
-                    break;
-                }
-            }
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
-//            GameWorld.getPlayer().die();
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
-//            GameWorld.getPlayer().shield();
-        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+//            new Blackout().use(null);
+//
+//        }
+//        // Must make sure this is discrete
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+//            Gdx.app.log("X", "pressed");
+//
+//            for (String i : world.getPlayer().getPowerUpList()) {
+//                if (i.equals("Mine")) {
+//                    new FreezeMine(new Sprite(new Texture("img/shuriken.png")),
+//                            world.getPlayer(), (TiledMapTileLayer) map.getLayers().get(0)
+//                    ).use(null);
+//                    world.getPlayer().removePowerUp(i);
+//                    break;
+//                }
+//            }
+//        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+////            GameWorld.getPlayer().die();
+//        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
+////            GameWorld.getPlayer().shield();
+//        }
 
         renderer.getBatch().end();
         rSideBar.render(delta);

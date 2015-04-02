@@ -40,6 +40,7 @@ public class SideBar {
     private final Rectangle screenBound;
     private LabelStyle labelStyle;
     private Boolean[] containsPU;
+    private String powerUpName;
 
     volatile static int timeLeft = 1;
 
@@ -108,31 +109,32 @@ public class SideBar {
         buttonA.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-
                 return true;
             }
-
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.log("what", "ever");
                 buttonA.setDisabled(true);
                 buttonA.setChecked(true);
-//                world.getPlayer().spacePressed();
+                world.getDevicePlayer().getPowerUpList().get(0).action();
+                world.getDevicePlayer().removePowerUp(world.getDevicePlayer().getPowerUpList().get(0));
             }
         });
         buttonB = new ImageButton(skin);
         buttonB.setDisabled(true);
         buttonB.addListener(new InputListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-
+              public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.log("what", "ever232323");
                 buttonB.setDisabled(true);
                 buttonB.setChecked(true);
-//                world.getPlayer().spacePressed();
+                world.getDevicePlayer().getPowerUpList().get(1).action();
+                world.getDevicePlayer().removePowerUp(world.getDevicePlayer().getPowerUpList().get(1));
             }
         });
 
@@ -174,7 +176,8 @@ public class SideBar {
         timer.setText("Time Left\n" + String.format("%02d : %02d", minutes, seconds));
 //        Gdx.app.log(world.getPlayer().canPickPowerUp() + " canPickPowerUp() ", world.pickUpPowerUp() + " pickUpPowerUp()");
         if (world.pickUpPowerUp()) {
-            descriptionText.setText(world.getPowerUp().getName() + "\n" + world.getPowerUp().getDescription());
+            powerUpName = world.getPowerUp().getName();
+            descriptionText.setText(powerUpName + "\n" + world.getPowerUp().getDescription());
             labelStyle.background = skin.getDrawable(world.getPowerUp().getFilename());
             labelStyle.font = new BitmapFont(Gdx.files.internal("font/black.fnt"));
             descriptionImg.setStyle(labelStyle);

@@ -1,6 +1,7 @@
 package com.mayying.tileMapGame.entities.powerups;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.mayying.tileMapGame.entities.Player;
@@ -13,8 +14,10 @@ import com.mayying.tileMapGame.entities.Player;
  * Mine that freezes people in place for a few seconds
  */
 public class FreezeMine extends Mine {
-    public FreezeMine(Sprite sprite, Player player, TiledMapTileLayer collisionLayer){
-        super(sprite,player,collisionLayer);
+
+    public FreezeMine(Player player, TiledMapTileLayer collisionLayer){
+        super(new Sprite(new Texture(Gdx.files.internal("skin/freezemineImg.png"))),player,collisionLayer);
+
     }
 
     @Override

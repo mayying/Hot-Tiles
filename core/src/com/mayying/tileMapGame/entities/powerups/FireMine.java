@@ -1,5 +1,7 @@
 package com.mayying.tileMapGame.entities.powerups;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.mayying.tileMapGame.entities.Player;
@@ -8,8 +10,8 @@ import com.mayying.tileMapGame.entities.Player;
  * Created by User on 31/3/15.
  */
 public class FireMine extends Mine {
-    public FireMine(Sprite sprite, Player player, TiledMapTileLayer collisionLayer){
-        super(sprite,player,collisionLayer);
+    public FireMine(Player player, TiledMapTileLayer collisionLayer) {
+        super(new Sprite(new Texture(Gdx.files.internal("img/shuriken.png"))), player, collisionLayer);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.mayying.tileMapGame.entities.powerups.factory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
+import com.mayying.tileMapGame.GameWorld;
 
 import java.util.ArrayList;
 
@@ -11,23 +12,27 @@ import java.util.ArrayList;
 public class PowerUpFactory {
     private ArrayList<PowerUpPrototype> powerups;
     private static PowerUpFactory powerUpFactory = null;
+    private GameWorld world;
+
 
     // Hidden Constructor
     private PowerUpFactory() {
     }
 
-    public static PowerUpFactory getInstance() {
+    public static PowerUpFactory getInstance(GameWorld world) {
+
         if (PowerUpFactory.powerUpFactory == null) {
             Json json = new Json();
             json.setElementType(PowerUpFactory.class, "powerups", PowerUpPrototype.class);
             powerUpFactory = json.fromJson(PowerUpFactory.class, Gdx.files.internal("powerups/powerups.json"));
+            powerUpFactory.world = world;
         }
         return powerUpFactory;
     }
 
     public PowerUp createPowerUp(int id) {
         PowerUpPrototype powerUpPrototype = powerups.get(id);
-        PowerUp powerUp = new PowerUp(powerUpPrototype.filenameVector, powerUpPrototype.filenameBtn, powerUpPrototype.filename, powerUpPrototype.name, powerUpPrototype.description);
+        PowerUp powerUp = new PowerUp(world, powerUpPrototype.filenameVector, powerUpPrototype.filenameBtn, powerUpPrototype.filename, powerUpPrototype.name, powerUpPrototype.description);
         return powerUp;
     }
 

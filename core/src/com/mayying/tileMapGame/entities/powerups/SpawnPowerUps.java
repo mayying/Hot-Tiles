@@ -1,7 +1,6 @@
 package com.mayying.tileMapGame.entities.powerups;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -31,7 +30,7 @@ public class SpawnPowerUps implements Collidable {
     public SpawnPowerUps(TiledMapTileLayer tileLayer, GameWorld world) {
         this.tileLayer = tileLayer;
         this.world = world;
-        powerUpFactory = PowerUpFactory.getInstance();
+        powerUpFactory = PowerUpFactory.getInstance(world);
         // powerup stringID list
 //        stringID = Arrays.asList("FireMine","FreezeMine","Invulnerability","ControlInverter","Swap","Blackout");
         spawnRNG = new Random();
@@ -93,7 +92,7 @@ public class SpawnPowerUps implements Collidable {
     public void onCollisionDetected(Player player) {
 //        Gdx.app.log("Player", "Player die from fire Q_Q");
         if (player.canPickPowerUp()) {
-            player.addPowerUp(powerUp.getName());
+            player.addPowerUp(powerUp);
             powerUpIsPickedUp = true;
             state = 0; // picked up, restart state
             Gdx.app.log("Powerup", powerUp.getName() + " picked up.");

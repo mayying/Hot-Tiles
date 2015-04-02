@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
+import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,7 +27,7 @@ public class Player extends Sprite {
     private final TextureAtlas playerAtlas;
     private Animation forward, backward, left, right, burnt;
 
-    public ArrayList<String> powerUpList;
+    public ArrayList<PowerUp> powerUpList;
     private float speed = 1, animationTime = 0;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
     private int facing, kills, deaths;
@@ -39,7 +40,9 @@ public class Player extends Sprite {
         this.collisionLayer = collisionLayer;
         this.gameWorld = gameWorld;
         facing = 8;
-        powerUpList = new ArrayList<String>();
+        powerUpList = new ArrayList<PowerUp>();
+        powerUpList.add(null);
+        powerUpList.add(null);
 
         // Movement Animations
         this.playerAtlas = atlas;
@@ -148,7 +151,7 @@ public class Player extends Sprite {
         return (lastHitTime - System.currentTimeMillis()) <= 3000l ? lastHitBy : null;
     }
 
-    public void burn(int idx){
+    public void burn(int idx) {
         // For fire mine, mainly to set last hit
         setLastHitBy(GameWorld.getPlayer(idx));
         die();
@@ -259,7 +262,6 @@ public class Player extends Sprite {
     }
 
 
-
     /**
      * Kills player and forces the player to spawn at x,y. Use this in response to server message.
      * Choose the random coordinates locally and broadcast the coordinates, used by other clients to
@@ -343,21 +345,35 @@ public class Player extends Sprite {
         isDead = false;
     }
 
-    public void addPowerUp(String powerUp) {
-        powerUpList.add(powerUp);
+
+    public void addPowerUp(PowerUp powerUp) {
+        for (PowerUp p : powerUpList) {
+            if (p == null) {
+                powerUpList.add(powerUp);
+                break;
+            }
+        }
+
+        Gdx.app.log(powerUpList.toString() + "PLayer", powerUp.getName() + " powerUp");
+
     }
 
-    public void removePowerUp(String powerUp) {
+    public void removePowerUp(PowerUp powerUp) {
+        int pos = powerUpList.indexOf(powerUp);
         powerUpList.remove(powerUp);
+        powerUpList.add(pos, null);
+        Gdx.app.log("powerUp", powerUp.getName() + "powerup");
     }
 
-    public ArrayList<String> getPowerUpList() {
+
+    public ArrayList<PowerUp> getPowerUpList() {
         return new ArrayList<>(powerUpList);
     }
 
     public boolean canPickPowerUp() {
-        if (getPowerUpList().size() < 2) {
-            return true;
+        for (PowerUp p : powerUpList) {
+            if (p == null)
+                return true;
         }
         return false;
     }
