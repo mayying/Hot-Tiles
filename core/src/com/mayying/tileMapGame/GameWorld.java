@@ -11,7 +11,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.entities.DirectionGestureDetector;
 import com.mayying.tileMapGame.entities.MyTouchpad;
 import com.mayying.tileMapGame.entities.Player;
-import com.mayying.tileMapGame.entities.ScoreBoard;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.Mine;
@@ -20,6 +19,8 @@ import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 
 import java.util.ArrayList;
 import java.util.Vector;
+
+//import com.mayying.tileMapGame.entities.ScoreBoard;
 
 /**
  * Created by Luccan on 2/3/2015.
@@ -51,8 +52,8 @@ public class GameWorld {
         player = new Player(playerAtlas, playableLayer, this);
         player.spawn();
         devicePlayer = players.get(0);
-        ScoreBoard scoreBoard = ScoreBoard.getInstance();
-        scoreBoard.register(player);
+//        ScoreBoard scoreBoard = ScoreBoard.getInstance();
+//        scoreBoard.register(player);
         // TODO - create additional threads to manage the other player's interactions, positions etc
 
         TILE_WIDTH = playableLayer.getTileWidth();
@@ -144,12 +145,13 @@ public class GameWorld {
 
 
         if (blackout) {
-            //TODO Scale according to screen size.
             // This causes Player object to disappear for some reason
+
             ShapeRenderer shapeRenderer = new ShapeRenderer();
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix()); ;
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(new Color(Color.BLACK));
-            shapeRenderer.rect(TILE_WIDTH * 4 + 5, TILE_HEIGHT + 5, TILE_WIDTH * 10 + 10, TILE_HEIGHT * 8 + 5);
+            shapeRenderer.rect(TILE_WIDTH * 4, TILE_HEIGHT + .5f, TILE_WIDTH * 10, TILE_HEIGHT * 8 );
 
             shapeRenderer.end();
         }

@@ -3,7 +3,7 @@ package com.mayying.tileMapGame.multiplayer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.GameWorld;
-import com.mayying.tileMapGame.entities.ScoreBoard;
+//import com.mayying.tileMapGame.entities.ScoreBoard;
 
 /**
  * Created by User on 28/3/15.
@@ -74,9 +74,9 @@ public class MessageParser {
                 //format of "score",playerIdx,["k"/"d"]
                 // increments k or d accordingly
                 if(message[2].equals("k")) {
-                    ScoreBoard.getInstance().incrementKills(Integer.valueOf(message[1]));
+//                    ScoreBoard.getInstance().incrementKills(Integer.valueOf(message[1]));
                 }else if(message[2].equals("d")){
-                    ScoreBoard.getInstance().incrementDeath(Integer.valueOf(message[1]));
+//                    ScoreBoard.getInstance().incrementDeath(Integer.valueOf(message[1]));
                 }
 
             default:

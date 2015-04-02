@@ -13,8 +13,6 @@ import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -242,7 +240,7 @@ public class Player extends Sprite {
             }.start();
 
             // Update score (local + server)
-            updateScore();
+//            updateScore();
             // TODO - Update score in other devices
 //            Gdx.app.log("Player", "Player death count: " + deaths);
             return new Vector2(xCoordinate, yCoordinate);
@@ -251,14 +249,14 @@ public class Player extends Sprite {
         }
     }
 
-    private void updateScore() {
-        Player lastHit = getLastHitBy();
-        ScoreBoard scoreBoard = ScoreBoard.getInstance();
-        if (lastHit != null) {
-            scoreBoard.incrementKills(1);
-        }
-        scoreBoard.incrementDeath(0);
-    }
+//    private void updateScore() {
+//        Player lastHit = getLastHitBy();
+//        ScoreBoard scoreBoard = ScoreBoard.getInstance();
+//        if (lastHit != null) {
+//            scoreBoard.incrementKills(1);
+//        }
+//        scoreBoard.incrementDeath(0);
+//    }
 
 
     /**
