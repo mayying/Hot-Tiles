@@ -182,6 +182,7 @@ public class Player extends Sprite {
 
     public void invert() {
         // Last hit is set when called by message parser
+        Gdx.app.log("Player", "player inverted");
         if (speed == 1 && !isInvulnerable) {
             setSpeed(-1);
             new DelayedThread(2000l) {
@@ -353,7 +354,7 @@ public class Player extends Sprite {
         }
 
         Gdx.app.log("Player", "Picked up: "+powerUp.getName() + " powerUp");
-        Gdx.app.log("Player",Arrays.toString(powerUpList) + "PLayer");
+//        Gdx.app.log("Player",Arrays.toString(powerUpList) + "PLayer");
 
     }
 

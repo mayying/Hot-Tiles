@@ -39,9 +39,9 @@ public class SideBar {
     private GameWorld world;
     private ImageButton buttonA, buttonB, sound, question, close;
     private OrthographicCamera hudCamera;
-    private final Rectangle screenBound;
+//    private final Rectangle screenBound;
     private LabelStyle labelStyle;
-    private Boolean[] containsPU;
+//    private Boolean[] containsPU;
     private String powerUpName;
 
     volatile static int timeLeft = 1;
@@ -54,11 +54,11 @@ public class SideBar {
         hudCamera = new OrthographicCamera();
         min = 1;
         sec = 30;
-        screenBound = new Rectangle(GameWorld.screenBound.getX() + GameWorld.screenBound.getWidth() + GameWorld.TILE_WIDTH,
-                0, GameWorld.TILE_WIDTH * 3,
-                GameWorld.TILE_HEIGHT * 10);
+//        screenBound = new Rectangle(GameWorld.screenBound.getX() + GameWorld.screenBound.getWidth() + GameWorld.TILE_WIDTH,
+//                0, GameWorld.TILE_WIDTH * 3,
+//                GameWorld.TILE_HEIGHT * 10);
         labelStyle = new Label.LabelStyle();
-        containsPU = new Boolean[2];
+//        containsPU = new Boolean[2];
     }
 
     public void create() {
@@ -122,7 +122,6 @@ public class SideBar {
             }
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("what", "ever");
                 buttonA.setDisabled(true);
                 buttonA.setChecked(true);
                 PowerUp p = world.getDevicePlayer().getPowerUp(0);
@@ -142,7 +141,6 @@ public class SideBar {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("what", "ever232323");
                 buttonB.setDisabled(true);
                 buttonB.setChecked(true);
                 PowerUp p = world.getDevicePlayer().getPowerUp(1);
@@ -199,9 +197,9 @@ public class SideBar {
 
             ImageButtonStyle imageButtonStyle = new ImageButtonStyle();
             imageButtonStyle.imageUp = skin.getDrawable(world.getPowerUp().getFilenameBtn());
-            Gdx.app.log("", world.getPowerUp().getFilenameBtn() + "");
+//            Gdx.app.log("", world.getPowerUp().getFilenameBtn() + "");
             imageButtonStyle.imageChecked = skin.getDrawable("skinRound140x140");
-            Gdx.app.log(" sidebar ", "");
+//            Gdx.app.log(" sidebar ", "");
 
             if (buttonA.isDisabled()) {
                 buttonA.setDisabled(false);

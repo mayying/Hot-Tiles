@@ -32,8 +32,7 @@ public class PowerUpFactory {
 
     public PowerUp createPowerUp(int id) {
         PowerUpPrototype powerUpPrototype = powerups.get(id);
-        PowerUp powerUp = new PowerUp(world, powerUpPrototype.filenameVector, powerUpPrototype.filenameBtn, powerUpPrototype.filename, powerUpPrototype.name, powerUpPrototype.description);
-        return powerUp;
+        return new PowerUp(world, powerUpPrototype.filenameVector, powerUpPrototype.filenameBtn, powerUpPrototype.filename, powerUpPrototype.name, powerUpPrototype.description);
     }
 
 

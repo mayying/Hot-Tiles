@@ -11,10 +11,10 @@ import com.mayying.tileMapGame.entities.Player;
 /**
  *  Inverts all players passed in the parameters.
  */
-public class ControlInverter implements Usable {
+public class Confusion implements Usable {
     @Override
     public void use(Player[] players) {
-        Gdx.app.log("Disabled", "ControlInverter does nothing locally.");
+        Gdx.app.log("Disabled", "Confusion does nothing locally.");
 //        for(int i = 0; i < players.length; i++)
         // TODO  - send Invert move
 //        GameWorld.getCurrentPlayer().invert();
