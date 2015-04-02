@@ -2,6 +2,7 @@ package com.mayying.tileMapGame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -30,7 +31,7 @@ import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
  */
 
 
-public class SideBar {
+public class SideBar implements Screen {
 
     private Stage stage;
     private Label timer, scoreboard, descriptionImg, descriptionText;
@@ -39,9 +40,9 @@ public class SideBar {
     private ImageButton buttonA, buttonB, sound, question, close;
     private TextureAtlas buttonAtlas;
     private OrthographicCamera hudCamera;
-//    private final Rectangle screenBound;
+    private Table table, descriptionTable, subTable;
     private LabelStyle labelStyle;
-//    private Boolean[] containsPU;
+    //    private Boolean[] containsPU;
     private String powerUpName;
 
     volatile static int timeLeft = 1;
@@ -61,7 +62,9 @@ public class SideBar {
 //        containsPU = new Boolean[2];
     }
 
-    public void create() {
+
+    @Override
+    public void show() {
         stage = new Stage(new ExtendViewport(Play.V_WIDTH, Play.V_HEIGHT, hudCamera));
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
 //
@@ -75,7 +78,7 @@ public class SideBar {
         skin = new Skin(Gdx.files.internal("skin/gameSkin.json"), buttonAtlas);
 
         // container for all UI widgets
-        Table table = new Table(skin);
+        table = new Table(skin);
         table.setFillParent(true);
         table.setBounds(0, 0, Play.V_WIDTH, Play.V_HEIGHT);
         table.align(Align.top);
@@ -152,11 +155,11 @@ public class SideBar {
             }
         });
 
-        Table subTable = new Table();
+        subTable = new Table();
         subTable.add(buttonA).right().expandX().expandY().width(140).height(140).center().row();
         subTable.add(buttonB).left().expandX().width(140).height(140).row();
 
-        Table descriptionTable = new Table();
+        descriptionTable = new Table();
         descriptionTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/skinSquare280x210.png"))));
         descriptionTable.add(descriptionImg).padTop(40).width(90).height(90).row();
         descriptionTable.add(descriptionText).expandY().width(150).height(140).top().center();
@@ -176,7 +179,6 @@ public class SideBar {
         table.add(subTable).fill().colspan(3);
 
         stage.addActor(table);
-
 
     }
 
@@ -215,6 +217,31 @@ public class SideBar {
             }
 
         }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        table.invalidateHierarchy();
+        table.setSize(width, height);
+        descriptionTable.invalidateHierarchy();
+        descriptionTable.setSize(width, height);
+        subTable.invalidateHierarchy();
+        subTable.setSize(width, height);
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
     }
 
     public void dispose() {

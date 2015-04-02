@@ -46,7 +46,7 @@ public class Play implements Screen {
 
         world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"));
         rSideBar = new SideBar(world);
-        rSideBar.create();
+        rSideBar.show();
 
         burningTiles = new BurningTiles[80];
         for (int i = 0; i < burningTiles.length; i++) {
