@@ -185,7 +185,7 @@ public class Player extends Sprite {
         Gdx.app.log("Player", "player inverted");
         if (speed == 1 && !isInvulnerable) {
             setSpeed(-1);
-            new DelayedThread(2000l) {
+            new DelayedThread(4000l) {
                 @Override
                 public void run() {
                     super.run();
