@@ -9,8 +9,13 @@ import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUpFactory;
+import com.mayying.tileMapGame.tween.SpriteAccessor;
 
 import java.util.Random;
+
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
 
 /**
  * Created by HtooWaiYan on 25-Mar-15.
@@ -26,6 +31,7 @@ public class SpawnPowerUps implements Collidable {
     private Random spawnRNG;
     private boolean powerUpIsPickedUp = false;
     Vector2 position = new Vector2(), coords = new Vector2();
+    private TweenManager tweenManager;
 
     public SpawnPowerUps(TiledMapTileLayer tileLayer, GameWorld world) {
         this.tileLayer = tileLayer;
@@ -34,18 +40,22 @@ public class SpawnPowerUps implements Collidable {
         // powerup stringID list
 //        stringID = Arrays.asList("FireMine","FreezeMine","Invulnerability","ControlInverter","Swap","Blackout");
         spawnRNG = new Random();
-        sprite=new Sprite();
+        sprite = new Sprite();
+
+        tweenManager = new TweenManager();
+        Tween.registerAccessor(Sprite.class, new SpriteAccessor());
+
+
     }
 
-    public void draw(Batch batch){
-        switch(state){
+    public void draw(Batch batch) {
+        switch (state) {
             case 0:
                 // !created
                 // picking random stringID from list
                 powerUpIsPickedUp = false;
                 powerUp = powerUpFactory.createPowerUp(spawnRNG.nextInt(5)); //TODO - only 5? no hardcode?
-                this.sprite = new Sprite(powerUp.getTextureVector());
-
+                sprite = new Sprite(powerUp.getTextureVector());
                 // set random spawn time for powerup
                 randomSpawnTime = (float) new Random().nextInt(10);
 
@@ -57,6 +67,11 @@ public class SpawnPowerUps implements Collidable {
                 position.y = tileLayer.getTileHeight() / 4 + tileLayer.getTileHeight() * (coords.y + 1);
 //                Gdx.app.log(powerUp.getName() + " position", coords.x + ", " + coords.y);
                 sprite.setPosition(position.x, position.y);
+                Timeline.createSequence().beginSequence()
+                        .push(Tween.set(sprite, SpriteAccessor.POSITION).target(position.x, position.y))
+                        .push(Tween.to(sprite, SpriteAccessor.POSITION, 0.05f).target(position.x, position.y + 5f).repeatYoyo(30, 0.2f))
+                        .end().start(tweenManager);
+
                 spawnTime = 0;        // count until 3s
                 countTime = 0;
                 state++; //created
@@ -76,7 +91,10 @@ public class SpawnPowerUps implements Collidable {
                 spawnTime += (Gdx.graphics.getDeltaTime()); //getDeltaTime is actually not in millis, consider using System.currentTimeMillis instead
 //                Gdx.app.log("spawn time",String.valueOf(spawnTime));
                 if (spawnTime <= 6) {
+                    tweenManager.update(Gdx.graphics.getDeltaTime());
                     sprite.draw(batch);
+
+
                 } else {
                     sprite.getTexture().dispose();
                     state = 0;

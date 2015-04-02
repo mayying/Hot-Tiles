@@ -1,6 +1,7 @@
 package com.mayying.tileMapGame.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.BurningTiles;
 import com.mayying.tileMapGame.entities.Jukebox;
+import com.mayying.tileMapGame.entities.powerups.Blackout;
 
 /**
  * Created by May Ying on 24/2/2015.
@@ -26,7 +28,7 @@ public class Play implements Screen {
     private StretchViewport viewport;
 
     private GameWorld world;
-    private SideBar rSideBar;
+    private SideBar sideBar;
 
     private BurningTiles[] burningTiles;
     private int count = 0;
@@ -45,8 +47,8 @@ public class Play implements Screen {
         viewport.apply();
 
         world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"));
-        rSideBar = new SideBar(world);
-        rSideBar.show();
+        sideBar = new SideBar(world);
+        sideBar.show();
 
         burningTiles = new BurningTiles[80];
         for (int i = 0; i < burningTiles.length; i++) {
@@ -88,10 +90,9 @@ public class Play implements Screen {
             burningTiles[i].render(delta);
         }
 
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-//            new Blackout().use(null);
-//
-//        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            new Blackout().use(null);
+        }
 //        // Must make sure this is discrete
 //        if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
 //            Gdx.app.log("X", "pressed");
@@ -114,7 +115,7 @@ public class Play implements Screen {
 //        }
 
         renderer.getBatch().end();
-        rSideBar.render(delta);
+        sideBar.render(delta);
     }
 
     @Override
@@ -142,6 +143,6 @@ public class Play implements Screen {
         map.dispose();
         renderer.dispose();
         world.getPlayerAtlas().dispose();
-        rSideBar.dispose();
+        sideBar.dispose();
     }
 }

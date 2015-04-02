@@ -144,11 +144,13 @@ public class GameWorld {
 
 
         if (blackout) {
+            //TODO Scale according to screen size.
             // This causes Player object to disappear for some reason
             ShapeRenderer shapeRenderer = new ShapeRenderer();
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(new Color(Color.BLACK));
-            shapeRenderer.rect(120, 0, 1000, 720);
+            shapeRenderer.rect(TILE_WIDTH * 4 + 5, TILE_HEIGHT + 5, TILE_WIDTH * 10 + 10, TILE_HEIGHT * 8 + 5);
+
             shapeRenderer.end();
         }
     }
@@ -212,7 +214,6 @@ public class GameWorld {
     public MyTouchpad getMyTouchPad() {
         return myTouchPad;
     }
-
 
 
     public boolean pickUpPowerUp() {
@@ -316,7 +317,7 @@ public class GameWorld {
             p.setPosition(pos.x, pos.y);
         }
     }
-//asdasd
+
     public Player getDevicePlayer() {
         return devicePlayer;
     }
