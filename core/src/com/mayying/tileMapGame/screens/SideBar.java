@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -38,6 +37,7 @@ public class SideBar {
     private Skin skin;
     private GameWorld world;
     private ImageButton buttonA, buttonB, sound, question, close;
+    private TextureAtlas buttonAtlas;
     private OrthographicCamera hudCamera;
 //    private final Rectangle screenBound;
     private LabelStyle labelStyle;
@@ -71,7 +71,7 @@ public class SideBar {
 
 //        Gdx.input.setInputProcessor(stage);
 
-        TextureAtlas buttonAtlas = new TextureAtlas(Gdx.files.internal("skin/skin.txt"));
+        buttonAtlas = new TextureAtlas(Gdx.files.internal("skin/skin.txt"));
         skin = new Skin(Gdx.files.internal("skin/gameSkin.json"), buttonAtlas);
 
         // container for all UI widgets
@@ -87,7 +87,7 @@ public class SideBar {
 
         sound = new ImageButton(skin, "sound");
 
-        sound.addListener(new ClickListener(){
+        sound.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Jukebox.toggleMute();
@@ -120,12 +120,13 @@ public class SideBar {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
             }
+
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 buttonA.setDisabled(true);
                 buttonA.setChecked(true);
                 PowerUp p = world.getDevicePlayer().getPowerUp(0);
-                if(p!=null) {
+                if (p != null) {
                     p.action();
                     world.getDevicePlayer().removePowerUp(0);
                 }
@@ -135,7 +136,7 @@ public class SideBar {
         buttonB.setDisabled(true);
         buttonB.addListener(new InputListener() {
             @Override
-              public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
             }
 
@@ -144,7 +145,7 @@ public class SideBar {
                 buttonB.setDisabled(true);
                 buttonB.setChecked(true);
                 PowerUp p = world.getDevicePlayer().getPowerUp(1);
-                if(p!=null) {
+                if (p != null) {
                     p.action();
                     world.getDevicePlayer().removePowerUp(1);
                 }
@@ -218,6 +219,8 @@ public class SideBar {
 
     public void dispose() {
         stage.dispose();
+        buttonAtlas.dispose();
+        skin.dispose();
     }
 
 

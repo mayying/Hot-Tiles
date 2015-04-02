@@ -1,14 +1,14 @@
 package com.mayying.tileMapGame;
 
 import com.badlogic.gdx.Game;
-import com.mayying.tileMapGame.screens.Play;
-import com.mayying.tileMapGame.screens.Splash;
+import com.mayying.tileMapGame.screens.MainMenu;
 
 public class TiledMapGame extends Game {
 
     @Override
     public void create() {
-        setScreen(new Play());
+//        setScreen(new Play());
+        setScreen(new MainMenu());
 //        setScreen(new Splash());
     }
 

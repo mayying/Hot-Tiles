@@ -1,0 +1,15 @@
+{
+    "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+            "heading": { "file": "font/heading.fnt"}
+            "black": { "file": "font/mmBtn.fnt"}
+    },
+
+     "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+            "default": {"font": "heading"}
+    },
+
+    "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+            "default": {"font": "black", "up": "skinRect350x150", "down": "skinRect350x150"}
+    }
+}
+
