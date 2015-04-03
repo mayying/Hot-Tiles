@@ -13,6 +13,7 @@ import com.mayying.tileMapGame.entities.Player;
 public class Mine extends Sprite implements Collidable, Usable {
     Player player;
     TiledMapTileLayer collisionLayer;
+    Vector2 coords = new Vector2();
     long mineCreated = 0l;
     public Mine(Sprite sprite, Player player, TiledMapTileLayer collisionLayer) {
         super(sprite);
@@ -20,7 +21,14 @@ public class Mine extends Sprite implements Collidable, Usable {
         this.player = player;
         this.collisionLayer = collisionLayer;
         // originate from player
-        this.setPosition(player.getX(), player.getY());
+        coords.x = player.getPlayerPosition().x;
+        coords.y = player.getPlayerPosition().y;
+
+        Vector2 position = new Vector2();
+        position.x = GameWorld.TILE_WIDTH / 2 - sprite.getWidth() / 2 + GameWorld.TILE_WIDTH * (coords.x + 4);
+        position.y = GameWorld.TILE_HEIGHT / 4 + GameWorld.TILE_HEIGHT * (coords.y + 1);
+
+        this.setPosition(position.x, position.y);
 //        mineCreated = System.currentTimeMillis();
     }
 
@@ -50,7 +58,7 @@ public class Mine extends Sprite implements Collidable, Usable {
             // Check for every player because only this device sees the mine, it has to tell the server if the mine hits.
             for(int i=0; i<GameWorld.getNumPlayers(); i++) {
                 Player p = GameWorld.getPlayer(i);
-                if (this.getX() == p.getX() && this.getY() == p.getY())
+                if (p.getPlayerPosition().equals(coords))
                     onCollisionDetected(p);
             }
         }

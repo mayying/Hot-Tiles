@@ -26,7 +26,7 @@ import java.util.Vector;
 /**
  * Created by Luccan on 2/3/2015.
  */
-public class GameWorld {
+public class GameWorld{
     private Player player; // static cause i'm lazy. Replace with array of all players in game.
     // Better to separate into bullets and mines for now to decouple so we can do stuff like remove all mines or whatever
     private MyTouchpad myTouchPad;
@@ -208,10 +208,6 @@ public class GameWorld {
             }
         }
 
-    }
-
-    public TextureAtlas getPlayerAtlas() {
-        return playerAtlas;
     }
 
     public MyTouchpad getMyTouchPad() {

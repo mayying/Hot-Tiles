@@ -1,5 +1,6 @@
 package com.mayying.tileMapGame.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -111,7 +112,6 @@ public class SideBar implements Screen {
         descriptionText = new Label("", skin, "description");
         descriptionText.setWrap(true);
         descriptionText.setAlignment(Align.top);
-        // descriptionText.setAlignment(Align.center);
         descriptionText.setFontScale(0.75f);
 
         world.getMyTouchPad().getTouchPad().setPosition(0, 0);
@@ -190,7 +190,10 @@ public class SideBar implements Screen {
         int seconds = (int) (gameTime - minutes * 60.0f);
         timeLeft = minutes * 60 + seconds;
         timer.setText("Time Left\n" + String.format("%02d : %02d", minutes, seconds));
-//        Gdx.app.log(world.getPlayer().canPickPowerUp() + " canPickPowerUp() ", world.pickUpPowerUp() + " pickUpPowerUp()");
+        System.out.println("Time Left: " + timeLeft );
+        if (timeLeft == 85){
+            ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+        }
         if (world.pickUpPowerUp()) {
             powerUpName = world.getPowerUp().getName();
             descriptionText.setText(powerUpName + "\n" + world.getPowerUp().getDescription());
@@ -200,9 +203,7 @@ public class SideBar implements Screen {
 
             ImageButtonStyle imageButtonStyle = new ImageButtonStyle();
             imageButtonStyle.imageUp = skin.getDrawable(world.getPowerUp().getFilenameBtn());
-//            Gdx.app.log("", world.getPowerUp().getFilenameBtn() + "");
             imageButtonStyle.imageChecked = skin.getDrawable("skinRound140x140");
-//            Gdx.app.log(" sidebar ", "");
 
             if (buttonA.isDisabled()) {
                 buttonA.setDisabled(false);
@@ -213,9 +214,7 @@ public class SideBar implements Screen {
                 buttonB.setDisabled(false);
                 buttonB.setChecked(false);
                 buttonB.setStyle(imageButtonStyle);
-
             }
-
         }
     }
 

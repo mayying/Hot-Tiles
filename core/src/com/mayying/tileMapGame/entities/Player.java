@@ -57,6 +57,7 @@ public class Player extends Sprite {
     }
 
 
+    // Given matrix position, set position on map (non-matrix)
     public Vector2 setPlayerPosition(int x, int y) {
         Vector2 vector2 = new Vector2();
         vector2.x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 4);
@@ -64,6 +65,7 @@ public class Player extends Sprite {
         return vector2;
     }
 
+    // Return matrix position
     public Vector2 getPlayerPosition() {
         Vector2 vector2 = new Vector2();
         vector2.x = (float) (Math.floor(getX() / 70f) - 4);

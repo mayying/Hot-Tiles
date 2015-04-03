@@ -27,7 +27,7 @@ public class SpawnPowerUps implements Collidable {
     private TiledMapTileLayer tileLayer;
     private float spawnTime, countTime, randomSpawnTime;
     private int state = 0; // 0 - !created, 1 - created, 2 - drawn, 3 - clean up
-    private Sprite sprite;          // powerup sprite
+    private Sprite sprite; // powerup sprite
     private Random spawnRNG;
     private boolean powerUpIsPickedUp = false;
     Vector2 position = new Vector2(), coords = new Vector2();
@@ -37,15 +37,11 @@ public class SpawnPowerUps implements Collidable {
         this.tileLayer = tileLayer;
         this.world = world;
         powerUpFactory = PowerUpFactory.getInstance(world);
-        // powerup stringID list
-//        stringID = Arrays.asList("FireMine","FreezeMine","Invulnerability","ControlInverter","Swap","Blackout");
         spawnRNG = new Random();
         sprite = new Sprite();
 
         tweenManager = new TweenManager();
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
-
-
     }
 
     public void draw(Batch batch) {
@@ -56,6 +52,7 @@ public class SpawnPowerUps implements Collidable {
                 powerUpIsPickedUp = false;
                 powerUp = powerUpFactory.createPowerUp(spawnRNG.nextInt(5)); //TODO - only 5? no hardcode?
                 sprite = new Sprite(powerUp.getTextureVector());
+
                 // set random spawn time for powerup
                 randomSpawnTime = (float) new Random().nextInt(10);
 
@@ -93,8 +90,6 @@ public class SpawnPowerUps implements Collidable {
                 if (spawnTime <= 6) {
                     tweenManager.update(Gdx.graphics.getDeltaTime());
                     sprite.draw(batch);
-
-
                 } else {
                     sprite.getTexture().dispose();
                     state = 0;
