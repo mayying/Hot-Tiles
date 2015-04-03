@@ -19,7 +19,8 @@ import java.util.Random;
  * Created by May Ying on 24/2/2015.
  */
 public class Player extends Sprite {
-    private Player lastHitBy, currentPlayer;
+//    private Player lastHitBy, currentPlayer;
+    private int lastHitBy, idx; // index of player
     private GameWorld gameWorld;
     private TiledMapTileLayer collisionLayer;
 
@@ -32,10 +33,11 @@ public class Player extends Sprite {
     private int facing, kills, deaths;
     private boolean isFrozen = false, isInverted = false;// for freezing animation and stuff?
     public boolean isInvulnerable = false, isDead = false;
+    private int index;
 
-    public Player(TextureAtlas atlas, TiledMapTileLayer collisionLayer, GameWorld gameWorld) {
+    public Player(TextureAtlas atlas, TiledMapTileLayer collisionLayer, GameWorld gameWorld, int id) {
         super(new Animation(1 / 2f, atlas.findRegions("player_3_forward")).getKeyFrame(0));
-        this.currentPlayer = this;
+        this.idx = id;
         this.collisionLayer = collisionLayer;
         this.gameWorld = gameWorld;
         facing = 8;
@@ -115,9 +117,6 @@ public class Player extends Sprite {
                 facing == 2 ? backward.getKeyFrame(animationTime) : forward.getKeyFrame(animationTime));
     }
 
-    public void setIsDead(boolean isDead) {
-        this.isDead = isDead;
-    }
 
     // shuriken
     public boolean isHit(float x, float y) {
@@ -137,24 +136,24 @@ public class Player extends Sprite {
         return collisionLayer;
     }
 
-    public void setLastHitBy(Player lastHitBy) {
+    public void setLastHitBy(int lastHitBy) {
         this.lastHitBy = lastHitBy;
         this.lastHitTime = System.currentTimeMillis();
     }
 
-    public Player getLastHitBy() {
+    public int getLastHitBy() {
         // Setting 3 seconds now
-        return (lastHitTime - System.currentTimeMillis()) <= 3000l ? lastHitBy : null;
+        return (System.currentTimeMillis() - lastHitTime) <= 3000l ? lastHitBy : -1;
     }
 
     public void burn(int idx) {
         // For fire mine, mainly to set last hit
-        setLastHitBy(GameWorld.getPlayer(idx));
+        setLastHitBy(idx);
         die();
     }
 
     public void freeze(int idx) {
-        setLastHitBy(GameWorld.getPlayer(idx)); //static cause i'm lazy
+        setLastHitBy(idx); //static cause i'm lazy
         this.freeze(2000l);
     }
 
@@ -163,8 +162,6 @@ public class Player extends Sprite {
         // and eliminate interaction for when user is frozen and then inverted or something like that.
         // TL;DR GOT LAZY
         if (speed == 1 && !isInvulnerable) {
-            //TODO - last hit logic
-//        setLastHitBy();
             // other freezing animations?
             setSpeed(0);
             new DelayedThread(2000l) {
@@ -240,23 +237,20 @@ public class Player extends Sprite {
             }.start();
 
             // Update score (local + server)
-//            updateScore();
-            // TODO - Update score in other devices
-//            Gdx.app.log("Player", "Player death count: " + deaths);
+            updateScore();
+
             return new Vector2(xCoordinate, yCoordinate);
         } else {
             return null;
         }
     }
 
-//    private void updateScore() {
-//        Player lastHit = getLastHitBy();
-//        ScoreBoard scoreBoard = ScoreBoard.getInstance();
-//        if (lastHit != null) {
-//            scoreBoard.incrementKills(1);
-//        }
-//        scoreBoard.incrementDeath(0);
-//    }
+    private void updateScore() {
+        // TODO - Update score in other devices
+        int killerIdx = getLastHitBy();
+//        Gdx.app.log("Player","Killed by Player "+killerIdx);
+        ScoreBoard.getInstance().incrementKillsAndOrDeath(killerIdx, this.idx);
+    }
 
 
     /**
@@ -351,13 +345,13 @@ public class Player extends Sprite {
             }
         }
 
-        Gdx.app.log("Player", "Picked up: "+powerUp.getName() + " powerUp");
+//        Gdx.app.log("Player", "Picked up: "+powerUp.getName() + " powerUp");
 //        Gdx.app.log("Player",Arrays.toString(powerUpList) + "PLayer");
 
     }
 
     public void removePowerUp(int idx) {
-        Gdx.app.log("Player", "Removed: "+powerUpList[idx].getName());
+//        Gdx.app.log("Player", "Removed: "+powerUpList[idx].getName());
         powerUpList[idx] = null;
     }
 
@@ -375,5 +369,9 @@ public class Player extends Sprite {
                 return true;
         }
         return false;
+    }
+
+    public int getIndex() {
+        return index;
     }
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.entities.DirectionGestureDetector;
 import com.mayying.tileMapGame.entities.MyTouchpad;
 import com.mayying.tileMapGame.entities.Player;
+import com.mayying.tileMapGame.entities.ScoreBoard;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.Mine;
@@ -49,11 +50,11 @@ public class GameWorld {
 
     public GameWorld(TiledMapTileLayer playableLayer) {
         playerAtlas = new TextureAtlas("img/player3.txt");
-        player = new Player(playerAtlas, playableLayer, this);
-        player.spawn();
+        player = new Player(playerAtlas, playableLayer, this,0);
+        player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
         devicePlayer = players.get(0);
-//        ScoreBoard scoreBoard = ScoreBoard.getInstance();
-//        scoreBoard.register(player);
+        ScoreBoard scoreBoard = ScoreBoard.getInstance();
+        scoreBoard.register(player);
         // TODO - create additional threads to manage the other player's interactions, positions etc
 
         TILE_WIDTH = playableLayer.getTileWidth();

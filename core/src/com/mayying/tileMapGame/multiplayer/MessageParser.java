@@ -3,6 +3,7 @@ package com.mayying.tileMapGame.multiplayer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.GameWorld;
+import com.mayying.tileMapGame.entities.ScoreBoard;
 //import com.mayying.tileMapGame.entities.ScoreBoard;
 
 /**
@@ -43,40 +44,41 @@ public class MessageParser {
                         // Mostly just for the animation, since the player coordinates sent should be frozen as well
                         GameWorld.getPlayer(Integer.valueOf(message[3])).freeze(Integer.valueOf(message[4]));
                         break;
+                    case "fireMine":
+                        // Get player and burn, logic similar to freeze mine
+                        GameWorld.getPlayer(Integer.valueOf(message[3])).burn(Integer.valueOf(message[4]));
+                        break;
                     case "blackout":
                         // Format: "effect","blackout", [user] (for last hit purpose)
                         // Assumes that the message is only sent to those affected. If server does not support that
                         // change this to take in playerIdx and check if this device's player has the same idx
                         GameWorld.setBlackout();
-                        world.getDevicePlayer().setLastHitBy(GameWorld.getPlayer(Integer.valueOf(message[3])));
+                        world.getDevicePlayer().setLastHitBy(Integer.valueOf(message[3]));
                         break;
                     case "invert":
                         // Format: "effect","invert", [user] (for last hit purpose)
                         // Invert player's controls. Check for device's player's index if necessary
                         world.getDevicePlayer().invert();
-                        world.getDevicePlayer().setLastHitBy(GameWorld.getPlayer(Integer.valueOf(message[3])));
+                        world.getDevicePlayer().setLastHitBy(Integer.valueOf(message[3]));
                         break;
-
                     case "dieAndSpawn":
                         // Format: "effect","dieAndSpawn",playerIdx,x,y
                         // alerts device that someone has died and will spawn at x,y
                         GameWorld.getPlayer(Integer.valueOf(message[3])).dieAndSpawnAt(Integer.valueOf(message[3]), Integer.valueOf(message[4]));
                         break;
-                    case "fireMine":
-                        // Get player and burn, logic similar to freeze mine
-                        break;
                     case "shield":
-                        //for animation
+                        // Format: "effect","shield", [user] (for animation)
+                        GameWorld.getPlayer(Integer.valueOf(message[3])).shield();
                         break;
                 }
                 break;
             case "score":
-                //format of "score",playerIdx,["k"/"d"]
-                // increments k or d accordingly
+                //format of "score", killerIdx, victimIdx
+                // increments k and d accordingly if applicable,
                 if(message[2].equals("k")) {
-//                    ScoreBoard.getInstance().incrementKills(Integer.valueOf(message[1]));
+                    ScoreBoard.getInstance().incrementKillsAndOrDeath(Integer.valueOf(message[1]), Integer.valueOf(message[2]));
                 }else if(message[2].equals("d")){
-//                    ScoreBoard.getInstance().incrementDeath(Integer.valueOf(message[1]));
+                    ScoreBoard.getInstance().incrementKillsAndOrDeath(Integer.valueOf(message[1]), Integer.valueOf(message[2]));
                 }
 
             default:
