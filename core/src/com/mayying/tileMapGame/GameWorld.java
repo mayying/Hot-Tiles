@@ -29,24 +29,21 @@ import java.util.Vector;
  */
 public class GameWorld{
     private static final String TAG = "GameWorld";
-    // Better to separate into bullets and mines for now to decouple so we can do stuff like remove all mines or whatever
     private MyTouchpad myTouchPad;
     private SpawnPowerUps spawnPowerUps;
     private PowerUp powerUp;
-
-    // Better to separate into bullets and mines for now to decouple so we can do stuff like remove all mines or whatever
-    public static Rectangle screenBound;
-    public static Vector<Sprite> bullets = new Vector<Sprite>();
-    public static Vector<Mine> mines = new Vector<Mine>();
     private Rectangle playerBound;
     private TextureAtlas playerAtlas;
-
-    public static float TILE_WIDTH, TILE_HEIGHT, delta;
-    private static ArrayList<Player> players = new ArrayList<>();
-
-    private static boolean blackout = false;
-    private int countX = 0, countY = 0;
     private Player devicePlayer;
+    private int countX = 0, countY = 0;
+
+    public static Rectangle screenBound;
+    public static float TILE_WIDTH, TILE_HEIGHT, delta;
+    private static boolean blackout = false;
+
+    public static final Vector<Sprite> bullets = new Vector<Sprite>();
+    public static final Vector<Mine> mines = new Vector<Mine>();
+    private static final ArrayList<Player> players = new ArrayList<>();
 
     public GameWorld(TiledMapTileLayer playableLayer) {
         playerAtlas = new TextureAtlas("img/player3.txt");

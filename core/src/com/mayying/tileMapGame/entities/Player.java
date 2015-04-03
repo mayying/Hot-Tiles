@@ -19,19 +19,17 @@ import java.util.Random;
  * Created by May Ying on 24/2/2015.
  */
 public class Player extends Sprite {
-//    private Player lastHitBy, currentPlayer;
-    private int lastHitBy, idx; // index of player
+    private int lastHitBy, idx, facing; // index of player
     private GameWorld gameWorld;
     private TiledMapTileLayer collisionLayer;
-
-    private final TextureAtlas playerAtlas;
     private Animation forward, backward, left, right, burnt;
-
-    public PowerUp[] powerUpList = new PowerUp[2];
     private float speed = 1, animationTime = 0;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
-    private int facing;
     private boolean isFrozen = false, isInverted = false;// for freezing animation and stuff?
+
+    private final TextureAtlas playerAtlas;
+
+    public PowerUp[] powerUpList = new PowerUp[2];
     public boolean isInvulnerable = false, isDead = false;
 
     public Player(TextureAtlas atlas, TiledMapTileLayer collisionLayer, GameWorld gameWorld, int id) {
