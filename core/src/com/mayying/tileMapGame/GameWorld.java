@@ -1,5 +1,6 @@
 package com.mayying.tileMapGame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -8,7 +9,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mayying.tileMapGame.entities.DirectionGestureDetector;
 import com.mayying.tileMapGame.entities.MyTouchpad;
 import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.ScoreBoard;
@@ -28,7 +28,7 @@ import java.util.Vector;
  * Created by Luccan on 2/3/2015.
  */
 public class GameWorld{
-    private Player player; // static cause i'm lazy. Replace with array of all players in game.
+    private static final String TAG = "GameWorld";
     // Better to separate into bullets and mines for now to decouple so we can do stuff like remove all mines or whatever
     private MyTouchpad myTouchPad;
     private SpawnPowerUps spawnPowerUps;
@@ -38,24 +38,27 @@ public class GameWorld{
     public static Rectangle screenBound;
     public static Vector<Sprite> bullets = new Vector<Sprite>();
     public static Vector<Mine> mines = new Vector<Mine>();
-
-    private DirectionGestureDetector directionGestureDetector;
     private Rectangle playerBound;
     private TextureAtlas playerAtlas;
 
     public static float TILE_WIDTH, TILE_HEIGHT, delta;
-    private static final ArrayList<Player> players = new ArrayList<Player>();
+    private static ArrayList<Player> players = new ArrayList<>();
+
     private static boolean blackout = false;
     private int countX = 0, countY = 0;
     private Player devicePlayer;
 
     public GameWorld(TiledMapTileLayer playableLayer) {
         playerAtlas = new TextureAtlas("img/player3.txt");
-        player = new Player(playerAtlas, playableLayer, this,0);
+        // Initialize all players
+        Player player = new Player(playerAtlas, playableLayer, this,0);
         player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
+
+        register(player);
+        Gdx.app.log(TAG,"Players: "+players);
+
+        // Not sure what the index of device player will be
         devicePlayer = players.get(0);
-        ScoreBoard scoreBoard = ScoreBoard.getInstance();
-        scoreBoard.register(player);
         // TODO - create additional threads to manage the other player's interactions, positions etc
 
         TILE_WIDTH = playableLayer.getTileWidth();
@@ -66,64 +69,13 @@ public class GameWorld{
         spawnPowerUps = new SpawnPowerUps(playableLayer, this);
 
         setPlayerBound();
+    }
 
-        directionGestureDetector = new DirectionGestureDetector(new DirectionGestureDetector.DirectionListener() {
-            float screenLeft = screenBound.getX();
-            float screenBottom = screenBound.getY();
-            float screenTop = screenBottom + screenBound.getHeight();// + (world.getPlayer().getHeight() / 2);
-            float screenRight = screenLeft + screenBound.getWidth();
-
-            float newX;
-            float newY;
-            float x = delta;
-
-            @Override
-            public void onLeft() {
-
-                newX = getPlayer().getX();
-                newY = getPlayer().getY();
-                newX -= TILE_WIDTH * player.getSpeed();
-                if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
-                    getPlayer().setX(newX);
-                }
-            }
-
-            @Override
-            public void onRight() {
-                newX = getPlayer().getX();
-                newY = getPlayer().getY();
-                newX += TILE_WIDTH * player.getSpeed();
-                player.rightPressed();
-                player.animate(delta);
-                if (newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
-                    getPlayer().setX(newX);
-                }
-            }
-
-            @Override
-            public void onUp() {
-                newX = getPlayer().getX();
-                newY = getPlayer().getY();
-                newY += TILE_HEIGHT * player.getSpeed();
-                player.upPressed();
-                player.animate(delta);
-                if (newY >= screenBottom && newY <= screenTop) {
-                    getPlayer().setY(newY);
-                }
-            }
-
-            @Override
-            public void onDown() {
-                newX = getPlayer().getX();
-                newY = getPlayer().getY();
-                newY -= TILE_HEIGHT * player.getSpeed();
-                player.downPressed();
-                player.animate(delta);
-                if (newY >= screenBottom && newY <= screenTop) {
-                    getPlayer().setY(newY);
-                }
-            }
-        });
+    // Register a new player onto the scoreboard and add to the world render list
+    private void register(Player p) {
+        ScoreBoard scoreBoard = ScoreBoard.getInstance();
+        scoreBoard.register(p);
+        players.add(p);
     }
 
     public ArrayList<Player> getPlayers() {
@@ -174,41 +126,41 @@ public class GameWorld{
 
         float screenLeft = screenBound.getX();
         float screenBottom = screenBound.getY();
-        float screenTop = screenBottom + screenBound.getHeight();// + (world.getPlayer().getHeight() / 2);
+        float screenTop = screenBottom + screenBound.getHeight();// + (world.getDevicePlayer().getHeight() / 2);
         float screenRight = screenLeft + screenBound.getWidth();
 
-        float newX = getPlayer().getX();
-        float newY = getPlayer().getY();
+        float newX = getDevicePlayer().getX();
+        float newY = getDevicePlayer().getY();
         if (velocity.x > 0.5) {
             // add back in leftpressed rightpressed etc for direction, if we are using the bullets and stuff
-            newX += TILE_WIDTH * player.getSpeed();
-            getPlayer().rightPressed();
+            newX += TILE_WIDTH * getDevicePlayer().getSpeed();
+            getDevicePlayer().rightPressed();
         } else if (velocity.x < -0.5) {
-            newX -= TILE_WIDTH * player.getSpeed();
-            getPlayer().leftPressed();
+            newX -= TILE_WIDTH * getDevicePlayer().getSpeed();
+            getDevicePlayer().leftPressed();
         } else if (velocity.y > 0.5) {
-            newY += TILE_HEIGHT * player.getSpeed();
-            getPlayer().upPressed();
+            newY += TILE_HEIGHT * getDevicePlayer().getSpeed();
+            getDevicePlayer().upPressed();
         } else if (velocity.y < -0.5) {
-            newY -= TILE_HEIGHT * player.getSpeed();
-            getPlayer().downPressed();
+            newY -= TILE_HEIGHT * getDevicePlayer().getSpeed();
+            getDevicePlayer().downPressed();
         }
         // Animate player movement
         // if (velocity.x > 0.5 || velocity.x < -0.5 || velocity.y > 0.5 || velocity.y < -0.5)
-        getPlayer().animate(delta);
+        getDevicePlayer().animate(delta);
 
         countX++;
         countY++;
 
-        if (!getPlayer().isDead && newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
+        if (!getDevicePlayer().isDead && newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
             if (myTouchPad.getTouchPad().getKnobPercentX() != 0 && countX > 17) {
-                getPlayer().setX(newX);
+                getDevicePlayer().setX(newX);
                 countX = 0;
             }
         }
-        if (!getPlayer().isDead && newY >= screenBottom && newY <= screenTop) {
+        if (!getDevicePlayer().isDead && newY >= screenBottom && newY <= screenTop) {
             if (myTouchPad.getTouchPad().getKnobPercentY() != 0 && countY > 17) {
-                getPlayer().setY(newY);
+                getDevicePlayer().setY(newY);
                 countY = 0;
             }
         }
@@ -224,20 +176,15 @@ public class GameWorld{
         return spawnPowerUps.isPowerUpPickedUp();
     }
 
-
-    public DirectionGestureDetector getDirectionGestureDetector() {
-        return directionGestureDetector;
-    }
-
     private void setPlayerBound() {
-        playerBound = getPlayer().getBoundingRectangle();
+        playerBound = getDevicePlayer().getBoundingRectangle();
     }
 
     /**
      * @return Player of the current device.
      */
-    public Player getPlayer() {
-        return player;
+    public Player getDevicePlayer() {
+        return devicePlayer;
     }
 
     /**
@@ -259,7 +206,7 @@ public class GameWorld{
     }
 
     public static synchronized void addBullet(Bullet bullet) {
-//        Bullet bullet = new Bullet(new Sprite(new Texture("img/shuriken.png")), 6, world.getPlayer(), 2, (TiledMapTileLayer) map.getLayers().get(0));
+//        Bullet bullet = new Bullet(new Sprite(new Texture("img/shuriken.png")), 6, world.getDevicePlayer(), 2, (TiledMapTileLayer) map.getLayers().get(0));
         bullets.add(bullet);
     }
 
@@ -293,17 +240,18 @@ public class GameWorld{
         mines.remove(mine);
     }
 
-    public void removePlayer(Player player) {
-        synchronized (players) {
-            players.remove(player);
-        }
-    }
-
-    public void addPlayer(Player player) {
-        synchronized (players) {
-            players.add(player);
-        }
-    }
+    // players should not be modified as it leads to a lot of problems
+//    public void removePlayer(Player player) {
+//        synchronized (players) {
+//            players.remove(player.getIndex());
+//        }
+//    }
+//
+//    public void addPlayer(Player player) {
+//        synchronized (players) {
+//            players.add(player.getIndex(), player);
+//        }
+//    }
 
 //    public void swipe(){
 //        InputMultiplexer inputMultiplexer=new InputMultiplexer();
@@ -322,11 +270,9 @@ public class GameWorld{
         }
     }
 
-    public Player getDevicePlayer() {
-        return devicePlayer;
-    }
 
     public void dispose() {
+        Gdx.app.log(TAG,"disposing");
         for(int i=0; i<players.size(); i++){
             players.get(i).getTexture().dispose();
             players.remove(i);

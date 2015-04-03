@@ -215,17 +215,19 @@ public class Player extends Sprite {
             new DelayedThread(1500l, this) {
                 @Override
                 public void run() {
-                    gameWorld.addPlayer(getPlayer());
+                    // Commented out unsafe method, dead players should not share the same ArrayList
+                    // as players because it will lead to conflict
+//                    gameWorld.addPlayer(getPlayer());
                     Jukebox.play("fire");
                     super.run();
                     Jukebox.stop("fire");
-                    gameWorld.removePlayer(getPlayer());
-                    isDead = false;
+//                    gameWorld.removePlayer(getPlayer());
+                    //This thread is called after dispose and causes a new player to be added.
                     spawn(xCoordinate, yCoordinate);
                 }
             }.start();
             // Remove from render list,
-            gameWorld.removePlayer(this);
+//            gameWorld.removePlayer(this);
 
             // Set Invulnerable for 4 secs
             isInvulnerable = true;
@@ -263,35 +265,33 @@ public class Player extends Sprite {
      * @param y
      */
     public void dieAndSpawnAt(final int x, final int y) {
-        if (!isInvulnerable) {
-            // Remove from render list,
-            gameWorld.removePlayer(this);
 
-            // Set Invulnerable for 4 secs
-            isInvulnerable = true;
-            new DelayedThread(4000l) {
-                @Override
-                public void run() {
-                    super.run();
-                    isInvulnerable = false;
-                }
-            }.start();
+        // Remove from render list,
+//            gameWorld.removePlayer(this);
+        isDead = true;
+        // Set Invulnerable for 4 secs
+        isInvulnerable = true;
+        new DelayedThread(4000l) {
+            @Override
+            public void run() {
+                super.run();
+                isInvulnerable = false;
+            }
+        }.start();
 
-            // wait for 3 secs then choose a random location, add to render list
-            new DelayedThread(1000l) {
-                @Override
-                public void run() {
-                    super.run();
-                    spawn(x, y);
-                }
-            }.start();
+        // wait for 1.5 secs then choose a random location, add to render list
+        new DelayedThread(1500l) {
+            @Override
+            public void run() {
+                Jukebox.play("fire");
+                super.run();
+                Jukebox.stop("fire");
+                spawn(x, y);
+            }
+        }.start();
 
-            // TODO -update score based on last hit by field
+        // server will send a message to update score
 
-//            Gdx.app.log("Player", "Player death count: " + deaths);
-        } else {
-
-        }
     }
 
     public void shield() {
@@ -311,6 +311,7 @@ public class Player extends Sprite {
 
     /**
      * Spawns player at a random spot. Use if this player is the user's character. Probably only use for testing.
+     * THIS METHOD NO LONGER ADDS A PLAYER TO THE ARRAYLIST FOR SAFETY.
      */
     public void spawn() {
         int xCoordinate = new Random().nextInt(getCollisionLayer().getWidth() - 8);
@@ -320,12 +321,13 @@ public class Player extends Sprite {
         setPosition(worldCoords.x, worldCoords.y);
 //        Gdx.app.log(getPlayerPosition().x + "", "getX()");
 //        Gdx.app.log(getPlayerPosition().y + "", "getY()");
-        gameWorld.addPlayer(this);
+//        gameWorld.addPlayer(this);
         isDead = false;
     }
 
     /**
-     * Spawns a player at x, y. Specifically for server's use.
+     * Spawns a player at x, y. Specifically for server's use. THIS METHOD NO LONGER ADDS A PLAYER
+     * TO THE ARRAYLIST FOR SAFETY.
      *
      * @param xCoordinate the x coordinate
      * @param yCoordinate the y coordinate
@@ -333,7 +335,7 @@ public class Player extends Sprite {
     public void spawn(int xCoordinate, int yCoordinate) {
         Vector2 worldCoords = setPlayerPosition(xCoordinate, yCoordinate);
         setPosition(worldCoords.x, worldCoords.y);
-        gameWorld.addPlayer(this);
+//        gameWorld.addPlayer(this);
         isDead = false;
     }
 

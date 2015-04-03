@@ -71,7 +71,7 @@ public class SideBar implements Screen {
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
 //
         inputMultiplexer.addProcessor(stage);
-        inputMultiplexer.addProcessor(world.getDirectionGestureDetector());
+//        inputMultiplexer.addProcessor(world.getDirectionGestureDetector());
         Gdx.input.setInputProcessor(inputMultiplexer);
 
 //        Gdx.input.setInputProcessor(stage);

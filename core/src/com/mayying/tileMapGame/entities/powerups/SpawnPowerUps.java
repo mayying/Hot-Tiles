@@ -115,7 +115,7 @@ public class SpawnPowerUps implements Collidable {
     @Override
     public void collisionCheck() {
         // Only check for this device's player -  power ups appear to everyone differently
-        Player player = world.getPlayer();
+        Player player = world.getDevicePlayer();
 
         Vector2 playerPos = player.getPlayerPosition();
 //        Gdx.app.log("Player Coords: ", playerPos.toString());

@@ -51,8 +51,8 @@ public class BurningTiles implements Collidable{
             currentAnimationFrame++;
             if (currentAnimationFrame == 1) {
                 // Gdx.app.log(elapsedSinceAnimation + "", "elapsedSinceANimation");
-                xCoord = new Random().nextInt(world.getPlayer().getCollisionLayer().getWidth() - 8);
-                yCoord = new Random().nextInt(world.getPlayer().getCollisionLayer().getHeight() - 2);
+                xCoord = new Random().nextInt(world.getDevicePlayer().getCollisionLayer().getWidth() - 8);
+                yCoord = new Random().nextInt(world.getDevicePlayer().getCollisionLayer().getHeight() - 2);
                 foreground.setCell(xCoord + 4, yCoord + 1, cell);
                 cell = foreground.getCell(xCoord + 4, yCoord + 1);
             }else if(currentAnimationFrame >= 9){
@@ -80,7 +80,7 @@ public class BurningTiles implements Collidable{
         Vector2 pos = new Vector2(xCoord, yCoord);
 //        Gdx.app.log("Tile Coords: ",xCoord+", "+yCoord);
         // Only check for this device's player, let the server update us if other players are burning
-        Player player = world.getPlayer();
+        Player player = world.getDevicePlayer();
 
         Vector2 playerPos = player.getPlayerPosition();
 //        Gdx.app.log("Player Coords: ", playerPos.toString());
