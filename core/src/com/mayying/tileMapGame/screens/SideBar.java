@@ -2,6 +2,7 @@ package com.mayying.tileMapGame.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -190,10 +191,11 @@ public class SideBar implements Screen {
         int seconds = (int) (gameTime - minutes * 60.0f);
         timeLeft = minutes * 60 + seconds;
         timer.setText("Time Left\n" + String.format("%02d : %02d", minutes, seconds));
-        System.out.println("Time Left: " + timeLeft );
-        if (timeLeft == 85){
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)){
             ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenu());
         }
+
         if (world.pickUpPowerUp()) {
             powerUpName = world.getPowerUp().getName();
             descriptionText.setText(powerUpName + "\n" + world.getPowerUp().getDescription());

@@ -140,11 +140,9 @@ public class Play implements Screen {
 
     @Override
     public void dispose() {
-        Gdx.app.log("here", "dispose");
-        world.getPlayer().getTexture().dispose();
+        world.dispose();
         map.dispose();
         renderer.dispose();
-        world.getPlayer().getTexture().dispose();
         sideBar.dispose();
     }
 }
