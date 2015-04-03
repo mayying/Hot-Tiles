@@ -1,6 +1,5 @@
 package com.mayying.tileMapGame;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -51,12 +50,10 @@ public class GameWorld{
     private Player devicePlayer;
 
     public GameWorld(TiledMapTileLayer playableLayer) {
-        Gdx.app.log("GameWorld","Num Players: "+players.size());
         playerAtlas = new TextureAtlas("img/player3.txt");
         player = new Player(playerAtlas, playableLayer, this,0);
         player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
         devicePlayer = players.get(0);
-        Gdx.app.log("GameWorld", "Player: "+devicePlayer);
         ScoreBoard scoreBoard = ScoreBoard.getInstance();
         scoreBoard.register(player);
         // TODO - create additional threads to manage the other player's interactions, positions etc

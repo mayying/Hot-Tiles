@@ -30,10 +30,9 @@ public class Player extends Sprite {
     public PowerUp[] powerUpList = new PowerUp[2];
     private float speed = 1, animationTime = 0;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
-    private int facing, kills, deaths;
+    private int facing;
     private boolean isFrozen = false, isInverted = false;// for freezing animation and stuff?
     public boolean isInvulnerable = false, isDead = false;
-    private int index;
 
     public Player(TextureAtlas atlas, TiledMapTileLayer collisionLayer, GameWorld gameWorld, int id) {
         super(new Animation(1 / 2f, atlas.findRegions("player_3_forward")).getKeyFrame(0));
@@ -145,7 +144,7 @@ public class Player extends Sprite {
 
     public int getLastHitBy() {
         // Setting 3 seconds now
-        return (System.currentTimeMillis() - lastHitTime) <= 3000l ? lastHitBy : -1;
+        return (System.currentTimeMillis() - lastHitTime) <= 4000l ? lastHitBy : -1;
     }
 
     public void burn(int idx) {
@@ -156,7 +155,7 @@ public class Player extends Sprite {
 
     public void freeze(int idx) {
         setLastHitBy(idx); //static cause i'm lazy
-        this.freeze(2000l);
+        this.freeze(3000l);
     }
 
     public void freeze(long millis) {
@@ -288,7 +287,7 @@ public class Player extends Sprite {
             }.start();
 
             // TODO -update score based on last hit by field
-            deaths++;
+
 //            Gdx.app.log("Player", "Player death count: " + deaths);
         } else {
 
@@ -361,9 +360,6 @@ public class Player extends Sprite {
     public PowerUp getPowerUp(int idx){
         return powerUpList[idx];
     }
-//    public ArrayList<PowerUp> getPowerUpList() {
-//        return new ArrayList<>(powerUpList);
-//    }
 
     public boolean canPickPowerUp() {
         for (int i=0; i<powerUpList.length; i++) {
@@ -374,6 +370,6 @@ public class Player extends Sprite {
     }
 
     public int getIndex() {
-        return index;
+        return idx;
     }
 }
