@@ -58,6 +58,10 @@ public class ScoreBoard {
         Gdx.app.log("Scores",scores.toString());
     }
 
+    public void reset() {
+        instance = null;
+    }
+
     private class Score implements Comparable {
         Player player;
         int kills, death;

@@ -251,7 +251,7 @@ public class Player extends Sprite {
         // TODO - Update score in other devices
         int killerIdx = getLastHitBy();
 //        Gdx.app.log("Player","Killed by Player "+killerIdx);
-        ScoreBoard.getInstance().incrementKillsAndOrDeath(killerIdx, this.idx);
+        ScoreBoard.getInstance().incrementKillsAndOrDeath(killerIdx == this.idx? -1:killerIdx, this.idx);
     }
 
 

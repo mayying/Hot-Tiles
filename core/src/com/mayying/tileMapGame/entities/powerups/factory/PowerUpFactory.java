@@ -36,6 +36,9 @@ public class PowerUpFactory {
     }
 
 
+    public void reset() {
+        powerUpFactory = null;
+    }
 }
 
 class PowerUpPrototype {
