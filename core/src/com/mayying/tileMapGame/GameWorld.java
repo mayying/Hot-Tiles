@@ -18,8 +18,11 @@ import com.mayying.tileMapGame.entities.powerups.Mine;
 import com.mayying.tileMapGame.entities.powerups.SpawnPowerUps;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUpFactory;
+import com.mayying.tileMapGame.multiplayer.MessageParser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 //import com.mayying.tileMapGame.entities.ScoreBoard;
@@ -43,20 +46,20 @@ public class GameWorld{
 
     public static final Vector<Sprite> bullets = new Vector<Sprite>();
     public static final Vector<Mine> mines = new Vector<Mine>();
-    private static final ArrayList<Player> players = new ArrayList<>();
+    private static final HashMap<String, Player> players = new HashMap<String, Player>();
 
-    public GameWorld(TiledMapTileLayer playableLayer) {
+    public GameWorld(TiledMapTileLayer playableLayer, List<String> participants, String myId) {
         playerAtlas = new TextureAtlas("img/player3.txt");
         // Initialize all players
-        Player player = new Player(playerAtlas, playableLayer, this,0);
-        player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
+        for (int id=0;id<participants.size();id++) {
+            Player player = new Player(playerAtlas, playableLayer, this, id);
+            player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
 
-        register(player);
-        Gdx.app.log(TAG,"Players: "+players);
-
-        // Not sure what the index of device player will be
-        devicePlayer = players.get(0);
-        // TODO - create additional threads to manage the other player's interactions, positions etc
+            register(player, participants.get(id));
+        }
+        Gdx.app.log(TAG, "Players: " + players);
+        devicePlayer = players.get(myId);
+        // TODO - create additional threads to manage the other player's interactions, positions etc (?)
 
         TILE_WIDTH = playableLayer.getTileWidth();
         TILE_HEIGHT = playableLayer.getTileHeight();
@@ -69,13 +72,14 @@ public class GameWorld{
     }
 
     // Register a new player onto the scoreboard and add to the world render list
-    private void register(Player p) {
+    private void register(Player p, String pid) {
         ScoreBoard scoreBoard = ScoreBoard.getInstance();
         scoreBoard.register(p);
-        players.add(p);
+        players.put(pid, p);
     }
 
-    public ArrayList<Player> getPlayers() {
+    //TODO: why Static methods?
+    public static HashMap<String, Player> getPlayers() {
         return players;
     }
 
@@ -89,8 +93,8 @@ public class GameWorld{
             bullets.get(i).draw(batch);
         }
 
-        for (int i = 0; i < players.size(); i++) {
-            players.get(i).draw(batch);
+        for (String key : players.keySet()) {
+            players.get(key).draw(batch);
         }
 
         for (int i = 0; i < mines.size(); i++) {
@@ -184,11 +188,18 @@ public class GameWorld{
         return devicePlayer;
     }
 
+    public String generateDevicePlayerCoordinatesBroadcastMessage() {
+        Vector2 xy = devicePlayer.getPlayerPosition();
+        //TODO: safe conversion?
+        String broadcastMessage = MessageParser.COMMAND_POSITION + "," + String.valueOf((int)xy.x) + "," + String.valueOf((int)xy.y);
+        return broadcastMessage;
+    }
+
     /**
      * @param idx player's index
      * @return player of specified index
      */
-    public static Player getPlayer(int idx) {
+    public static Player getPlayer(String idx) {
         return players.get(idx);
     }
 
@@ -260,19 +271,20 @@ public class GameWorld{
 //        Gdx.input.setInputProcessor(inputMultiplexer);
 //    }
 
-    public static void setPlayerPosition(int playerIndex, Vector2 pos) {
-        Player p = players.get(playerIndex);
+    public static void setPlayerPosition(String playerId, Vector2 pos) {
+        Player p = players.get(playerId);
         if (p != null) {
-            p.setPosition(pos.x, pos.y);
+            //TODO: Unsafe conversion?
+            p.setPlayerPosition((int)pos.x, (int)pos.y);
         }
     }
 
 
     public void dispose() {
         Gdx.app.log(TAG,"disposing");
-        for(int i=0; i<players.size(); i++){
-            players.get(i).getTexture().dispose();
-            players.remove(i);
+        for(String key : players.keySet()){
+            players.get(key).getTexture().dispose();
+            players.remove(key);
         }
         for(int i=0; i<mines.size(); i++){
             mines.get(i).getTexture().dispose();

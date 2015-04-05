@@ -55,18 +55,17 @@ public class Player extends Sprite {
 
 
     // Given matrix position, set position on map (non-matrix)
-    public Vector2 setPlayerPosition(int x, int y) {
-        Vector2 vector2 = new Vector2();
-        vector2.x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 4);
-        vector2.y = collisionLayer.getTileHeight() / 4 + collisionLayer.getTileHeight() * (y + 1);
-        return vector2;
+    public void setPlayerPosition(int x, int y) {
+        float _x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 4);
+        float _y = collisionLayer.getTileHeight() / 4 + collisionLayer.getTileHeight() * (y + 1);
+        this.setPosition(_x,_y);
     }
 
     // Return matrix position
     public Vector2 getPlayerPosition() {
         Vector2 vector2 = new Vector2();
-        vector2.x = (float) (Math.floor(getX() / 70f) - 4);
-        vector2.y = (float) (Math.floor(getY() / 70f) - 1);
+        vector2.x = (float) (Math.floor(getX() / collisionLayer.getTileWidth()) - 4);
+        vector2.y = (float) (Math.floor(getY() / collisionLayer.getTileHeight()) - 1);
         return vector2;
     }
 
@@ -314,9 +313,7 @@ public class Player extends Sprite {
     public void spawn() {
         int xCoordinate = new Random().nextInt(getCollisionLayer().getWidth() - 8);
         int yCoordinate = new Random().nextInt(getCollisionLayer().getHeight() - 2);
-        setPosition(setPlayerPosition(xCoordinate, yCoordinate).x, setPlayerPosition(xCoordinate, yCoordinate).y);
-        Vector2 worldCoords = setPlayerPosition(xCoordinate, yCoordinate);
-        setPosition(worldCoords.x, worldCoords.y);
+        setPlayerPosition(xCoordinate, yCoordinate);
 //        Gdx.app.log(getPlayerPosition().x + "", "getX()");
 //        Gdx.app.log(getPlayerPosition().y + "", "getY()");
 //        gameWorld.addPlayer(this);
@@ -331,8 +328,7 @@ public class Player extends Sprite {
      * @param yCoordinate the y coordinate
      */
     public void spawn(int xCoordinate, int yCoordinate) {
-        Vector2 worldCoords = setPlayerPosition(xCoordinate, yCoordinate);
-        setPosition(worldCoords.x, worldCoords.y);
+        setPlayerPosition(xCoordinate, yCoordinate);
 //        gameWorld.addPlayer(this);
         isDead = false;
     }

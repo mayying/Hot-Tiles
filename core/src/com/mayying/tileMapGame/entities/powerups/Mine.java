@@ -54,10 +54,10 @@ public class Mine extends Sprite implements Collidable, Usable {
     @Override
     public void collisionCheck() {
         // Mine takes 2 seconds before activating
-        if(System.currentTimeMillis() - mineCreated > 2000l) {
+        if(System.currentTimeMillis() - mineCreated > 2000) {
             // Check for every player because only this device sees the mine, it has to tell the server if the mine hits.
-            for(int i=0; i<GameWorld.getNumPlayers(); i++) {
-                Player p = GameWorld.getPlayer(i);
+            for(String key : GameWorld.getPlayers().keySet()) {
+                Player p = GameWorld.getPlayer(key);
                 if (p.getPlayerPosition().equals(coords))
                     onCollisionDetected(p);
             }

@@ -1,14 +1,35 @@
 package com.mayying.tileMapGame;
 
 import com.badlogic.gdx.Game;
+import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 import com.mayying.tileMapGame.screens.MainMenu;
+import com.mayying.tileMapGame.screens.Play;
 
 public class TiledMapGame extends Game {
 
+    String mode;
+    MultiplayerMessaging multiplayerMessaging;
+
+    public TiledMapGame(){
+        super();
+        //desktop launch
+        mode = "desktop";
+        this.multiplayerMessaging = null;
+    }
+
+    public TiledMapGame(MultiplayerMessaging multiplayerMessaging){
+        super();
+        mode = "android";
+        this.multiplayerMessaging = multiplayerMessaging;
+    }
+
     @Override
     public void create() {
-//        setScreen(new Play());
-        setScreen(new MainMenu());
+        if (mode.equals("desktop")) {
+            setScreen(new MainMenu());
+        } else if (mode.equals("android")) {
+            setScreen(new Play(multiplayerMessaging));
+        }
         // setScreen(new Splash());
     }
 

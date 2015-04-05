@@ -14,6 +14,11 @@ import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.BurningTiles;
 import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.entities.powerups.Blackout;
+import com.mayying.tileMapGame.multiplayer.MessageParser;
+import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by May Ying on 24/2/2015.
@@ -34,6 +39,20 @@ public class Play implements Screen {
     private int count = 0;
     private float spawnNewTile = 0f;
 
+    private MultiplayerMessaging multiplayerMessaging;
+    private MessageParser messageParser;
+
+    public Play(){
+        super();
+        this.multiplayerMessaging = null;
+        this.messageParser = null;
+    }
+    public Play(MultiplayerMessaging multiplayerMessaging){
+        super();
+        this.multiplayerMessaging = multiplayerMessaging;
+        this.messageParser = new MessageParser(world);
+    }
+
     @Override
     public void show() {
         // To load the map into TileMap class
@@ -46,7 +65,15 @@ public class Play implements Screen {
         viewport = new StretchViewport(1260, 700, camera);
         viewport.apply();
 
-        world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"));
+        List<String> participants = new ArrayList<String>();
+        String myPlayerId = "me";
+        participants.add(myPlayerId);
+        if (multiplayerMessaging != null) {
+            participants = multiplayerMessaging.getJoinedParticipants();
+            myPlayerId = multiplayerMessaging.getMyId();
+        }
+        world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"), participants, myPlayerId);
+
         sideBar = new SideBar(world);
         sideBar.show();
 
@@ -63,6 +90,8 @@ public class Play implements Screen {
 //        world.swipe();
     }
 
+
+    long lastBroadcast = -1;
 
     @Override
     public void render(float delta) {
@@ -113,6 +142,17 @@ public class Play implements Screen {
 //        if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
 ////            GameWorld.getPlayer().shield();
 //        }
+        if (multiplayerMessaging!=null){
+            List<String> msgs = multiplayerMessaging.getMessageBuffer();
+            for (String msg : msgs){
+                messageParser.parse(msg);
+            }
+            //Broadcast Player Location
+            if (System.currentTimeMillis()-lastBroadcast>600) {
+                lastBroadcast = System.currentTimeMillis();
+                multiplayerMessaging.BroadCastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
+            }
+        }
 
         renderer.getBatch().end();
         sideBar.render(delta);

@@ -18,6 +18,7 @@ public class Confusion implements Usable {
 //        for(int i = 0; i < players.length; i++)
         // TODO  - send Invert move
 //        GameWorld.getCurrentPlayer().invert();
-        GameWorld.getPlayer(0).invert();
+        //TODO: Fix this
+        GameWorld.getPlayer("me").invert();
     }
 }
