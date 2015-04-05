@@ -93,26 +93,10 @@ public class Play implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             new Blackout().use(null);
         }
-//        // Must make sure this is discrete
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-//            Gdx.app.log("X", "pressed");
-//
-//            for (String i : world.getPlayer().getPowerUpList()) {
-//                if (i.equals("Mine")) {
-//                    new FreezeMine(new Sprite(new Texture("img/shuriken.png")),
-//                            world.getPlayer(), (TiledMapTileLayer) map.getLayers().get(0)
-//                    ).use(null);
-//                    world.getPlayer().removePowerUp(i);
-//                    break;
-//                }
-//            }
-//        }
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
-////            GameWorld.getPlayer().die();
-//        }
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
-////            GameWorld.getPlayer().shield();
-//        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
+            world.getDevicePlayer().shield();
+        }
 
         renderer.getBatch().end();
         sideBar.render(delta);

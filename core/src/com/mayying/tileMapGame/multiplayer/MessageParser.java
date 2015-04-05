@@ -74,12 +74,9 @@ public class MessageParser {
                 break;
             case "score":
                 //format of "score", killerIdx, victimIdx
-                // increments k and d accordingly if applicable,
-                if(message[2].equals("k")) {
-                    ScoreBoard.getInstance().incrementKillsAndOrDeath(Integer.valueOf(message[1]), Integer.valueOf(message[2]));
-                }else if(message[2].equals("d")){
-                    ScoreBoard.getInstance().incrementKillsAndOrDeath(Integer.valueOf(message[1]), Integer.valueOf(message[2]));
-                }
+                // increments k and d accordingly if applicable, killerIdx = -1 if no update to kills
+                ScoreBoard.getInstance().incrementKillsAndOrDeath(Integer.valueOf(message[1]), Integer.valueOf(message[2]));
+
 
             default:
                 Gdx.app.log(TAG, "No such command: " + message[0]);

@@ -85,9 +85,9 @@ public class GameWorld{
 
     public void drawAndUpdate(Batch batch) {
         spawnPowerUps.draw(batch);
-        for (int i = 0; i < bullets.size(); i++) {
-            bullets.get(i).draw(batch);
-        }
+//        for (int i = 0; i < bullets.size(); i++) {
+//            bullets.get(i).draw(batch);
+//        }
 
         for (int i = 0; i < players.size(); i++) {
             players.get(i).draw(batch);
@@ -101,7 +101,6 @@ public class GameWorld{
 
         if (blackout) {
             // This causes Player object to disappear for some reason
-
             ShapeRenderer shapeRenderer = new ShapeRenderer();
             shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix()); ;
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
