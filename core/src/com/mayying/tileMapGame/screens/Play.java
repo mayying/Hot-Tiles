@@ -36,7 +36,7 @@ public class Play implements Screen {
     private BurningTiles[] burningTiles;
     private int count = 0;
     private float spawnNewTile = 0f;
-    private MultiplayerMessaging multiplayerMessaging;
+    private static MultiplayerMessaging multiplayerMessaging;
     private MessageParser messageParser;
 
     public Play(){
@@ -130,7 +130,7 @@ public class Play implements Screen {
                 messageParser.parse(msg);
             }
             //Broadcast Player Location
-            if (System.currentTimeMillis()-lastBroadcast>600) {
+            if (System.currentTimeMillis()-lastBroadcast>100) {
                 lastBroadcast = System.currentTimeMillis();
                 multiplayerMessaging.BroadCastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
             }
@@ -166,5 +166,10 @@ public class Play implements Screen {
         map.dispose();
         renderer.dispose();
         sideBar.dispose();
+    }
+
+    //TODO This is bullshit
+    public static MultiplayerMessaging getMultiplayerMessaging(){
+        return multiplayerMessaging;
     }
 }
