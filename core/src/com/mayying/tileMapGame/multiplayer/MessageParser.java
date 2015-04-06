@@ -13,10 +13,7 @@ public class MessageParser {
     public static final String COMMAND_POSITION = "position";
 
     private static final String TAG = "Parser";
-    private GameWorld world;
-    public MessageParser(GameWorld world){
-        this.world = world;
-    }
+
     /**
      * Parses the input string and runs the respective methods.
      *
@@ -30,15 +27,16 @@ public class MessageParser {
      *            3) "effect", ID, args* - effect inflicted on player, ID of effect, args* depending on the effect (blackout, freeze etc)
      *            4) "game-state", ID - Game state to decide which screen to show/ progression of game
      */
-    public void parse(String inp) {
+    public static void parse(String inp) {
         String[] message = inp.split(",");
         String senderId = message[0];
         String command = message[1];
+        GameWorld world = GameWorld.getInstance();
         switch (command) {
             case COMMAND_POSITION:
-                Vector2 pos = new Vector2(Integer.valueOf(message[2]), Integer.valueOf(message[3]));
-                Gdx.app.log(TAG, String.format("Position of player %s: %s, %s", senderId, message[2], message[3]));
-                GameWorld.setPlayerPosition(senderId, pos);
+//                Gdx.app.log(TAG, String.format("Position of player %s: %s, %s", senderId, message[2], message[3]));
+                world.setPlayerPosition(senderId, new Vector2(Integer.valueOf(message[2]), Integer.valueOf(message[3])));
+                world.getPlayer(senderId).animate(100l); //testing out animation. not sure what delta time should be
                 break;
 
             case "effect":
@@ -49,17 +47,17 @@ public class MessageParser {
                         // Effect to update the client on a player getting frozen. Updates animation accordingly.
                         // Mostly just for the animation, since the player coordinates sent should be frozen as well
                         //TODO: Watch what is in message[3]
-                        GameWorld.getPlayer(message[3]).freeze(senderId); //sender is the person who put the mine
+                        world.getPlayer(message[3]).freeze(senderId); //sender is the person who put the mine
                         break;
                     case "fireMine":
                         // Get player and burn, logic similar to freeze mine
-                        GameWorld.getPlayer(message[3]).burn(senderId);
+                        world.getPlayer(message[3]).burn(senderId);
                         break;
                     case "blackout":
                         // Format: "effect","blackout", [user] (for last hit purpose)
                         // Assumes that the message is only sent to those affected. If server does not support that
                         // change this to take in playerIdx and check if this device's player has the same idx
-                        GameWorld.setBlackout();
+                        world.setBlackout();
                         world.getDevicePlayer().setLastHitBy(senderId);
                         break;
                     case "invert":
@@ -69,21 +67,21 @@ public class MessageParser {
                         world.getDevicePlayer().setLastHitBy(senderId);
                         break;
                     case "dieAndSpawn":
-                        // Format: "effect","dieAndSpawn",playerIdx,x,y
-                        // alerts device that someone has died and will spawn at x,y
-                        GameWorld.getPlayer(senderId).dieAndSpawnAt(Integer.valueOf(message[3]), Integer.valueOf(message[4]));
+                        // Format: "effect","dieAndSpawn",x , y
+                        // alerts device that someone has died and will spawn at x,y. Score is updated separately. ( updated by die() )
+                        world.getPlayer(senderId).dieAndSpawnAt(Integer.valueOf(message[3]), Integer.valueOf(message[4]));
                         break;
                     case "shield":
                         // Format: "effect","shield", [user] (for animation)
-                        GameWorld.getPlayer(senderId).shield();
+                        world.getPlayer(senderId).shield();
                         break;
                 }
                 break;
             case "score":
-                //format of "score", killerIdx, victimIdx
+                // Format: "score", killerIdx, victimIdx
                 // increments k and d accordingly if applicable, killerIdx = -1 if no update to kills
-                ScoreBoard.getInstance().incrementKillsAndOrDeath(senderId, message[2]);
-
+                ScoreBoard.getInstance().incrementKillsAndOrDeath(message[2], message[3]);
+                break;
 
             default:
                 Gdx.app.log(TAG, "No such command: " + message[0]);

@@ -26,6 +26,7 @@ import java.util.List;
 
 public class Play implements Screen {
     public static final int V_WIDTH = 1260, V_HEIGHT = 700;
+    private static final String TAG = "HT_Play";
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -36,18 +37,15 @@ public class Play implements Screen {
     private BurningTiles[] burningTiles;
     private int count = 0;
     private float spawnNewTile = 0f;
-    private static MultiplayerMessaging multiplayerMessaging;
-    private MessageParser messageParser;
+    private static MultiplayerMessaging multiplayerMessaging = null;
 
     public Play(){
         super();
-        this.multiplayerMessaging = null;
-        this.messageParser = null;
     }
-    public Play(MultiplayerMessaging multiplayerMessaging){
+    public Play(MultiplayerMessaging mmsg){
         super();
-        this.multiplayerMessaging = multiplayerMessaging;
-        this.messageParser = new MessageParser(world);
+        multiplayerMessaging = mmsg;
+
     }
 
     @Override
@@ -117,7 +115,7 @@ public class Play implements Screen {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            new Blackout().use(null);
+            new Blackout().use();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
@@ -127,12 +125,12 @@ public class Play implements Screen {
         if (multiplayerMessaging!=null){
             List<String> msgs = multiplayerMessaging.getMessageBuffer();
             for (String msg : msgs){
-                messageParser.parse(msg);
+                MessageParser.parse(msg);
             }
             //Broadcast Player Location
             if (System.currentTimeMillis()-lastBroadcast>100) {
                 lastBroadcast = System.currentTimeMillis();
-                multiplayerMessaging.BroadCastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
+                multiplayerMessaging.broadcastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
             }
         }
 
@@ -168,8 +166,18 @@ public class Play implements Screen {
         sideBar.dispose();
     }
 
-    //TODO This is bullshit
-    public static MultiplayerMessaging getMultiplayerMessaging(){
-        return multiplayerMessaging;
+    // MORE BULLSHIT HERE
+    public static void broadcastMessage(String msg){
+        Gdx.app.log(TAG,"Broadcasting message: "+msg);
+        multiplayerMessaging.broadcastMessage(msg);
+    }
+
+    public static void broadcastMessage(String... args){
+        String msg = "";
+        for(String arg:args){
+            msg+=arg+",";
+        }
+        Gdx.app.log(TAG,"Broadcasting message: "+msg);
+        multiplayerMessaging.broadcastMessage(msg);
     }
 }
