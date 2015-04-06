@@ -3,7 +3,9 @@ package com.mayying.tileMapGame.multiplayer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.GameWorld;
+import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.ScoreBoard;
+import com.mayying.tileMapGame.screens.Play;
 //import com.mayying.tileMapGame.entities.ScoreBoard;
 
 /**
@@ -32,6 +34,7 @@ public class MessageParser {
         String senderId = message[0];
         String command = message[1];
         GameWorld world = GameWorld.getInstance();
+        Player player  = world.getDevicePlayer();
         switch (command) {
             case COMMAND_POSITION:
 //                Gdx.app.log(TAG, String.format("Position of player %s: %s, %s", senderId, message[2], message[3]));
@@ -58,13 +61,13 @@ public class MessageParser {
                         // Assumes that the message is only sent to those affected. If server does not support that
                         // change this to take in playerIdx and check if this device's player has the same idx
                         world.setBlackout();
-                        world.getDevicePlayer().setLastHitBy(senderId);
+                        player.setLastHitBy(senderId);
                         break;
                     case "invert":
                         // Format: "effect","invert", [user] (for last hit purpose)
                         // Invert player's controls. Check for device's player's index if necessary
-                        world.getDevicePlayer().invert();
-                        world.getDevicePlayer().setLastHitBy(senderId);
+                        player.invert();
+                        player.setLastHitBy(senderId);
                         break;
                     case "dieAndSpawn":
                         // Format: "effect","dieAndSpawn",x , y
@@ -74,6 +77,20 @@ public class MessageParser {
                     case "shield":
                         // Format: "effect","shield", [user] (for animation)
                         world.getPlayer(senderId).shield();
+                        break;
+                    case "swap":
+                        // Format: "effect", "swap", x, y , mode
+
+                        if(message[5].equals("1")){
+                            // broadcast back your location
+                            Vector2 playerPos = player.getPlayerPosition();
+                            int xCoord = (int) playerPos.x;
+                            int yCoord = (int) playerPos.y;
+                            Play.broadcastMessage("effect","swap",String.valueOf(xCoord), String.valueOf(yCoord),"0");
+                            // only setting last hit for the victim.
+                            player.setLastHitBy(senderId);
+                        }
+                        player.setPlayerPosition(Integer.valueOf(message[3]), Integer.valueOf(message[4]));
                         break;
                 }
                 break;

@@ -55,7 +55,6 @@ public class PowerUp {
                 new Invulnerability().use();
                 break;
             case "Swap":
-                //TODO: fix this
                 new Swap().use();
                 break;
             case "Blackout":

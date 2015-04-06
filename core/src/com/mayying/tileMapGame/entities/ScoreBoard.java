@@ -89,7 +89,7 @@ public class ScoreBoard {
 
         @Override
         public String toString() {
-            return String.format("Player %s - %s / %s | Score: %s"+"\n", player.getID(), kills, death, this.getScore());
+            return String.format("\nPlayer %s - %s / %s | Score: %s"+"\n", player.getID(), kills, death, this.getScore());
         }
     }
 
