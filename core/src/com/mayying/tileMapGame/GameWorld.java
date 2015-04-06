@@ -20,12 +20,9 @@ import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUpFactory;
 import com.mayying.tileMapGame.multiplayer.MessageParser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
-
-//import com.mayying.tileMapGame.entities.ScoreBoard;
 
 /**
  * Created by Luccan on 2/3/2015.
@@ -52,10 +49,10 @@ public class GameWorld{
         playerAtlas = new TextureAtlas("img/player3.txt");
         // Initialize all players
         for (int id=0;id<participants.size();id++) {
-            Player player = new Player(playerAtlas, playableLayer, this, id);
+            Player player = new Player(playerAtlas, playableLayer, this, participants.get(id));
             player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
 
-            register(player, participants.get(id));
+            register(player);
         }
         Gdx.app.log(TAG, "Players: " + players);
         devicePlayer = players.get(myId);
@@ -72,10 +69,10 @@ public class GameWorld{
     }
 
     // Register a new player onto the scoreboard and add to the world render list
-    private void register(Player p, String pid) {
+    private void register(Player p) {
         ScoreBoard scoreBoard = ScoreBoard.getInstance();
         scoreBoard.register(p);
-        players.put(pid, p);
+        players.put(p.getID(), p);
     }
 
     //TODO: why Static methods?
@@ -195,11 +192,11 @@ public class GameWorld{
     }
 
     /**
-     * @param idx player's index
+     * @param ID player's ID / key
      * @return player of specified index
      */
-    public static Player getPlayer(String idx) {
-        return players.get(idx);
+    public static Player getPlayer(String ID) {
+        return players.get(ID);
     }
 
     public static int getNumPlayers() {

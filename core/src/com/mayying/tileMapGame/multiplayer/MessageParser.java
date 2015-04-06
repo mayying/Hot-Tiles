@@ -49,41 +49,40 @@ public class MessageParser {
                         // Effect to update the client on a player getting frozen. Updates animation accordingly.
                         // Mostly just for the animation, since the player coordinates sent should be frozen as well
                         //TODO: Watch what is in message[3]
-                        GameWorld.getPlayer(message[3]).freeze(Integer.valueOf(message[4]));
+                        GameWorld.getPlayer(message[3]).freeze(senderId); //sender is the person who put the mine
                         break;
                     case "fireMine":
                         // Get player and burn, logic similar to freeze mine
-                        GameWorld.getPlayer(message[3]).burn(Integer.valueOf(message[4]));
+                        GameWorld.getPlayer(message[3]).burn(senderId);
                         break;
                     case "blackout":
                         // Format: "effect","blackout", [user] (for last hit purpose)
                         // Assumes that the message is only sent to those affected. If server does not support that
                         // change this to take in playerIdx and check if this device's player has the same idx
                         GameWorld.setBlackout();
-                        //TODO: Fix this to string
-                        world.getDevicePlayer().setLastHitBy(Integer.valueOf(message[3]));
+                        world.getDevicePlayer().setLastHitBy(senderId);
                         break;
                     case "invert":
                         // Format: "effect","invert", [user] (for last hit purpose)
                         // Invert player's controls. Check for device's player's index if necessary
                         world.getDevicePlayer().invert();
-                        world.getDevicePlayer().setLastHitBy(Integer.valueOf(message[3]));
+                        world.getDevicePlayer().setLastHitBy(senderId);
                         break;
                     case "dieAndSpawn":
                         // Format: "effect","dieAndSpawn",playerIdx,x,y
                         // alerts device that someone has died and will spawn at x,y
-                        GameWorld.getPlayer(message[3]).dieAndSpawnAt(Integer.valueOf(message[3]), Integer.valueOf(message[4]));
+                        GameWorld.getPlayer(senderId).dieAndSpawnAt(Integer.valueOf(message[3]), Integer.valueOf(message[4]));
                         break;
                     case "shield":
                         // Format: "effect","shield", [user] (for animation)
-                        GameWorld.getPlayer(message[3]).shield();
+                        GameWorld.getPlayer(senderId).shield();
                         break;
                 }
                 break;
             case "score":
                 //format of "score", killerIdx, victimIdx
                 // increments k and d accordingly if applicable, killerIdx = -1 if no update to kills
-                ScoreBoard.getInstance().incrementKillsAndOrDeath(Integer.valueOf(message[1]), Integer.valueOf(message[2]));
+                ScoreBoard.getInstance().incrementKillsAndOrDeath(senderId, message[2]);
 
 
             default:

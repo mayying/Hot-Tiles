@@ -16,9 +16,8 @@ public class Confusion implements Usable {
     public void use(Player[] players) {
         Gdx.app.log("Disabled", "Confusion does nothing locally.");
 //        for(int i = 0; i < players.length; i++)
-        // TODO  - send Invert move
 //        GameWorld.getCurrentPlayer().invert();
-        //TODO: Fix this
+        // TODO - Broadcast message
         GameWorld.getPlayer("me").invert();
     }
 }

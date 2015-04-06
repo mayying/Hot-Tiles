@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 /**
 * Created by User on 01/4/15.asd
@@ -12,14 +13,16 @@ import java.util.Collections;
 public class ScoreBoard {
     private static ScoreBoard instance;
     private ArrayList<Score> scores;
-
+    private HashMap<String, Integer> playerMap; // maps player's id to his index here so I dont have to change everything
     private ScoreBoard() {
         instance = this;
         scores = new ArrayList<Score>();
+        playerMap = new HashMap<>();
     }
 
     public static ScoreBoard getInstance() {
         if (instance == null) {
+            Gdx.app.log("ScoreBoard","Initialized new ScoreBoard");
             return new ScoreBoard();
         } else {
             return instance;
@@ -31,14 +34,16 @@ public class ScoreBoard {
     }
 
     public void register(Player player) {
+        playerMap.put(player.getID(), scores.size());
         scores.add(new Score(player));
     }
 
-    public void incrementKillsAndOrDeath(int killerIdx, int victimIdx){
-        if(killerIdx != -1) {
-            getScores().get(killerIdx).incrementKills();
+    public void incrementKillsAndOrDeath(String killerID, String victimID){
+        // TODO - might have to fix this, send something more unique than a "null" string
+        if(!killerID.equals("null")) {
+            getScores().get( playerMap.get(killerID) ).incrementKills();
         }
-        getScores().get(victimIdx).incrementDeath();
+        getScores().get( playerMap.get(victimID) ).incrementDeath();
         updateScores();
     }
 //    public void incrementKills(int idx) {
@@ -73,7 +78,7 @@ public class ScoreBoard {
         }
 
         private float getScore() {
-            return (float) kills / (death + 1);
+            return  kills - death;
         }
 
         private void incrementKills() {
@@ -91,7 +96,7 @@ public class ScoreBoard {
 
         @Override
         public String toString() {
-            return String.format("Player %s - %s / %s | Score: %s", player.getIndex(), kills, death, this.getScore());
+            return String.format("Player %s - %s / %s | Score: %s", player.getID(), kills, death, this.getScore());
         }
     }
 
