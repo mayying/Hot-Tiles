@@ -7,10 +7,15 @@ import java.util.List;
  */
 public interface MultiplayerMessaging {
     public void broadcastMessage(String msg);
-    public void startQuickGame();
     public List<String> getParticipants();
     public List<String> getJoinedParticipants();
     public String getMyId();
     public List<String> getMessageBuffer();
     public String getHostId();
+
+    //for main menu usages
+    public void startQuickGame();
+    public void signIn();
+    public void signOut();
+    public void exit();
 }
