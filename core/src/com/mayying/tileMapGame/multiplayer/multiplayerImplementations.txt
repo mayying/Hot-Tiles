@@ -13,7 +13,7 @@ Blackout
 Confusion
 Similar to Blackout
 
-Shield
+Shield (TODO)
 1) Player uses Shield power up
 2) Device informs server of the use, sending in ID of the player
 3) Other devices run player.shield()

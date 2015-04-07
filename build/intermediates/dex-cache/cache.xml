@@ -2,13 +2,6 @@
 <items version="2" >
 
     <item
-        jar="D:\time2code\Hot-Tiles\android\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\libs\internal_impl-21.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="1609e6d42d0480b0f4188e2c29f75388fa12a8f0">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\internal_impl-21.0.0-564f73675704523fc53a2bd333c40d063469090b.jar" />
-    </item>
-    <item
         jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.5.3\903703e4eca4d27092cf61412b7a583aa26d14ad\gdx-backend-android-1.5.3.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -19,7 +12,7 @@
         jar="D:\time2code\Hot-Tiles\core\build\libs\core-1.0.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="4899453502c644a96874eebd137c6b4902fabde4">
+        sha1="832f0dfd370d6777bdb70773ec1a5953f20fdfcb">
         <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\core-1.0-7679bf07410e88a9de0adbe37813ade4043487b0.jar" />
     </item>
     <item
@@ -37,13 +30,6 @@
         <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-box2d-1.5.3-fdb855e67e5ca7c5f6f74cf3c083a1fa1d0d6b1f.jar" />
     </item>
     <item
-        jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.5.3\3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9\gdx-1.5.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-b5aaad847bf3e7c7685fbf8ff3c53cb507fdc9ef.jar" />
-    </item>
-    <item
         jar="D:\time2code\Hot-Tiles\libs\tween-engine-api.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -51,25 +37,11 @@
         <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-48c55d1bc76052ac71826cf1e9c778a3896b88a5.jar" />
     </item>
     <item
-        jar="D:\Android Studio\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.0\support-annotations-21.0.0.jar"
+        jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.5.3\3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9\gdx-1.5.3.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="1a578b9607b36266c63d43a4fa0ab5664dbe911e">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\support-annotations-21.0.0-1f58c499eb69501b9749007641c8f60f910f6bb7.jar" />
-    </item>
-    <item
-        jar="D:\time2code\Hot-Tiles\android\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\classes-17a638d068080ecda92572b15bf2d53c2c318953.jar" />
-    </item>
-    <item
-        jar="D:\time2code\Hot-Tiles\android\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="686344a780033e4ba22b926cd225f8d4941247e6">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\classes-641e31260fe3f4191b532becf62208484768928b.jar" />
+        sha1="3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9">
+        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-b5aaad847bf3e7c7685fbf8ff3c53cb507fdc9ef.jar" />
     </item>
 
 </items>

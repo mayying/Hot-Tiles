@@ -11,7 +11,6 @@ import java.util.HashMap;
 */
 // Separate score logic from player logic
 public class ScoreBoard {
-    private static final String TAG = "HT_ScoreBoard";
     private static ScoreBoard instance;
     private ArrayList<Score> scores;
     private HashMap<String, Integer> playerMap; // maps player's id to his index here so I dont have to change everything
@@ -44,16 +43,24 @@ public class ScoreBoard {
         if(!killerID.equals("null")) {
             getScores().get( playerMap.get(killerID) ).incrementKills();
         }
-
         getScores().get( playerMap.get(victimID) ).incrementDeath();
         updateScores();
     }
-
+//    public void incrementKills(int idx) {
+//        // make sure the idx follows how the player is registered
+//        getScores().get(idx).incrementKills();
+//        updateScores();
+//    }
+//
+//    public void incrementDeath(int idx) {
+//        getScores().get(idx).incrementDeath();
+//        updateScores();
+//    }
 
     // Updates positions/sorting in scoreboard
     private void updateScores() {
         Collections.sort(scores);
-        Gdx.app.log(TAG,scores.toString());
+        Gdx.app.log("Scores",scores.toString());
     }
 
     public void reset() {
@@ -89,7 +96,7 @@ public class ScoreBoard {
 
         @Override
         public String toString() {
-            return String.format("\nPlayer %s - %s / %s | Score: %s"+"\n", player.getID(), kills, death, this.getScore());
+            return String.format("Player %s - %s / %s | Score: %s", player.getID(), kills, death, this.getScore());
         }
     }
 

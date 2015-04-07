@@ -12,6 +12,7 @@ import com.mayying.tileMapGame.entities.Player;
  * Created by User on 28/2/15.
  */
 // Simple powerup in the form of shooting projectiles
+// TODO-  landmine powerups
 public class Bullet extends Sprite {
 
     private static final String TAG = "Bullet";

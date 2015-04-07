@@ -1,6 +1,8 @@
 package com.mayying.tileMapGame.entities.powerups;
 
-import com.mayying.tileMapGame.screens.Play;
+import com.badlogic.gdx.Gdx;
+import com.mayying.tileMapGame.GameWorld;
+import com.mayying.tileMapGame.entities.Player;
 
 /**
  * Created by User on 18/3/15.
@@ -11,8 +13,10 @@ import com.mayying.tileMapGame.screens.Play;
  */
 public class Blackout implements Usable {
     @Override
-    public void use() {
-        Play.broadcastMessage("effect", "blackout");
+    public void use(Player[] players) {
+        Gdx.app.log("Disabled", "Using Blackout will send the server a message and does nothing else locally");
+        // TODO - Send blackout move
+        GameWorld.setBlackout();
     }
 
 

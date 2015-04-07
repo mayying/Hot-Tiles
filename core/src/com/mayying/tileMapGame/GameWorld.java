@@ -27,7 +27,6 @@ import java.util.Vector;
 /**
  * Created by Luccan on 2/3/2015.
  */
-// MAYBE CHANGE THIS TO A SINGLETON
 public class GameWorld{
     private static final String TAG = "GameWorld";
     private MyTouchpad myTouchPad;
@@ -37,15 +36,14 @@ public class GameWorld{
     private TextureAtlas playerAtlas;
     private Player devicePlayer;
     private int countX = 0, countY = 0;
-    private boolean blackout = false;
 
-    private static GameWorld instance;
+    public static Rectangle screenBound;
     public static float TILE_WIDTH, TILE_HEIGHT, delta;
+    private static boolean blackout = false;
 
-    public Rectangle screenBound;
     public static final Vector<Sprite> bullets = new Vector<Sprite>();
-    public final Vector<Mine> mines = new Vector<Mine>();
-    private final HashMap<String, Player> players = new HashMap<String, Player>();
+    public static final Vector<Mine> mines = new Vector<Mine>();
+    private static final HashMap<String, Player> players = new HashMap<String, Player>();
 
     public GameWorld(TiledMapTileLayer playableLayer, List<String> participants, String myId) {
         playerAtlas = new TextureAtlas("img/player3.txt");
@@ -68,11 +66,6 @@ public class GameWorld{
         spawnPowerUps = new SpawnPowerUps(playableLayer, this);
 
         setPlayerBound();
-        instance = this;
-    }
-
-    public static GameWorld getInstance(){
-        return instance;
     }
 
     // Register a new player onto the scoreboard and add to the world render list
@@ -82,8 +75,8 @@ public class GameWorld{
         players.put(p.getID(), p);
     }
 
-
-    public HashMap<String, Player> getPlayers() {
+    //TODO: why Static methods?
+    public static HashMap<String, Player> getPlayers() {
         return players;
     }
 
@@ -110,7 +103,7 @@ public class GameWorld{
         if (blackout) {
             // This causes Player object to disappear for some reason
             ShapeRenderer shapeRenderer = new ShapeRenderer();
-            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix()); ;
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(new Color(Color.BLACK));
             shapeRenderer.rect(TILE_WIDTH * 4, TILE_HEIGHT + .5f, TILE_WIDTH * 10, TILE_HEIGHT * 8 );
@@ -202,8 +195,12 @@ public class GameWorld{
      * @param ID player's ID / key
      * @return player of specified index
      */
-    public Player getPlayer(String ID) {
+    public static Player getPlayer(String ID) {
         return players.get(ID);
+    }
+
+    public static int getNumPlayers() {
+        return players.size();
     }
 
     // Custom Methods
@@ -224,7 +221,7 @@ public class GameWorld{
         bullet.getTexture().dispose();
     }
 
-    public void setBlackout() {
+    public static void setBlackout() {
         if (!blackout) {
             blackout = true;
             new DelayedThread(3000l) {
@@ -237,17 +234,40 @@ public class GameWorld{
         }
     }
 
-    public synchronized void addMine(Mine mine) {
+    public static synchronized void addMine(Mine mine) {
         mines.add(mine);
     }
 
-    public synchronized void removeMine(Mine mine) {
+    public static synchronized void removeMine(Mine mine) {
         mine.getTexture().dispose();
         mine.setAlpha(0);
         mines.remove(mine);
     }
 
-    public void setPlayerPosition(String playerId, Vector2 pos) {
+    // players should not be modified as it leads to a lot of problems
+//    public void removePlayer(Player player) {
+//        synchronized (players) {
+//            players.remove(player.getIndex());
+//        }
+//    }
+//
+//    public void addPlayer(Player player) {
+//        synchronized (players) {
+//            players.add(player.getIndex(), player);
+//        }
+//    }
+
+//    public void swipe(){
+//        InputMultiplexer inputMultiplexer=new InputMultiplexer();
+//        Stage stage=new Stage();
+//        stage.addActor(getMyTouchpad().getTouchpad());
+//
+//        inputMultiplexer.addProcessor(stage);
+//        inputMultiplexer.addProcessor(directionGestureDetector);
+//        Gdx.input.setInputProcessor(inputMultiplexer);
+//    }
+
+    public static void setPlayerPosition(String playerId, Vector2 pos) {
         Player p = players.get(playerId);
         if (p != null) {
             //TODO: Unsafe conversion?
@@ -260,15 +280,13 @@ public class GameWorld{
         Gdx.app.log(TAG,"disposing");
         for(String key : players.keySet()){
             players.get(key).getTexture().dispose();
+            players.remove(key);
         }
-        players.clear();
-
         for(int i=0; i<mines.size(); i++){
             mines.get(i).getTexture().dispose();
             mines.remove(i);
         }
         ScoreBoard.getInstance().reset();
         PowerUpFactory.getInstance(this).reset();
-        instance = null;
     }
 }

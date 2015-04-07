@@ -4,9 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.Player;
-import com.mayying.tileMapGame.screens.Play;
 
 /**
  * Created by User on 31/3/15.
@@ -19,10 +17,7 @@ public class FireMine extends Mine {
     @Override
     public void onCollisionDetected(Player hitPlayer) {
         super.onCollisionDetected(hitPlayer);
-        String hitPlayerID = hitPlayer.getID();
-        hitPlayer.burn(hitPlayerID);
-        // Format: "effect","freeze",playerIdx, user
-        Play.broadcastMessage("effect", "burn", hitPlayerID, GameWorld.getInstance().getDevicePlayer().getID());
+        // TODO - Broadcast message
+        hitPlayer.burn(hitPlayer.getID());
     }
-
 }

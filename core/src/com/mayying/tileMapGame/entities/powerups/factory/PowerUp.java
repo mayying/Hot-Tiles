@@ -2,6 +2,7 @@ package com.mayying.tileMapGame.entities.powerups.factory;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.mayying.tileMapGame.GameWorld;
+import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.powerups.Blackout;
 import com.mayying.tileMapGame.entities.powerups.Confusion;
 import com.mayying.tileMapGame.entities.powerups.FireMine;
@@ -49,22 +50,24 @@ public class PowerUp {
 
         switch (getName()) {
             case "Freeze Mine":
-                new FreezeMine(world.getDevicePlayer(), world.getDevicePlayer().getCollisionLayer()).use();
+                new FreezeMine(world.getDevicePlayer(), world.getDevicePlayer().getCollisionLayer()).use(null);
                 break;
             case "Shield":
-                new Invulnerability().use();
+                new Invulnerability().use(new Player[]{world.getDevicePlayer()});
                 break;
             case "Swap":
-                new Swap().use();
+                //TODO: fix this
+                new Swap().use(new Player[]{GameWorld.getPlayer("me")});
                 break;
             case "Blackout":
-                new Blackout().use();
+                new Blackout().use(null);
                 break;
             case "Confusion":
-                new Confusion().use();
+                //TODO: fix this
+                new Confusion().use(new Player[]{GameWorld.getPlayer("me")});
                 break;
             case "Fire Mine":
-                new FireMine(world.getDevicePlayer(), world.getDevicePlayer().getCollisionLayer()).use();
+                new FireMine(world.getDevicePlayer(), world.getDevicePlayer().getCollisionLayer()).use(null);
                 break;
 
 

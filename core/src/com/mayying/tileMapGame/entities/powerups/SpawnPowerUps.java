@@ -50,7 +50,7 @@ public class SpawnPowerUps implements Collidable {
                 // !created
                 // picking random stringID from list
                 powerUpIsPickedUp = false;
-                powerUp = powerUpFactory.createPowerUp(spawnRNG.nextInt(5));
+                powerUp = powerUpFactory.createPowerUp(spawnRNG.nextInt(5)); //TODO - only 5? no hardcode?
                 sprite = new Sprite(powerUp.getTextureVector());
 
                 // set random spawn time for powerup

@@ -12,7 +12,6 @@ import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
-import com.mayying.tileMapGame.screens.Play;
 
 import java.util.Random;
 
@@ -206,7 +205,7 @@ public class Player extends Sprite {
      *
      * @return a Vector2 of where the player will respawn
      */
-    public void die() {
+    public Vector2 die() {
         // Commits sudoku
         if (!isInvulnerable) {
             isDead = true;
@@ -239,26 +238,20 @@ public class Player extends Sprite {
                 }
             }.start();
 
-            // Format: "effect","dieAndSpawn", x, y
-            Play.broadcastMessage(
-                    "effect",
-                    "dieAndSpawn",
-                    xCoordinate+"", yCoordinate+""
-            );
-
             // Update score (local + server)
             updateScore();
 
+            return new Vector2(xCoordinate, yCoordinate);
+        } else {
+            return null;
         }
     }
 
     private void updateScore() {
+        // TODO - Update score in other devices
         String killerID = getLastHitBy();
         Gdx.app.log("Player "+this.getID(),"Killed by Player "+killerID);
-        ScoreBoard.getInstance().incrementKillsAndOrDeath(killerID.equals(this.ID) ? "null" :killerID, getID());
-
-        // Format: "score", killerIdx, victimIdx
-        Play.broadcastMessage("score", lastHitBy, getID());
+        ScoreBoard.getInstance().incrementKillsAndOrDeath(killerID.equals(this.ID) ? "null" :killerID, this.ID);
     }
 
 
