@@ -190,8 +190,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         rtmConfigBuilder.setMessageReceivedListener(this);
         rtmConfigBuilder.setRoomStatusUpdateListener(this);
         rtmConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
-//        switchToScreen(R.id.screen_wait);
-//        keepScreenOn();
         Games.RealTimeMultiplayer.create(mGoogleApiClient, rtmConfigBuilder.build());
     }
 
