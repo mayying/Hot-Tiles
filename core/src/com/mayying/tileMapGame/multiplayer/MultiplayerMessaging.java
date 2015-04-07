@@ -11,4 +11,5 @@ public interface MultiplayerMessaging {
     public List<String> getJoinedParticipants();
     public String getMyId();
     public List<String> getMessageBuffer();
+    public String getHostId();
 }

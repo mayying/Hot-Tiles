@@ -48,7 +48,6 @@ public class MessageParser {
                         // Format: "effect","freeze",playerIdx, user
                         // Effect to update the client on a player getting frozen. Updates animation accordingly.
                         // Mostly just for the animation, since the player coordinates sent should be frozen as well
-                        //TODO: Watch what is in message[3]
                         GameWorld.getPlayer(message[3]).freeze(senderId); //sender is the person who put the mine
                         break;
                     case "fireMine":
@@ -83,7 +82,15 @@ public class MessageParser {
                 //format of "score", killerIdx, victimIdx
                 // increments k and d accordingly if applicable, killerIdx = -1 if no update to kills
                 ScoreBoard.getInstance().incrementKillsAndOrDeath(senderId, message[2]);
-
+                break;
+            case "ready":
+                //format of "ready", <Random Seed>
+                //if everyone is ready, timer starts to tick.
+                if (world != null) {
+                    world.playerReady(senderId, Long.valueOf(message[2]));
+                    Gdx.app.log(TAG,"READY!");
+                }
+                break;
 
             default:
                 Gdx.app.log(TAG, "No such command: " + message[0]);

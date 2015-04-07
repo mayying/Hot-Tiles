@@ -51,6 +51,7 @@ public class SideBar implements Screen {
 
     private float gameTime = 1 * 60 + 30;
     private int min, sec;
+    private boolean timeFrozen = true;
 
     SideBar(GameWorld world) {
         this.world = world;
@@ -64,6 +65,9 @@ public class SideBar implements Screen {
 //        containsPU = new Boolean[2];
     }
 
+    public void unfreezeGameTimer(){
+        this.timeFrozen = false;
+    }
 
     @Override
     public void show() {
@@ -186,11 +190,15 @@ public class SideBar implements Screen {
     public void render(float delta) {
         stage.act(delta);
         stage.draw();
-        gameTime -= delta;
-        int minutes = (int) Math.floor(gameTime / 60.0f);
-        int seconds = (int) (gameTime - minutes * 60.0f);
-        timeLeft = minutes * 60 + seconds;
-        timer.setText("Time Left\n" + String.format("%02d : %02d", minutes, seconds));
+        if (!timeFrozen) {
+            gameTime -= delta;
+            int minutes = (int) Math.floor(gameTime / 60.0f);
+            int seconds = (int) (gameTime - minutes * 60.0f);
+            timeLeft = minutes * 60 + seconds;
+            timer.setText("Time Left\n" + String.format("%02d : %02d", minutes, seconds));
+        } else {
+            timer.setText("Time Left\n" + "-- : --");
+        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)){
             ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenu());

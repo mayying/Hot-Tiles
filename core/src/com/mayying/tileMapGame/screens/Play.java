@@ -19,6 +19,7 @@ import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by May Ying on 24/2/2015.
@@ -38,16 +39,20 @@ public class Play implements Screen {
     private float spawnNewTile = 0f;
     private static MultiplayerMessaging multiplayerMessaging;
     private MessageParser messageParser;
+    private boolean allPlayersReady = false;
+    private Long randomSeed;
 
     public Play(){
         super();
         this.multiplayerMessaging = null;
         this.messageParser = null;
+        randomSeed = new Random().nextLong();
     }
     public Play(MultiplayerMessaging multiplayerMessaging){
         super();
         this.multiplayerMessaging = multiplayerMessaging;
-        this.messageParser = new MessageParser(world);
+        this.messageParser = null;
+        randomSeed = new Random().nextLong();
     }
 
     @Override
@@ -69,16 +74,19 @@ public class Play implements Screen {
             participants = multiplayerMessaging.getJoinedParticipants();
             myPlayerId = multiplayerMessaging.getMyId();
         }
-        world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"), participants, myPlayerId);
+        world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"), participants, myPlayerId, this);
+        if (multiplayerMessaging != null){
+            this.messageParser = new MessageParser(world);
+        }
 
         sideBar = new SideBar(world);
         sideBar.show();
 
-        burningTiles = new BurningTiles[80];
-        for (int i = 0; i < burningTiles.length; i++) {
-            burningTiles[i] = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
-            burningTiles[i].create();
-        }
+//        burningTiles = new BurningTiles[80];
+//        for (int i = 0; i < burningTiles.length; i++) {
+//            burningTiles[i] = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
+//            burningTiles[i].create();
+//        }
 
         Jukebox.load("sounds/fire.mp3", "fire");
         // burningTiles = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
@@ -87,6 +95,18 @@ public class Play implements Screen {
 //        world.swipe();
     }
 
+    public void initializeBurningTiles(Long randomSeed){
+        burningTiles = new BurningTiles[80];
+        int randomBase = 102312943;
+        for (int i = 0; i < burningTiles.length; i++) {
+            //randomBase is just to randomize even more.
+            burningTiles[i] = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"), randomSeed+i+randomBase);
+            burningTiles[i].create();
+        }
+        //start timer
+        sideBar.unfreezeGameTimer();
+        allPlayersReady = true;
+    }
 
     long lastBroadcast = -1;
 
@@ -105,15 +125,20 @@ public class Play implements Screen {
         world.playerMovement(delta);
         world.drawAndUpdate(renderer.getBatch());
 
-        spawnNewTile += delta;
-        if (spawnNewTile >= Math.log10(0.02f * (SideBar.timeLeft + 10000))
-                && count < burningTiles.length) {
-            spawnNewTile = 0;
-            count++;
-        }
+        if (this.allPlayersReady) {
+//            spawnNewTile += delta;
+//            if (spawnNewTile >= Math.log10(0.02f * (SideBar.timeLeft + 10000))
+//                    && count < burningTiles.length) {
+//                spawnNewTile = 0;
+//                count++;
+//            }
+            if (SideBar.timeLeft>0) {
+                count = (int) Math.floor((92 - SideBar.timeLeft) / 1.75);
+            }
 
-        for (int i = 0; i < count; i++) {
-            burningTiles[i].render(delta);
+            for (int i = 0; i < count; i++) {
+                burningTiles[i].render(delta);
+            }
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
@@ -123,6 +148,10 @@ public class Play implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
             world.getDevicePlayer().shield();
         }
+
+        renderer.getBatch().end();
+        sideBar.render(delta);
+
         // TODO - Might be better to create an additional thread that handles all the incoming messages
         if (multiplayerMessaging!=null){
             List<String> msgs = multiplayerMessaging.getMessageBuffer();
@@ -133,11 +162,13 @@ public class Play implements Screen {
             if (System.currentTimeMillis()-lastBroadcast>100) {
                 lastBroadcast = System.currentTimeMillis();
                 multiplayerMessaging.BroadCastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
+
+                if (!allPlayersReady){
+                    world.playerReady(multiplayerMessaging.getMyId(), randomSeed);
+                    multiplayerMessaging.BroadCastMessage("ready,"+randomSeed.toString());
+                }
             }
         }
-
-        renderer.getBatch().end();
-        sideBar.render(delta);
     }
 
     @Override

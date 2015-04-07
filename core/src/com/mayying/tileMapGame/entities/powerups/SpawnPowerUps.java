@@ -33,11 +33,11 @@ public class SpawnPowerUps implements Collidable {
     Vector2 position = new Vector2(), coords = new Vector2();
     private TweenManager tweenManager;
 
-    public SpawnPowerUps(TiledMapTileLayer tileLayer, GameWorld world) {
+    public SpawnPowerUps(TiledMapTileLayer tileLayer, GameWorld world, long seed) {
         this.tileLayer = tileLayer;
         this.world = world;
         powerUpFactory = PowerUpFactory.getInstance(world);
-        spawnRNG = new Random();
+        spawnRNG = new Random(seed);
         sprite = new Sprite();
 
         tweenManager = new TweenManager();
@@ -54,11 +54,11 @@ public class SpawnPowerUps implements Collidable {
                 sprite = new Sprite(powerUp.getTextureVector());
 
                 // set random spawn time for powerup
-                randomSpawnTime = (float) new Random().nextInt(10);
+                randomSpawnTime = (float) spawnRNG.nextInt(10);
 
                 // sprite position
-                coords.x = new Random().nextInt(tileLayer.getWidth() - 8);
-                coords.y = new Random().nextInt(tileLayer.getHeight() - 2);
+                coords.x = spawnRNG.nextInt(tileLayer.getWidth() - 8);
+                coords.y = spawnRNG.nextInt(tileLayer.getHeight() - 2);
 
                 position.x = tileLayer.getTileWidth() / 2 - sprite.getWidth() / 2 + tileLayer.getTileWidth() * (coords.x + 4);
                 position.y = tileLayer.getTileHeight() / 4 + tileLayer.getTileHeight() * (coords.y + 1);

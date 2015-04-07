@@ -19,6 +19,8 @@ import com.mayying.tileMapGame.entities.powerups.SpawnPowerUps;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUpFactory;
 import com.mayying.tileMapGame.multiplayer.MessageParser;
+import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
+import com.mayying.tileMapGame.screens.Play;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +32,8 @@ import java.util.Vector;
 public class GameWorld{
     private static final String TAG = "GameWorld";
     private MyTouchpad myTouchPad;
-    private SpawnPowerUps spawnPowerUps;
-    private PowerUp powerUp;
+    private SpawnPowerUps spawnPowerUps = null;
+    private PowerUp powerUp = null;
     private Rectangle playerBound;
     private TextureAtlas playerAtlas;
     private Player devicePlayer;
@@ -45,7 +47,11 @@ public class GameWorld{
     public static final Vector<Mine> mines = new Vector<Mine>();
     private static final HashMap<String, Player> players = new HashMap<String, Player>();
 
-    public GameWorld(TiledMapTileLayer playableLayer, List<String> participants, String myId) {
+    private final HashMap<String, Long> randomSeeds = new HashMap<>();
+    private TiledMapTileLayer playableLayer;
+    private Play play;
+
+    public GameWorld(TiledMapTileLayer playableLayer, List<String> participants, String myId, Play play) {
         playerAtlas = new TextureAtlas("img/player3.txt");
         // Initialize all players
         for (int id=0;id<participants.size();id++) {
@@ -63,7 +69,10 @@ public class GameWorld{
 
         screenBound = new Rectangle(4 * TILE_WIDTH, TILE_HEIGHT, 10 * TILE_WIDTH, 8 * TILE_HEIGHT);
         myTouchPad = new MyTouchpad();
-        spawnPowerUps = new SpawnPowerUps(playableLayer, this);
+        //Moved to gameStart();
+        this.playableLayer = playableLayer;
+        this.play = play;
+//        spawnPowerUps = new SpawnPowerUps(playableLayer, this, randomSeeds.get(Play.getMultiplayerMessaging().getHostId()));
 
         setPlayerBound();
     }
@@ -73,6 +82,18 @@ public class GameWorld{
         ScoreBoard scoreBoard = ScoreBoard.getInstance();
         scoreBoard.register(p);
         players.put(p.getID(), p);
+    }
+
+    public void playerReady(String id, Long randomSeed){
+        this.randomSeeds.put(id, randomSeed);
+        if (randomSeeds.size() == players.size()){
+            this.gameStart();
+        }
+    }
+
+    public void gameStart(){
+        spawnPowerUps = new SpawnPowerUps(playableLayer, this, randomSeeds.get(Play.getMultiplayerMessaging().getHostId()));
+        play.initializeBurningTiles(randomSeeds.get(Play.getMultiplayerMessaging().getHostId()));
     }
 
     //TODO: why Static methods?
@@ -85,7 +106,10 @@ public class GameWorld{
     }
 
     public void drawAndUpdate(Batch batch) {
-        spawnPowerUps.draw(batch);
+        if (spawnPowerUps != null) {
+            spawnPowerUps.draw(batch);
+            powerUp = spawnPowerUps.getPowerUp();
+        }
 //        for (int i = 0; i < bullets.size(); i++) {
 //            bullets.get(i).draw(batch);
 //        }
@@ -97,7 +121,6 @@ public class GameWorld{
         for (int i = 0; i < mines.size(); i++) {
             mines.get(i).draw(batch);
         }
-        powerUp = spawnPowerUps.getPowerUp();
 
 
         if (blackout) {
@@ -170,7 +193,9 @@ public class GameWorld{
 
 
     public boolean pickUpPowerUp() {
-        return spawnPowerUps.isPowerUpPickedUp();
+        if (spawnPowerUps!=null)
+            return spawnPowerUps.isPowerUpPickedUp();
+        return false;
     }
 
     private void setPlayerBound() {
