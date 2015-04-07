@@ -24,7 +24,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.Jukebox;
-import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.ScoreBoard;
 import com.mayying.tileMapGame.entities.ScoreBoard.Score;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
@@ -48,11 +47,11 @@ public class SideBar implements Screen {
     private TextureAtlas buttonAtlas;
     private OrthographicCamera hudCamera;
     private Table table, descriptionTable, subTable, scoreBoardTable, scoreBoard1stTable, scoreBoard2ndTable;
-    private LabelStyle labelStyle;
+    private LabelStyle labelStyle, playerStyle;
     private ScoreBoard scoreBoard;
-    private Player player1, player2;
-    //    private Boolean[] containsPU;
+    private ArrayList<Score> score;
     private String powerUpName;
+    private ImageButtonStyle imageButtonStyle;
 
     volatile static int timeLeft = 1;
 
@@ -64,13 +63,12 @@ public class SideBar implements Screen {
         hudCamera = new OrthographicCamera();
         min = 1;
         sec = 30;
-//        screenBound = new Rectangle(GameWorld.screenBound.getX() + GameWorld.screenBound.getWidth() + GameWorld.TILE_WIDTH,
-//                0, GameWorld.TILE_WIDTH * 3,
-//                GameWorld.TILE_HEIGHT * 10);
-        labelStyle = new Label.LabelStyle();
-//        containsPU = new Boolean[2];
+        labelStyle = new LabelStyle();
+        labelStyle.font = new BitmapFont(Gdx.files.internal("font/black.fnt"));
+        playerStyle = new LabelStyle();
+        playerStyle.font = labelStyle.font;
+        imageButtonStyle = new ImageButtonStyle();
     }
-
 
     @Override
     public void show() {
@@ -78,10 +76,7 @@ public class SideBar implements Screen {
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
 //
         inputMultiplexer.addProcessor(stage);
-//        inputMultiplexer.addProcessor(world.getDirectionGestureDetector());
         Gdx.input.setInputProcessor(inputMultiplexer);
-
-//        Gdx.input.setInputProcessor(stage);
 
         buttonAtlas = new TextureAtlas(Gdx.files.internal("skin/skin.txt"));
         skin = new Skin(Gdx.files.internal("skin/gameSkin.json"), buttonAtlas);
@@ -91,8 +86,6 @@ public class SideBar implements Screen {
         table.setFillParent(true);
         table.setBounds(0, 0, Play.V_WIDTH, Play.V_HEIGHT);
         table.align(Align.top);
-        // table.setDebug(true);
-        // tableBtm.setDebug(true);
 
         timer = new Label("Time Left\n" + min + " : " + sec, skin, "timer");
         timer.setAlignment(Align.center);
@@ -125,7 +118,6 @@ public class SideBar implements Screen {
 
         scoreBoard1stTable.add(scoreBoard1st[0]).height(55).width(55).padTop(15).padLeft(5);
         scoreBoard1stTable.add(scoreBoard1st[1]).fill().expandX().padTop(10);
-        scoreBoard1stTable.setDebug(true);
 
         scoreBoard2ndTable = new Table(skin);
         scoreBoard2ndTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/score210x89.png"))));
@@ -196,7 +188,6 @@ public class SideBar implements Screen {
         descriptionTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/skinSquare280x210.png"))));
         descriptionTable.add(descriptionImg).padTop(40).width(90).height(90).row();
         descriptionTable.add(descriptionText).expandY().width(150).height(140).top().center();
-        // descriptionTable.setDebug(true);
 
         // putting stuff together
         //table.align(Align.center);
@@ -227,28 +218,23 @@ public class SideBar implements Screen {
             int seconds = (int) (gameTime - minutes * 60.0f);
             timeLeft = minutes * 60 + seconds;
             timer.setText("Time Left\n" + String.format("%02d : %02d", minutes, seconds));
-            Gdx.app.log("SideBar.java", "world.getPowerUp().getFilename() " + world.getPowerUp().getFilename());
-            ArrayList<Score> score = scoreBoard.getScores();
-            labelStyle.background = skin.getDrawable(score.get(1).getPlayer().getName() + "head");
-            labelStyle.font = new BitmapFont(Gdx.files.internal("font/black.fnt"));
-//            scoreBoard1st[0].setStyle(labelStyle);
 
+            score = scoreBoard.getScores();
+
+            playerStyle.background = skin.getDrawable(score.get(1).getPlayer().getName() + "head");
+            scoreBoard1st[0].setStyle(playerStyle);
             scoreBoard1st[1].setText("Score: " + score.get(1).getScore());
 
-            labelStyle.background = skin.getDrawable(score.get(0).getPlayer().getName() + "head");
-            labelStyle.font = new BitmapFont(Gdx.files.internal("font/black.fnt"));
-//            scoreBoard2nd[0].setStyle(labelStyle);
-
+            playerStyle.background = skin.getDrawable(score.get(0).getPlayer().getName() + "head");
+            scoreBoard2nd[0].setStyle(playerStyle);
             scoreBoard2nd[1].setText("Score: " + score.get(0).getScore());
 
             if (world.pickUpPowerUp()) {
                 powerUpName = world.getPowerUp().getName();
                 descriptionText.setText(powerUpName + "\n" + world.getPowerUp().getDescription());
                 labelStyle.background = skin.getDrawable(world.getPowerUp().getFilename());
-                labelStyle.font = new BitmapFont(Gdx.files.internal("font/black.fnt"));
                 descriptionImg.setStyle(labelStyle);
 
-                ImageButtonStyle imageButtonStyle = new ImageButtonStyle();
                 imageButtonStyle.imageUp = skin.getDrawable(world.getPowerUp().getFilenameBtn());
                 imageButtonStyle.imageChecked = skin.getDrawable("skinRound140x140");
 

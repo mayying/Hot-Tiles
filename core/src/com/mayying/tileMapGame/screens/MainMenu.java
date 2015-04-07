@@ -77,9 +77,6 @@ public class MainMenu implements Screen {
             }
         });
         buttonFriends = new TextButton("Friends", skin);
-        buttonFriends.addListener(new ClickListener() {
-
-        });
         buttonExit = new TextButton("Exit", skin);
         buttonExit.addListener(new ClickListener() {
 

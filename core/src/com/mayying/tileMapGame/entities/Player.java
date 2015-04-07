@@ -116,8 +116,6 @@ public class Player extends Sprite {
         animationTime += delta;
         setRegion(isDead ? burnt.getKeyFrame(animationTime) : facing == 4 ? left.getKeyFrame(animationTime) : facing == 6 ? right.getKeyFrame(animationTime) :
                 facing == 2 ? backward.getKeyFrame(animationTime) : forward.getKeyFrame(animationTime));
-
-
     }
 
 

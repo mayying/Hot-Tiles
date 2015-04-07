@@ -7,14 +7,15 @@ import java.util.Collections;
 import java.util.HashMap;
 
 /**
-* Created by User on 01/4/15.asd
-*/
+ * Created by User on 01/4/15.asd
+ */
 // Separate score logic from player logic
 public class ScoreBoard {
     private static final String TAG = "HT_ScoreBoard";
     private static ScoreBoard instance;
     private ArrayList<Score> scores;
     private HashMap<String, Integer> playerMap; // maps player's id to his index here so I dont have to change everything
+
     private ScoreBoard() {
         instance = this;
         scores = new ArrayList<Score>();
@@ -24,7 +25,7 @@ public class ScoreBoard {
 
     public static ScoreBoard getInstance() {
         if (instance == null) {
-            Gdx.app.log("ScoreBoard","Initialized new ScoreBoard");
+            Gdx.app.log("ScoreBoard", "Initialized new ScoreBoard");
             return new ScoreBoard();
         } else {
             return instance;
@@ -40,13 +41,13 @@ public class ScoreBoard {
         scores.add(new Score(player));
     }
 
-    public void incrementKillsAndOrDeath(String killerID, String victimID){
+    public void incrementKillsAndOrDeath(String killerID, String victimID) {
         // TODO - might have to fix this, send something more unique than a "null" string
-        if(!killerID.equals("null")) {
-            getScores().get( playerMap.get(killerID) ).incrementKills();
+        if (!killerID.equals("null")) {
+            getScores().get(playerMap.get(killerID)).incrementKills();
         }
 
-        getScores().get( playerMap.get(victimID) ).incrementDeath();
+        getScores().get(playerMap.get(victimID)).incrementDeath();
         updateScores();
     }
 
@@ -54,7 +55,7 @@ public class ScoreBoard {
     // Updates positions/sorting in scoreboard
     private void updateScores() {
         Collections.sort(scores);
-        Gdx.app.log(TAG,scores.toString());
+        Gdx.app.log(TAG, scores.toString());
     }
 
     public void reset() {
@@ -72,7 +73,7 @@ public class ScoreBoard {
         }
 
         public float getScore() {
-            return  kills - death;
+            return kills - death;
         }
 
         private void incrementKills() {
@@ -83,7 +84,7 @@ public class ScoreBoard {
             death++;
         }
 
-        public Player getPlayer(){
+        public Player getPlayer() {
             return player;
         }
 
@@ -94,7 +95,7 @@ public class ScoreBoard {
 
         @Override
         public String toString() {
-            return String.format("\nPlayer %s - %s / %s | Score: %s"+"\n", player.getID(), kills, death, this.getScore());
+            return String.format("\nPlayer %s - %s / %s | Score: %s" + "\n", player.getID(), kills, death, this.getScore());
         }
     }
 
