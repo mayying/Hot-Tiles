@@ -52,7 +52,7 @@ import java.util.List;
 
 public class AndroidLauncher extends AndroidApplication implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener, RealTimeMessageReceivedListener,
-        RoomStatusUpdateListener, RoomUpdateListener, OnInvitationReceivedListener,MultiplayerMessaging {
+        RoomStatusUpdateListener, RoomUpdateListener, OnInvitationReceivedListener, MultiplayerMessaging {
 
    /*
      * API INTEGRATION SECTION. This section contains the code that integrates
@@ -100,8 +100,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     // Create game view
     private View gameView;
 
-
-
     private static int count;
     private int oppoCount = 0;
     private ArrayList<String> participants = new ArrayList<String>();
@@ -123,9 +121,10 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         for (int id : CLICKABLES) {
             findViewById(id).setOnClickListener(this);
         }
-        gameView = initializeForView(new TiledMapGame(this),new AndroidApplicationConfiguration());
+
+        gameView = initializeForView(new TiledMapGame(this), new AndroidApplicationConfiguration());
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.screen_game);
-        linearLayout.addView(gameView,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
+        linearLayout.addView(gameView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
     }
 
     @Override
@@ -234,7 +233,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
                 if (responseCode == RESULT_OK) {
                     mGoogleApiClient.connect();
                 } else {
-                    BaseGameUtils.showActivityResultError(this,requestCode,responseCode, R.string.signin_other_error);
+                    BaseGameUtils.showActivityResultError(this, requestCode, responseCode, R.string.signin_other_error);
                 }
                 break;
         }
@@ -321,10 +320,9 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         // stop trying to keep the screen on
         stopKeepingScreenOn();
 
-        if (mGoogleApiClient == null || !mGoogleApiClient.isConnected()){
+        if (mGoogleApiClient == null || !mGoogleApiClient.isConnected()) {
             switchToScreen(R.id.screen_sign_in);
-        }
-        else {
+        } else {
             switchToScreen(R.id.screen_wait);
         }
         super.onStop();
@@ -341,7 +339,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
             Log.w(TAG,
                     "GameHelper: client was already connected on onStart()");
         } else {
-            Log.d(TAG,"Connecting client.");
+            Log.d(TAG, "Connecting client.");
             mGoogleApiClient.connect();
         }
         super.onStart();
@@ -425,7 +423,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
                     .getParcelable(Multiplayer.EXTRA_INVITATION);
             if (inv != null && inv.getInvitationId() != null) {
                 // retrieve and cache the invitation ID
-                Log.d(TAG,"onConnected: connection hint has a room invite!");
+                Log.d(TAG, "onConnected: connection hint has a room invite!");
                 acceptInviteToRoom(inv.getInvitationId());
                 return;
             }
@@ -627,7 +625,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 //            oppoCount = (buf[4] & 0xFF)| ((buf[3] & 0xFF) << 8)| ((buf[2] & 0xFF) << 16)| ((buf[1] & 0xFF) << 24);
 //        }
         String msg = new String(buf);
-        if (msg.startsWith(msgTag)){
+        if (msg.startsWith(msgTag)) {
             //parse message
             String msgStr = msg.substring(msgTag.length());
             msgBuf.add(msgStr);
@@ -638,7 +636,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     @Override
     public void broadcastMessage(String msg) {
 //        Log.d("Sending", msg);
-        String senderId = mMyId+",";
+        String senderId = mMyId + ",";
         String taggedMsg = msgTag + senderId + msg;
 
         byte[] bytes = taggedMsg.getBytes();
@@ -648,14 +646,14 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
                 continue;
             if (p.getStatus() != Participant.STATUS_JOINED)
                 continue;
-            Games.RealTimeMultiplayer.sendReliableMessage(mGoogleApiClient, null,bytes, mRoomId, p.getParticipantId());
+            Games.RealTimeMultiplayer.sendReliableMessage(mGoogleApiClient, null, bytes, mRoomId, p.getParticipantId());
         }
 
     }
 
     @Override
     public List<String> getParticipants() {
-        for(Participant p:mParticipants){
+        for (Participant p : mParticipants) {
             participants.add(p.getParticipantId());
         }
         return participants;
@@ -663,7 +661,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 
     @Override
     public List<String> getJoinedParticipants() {
-        for(Participant p:mParticipants){
+        for (Participant p : mParticipants) {
             if (p.getStatus() != Participant.STATUS_JOINED)
                 continue;
             participants.add(p.getParticipantId());
@@ -677,7 +675,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     }
 
     @Override
-    public List<String> getMessageBuffer(){
+    public List<String> getMessageBuffer() {
         return msgBuf.getList();
     }
 
@@ -706,7 +704,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         // make the requested screen visible; hide all others.
         for (int id : SCREENS) {
             findViewById(id).setVisibility(screenId == id ? View.VISIBLE : View.GONE);
-            gameView.setVisibility(screenId == R.id.screen_game?View.VISIBLE : View.GONE);
+            gameView.setVisibility(screenId == R.id.screen_game ? View.VISIBLE : View.GONE);
         }
         mCurScreen = screenId;
 
@@ -715,7 +713,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         if (mIncomingInvitationId == null) {
             // no invitation, so no popup
             showInvPopup = false;
-        } else  {
+        } else {
             // if in multiplayer, only show invitation on main screen
             showInvPopup = (mCurScreen == R.id.screen_main);
         }
@@ -725,8 +723,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     void switchToMainScreen() {
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             switchToScreen(R.id.screen_main);
-        }
-        else {
+        } else {
             switchToScreen(R.id.screen_sign_in);
         }
     }

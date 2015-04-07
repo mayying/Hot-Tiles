@@ -2,74 +2,74 @@
 <items version="2" >
 
     <item
-        jar="D:\time2code\Hot-Tiles\android\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\libs\internal_impl-21.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="1609e6d42d0480b0f4188e2c29f75388fa12a8f0">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\internal_impl-21.0.0-564f73675704523fc53a2bd333c40d063469090b.jar" />
-    </item>
-    <item
-        jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.5.3\903703e4eca4d27092cf61412b7a583aa26d14ad\gdx-backend-android-1.5.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="903703e4eca4d27092cf61412b7a583aa26d14ad">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.5.3-fad1939bda943fc45621f7014aee1284e9c11be1.jar" />
-    </item>
-    <item
-        jar="D:\time2code\Hot-Tiles\core\build\libs\core-1.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="4899453502c644a96874eebd137c6b4902fabde4">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\core-1.0-7679bf07410e88a9de0adbe37813ade4043487b0.jar" />
-    </item>
-    <item
-        jar="D:\time2code\Hot-Tiles\libs\tween-engine-api-sources.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="b471c161e1bd73eb4a762a35d75b40eb5b4de3a1">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-sources-2e8e889bed9611c8b44a7400b51389caf458d11f.jar" />
-    </item>
-    <item
-        jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-box2d\1.5.3\52bc9ff881a6eb1731eb2f54b5016425cae05024\gdx-box2d-1.5.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="52bc9ff881a6eb1731eb2f54b5016425cae05024">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-box2d-1.5.3-fdb855e67e5ca7c5f6f74cf3c083a1fa1d0d6b1f.jar" />
-    </item>
-    <item
-        jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.5.3\3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9\gdx-1.5.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-b5aaad847bf3e7c7685fbf8ff3c53cb507fdc9ef.jar" />
-    </item>
-    <item
-        jar="D:\time2code\Hot-Tiles\libs\tween-engine-api.jar"
+        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\libs\tween-engine-api.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="8be8beb70b7ccae059d523e56670f6e44fb1821f">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-48c55d1bc76052ac71826cf1e9c778a3896b88a5.jar" />
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-6aa53bbfa243d3849ae8c7cf068afb0902c35b6c.jar" />
     </item>
     <item
-        jar="D:\Android Studio\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.0\support-annotations-21.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="1a578b9607b36266c63d43a4fa0ab5664dbe911e">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\support-annotations-21.0.0-1f58c499eb69501b9749007641c8f60f910f6bb7.jar" />
-    </item>
-    <item
-        jar="D:\time2code\Hot-Tiles\android\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
+        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\classes-17a638d068080ecda92572b15bf2d53c2c318953.jar" />
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\classes-2c780fb04c45bafce880f2c8385499b3f42d422d.jar" />
     </item>
     <item
-        jar="D:\time2code\Hot-Tiles\android\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\classes.jar"
+        jar="C:\Users\May\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-box2d\1.5.3\52bc9ff881a6eb1731eb2f54b5016425cae05024\gdx-box2d-1.5.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="52bc9ff881a6eb1731eb2f54b5016425cae05024">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-box2d-1.5.3-4d0db40b6ad7e9f127a9e09978c42e6f0d10719b.jar" />
+    </item>
+    <item
+        jar="C:\Users\May\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.5.3\903703e4eca4d27092cf61412b7a583aa26d14ad\gdx-backend-android-1.5.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="903703e4eca4d27092cf61412b7a583aa26d14ad">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.5.3-9d6a16be9c2184798103c3cafe53451e202aa843.jar" />
+    </item>
+    <item
+        jar="C:\adt-bundle-windows-x86_64-20140702\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.0\support-annotations-21.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="1a578b9607b36266c63d43a4fa0ab5664dbe911e">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\support-annotations-21.0.0-892b5137c61b7abc511575015de224d00b13e92a.jar" />
+    </item>
+    <item
+        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="686344a780033e4ba22b926cd225f8d4941247e6">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\classes-641e31260fe3f4191b532becf62208484768928b.jar" />
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\classes-52fe4522e9e07679d84bc5e6d989a5607c2141c2.jar" />
+    </item>
+    <item
+        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\libs\tween-engine-api-sources.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b471c161e1bd73eb4a762a35d75b40eb5b4de3a1">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-sources-97f832bc16b83be87a0da65e3805d7f95e1ce0f8.jar" />
+    </item>
+    <item
+        jar="C:\Users\May\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.5.3\3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9\gdx-1.5.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-38166ae41fdb97bfafc7ed7a5b1e8141b30b7bc8.jar" />
+    </item>
+    <item
+        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\libs\internal_impl-21.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="1609e6d42d0480b0f4188e2c29f75388fa12a8f0">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\internal_impl-21.0.0-8c7d8907d48e43644f539587e519a8bcc02eacda.jar" />
+    </item>
+    <item
+        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\core\build\libs\core-1.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="7aa7602ce66b7b2a561affbdf6ce10e252f32992">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\core-1.0-5a3adb6bbec24ec12b8671ce083d06e11f14e0a7.jar" />
     </item>
 
 </items>

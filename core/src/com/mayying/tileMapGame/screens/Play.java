@@ -39,13 +39,13 @@ public class Play implements Screen {
     private float spawnNewTile = 0f;
     private static MultiplayerMessaging multiplayerMessaging = null;
 
-    public Play(){
+    public Play() {
         super();
     }
-    public Play(MultiplayerMessaging mmsg){
+
+    public Play(MultiplayerMessaging mmsg) {
         super();
         multiplayerMessaging = mmsg;
-
     }
 
     @Override
@@ -68,7 +68,6 @@ public class Play implements Screen {
             myPlayerId = multiplayerMessaging.getMyId();
         }
         world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"), participants, myPlayerId);
-
         sideBar = new SideBar(world);
         sideBar.show();
 
@@ -122,13 +121,13 @@ public class Play implements Screen {
             world.getDevicePlayer().shield();
         }
         // TODO - Might be better to create an additional thread that handles all the incoming messages
-        if (multiplayerMessaging!=null){
+        if (multiplayerMessaging != null) {
             List<String> msgs = multiplayerMessaging.getMessageBuffer();
-            for (String msg : msgs){
+            for (String msg : msgs) {
                 MessageParser.parse(msg);
             }
             //Broadcast Player Location
-            if (System.currentTimeMillis()-lastBroadcast>100) {
+            if (System.currentTimeMillis() - lastBroadcast > 100) {
                 lastBroadcast = System.currentTimeMillis();
                 multiplayerMessaging.broadcastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
             }
@@ -167,17 +166,17 @@ public class Play implements Screen {
     }
 
     // MORE BULLSHIT HERE
-    public static void broadcastMessage(String msg){
-        Gdx.app.log(TAG,"Broadcasting message: "+msg);
+    public static void broadcastMessage(String msg) {
+        Gdx.app.log(TAG, "Broadcasting message: " + msg);
         multiplayerMessaging.broadcastMessage(msg);
     }
 
-    public static void broadcastMessage(String... args){
+    public static void broadcastMessage(String... args) {
         String msg = "";
-        for(String arg:args){
-            msg+=arg+",";
+        for (String arg : args) {
+            msg += arg + ",";
         }
-        Gdx.app.log(TAG,"Broadcasting message: "+msg);
+        Gdx.app.log(TAG, "Broadcasting message: " + msg);
         multiplayerMessaging.broadcastMessage(msg);
     }
 }

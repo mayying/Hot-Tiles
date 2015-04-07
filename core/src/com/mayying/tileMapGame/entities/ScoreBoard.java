@@ -19,6 +19,7 @@ public class ScoreBoard {
         instance = this;
         scores = new ArrayList<Score>();
         playerMap = new HashMap<>();
+        playerMap = new HashMap<>();
     }
 
     public static ScoreBoard getInstance() {
@@ -60,7 +61,7 @@ public class ScoreBoard {
         instance = null;
     }
 
-    private class Score implements Comparable {
+    public class Score implements Comparable {
         Player player;
         int kills, death;
 
@@ -70,7 +71,7 @@ public class ScoreBoard {
             // TODO - initialize the sprite to display on scoreboard here
         }
 
-        private float getScore() {
+        public float getScore() {
             return  kills - death;
         }
 
@@ -80,6 +81,10 @@ public class ScoreBoard {
 
         private void incrementDeath() {
             death++;
+        }
+
+        public Player getPlayer(){
+            return player;
         }
 
         @Override

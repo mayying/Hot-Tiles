@@ -44,100 +44,128 @@ freezemineImg
   orig: 90, 90
   offset: 0, 0
   index: -1
-shieldBtn
+player_1_head
   rotate: false
   xy: 2, 428
+  size: 55, 55
+  orig: 55, 55
+  offset: 0, 0
+  index: -1
+player_2_head
+  rotate: false
+  xy: 59, 428
+  size: 55, 51
+  orig: 55, 51
+  offset: 0, 0
+  index: -1
+player_3_head
+  rotate: false
+  xy: 116, 428
+  size: 42, 55
+  orig: 42, 55
+  offset: 0, 0
+  index: -1
+player_4_head
+  rotate: false
+  xy: 160, 428
+  size: 55, 54
+  orig: 55, 54
+  offset: 0, 0
+  index: -1
+shieldBtn
+  rotate: false
+  xy: 2, 485
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 shieldImg
   rotate: false
-  xy: 144, 428
+  xy: 144, 485
   size: 90, 90
   orig: 90, 90
   offset: 0, 0
   index: -1
 skinRect210x140
   rotate: false
-  xy: 2, 570
+  xy: 2, 627
   size: 210, 140
   orig: 210, 140
   offset: 0, 0
   index: -1
 skinRound140x140
   rotate: false
-  xy: 2, 712
+  xy: 2, 769
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 skinRound210x210
   rotate: false
-  xy: 2, 854
+  xy: 2, 911
   size: 210, 210
   orig: 210, 210
   offset: 0, 0
   index: -1
 skinSquare280x210
   rotate: false
-  xy: 2, 1066
+  xy: 2, 1123
   size: 210, 280
   orig: 210, 280
   offset: 0, 0
   index: -1
 skinSquare70x70
   rotate: false
-  xy: 2, 1348
+  xy: 2, 1405
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareClose70x70
   rotate: false
-  xy: 74, 1348
+  xy: 74, 1405
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareQuestion70x70
   rotate: false
-  xy: 146, 1348
+  xy: 146, 1405
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareSoundOff70x70
   rotate: false
-  xy: 2, 1420
+  xy: 2, 1477
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareSoundOn70x70
   rotate: false
-  xy: 74, 1420
+  xy: 74, 1477
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 swapBtn
   rotate: false
-  xy: 2, 1492
+  xy: 2, 1549
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 swapImg
   rotate: false
-  xy: 144, 1492
+  xy: 144, 1549
   size: 85, 85
   orig: 85, 85
   offset: 0, 0
   index: -1
 touchKnob
   rotate: false
-  xy: 2, 1634
+  xy: 2, 1691
   size: 63, 63
   orig: 63, 63
   offset: 0, 0

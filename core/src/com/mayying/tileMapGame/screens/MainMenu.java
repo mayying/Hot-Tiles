@@ -77,6 +77,9 @@ public class MainMenu implements Screen {
             }
         });
         buttonFriends = new TextButton("Friends", skin);
+        buttonFriends.addListener(new ClickListener() {
+
+        });
         buttonExit = new TextButton("Exit", skin);
         buttonExit.addListener(new ClickListener() {
 
@@ -90,13 +93,13 @@ public class MainMenu implements Screen {
         stage.addActor(table);
 
         Timeline.createSequence().beginSequence()
-                .push(Tween.set(background,  SpriteAccessor.ALPHA).target(0))
+                .push(Tween.set(background, SpriteAccessor.ALPHA).target(0))
                 .push(Tween.set(heading, ActorAccessor.ALPHA).target(0))
                 .push(Tween.set(buttonPractice, ActorAccessor.ALPHA).target(0))
                 .push(Tween.set(buttonFriends, ActorAccessor.ALPHA).target(0))
                 .push(Tween.set(buttonExit, ActorAccessor.ALPHA).target(0))
-                .push(Tween.from(background,  SpriteAccessor.ALPHA, 1f).target(0))
-                .push(Tween.to(background,  SpriteAccessor.ALPHA, 1f).target(1))
+                .push(Tween.from(background, SpriteAccessor.ALPHA, 1f).target(0))
+                .push(Tween.to(background, SpriteAccessor.ALPHA, 1f).target(1))
                 .push(Tween.to(heading, ActorAccessor.ALPHA, .5f).target(1))
                 .push(Tween.to(buttonPractice, ActorAccessor.ALPHA, .2f).target(1))
                 .push(Tween.to(buttonFriends, ActorAccessor.ALPHA, .2f).target(1))
