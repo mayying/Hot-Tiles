@@ -33,8 +33,8 @@ public class Player extends Sprite {
     public boolean isInvulnerable = false, isDead = false;
 
 
-    public Player(TextureAtlas atlas, TiledMapTileLayer collisionLayer, String ID) {
-        super(new Animation(1 / 2f, atlas.findRegions("player_2_forward")).getKeyFrame(0));
+    public Player(TextureAtlas atlas, TiledMapTileLayer collisionLayer, String ID, String characterName) {
+        super(new Animation(1 / 2f, atlas.findRegions(characterName + "forward")).getKeyFrame(0));
         this.ID = ID;
         this.collisionLayer = collisionLayer;
 //        this.gameWorld = gameWorld;
@@ -42,7 +42,8 @@ public class Player extends Sprite {
 
         // Movement Animations
         this.playerAtlas = atlas;
-        characterName = "player_2_";
+        this.characterName = characterName;
+//        characterName = "player_2_";
         forward = new Animation(1 / 2f, playerAtlas.findRegions(characterName + "forward"));
         backward = new Animation(1 / 2f, playerAtlas.findRegions(characterName + "backward"));
         left = new Animation(1 / 2f, playerAtlas.findRegions(characterName + "left"));
@@ -263,11 +264,11 @@ public class Player extends Sprite {
     private void updateScore() {
         // TODO - Update score in other devices
         String killerID = getLastHitBy();
-        Gdx.app.log("Player " + this.getID(), "Killed by Player " + killerID);
-        ScoreBoard.getInstance().incrementKillsAndOrDeath(killerID.equals(this.ID) ? "null" : killerID, getID());
+        Gdx.app.log("Player " + getID(), "Killed by Player " + killerID);
+        ScoreBoard.getInstance().incrementKillsAndOrDeath(killerID.equals(getID()) ? "null" : killerID, getID());
 
         // Format: "score", killerIdx, victimIdx
-        Play.broadcastMessage("score", lastHitBy, getID());
+        Play.broadcastMessage("score", killerID, getID());
     }
 
 

@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class Play implements Screen {
     public static final int V_WIDTH = 1260, V_HEIGHT = 700;
-
+    private static final String TAG = "HT_Play";
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -44,14 +44,14 @@ public class Play implements Screen {
 
     public Play() {
         super();
-        this.multiplayerMessaging = null;
+        multiplayerMessaging = null;
         this.messageParser = null;
         randomSeed = new Random().nextLong();
     }
 
-    public Play(MultiplayerMessaging multiplayerMessaging) {
+    public Play(MultiplayerMessaging mmsg) {
         super();
-        this.multiplayerMessaging = multiplayerMessaging;
+        multiplayerMessaging = mmsg;
         this.messageParser = null;
         randomSeed = new Random().nextLong();
     }
@@ -77,9 +77,6 @@ public class Play implements Screen {
         }
 
         world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"), participants, myPlayerId, this);
-        if (multiplayerMessaging != null){
-            this.messageParser = new MessageParser(world);
-        }
 
         sideBar = new SideBar(world);
         sideBar.show();
@@ -91,10 +88,6 @@ public class Play implements Screen {
 //        }
 
         Jukebox.load("sounds/fire.mp3", "fire");
-        // burningTiles = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
-        // burningTiles.create();
-        //  Gdx.input.setInputProcessor(new InputHandler(world.getPlayer()));
-//        world.swipe();
     }
 
     public void initializeBurningTiles(Long randomSeed){
@@ -144,7 +137,7 @@ public class Play implements Screen {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            new Blackout().use(null);
+            new Blackout().use();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
@@ -157,8 +150,8 @@ public class Play implements Screen {
         // TODO - Might be better to create an additional thread that handles all the incoming messages
         if (multiplayerMessaging != null) {
             List<String> msgs = multiplayerMessaging.getMessageBuffer();
-            for (String msg : msgs){
-                messageParser.parse(msg);
+            for (String msg : msgs) {
+                MessageParser.parse(msg);
             }
             //Broadcast Player Location
             if (System.currentTimeMillis() - lastBroadcast > 100) {
@@ -205,9 +198,8 @@ public class Play implements Screen {
     public static MultiplayerMessaging getMultiplayerMessaging() {
         return multiplayerMessaging;
     }
-
-    //TODO MORE BULLSHIT HERE
     public static void broadcastMessage(String msg) {
+        Gdx.app.log(TAG, "Broadcasting message: " + msg);
         multiplayerMessaging.broadcastMessage(msg);
     }
 
@@ -216,6 +208,7 @@ public class Play implements Screen {
         for (String arg : args) {
             msg += arg + ",";
         }
+        Gdx.app.log(TAG, "Broadcasting message: " + msg);
         multiplayerMessaging.broadcastMessage(msg);
     }
 }

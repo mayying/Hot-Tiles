@@ -44,8 +44,8 @@ import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.google.android.gms.plus.Plus;
 import com.mayying.tileMapGame.TiledMapGame;
 import com.mayying.tileMapGame.multiplayer.ConnectionHelper;
-import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 import com.mayying.tileMapGame.multiplayer.MessageBuffer;
+import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,7 +99,9 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 
     // Create game view
     private View gameView;
-
+    
+    private static int count;
+    private int oppoCount = 0;
     private ArrayList<String> participants = new ArrayList<String>();
 
     @Override
@@ -627,20 +629,17 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         String msg = new String(buf);
         if (msg.startsWith(msgTag)) {
             //parse message
-            String[] s = msg.split("/");
-            Long sent_time = Long.valueOf(s[1]);
-            msg = s[0];
-            Log.d("Receiving", String.valueOf(System.currentTimeMillis()-sent_time));
-            String msgStr = rtm.getSenderParticipantId() + "," + msg.substring(msgTag.length());
+            String msgStr = msg.substring(msgTag.length());
             msgBuf.add(msgStr);
         }
-        Log.d("Receiving", msg);
+//        Log.d("Receiving", msg);
     }
 
     @Override
     public void broadcastMessage(String msg) {
-        Log.d("Sending", msg);
-        String taggedMsg = msgTag + msg;
+//        Log.d("Sending", msg);
+        String senderId = mMyId + ",";
+        String taggedMsg = msgTag + senderId + msg;
 
         byte[] bytes = taggedMsg.getBytes();
 
@@ -649,7 +648,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
                 continue;
             if (p.getStatus() != Participant.STATUS_JOINED)
                 continue;
-
+            Games.RealTimeMultiplayer.sendReliableMessage(mGoogleApiClient, null, bytes, mRoomId, p.getParticipantId());
             if (mRoomId != null)
                 Games.RealTimeMultiplayer.sendReliableMessage(mGoogleApiClient, null,bytes, mRoomId, p.getParticipantId());
         }

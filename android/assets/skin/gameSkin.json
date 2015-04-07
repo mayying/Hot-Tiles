@@ -13,6 +13,7 @@
         "player1":      { "font": "black", "background": "player_1_head"}
         "player_2_head":{ "font": "black", "background": "player_2_head"}
         "player3":      { "font": "black", "background": "player_3_head"}
+        "player_3_head":      { "font": "black", "background": "player_3_head"}
         "player4":      { "font": "black", "background": "player_4_head"}
     },
 

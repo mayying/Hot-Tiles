@@ -19,7 +19,6 @@ import com.mayying.tileMapGame.entities.powerups.SpawnPowerUps;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUpFactory;
 import com.mayying.tileMapGame.multiplayer.MessageParser;
-import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 import com.mayying.tileMapGame.screens.Play;
 
 import java.util.HashMap;
@@ -40,26 +39,32 @@ public class GameWorld {
     private TextureAtlas playerAtlas;
     private Player devicePlayer;
     private int countX = 0, countY = 0;
-
-    public static Rectangle screenBound;
-    public static float TILE_WIDTH, TILE_HEIGHT, delta;
-    private static boolean blackout = false;
-
-    public static final Vector<Sprite> bullets = new Vector<Sprite>();
-    public static final Vector<Mine> mines = new Vector<Mine>();
-    private static final HashMap<String, Player> players = new HashMap<String, Player>();
-
+    private boolean blackout = false;
+    private static GameWorld instance;
+    private final HashMap<String, Player> players = new HashMap<String, Player>();
     private final HashMap<String, Long> randomSeeds = new HashMap<>();
     private TiledMapTileLayer playableLayer;
     private Play play;
 
-    private static GameWorld instance;
+    public Rectangle screenBound;
+    public static float TILE_WIDTH, TILE_HEIGHT, delta;
+    public static final Vector<Sprite> bullets = new Vector<Sprite>();
+    public final Vector<Mine> mines = new Vector<Mine>();
 
     public GameWorld(TiledMapTileLayer playableLayer, List<String> participants, String myId, Play play) {
+        this.play = play;
         playerAtlas = new TextureAtlas("img/player2.txt");
         // Initialize all players
         for (int id = 0; id < participants.size(); id++) {
-            Player player = new Player(playerAtlas, playableLayer, participants.get(id));
+            String characterName;
+            if(id == 0) {
+                playerAtlas = new TextureAtlas("img/player2.txt");
+                characterName = "player_2_";
+            }else{
+                playerAtlas = new TextureAtlas("img/player3.txt");
+                characterName = "player_3_";
+            }
+            Player player = new Player(playerAtlas, playableLayer, participants.get(id), characterName);
             player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
             register(player);
         }
@@ -104,8 +109,7 @@ public class GameWorld {
         play.initializeBurningTiles(randomSeeds.get(Play.getMultiplayerMessaging().getHostId()));
     }
 
-    //TODO: why Static methods?
-    public static HashMap<String, Player> getPlayers() {
+    public HashMap<String, Player> getPlayers() {
         return players;
     }
 
@@ -134,7 +138,7 @@ public class GameWorld {
         if (blackout) {
             // This causes Player object to disappear for some reason
             ShapeRenderer shapeRenderer = new ShapeRenderer();
-            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix()); ;
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(new Color(Color.BLACK));
             shapeRenderer.rect(TILE_WIDTH * 4, 0, TILE_WIDTH * 10, Gdx.graphics.getHeight());
@@ -201,9 +205,7 @@ public class GameWorld {
 
 
     public boolean pickUpPowerUp() {
-        if (spawnPowerUps!=null)
-            return spawnPowerUps.isPowerUpPickedUp();
-        return false;
+        return spawnPowerUps != null && spawnPowerUps.isPowerUpPickedUp();
     }
 
     private void setPlayerBound() {
@@ -228,12 +230,8 @@ public class GameWorld {
      * @param ID player's ID / key
      * @return player of specified index
      */
-    public static Player getPlayer(String ID) {
+    public Player getPlayer(String ID) {
         return players.get(ID);
-    }
-
-    public static int getNumPlayers() {
-        return players.size();
     }
 
     // Custom Methods
@@ -254,7 +252,7 @@ public class GameWorld {
         bullet.getTexture().dispose();
     }
 
-    public static void setBlackout() {
+    public void setBlackout() {
         if (!blackout) {
             blackout = true;
             new DelayedThread(3000l) {
@@ -267,40 +265,17 @@ public class GameWorld {
         }
     }
 
-    public static synchronized void addMine(Mine mine) {
+    public synchronized void addMine(Mine mine) {
         mines.add(mine);
     }
 
-    public static synchronized void removeMine(Mine mine) {
+    public synchronized void removeMine(Mine mine) {
         mine.getTexture().dispose();
         mine.setAlpha(0);
         mines.remove(mine);
     }
 
-    // players should not be modified as it leads to a lot of problems
-//    public void removePlayer(Player player) {
-//        synchronized (players) {
-//            players.remove(player.getIndex());
-//        }
-//    }
-//
-//    public void addPlayer(Player player) {
-//        synchronized (players) {
-//            players.add(player.getIndex(), player);
-//        }
-//    }
-
-//    public void swipe(){
-//        InputMultiplexer inputMultiplexer=new InputMultiplexer();
-//        Stage stage=new Stage();
-//        stage.addActor(getMyTouchpad().getTouchpad());
-//
-//        inputMultiplexer.addProcessor(stage);
-//        inputMultiplexer.addProcessor(directionGestureDetector);
-//        Gdx.input.setInputProcessor(inputMultiplexer);
-//    }
-
-    public static void setPlayerPosition(String playerId, Vector2 pos) {
+    public void setPlayerPosition(String playerId, Vector2 pos) {
         Player p = players.get(playerId);
         if (p != null) {
             //TODO: Unsafe conversion?
@@ -313,7 +288,6 @@ public class GameWorld {
         Gdx.app.log(TAG, "disposing");
         for (String key : players.keySet()) {
             players.get(key).getTexture().dispose();
-            players.remove(key);
         }
         players.clear();
 
