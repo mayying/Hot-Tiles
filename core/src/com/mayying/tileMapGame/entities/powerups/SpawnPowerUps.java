@@ -131,4 +131,5 @@ public class SpawnPowerUps implements Collidable {
     public boolean isPowerUpPickedUp() {
         return powerUpIsPickedUp;
     }
+
 }

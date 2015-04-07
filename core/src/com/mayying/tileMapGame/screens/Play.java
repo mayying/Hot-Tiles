@@ -42,13 +42,14 @@ public class Play implements Screen {
     private boolean allPlayersReady = false;
     private Long randomSeed;
 
-    public Play(){
+    public Play() {
         super();
         this.multiplayerMessaging = null;
         this.messageParser = null;
         randomSeed = new Random().nextLong();
     }
-    public Play(MultiplayerMessaging multiplayerMessaging){
+
+    public Play(MultiplayerMessaging multiplayerMessaging) {
         super();
         this.multiplayerMessaging = multiplayerMessaging;
         this.messageParser = null;
@@ -74,6 +75,7 @@ public class Play implements Screen {
             participants = multiplayerMessaging.getJoinedParticipants();
             myPlayerId = multiplayerMessaging.getMyId();
         }
+
         world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"), participants, myPlayerId, this);
         if (multiplayerMessaging != null){
             this.messageParser = new MessageParser(world);
@@ -153,19 +155,19 @@ public class Play implements Screen {
         sideBar.render(delta);
 
         // TODO - Might be better to create an additional thread that handles all the incoming messages
-        if (multiplayerMessaging!=null){
+        if (multiplayerMessaging != null) {
             List<String> msgs = multiplayerMessaging.getMessageBuffer();
             for (String msg : msgs){
                 messageParser.parse(msg);
             }
             //Broadcast Player Location
-            if (System.currentTimeMillis()-lastBroadcast>100) {
+            if (System.currentTimeMillis() - lastBroadcast > 100) {
                 lastBroadcast = System.currentTimeMillis();
-                multiplayerMessaging.BroadCastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
+                multiplayerMessaging.broadcastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
 
                 if (!allPlayersReady){
                     world.playerReady(multiplayerMessaging.getMyId(), randomSeed);
-                    multiplayerMessaging.BroadCastMessage("ready,"+randomSeed.toString());
+                    multiplayerMessaging.broadcastMessage("ready," + randomSeed.toString());
                 }
             }
         }
@@ -200,7 +202,20 @@ public class Play implements Screen {
     }
 
     //TODO This is bullshit
-    public static MultiplayerMessaging getMultiplayerMessaging(){
+    public static MultiplayerMessaging getMultiplayerMessaging() {
         return multiplayerMessaging;
+    }
+
+    //TODO MORE BULLSHIT HERE
+    public static void broadcastMessage(String msg) {
+        multiplayerMessaging.broadcastMessage(msg);
+    }
+
+    public static void broadcastMessage(String... args) {
+        String msg = "";
+        for (String arg : args) {
+            msg += arg + ",";
+        }
+        multiplayerMessaging.broadcastMessage(msg);
     }
 }

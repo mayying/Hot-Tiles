@@ -29,7 +29,9 @@ import java.util.Vector;
 /**
  * Created by Luccan on 2/3/2015.
  */
-public class GameWorld{
+
+// MAYBE CHANGE THIS TO A SINGLETON
+public class GameWorld {
     private static final String TAG = "GameWorld";
     private MyTouchpad myTouchPad;
     private SpawnPowerUps spawnPowerUps = null;
@@ -51,13 +53,14 @@ public class GameWorld{
     private TiledMapTileLayer playableLayer;
     private Play play;
 
-    public GameWorld(TiledMapTileLayer playableLayer, List<String> participants, String myId, Play play) {
-        playerAtlas = new TextureAtlas("img/player3.txt");
-        // Initialize all players
-        for (int id=0;id<participants.size();id++) {
-            Player player = new Player(playerAtlas, playableLayer, this, participants.get(id));
-            player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
+    private static GameWorld instance;
 
+    public GameWorld(TiledMapTileLayer playableLayer, List<String> participants, String myId, Play play) {
+        playerAtlas = new TextureAtlas("img/player2.txt");
+        // Initialize all players
+        for (int id = 0; id < participants.size(); id++) {
+            Player player = new Player(playerAtlas, playableLayer, participants.get(id));
+            player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
             register(player);
         }
         Gdx.app.log(TAG, "Players: " + players);
@@ -75,6 +78,11 @@ public class GameWorld{
 //        spawnPowerUps = new SpawnPowerUps(playableLayer, this, randomSeeds.get(Play.getMultiplayerMessaging().getHostId()));
 
         setPlayerBound();
+        instance = this;
+    }
+
+    public static GameWorld getInstance() {
+        return instance;
     }
 
     // Register a new player onto the scoreboard and add to the world render list
@@ -129,7 +137,7 @@ public class GameWorld{
             shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix()); ;
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(new Color(Color.BLACK));
-            shapeRenderer.rect(TILE_WIDTH * 4, TILE_HEIGHT + .5f, TILE_WIDTH * 10, TILE_HEIGHT * 8 );
+            shapeRenderer.rect(TILE_WIDTH * 4, 0, TILE_WIDTH * 10, Gdx.graphics.getHeight());
 
             shapeRenderer.end();
         }
@@ -212,7 +220,7 @@ public class GameWorld{
     public String generateDevicePlayerCoordinatesBroadcastMessage() {
         Vector2 xy = devicePlayer.getPlayerPosition();
         //TODO: safe conversion?
-        String broadcastMessage = MessageParser.COMMAND_POSITION + "," + String.valueOf((int)xy.x) + "," + String.valueOf((int)xy.y);
+        String broadcastMessage = MessageParser.COMMAND_POSITION + "," + String.valueOf((int) xy.x) + "," + String.valueOf((int) xy.y);
         return broadcastMessage;
     }
 
@@ -296,18 +304,20 @@ public class GameWorld{
         Player p = players.get(playerId);
         if (p != null) {
             //TODO: Unsafe conversion?
-            p.setPlayerPosition((int)pos.x, (int)pos.y);
+            p.setPlayerPosition((int) pos.x, (int) pos.y);
         }
     }
 
 
     public void dispose() {
-        Gdx.app.log(TAG,"disposing");
-        for(String key : players.keySet()){
+        Gdx.app.log(TAG, "disposing");
+        for (String key : players.keySet()) {
             players.get(key).getTexture().dispose();
             players.remove(key);
         }
-        for(int i=0; i<mines.size(); i++){
+        players.clear();
+
+        for (int i = 0; i < mines.size(); i++) {
             mines.get(i).getTexture().dispose();
             mines.remove(i);
         }
