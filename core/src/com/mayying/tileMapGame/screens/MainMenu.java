@@ -18,7 +18,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.mayying.tileMapGame.multiplayer.ConnectionHelper;
+import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 import com.mayying.tileMapGame.tween.ActorAccessor;
 import com.mayying.tileMapGame.tween.SpriteAccessor;
 
@@ -39,9 +42,22 @@ public class MainMenu implements Screen {
     private Skin skin;
     private TweenManager tweenManager;
     private Table table;
+    private String mode;
+    private MultiplayerMessaging multiplayerMessaging;
+    private boolean switchScreen;
+
+    public MainMenu() {
+        mode = "desktop";
+    }
+
+    public MainMenu(MultiplayerMessaging multiplayerMessaging) {
+        mode = "android";
+        this.multiplayerMessaging = multiplayerMessaging;
+    }
 
     @Override
     public void show() {
+        switchScreen = false;
         tweenManager = new TweenManager();
         Tween.registerAccessor(Actor.class, new ActorAccessor());
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
@@ -72,11 +88,23 @@ public class MainMenu implements Screen {
                     @Override
                     public void run() {
                         ((Game) Gdx.app.getApplicationListener()).setScreen(new Play());
+
                     }
                 })));
             }
         });
+
         buttonFriends = new TextButton("Friends", skin);
+        buttonFriends.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                switchScreen = true;
+                GdxNativesLoader.load();
+                multiplayerMessaging.startQuickGame(); };
+        });
+
+        Gdx.app.log("MainMenu.java", "switchScreen: " + switchScreen + " ConnectionHelper.STATE: " + ConnectionHelper.STATE);
+
         buttonExit = new TextButton("Exit", skin);
         buttonExit.addListener(new ClickListener() {
 
@@ -117,6 +145,14 @@ public class MainMenu implements Screen {
 
         stage.act(delta);
         stage.draw();
+
+        if (ConnectionHelper.STATE == ConnectionHelper.PLAY && switchScreen) {
+            if (mode.equals("desktop"))
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play());
+            else if (mode.equals("android")) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging));
+            }
+        }
     }
 
     @Override

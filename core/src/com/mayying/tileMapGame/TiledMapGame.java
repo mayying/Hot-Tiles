@@ -1,10 +1,8 @@
 package com.mayying.tileMapGame;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 import com.mayying.tileMapGame.screens.MainMenu;
-import com.mayying.tileMapGame.screens.Play;
 
 public class TiledMapGame extends Game {
 
@@ -29,9 +27,8 @@ public class TiledMapGame extends Game {
         if (mode.equals("desktop")) {
             setScreen(new MainMenu());
         } else if (mode.equals("android")) {
-            setScreen(new Play(multiplayerMessaging));
+            setScreen(new MainMenu(multiplayerMessaging));
         }
-        GdxNativesLoader.load();
         // setScreen(new Splash());
     }
 
