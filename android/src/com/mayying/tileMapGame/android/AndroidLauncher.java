@@ -48,6 +48,7 @@ import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 import com.mayying.tileMapGame.multiplayer.MessageBuffer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AndroidLauncher extends AndroidApplication implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
@@ -601,6 +602,10 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 
     // Start the gameplay phase of the game.
     void startGame() {
+        List<String> ids = getJoinedParticipants();
+        Collections.sort(ids);
+        hostId = ids.get(0);
+        Log.d("Host", hostId);
         switchToScreen(R.id.screen_game);
     }
 
@@ -613,6 +618,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     public static final String msgTag = "Hot-Tiles;";
     // Append Messages to Message Buffer
     private MessageBuffer msgBuf = new MessageBuffer();
+    private String hostId;
 
     // Called when we receive a real-time message from the network.
     // Messages in our game are made up of 2 bytes: the first one is 'F' or 'U'
@@ -623,13 +629,14 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     @Override
     public void onRealTimeMessageReceived(RealTimeMessage rtm) {
         byte[] buf = rtm.getMessageData();
-//        if (buf[0] == 'o'){
-//            oppoCount = (buf[4] & 0xFF)| ((buf[3] & 0xFF) << 8)| ((buf[2] & 0xFF) << 16)| ((buf[1] & 0xFF) << 24);
-//        }
         String msg = new String(buf);
         if (msg.startsWith(msgTag)){
             //parse message
-            String msgStr = msg.substring(msgTag.length());
+            String[] s = msg.split("/");
+            Long sent_time = Long.valueOf(s[1]);
+            msg = s[0];
+            Log.d("Receiving", String.valueOf(System.currentTimeMillis()-sent_time));
+            String msgStr = rtm.getSenderParticipantId() + "," + msg.substring(msgTag.length());
             msgBuf.add(msgStr);
         }
         Log.d("Receiving", msg);
@@ -638,8 +645,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     @Override
     public void BroadCastMessage(String msg) {
         Log.d("Sending", msg);
-        String senderId = mMyId+",";
-        String taggedMsg = msgTag + senderId + msg;
+        String taggedMsg = msgTag + msg + "/" + System.currentTimeMillis();
 
         byte[] bytes = taggedMsg.getBytes();
 
@@ -648,7 +654,8 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
                 continue;
             if (p.getStatus() != Participant.STATUS_JOINED)
                 continue;
-            Games.RealTimeMultiplayer.sendReliableMessage(mGoogleApiClient, null,bytes, mRoomId, p.getParticipantId());
+            if (mRoomId != null)
+                Games.RealTimeMultiplayer.sendReliableMessage(mGoogleApiClient, null,bytes, mRoomId, p.getParticipantId());
         }
 
     }
@@ -681,7 +688,9 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         return msgBuf.getList();
     }
 
-
+    @Override public String getHostId(){
+        return hostId;
+    }
 
     /*
      * UI SECTION. Methods that implement the game's UI.
