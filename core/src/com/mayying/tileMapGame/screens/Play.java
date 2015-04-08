@@ -19,6 +19,7 @@ import com.mayying.tileMapGame.multiplayer.MessageParser;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -43,6 +44,7 @@ public class Play implements Screen {
     private boolean allPlayersReady = false;
     private Long randomSeed;
     private long initializedTimeStamp;
+    private HashMap<String, String> charselect;
 
     public Play() {
         super();
@@ -51,11 +53,12 @@ public class Play implements Screen {
         randomSeed = new Random().nextLong();
     }
 
-    public Play(MultiplayerMessaging mmsg) {
+    public Play(MultiplayerMessaging mmsg, HashMap<String, String> charselect) {
         super();
         multiplayerMessaging = mmsg;
         this.messageParser = null;
         randomSeed = new Random().nextLong();
+        this.charselect = charselect;
     }
 
     @Override
@@ -81,7 +84,7 @@ public class Play implements Screen {
             myPlayerId = multiplayerMessaging.getMyId();
         }
 
-        world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"), participants, myPlayerId, this);
+        world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"), participants, myPlayerId, charselect, this);
 
         sideBar = new SideBar(world);
         sideBar.show();

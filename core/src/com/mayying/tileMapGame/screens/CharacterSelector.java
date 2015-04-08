@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -37,7 +38,7 @@ public class CharacterSelector implements Screen {
     private TextButton[] textButton;
     private float timeLeft = 20;
     private int min, sec, otherPlayerSel = -1, mySel = -1;
-    private String myPlayerName, otherPlayerName, mode, myCharacterName, otherCharacterName;
+    private String myPlayerName, otherPlayerName, mode, myCharacterName, otherCharacterName, myPlayerId, otherPlayerId;
     private MultiplayerMessaging multiplayerMessaging;
     private boolean imTheHost;
     private int selection;
@@ -146,13 +147,21 @@ public class CharacterSelector implements Screen {
 
         if (mode.equals("desktop")){
             myPlayerName = "Kim Jong Un";
+            myPlayerId = "me";
             otherPlayerName = "Your Mother";
+            otherPlayerId = null;
         } else {
             //TODO do this for 3 or more playah
             myPlayerName = multiplayerMessaging.getMyName();
+            myPlayerId = multiplayerMessaging.getMyId();
             for (String name : multiplayerMessaging.getJoinedParticipantsName()){
                 if (!name.equals(myPlayerName)){
                     otherPlayerName = name;
+                }
+            }
+            for (String id : multiplayerMessaging.getJoinedParticipants()){
+                if (!id.equals(myPlayerId)){
+                    otherPlayerId = id;
                 }
             }
         }
@@ -256,12 +265,15 @@ public class CharacterSelector implements Screen {
 //                    otherCharacterName = String.valueOf(i + 1);
 //                }
 //            }
-            myCharacterName = String.valueOf(mySel);
-            otherCharacterName = String.valueOf(otherPlayerSel);
+            myCharacterName = String.valueOf(mySel+1);
+            otherCharacterName = String.valueOf(otherPlayerSel+1);
+            HashMap<String, String> charselect = new HashMap<>();
+            charselect.put(myPlayerId, myCharacterName);
+            charselect.put(otherPlayerId, otherCharacterName);
             if (mode.equals("desktop"))
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Play());
             else if (mode.equals("android")) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging, charselect));
             }
 
         }

@@ -53,24 +53,33 @@ public class GameWorld {
     public static final Vector<Sprite> bullets = new Vector<Sprite>();
     public final Vector<Mine> mines = new Vector<Mine>();
 
-    public GameWorld(TiledMapTileLayer playableLayer, List<String> participants, String myId, Play play) {
+    public GameWorld(TiledMapTileLayer playableLayer, List<String> participants, String myId, HashMap<String, String> charselect,
+                     Play play) {
         this.play = play;
 
 
         // Initialize all players
-        for (int id = 0; id < participants.size(); id++) {
+        for (String player_id : charselect.keySet()) {
             String characterName;
-
-            if(id == 0) {
-                playerAtlas = new TextureAtlas("img/player2.txt");
-                characterName = "player_2_";
-            }else{
-                playerAtlas = new TextureAtlas("img/player3.txt");
-                characterName = "player_3_";
+            String char_selection = charselect.get(player_id);
+            //TODO remove this when texture atlas are up
+            if (!char_selection.equals("2") && !char_selection.equals("3")){
+                Gdx.app.log("NO", char_selection);
+                char_selection = "2";
             }
 
-            Player player = new Player(playerAtlas, playableLayer, participants.get(id), characterName);
-            Gdx.app.log("Player from GameWorld: " + id, player.getName() + "");
+            playerAtlas = new TextureAtlas(String.format("img/player%s.txt", char_selection));
+            characterName = String.format("player_%s_", char_selection);
+//            if(id == 0) {
+//                playerAtlas = new TextureAtlas("img/player2.txt");
+//                characterName = "player_2_";
+//            }else{
+//                playerAtlas = new TextureAtlas("img/player3.txt");
+//                characterName = "player_3_";
+//            }
+
+            Player player = new Player(playerAtlas, playableLayer, player_id, characterName);
+            Gdx.app.log("Player from GameWorld: " + char_selection, player.getName() + "");
             player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
             register(player);
         }
