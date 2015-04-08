@@ -73,7 +73,7 @@ public class SideBar implements Screen {
         imageButtonBStyle = new ImageButtonStyle();
     }
 
-    public void unfreezeGameTimer(){
+    public void unfreezeGameTimer() {
         this.timeFrozen = false;
     }
 
@@ -234,10 +234,10 @@ public class SideBar implements Screen {
             } else {
                 timer.setText("Time Left\n" + "-- : --");
             }
-        
 
-            if(scoreUpdated){
-                Gdx.app.log("HT_Sidebar","Updating Board");
+
+            if (scoreUpdated) {
+                Gdx.app.log("HT_Sidebar", "Updating Board");
                 updateBoard();
                 scoreUpdated = false;
             }
@@ -275,7 +275,7 @@ public class SideBar implements Screen {
         scoreUpdated = true;
     }
 
-    private void updateBoard(){
+    private void updateBoard() {
         score = scoreBoard.getScores();
 
         playerStyle.background = skin.getDrawable(score.get(1).getPlayer().getName() + "head");
@@ -284,6 +284,7 @@ public class SideBar implements Screen {
         player2Style.background = skin.getDrawable(score.get(0).getPlayer().getName() + "head");
         scoreBoard2nd[1].setText("Score: " + score.get(0).getScore());
     }
+
     @Override
     public void resize(int width, int height) {
         table.invalidateHierarchy();
