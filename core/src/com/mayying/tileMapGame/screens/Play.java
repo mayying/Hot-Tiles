@@ -70,7 +70,10 @@ public class Play implements Screen {
         viewport.apply();
 
         List<String> participants = new ArrayList<String>();
+        List<String> participantsName = new ArrayList<String>();
+
         String myPlayerId = "me";
+
         participants.add(myPlayerId);
         if (multiplayerMessaging != null) {
             participants = multiplayerMessaging.getJoinedParticipants();
@@ -93,7 +96,7 @@ public class Play implements Screen {
     }
 
     public void initializeBurningTiles(Long randomSeed){
-        burningTiles = new BurningTiles[80];
+        burningTiles = new BurningTiles[40];
         int randomBase = 102312943;
         for (int i = 0; i < burningTiles.length; i++) {
             //randomBase is just to randomize even more.

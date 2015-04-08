@@ -9,7 +9,9 @@ public interface MultiplayerMessaging {
     public void broadcastMessage(String msg);
     public List<String> getParticipants();
     public List<String> getJoinedParticipants();
+    public List<String> getJoinedParticipantsName();
     public String getMyId();
+    public String getMyName();
     public List<String> getMessageBuffer();
     public String getHostId();
 

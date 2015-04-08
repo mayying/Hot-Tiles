@@ -1,5 +1,6 @@
 package com.mayying.tileMapGame.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
 /**
  * Created by May on 8/4/2015.
@@ -29,9 +31,20 @@ public class CharacterSelector implements Screen {
     private TextureAtlas charAtlas;
     private Skin skin;
     private Label heading, timer;
-    private TextButton textButton1, textButton2, textButton3, textButton4;
+    private TextButton[] textButton;
     private float timeLeft = 6;
-    private int min, sec, charSelected = 0;
+    private int min, sec;
+    private String playerName, mode, characterName;
+    private MultiplayerMessaging multiplayerMessaging;
+
+    public CharacterSelector() {
+        mode = "desktop";
+    }
+
+    public CharacterSelector(MultiplayerMessaging multiplayerMessaging) {
+        mode = "android";
+        this.multiplayerMessaging = multiplayerMessaging;
+    }
 
     @Override
     public void show() {
@@ -53,8 +66,11 @@ public class CharacterSelector implements Screen {
         heading = new Label("Please select your character", skin);
 
         subTable = new Table(skin);
-        textButton1 = new TextButton("", skin, "player1");
-        textButton1.addListener(new InputListener() {
+
+        textButton = new TextButton[4];
+
+        textButton[0] = new TextButton("", skin, "player1");
+        textButton[0].addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -62,11 +78,12 @@ public class CharacterSelector implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                toggleButton(0);
             }
         });
 
-        textButton2 = new TextButton("", skin, "player2");
-        textButton2.addListener(new InputListener() {
+        textButton[1] = new TextButton("", skin, "player2");
+        textButton[1].addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -74,11 +91,12 @@ public class CharacterSelector implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                toggleButton(1);
             }
         });
 
-        textButton3 = new TextButton("", skin, "player3");
-        textButton3.addListener(new InputListener() {
+        textButton[2] = new TextButton("", skin, "player3");
+        textButton[2].addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -86,11 +104,12 @@ public class CharacterSelector implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                toggleButton(2);
             }
         });
 
-        textButton4 = new TextButton("", skin, "player4");
-        textButton4.addListener(new InputListener() {
+        textButton[3] = new TextButton("", skin, "player4");
+        textButton[3].addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -98,13 +117,15 @@ public class CharacterSelector implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                toggleButton(3);
+
             }
         });
 
-        subTable.add(textButton1);
-        subTable.add(textButton2);
-        subTable.add(textButton3);
-        subTable.add(textButton4);
+        subTable.add(textButton[0]);
+        subTable.add(textButton[1]);
+        subTable.add(textButton[2]);
+        subTable.add(textButton[3]);
         subTable.align(Align.center);
 
         timer = new Label(String.valueOf(timeLeft), skin);
@@ -114,6 +135,39 @@ public class CharacterSelector implements Screen {
         charSelTable.add(timer).expandY().center().row();
 
         stage.addActor(charSelTable);
+
+//        playerName = multiplayerMessaging.getMyName();
+        playerName = "May Ying";
+        setDefaultCharacter();
+    }
+
+    private void setDefaultCharacter() {
+        for (int i = 0; i < textButton.length; i++) {
+            if (!textButton[i].isChecked()) {
+                toggleButton(i);
+                textButton[i].setChecked(true);
+                break;
+            }
+        }
+    }
+
+    // Do setting for toggling button
+    private void toggleButton(int index) {
+        Gdx.app.log("toggleButton in CharacterSelector", index + " Disabled? " + textButton[index].isDisabled());
+        textButton[index].setText(playerName);
+        textButton[index].setDisabled(true);
+
+        for (int i = 0; i < textButton.length; i++) {
+            if (i != index) {
+                textButton[i].setText("");
+                textButton[i].setChecked(false);
+                textButton[i].setDisabled(false);
+            }
+        }
+    }
+
+    public String getCharacterName() {
+        return characterName;
     }
 
     @Override
@@ -133,61 +187,22 @@ public class CharacterSelector implements Screen {
         sec = (int) (timeLeft - min * 60.0f);
         timer.setText(String.format("%01d", sec));
 
-//        Gdx.app.log("TextButton1", " isChecked: " + textButton1.isChecked() + " isDisabled: " + textButton1.isDisabled());
-//        Gdx.app.log("TextButton2", " isChecked: " + textButton2.isChecked() + " isDisabled: " + textButton2.isDisabled());
-//        Gdx.app.log("TextButton3", " isChecked: " + textButton3.isChecked() + " isDisabled: " + textButton3.isDisabled());
-//        Gdx.app.log("TextButton4", " isChecked: " + textButton4.isChecked() + " isDisabled: " + textButton4.isDisabled());
+        if (sec == 0) {
+            String characterName;
+            for (int i = 0; i < textButton.length; i++) {
+                if (textButton[i].isChecked()) {
+                    characterName = String.valueOf(i);
+                    break;
+                }
+            }
 
-        if (textButton1.isChecked() && !textButton1.isDisabled()) {
-            textButton1.setText("Player1");
-            textButton2.setDisabled(true);
-            textButton3.setDisabled(true);
-            textButton4.setDisabled(true);
-        }
-        if (textButton2.isChecked() && !textButton2.isDisabled()) {
-            textButton2.setText("Player1");
-            textButton1.setDisabled(true);
-            textButton3.setDisabled(true);
-            textButton4.setDisabled(true);
-        }
-        if (textButton3.isChecked() && !textButton3.isDisabled()) {
-            textButton3.setText("Player1");
-            textButton1.setDisabled(true);
-            textButton2.setDisabled(true);
-            textButton4.setDisabled(true);
-        } else if (textButton4.isChecked() && !textButton4.isDisabled()) {
-            textButton4.setText("Player1");
-            textButton1.setDisabled(true);
-            textButton2.setDisabled(true);
-            textButton3.setDisabled(true);
-        } else if (!textButton1.isChecked()) {
-            textButton1.setText("");
-            textButton1.setDisabled(false);
-            textButton2.setDisabled(false);
-            textButton3.setDisabled(false);
-            textButton4.setDisabled(false);
-        } else if (!textButton2.isChecked()) {
-            textButton2.setText("");
-            textButton1.setDisabled(false);
-            textButton2.setDisabled(false);
-            textButton3.setDisabled(false);
-            textButton4.setDisabled(false);
-        } else if (!textButton3.isChecked()) {
-            textButton3.setText("");
-            textButton1.setDisabled(false);
-            textButton2.setDisabled(false);
-            textButton3.setDisabled(false);
-            textButton4.setDisabled(false);
-        } else if (!textButton4.isChecked()) {
-            textButton4.setText("");
-            textButton1.setDisabled(false);
-            textButton2.setDisabled(false);
-            textButton3.setDisabled(false);
-            textButton4.setDisabled(false);
-        }
-//        Gdx.app.log(charSelected + "", textButton4.isChecked() + "");
+            if (mode.equals("desktop"))
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play());
+            else if (mode.equals("android")) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging));
+            }
 
-
+        }
     }
 
     @Override

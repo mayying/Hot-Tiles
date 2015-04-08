@@ -55,10 +55,12 @@ public class GameWorld {
 
     public GameWorld(TiledMapTileLayer playableLayer, List<String> participants, String myId, Play play) {
         this.play = play;
-//        playerAtlas = new TextureAtlas("img/player2.txt");
+
+
         // Initialize all players
         for (int id = 0; id < participants.size(); id++) {
             String characterName;
+
             if(id == 0) {
                 playerAtlas = new TextureAtlas("img/player2.txt");
                 characterName = "player_2_";

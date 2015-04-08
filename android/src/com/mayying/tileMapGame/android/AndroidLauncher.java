@@ -75,6 +75,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 
     // My participant ID in the currently active game
     String mMyId = null;
+    String mMyName;
 
     // If non-null, this is the id of the invitation we received via the
     // invitation listener
@@ -426,9 +427,16 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 //        switchToScreen(R.id.screen_sign_in);
     }
 
+    // For CharacterSelector class
+    @Override
+    public String getMyName() {
+        return mMyName;
+    }
+
     // Called when we are connected to the room. We're not ready to play yet! (maybe not everybody
     // is connected yet).
     @Override
+
     public void onConnectedToRoom(Room room) {
         Log.d(TAG, "onConnectedToRoom.");
 
@@ -436,10 +444,11 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         mRoomId = room.getRoomId();
         mParticipants = room.getParticipants();
         mMyId = room.getParticipantId(Games.Players.getCurrentPlayerId(mGoogleApiClient));
-
+        mMyName = room.getParticipant(Games.Players.getCurrentPlayerId(mGoogleApiClient)).getDisplayName();
         // print out the list of participants (for debug purposes)
         Log.d(TAG, "Room ID: " + mRoomId);
         Log.d(TAG, "My ID " + mMyId);
+        Log.d(TAG, "My Name " + mMyName);
         Log.d(TAG, "<< CONNECTED TO ROOM>>");
     }
 
@@ -648,6 +657,19 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
             participants.add(p.getParticipantId());
         }
         return participants;
+    }
+
+    @Override
+    public List<String> getJoinedParticipantsName(){
+        List<String> name = new ArrayList<>();
+
+        for (Participant p : mParticipants){
+            if (p.getStatus() != Participant.STATUS_JOINED)
+                continue;
+            name.add(p.getDisplayName());
+        }
+
+        return name;
     }
 
     @Override

@@ -32,18 +32,15 @@ public class Player extends Sprite {
     public PowerUp[] powerUpList = new PowerUp[2];
     public boolean isInvulnerable = false, isDead = false;
 
-
     public Player(TextureAtlas atlas, TiledMapTileLayer collisionLayer, String ID, String characterName) {
         super(new Animation(1 / 2f, atlas.findRegions(characterName + "forward")).getKeyFrame(0));
         this.ID = ID;
         this.collisionLayer = collisionLayer;
-//        this.gameWorld = gameWorld;
-        facing = 8;
-
-        // Movement Animations
         this.playerAtlas = atlas;
         this.characterName = characterName;
-//        characterName = "player_2_";
+
+        facing = 8;
+
         forward = new Animation(1 / 2f, playerAtlas.findRegions(characterName + "forward"));
         backward = new Animation(1 / 2f, playerAtlas.findRegions(characterName + "backward"));
         left = new Animation(1 / 2f, playerAtlas.findRegions(characterName + "left"));
