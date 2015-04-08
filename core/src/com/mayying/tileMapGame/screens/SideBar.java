@@ -220,9 +220,8 @@ public class SideBar implements Screen {
 
     public void render(float delta) {
         if (timeLeft == 0) {
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(Play.getMultiplayerMessaging()));
         } else {
-
             stage.act(delta);
             stage.draw();
             if (!timeFrozen) {

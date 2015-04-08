@@ -97,6 +97,10 @@ public class MessageParser {
                 // increments k and d accordingly if applicable, killerIdx = -1 if no update to kills
                 ScoreBoard.getInstance().incrementKillsAndOrDeath(message[2], message[3]);
                 break;
+            case "ready":
+                if (world != null)
+                    world.playerReady(senderId, Long.valueOf(message[2]));
+                break;
 
             default:
                 Gdx.app.log(TAG, "No such command: " + message[0]);

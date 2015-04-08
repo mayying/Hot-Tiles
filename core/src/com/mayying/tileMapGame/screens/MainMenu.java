@@ -18,12 +18,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.multiplayer.ConnectionHelper;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 import com.mayying.tileMapGame.tween.ActorAccessor;
 import com.mayying.tileMapGame.tween.SpriteAccessor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
@@ -35,8 +37,10 @@ import aurelienribon.tweenengine.TweenManager;
 public class MainMenu implements Screen {
     private SpriteBatch batch;
     private Sprite background;
-    private TextButton buttonPractice, buttonFriends, buttonExit;
+    private TextButton buttonPractice, buttonFriends, buttonExit, buttonSignIn, buttonSignOut;
     private Label heading;
+    private List<Actor> menuActors = new ArrayList<Actor>();
+
     private Stage stage;
     private TextureAtlas buttonAtlas;
     private Skin skin;
@@ -44,7 +48,7 @@ public class MainMenu implements Screen {
     private Table table;
     private String mode;
     private MultiplayerMessaging multiplayerMessaging;
-    private boolean switchScreen;
+    private boolean startGame;
 
     public MainMenu() {
         mode = "desktop";
@@ -57,7 +61,7 @@ public class MainMenu implements Screen {
 
     @Override
     public void show() {
-        switchScreen = false;
+        startGame = false;
         tweenManager = new TweenManager();
         Tween.registerAccessor(Actor.class, new ActorAccessor());
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
@@ -81,6 +85,7 @@ public class MainMenu implements Screen {
 
         heading = new Label("Hot Tiles", skin);
         buttonPractice = new TextButton("Practice", skin);
+        menuActors.add(buttonPractice);
         buttonPractice.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -95,27 +100,63 @@ public class MainMenu implements Screen {
         });
 
         buttonFriends = new TextButton("Friends", skin);
+        menuActors.add(buttonFriends);
         buttonFriends.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                switchScreen = true;
-                GdxNativesLoader.load();
+//                switchScreen = true;
+//                GdxNativesLoader.load();
                 multiplayerMessaging.startQuickGame(); };
         });
 
-        Gdx.app.log("MainMenu.java", "switchScreen: " + switchScreen + " ConnectionHelper.STATE: " + ConnectionHelper.STATE);
+        Gdx.app.log("MainMenu.java", "switchScreen: " + startGame + " ConnectionHelper.STATE: " + ConnectionHelper.STATE);
 
         buttonExit = new TextButton("Exit", skin);
+        menuActors.add(buttonExit);
         buttonExit.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                multiplayerMessaging.exit();
+            };
+        }
+        );
 
-        });
+        buttonSignIn = new TextButton("Sign In", skin);
+        menuActors.add(buttonSignIn);
+        buttonSignIn.addListener(new ClickListener() {
+                                   @Override
+                                   public void clicked(InputEvent event, float x, float y) {
+                                       multiplayerMessaging.signIn();
+                                   };
+                               }
+        );
+
+        buttonSignOut = new TextButton("Sign Out", skin);
+        menuActors.add(buttonSignOut);
+        buttonSignOut.addListener(new ClickListener() {
+                                   @Override
+                                   public void clicked(InputEvent event, float x, float y) {
+                                       multiplayerMessaging.signOut();
+                                   };
+                               }
+        );
+
+        //tableMenu
+        table = new Table(skin);
+        table.setFillParent(true);
+        table.setBounds(0, 0, Play.V_WIDTH, Play.V_HEIGHT);
+        table.align(Align.top);
 
         table.add(heading).height(210).row();
-        table.add(buttonPractice).padBottom(20).row();
+        table.add(buttonPractice).padBottom(20);
         table.add(buttonFriends).padBottom(20).row();
+        table.add(buttonSignOut).padBottom(20);
+        table.add(buttonSignIn).padBottom(20).row();
         table.add(buttonExit).row();
 
         stage.addActor(table);
+
+        showMenuSignIn();
 
         Timeline.createSequence().beginSequence()
                 .push(Tween.set(background, SpriteAccessor.ALPHA).target(0))
@@ -132,6 +173,31 @@ public class MainMenu implements Screen {
                 .end().start(tweenManager);
     }
 
+    public void clearMenu(){
+        for (Actor actor : menuActors){
+            actor.setVisible(false);
+        }
+    }
+    public void showMenu(){
+        clearMenu();
+        buttonPractice.setVisible(true);
+        buttonFriends.setVisible(true);
+        buttonSignOut.setVisible(true);
+        buttonExit.setVisible(true);
+    }
+    public void showMenuSignIn(){
+        clearMenu();
+        buttonPractice.setVisible(true);
+        buttonSignIn.setVisible(true);
+        buttonExit.setVisible(true);
+    }
+    public void showLoading(){
+        clearMenu();
+    }
+    public void startGame(){
+        startGame = true;
+    }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -146,7 +212,8 @@ public class MainMenu implements Screen {
         stage.act(delta);
         stage.draw();
 
-        if (ConnectionHelper.STATE == ConnectionHelper.PLAY && switchScreen) {
+        if (startGame) {
+            startGame = false;
             if (mode.equals("desktop"))
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Play());
             else if (mode.equals("android")) {
