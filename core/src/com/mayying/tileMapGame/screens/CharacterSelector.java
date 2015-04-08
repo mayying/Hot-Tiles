@@ -190,7 +190,7 @@ public class CharacterSelector implements Screen {
         if (sec == 0) {
             String characterName;
             for (int i = 0; i < textButton.length; i++) {
-                if (textButton[i].isChecked()) {
+                if (textButton[i].isChecked() && textButton[i].getText().equals(playerName)) {
                     characterName = String.valueOf(i);
                     break;
                 }

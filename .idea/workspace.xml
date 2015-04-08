@@ -22,16 +22,8 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.mayying.tileMapGame.android" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f75184eb-7abc-43a3-bbf1-4b46b7b39042" name="Default" comment="Furnished Main Menu Screen">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/model_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/model_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/src/com/mayying/tileMapGame/android/AndroidLauncher.java" afterPath="$PROJECT_DIR$/android/src/com/mayying/tileMapGame/android/AndroidLauncher.java" />
+    <list default="true" id="f75184eb-7abc-43a3-bbf1-4b46b7b39042" name="Default" comment="Added CharacterSelector w/out multi-player functionality">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/CharacterSelector.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/CharacterSelector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/GameWorld.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/GameWorld.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/MainMenu.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/MainMenu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/multiplayer/MultiplayerMessaging.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/multiplayer/MultiplayerMessaging.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/Play.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/Play.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Player.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/android.iml" afterPath="$PROJECT_DIR$/android/android.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="TiledMapGame.iws" />
@@ -68,14 +60,14 @@
       <file leaf-file-name="CharacterSelector.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/CharacterSelector.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6447205" vertical-offset="2605" max-vertical-offset="5456">
-              <caret line="142" column="32" selection-start-line="142" selection-start-column="32" selection-end-line="142" selection-end-column="32" />
+            <state vertical-scroll-proportion="0.39875776" vertical-offset="3903" max-vertical-offset="5390">
+              <caret line="192" column="90" selection-start-line="192" selection-start-column="90" selection-end-line="192" selection-end-column="90" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1503#1504#0" expanded="true" />
-                <element signature="e#1535#1536#0" expanded="true" />
-                <element signature="e#5869#5870#0" expanded="true" />
-                <element signature="e#5905#5906#0" expanded="true" />
+                <element signature="e#1437#1438#0" expanded="true" />
+                <element signature="e#1469#1470#0" expanded="true" />
+                <element signature="e#5803#5804#0" expanded="true" />
+                <element signature="e#5839#5840#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -152,8 +144,10 @@
         <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/GameWorld.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="1485" max-vertical-offset="5984">
-              <caret line="106" column="16" selection-start-line="106" selection-start-column="16" selection-end-line="106" selection-end-column="16" />
-              <folding />
+              <caret line="105" column="16" selection-start-line="105" selection-start-column="16" selection-end-line="105" selection-end-column="16" />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -2208,7 +2202,11 @@
       <created>1428480227011</created>
       <updated>1428480227011</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Added CharacterSelector w/out multi-player functionality">
+      <created>1428489481524</created>
+      <updated>1428489481524</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -2340,7 +2338,8 @@
     <MESSAGE value="Set Screen For Android Launcher" />
     <MESSAGE value="Added ConnectionHelper" />
     <MESSAGE value="Furnished Main Menu Screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="Furnished Main Menu Screen" />
+    <MESSAGE value="Added CharacterSelector w/out multi-player functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added CharacterSelector w/out multi-player functionality" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -2711,21 +2710,23 @@
     <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/GameWorld.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1485" max-vertical-offset="5984">
-          <caret line="106" column="16" selection-start-line="106" selection-start-column="16" selection-end-line="106" selection-end-column="16" />
-          <folding />
+          <caret line="105" column="16" selection-start-line="105" selection-start-column="16" selection-end-line="105" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/CharacterSelector.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6447205" vertical-offset="2605" max-vertical-offset="5456">
-          <caret line="142" column="32" selection-start-line="142" selection-start-column="32" selection-end-line="142" selection-end-column="32" />
+        <state vertical-scroll-proportion="0.39875776" vertical-offset="3903" max-vertical-offset="5390">
+          <caret line="192" column="90" selection-start-line="192" selection-start-column="90" selection-end-line="192" selection-end-column="90" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1503#1504#0" expanded="true" />
-            <element signature="e#1535#1536#0" expanded="true" />
-            <element signature="e#5869#5870#0" expanded="true" />
-            <element signature="e#5905#5906#0" expanded="true" />
+            <element signature="e#1437#1438#0" expanded="true" />
+            <element signature="e#1469#1470#0" expanded="true" />
+            <element signature="e#5803#5804#0" expanded="true" />
+            <element signature="e#5839#5840#0" expanded="true" />
           </folding>
         </state>
       </provider>
