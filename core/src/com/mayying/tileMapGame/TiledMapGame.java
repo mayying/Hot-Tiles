@@ -35,8 +35,8 @@ public class TiledMapGame extends Game {
             MainMenu s = (MainMenu) screen;
             switch (screenId) {
                 case SCREEN_MAIN:
-                    s.showMenu();
-                    break;
+//                    s.showMenu();
+//                    break;
                 case SCREEN_SIGNIN:
                     s.showMenuSignIn();
                     break;

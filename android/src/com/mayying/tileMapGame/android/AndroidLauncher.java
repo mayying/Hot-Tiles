@@ -120,22 +120,15 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         Log.d(TAG, "Sign-in button clicked");
         mSignInClicked = true;
         mGoogleApiClient.connect();
-        }
-    @Override
-    public void signOut(){
-        // user wants to sign out
-        // sign out.
-        Log.d(TAG, "Sign-out button clicked");
-        mSignInClicked = false;
-        Games.signOut(mGoogleApiClient);
-        mGoogleApiClient.disconnect();
-        game.setMainMenuScreen(TiledMapGame.SCREEN_SIGNIN);
-        //        switchToScreen(R.id.screen_sign_in);
     }
     @Override
     public void exit(){
         this.finish();
         System.exit(0);
+    }
+    @Override
+    public boolean isLoggedIn(){
+        return mGoogleApiClient != null && mGoogleApiClient.isConnected();
     }
 
 
@@ -282,7 +275,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         stopKeepingScreenOn();
 
         if (mGoogleApiClient == null || !mGoogleApiClient.isConnected()) {
-            game.setMainMenuScreen(TiledMapGame.SCREEN_SIGNIN);
+            this.switchToMainScreen();
 //            switchToScreen(R.id.screen_sign_in);
         } else {
             game.setMainMenuScreen(TiledMapGame.SCREEN_LOADING);
@@ -299,12 +292,12 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     public void onStart() {
         game.setMainMenuScreen(TiledMapGame.SCREEN_LOADING);
 //        switchToScreen(R.id.screen_wait);
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+        if (isLoggedIn()) {
             Log.w(TAG,
                     "GameHelper: client was already connected on onStart()");
         } else {
-//            Log.d(TAG, "Connecting client.");
-//            mGoogleApiClient.connect();
+            Log.d(TAG, "Connecting client.");
+            mGoogleApiClient.connect();
         }
         super.onStart();
     }
@@ -405,7 +398,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
             }
         }
         switchToMainScreen();
-
     }
 
     @Override
@@ -430,7 +422,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
                     connectionResult, RC_SIGN_IN, getString(R.string.signin_other_error));
         }
 
-        game.setMainMenuScreen(TiledMapGame.SCREEN_SIGNIN);
+        this.switchToMainScreen();
 //        switchToScreen(R.id.screen_sign_in);
     }
 
@@ -640,6 +632,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 
     @Override
     public List<String> getParticipants() {
+        participants.clear();
         for (Participant p : mParticipants) {
             participants.add(p.getParticipantId());
         }
@@ -648,6 +641,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 
     @Override
     public List<String> getJoinedParticipants() {
+        participants.clear();
         for (Participant p : mParticipants) {
             if (p.getStatus() != Participant.STATUS_JOINED)
                 continue;
@@ -710,13 +704,14 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     }
 
     void switchToMainScreen() {
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            game.setMainMenuScreen(TiledMapGame.SCREEN_MAIN);
+        game.setMainMenuScreen(TiledMapGame.SCREEN_MAIN);
+//        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+//
 //            switchToScreen(R.id.screen_main);
-        } else {
-            game.setMainMenuScreen(TiledMapGame.SCREEN_SIGNIN);
+//        } else {
+//            game.setMainMenuScreen(TiledMapGame.SCREEN_SIGNIN);
 //            switchToScreen(R.id.screen_sign_in);
-        }
+//        }
     }
 
 

@@ -104,10 +104,13 @@ public class MainMenu implements Screen {
         buttonFriends.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//                switchScreen = true;
-//                GdxNativesLoader.load();
-                showLoading();
-                multiplayerMessaging.startQuickGame();
+                if (multiplayerMessaging.isLoggedIn()) {
+                    showLoading();
+                    multiplayerMessaging.startQuickGame();
+                } else {
+                    showLoading();
+                    multiplayerMessaging.signIn();
+                }
             }
 
             ;
@@ -121,36 +124,8 @@ public class MainMenu implements Screen {
                                    @Override
                                    public void clicked(InputEvent event, float x, float y) {
                                        multiplayerMessaging.exit();
-                                   }
-
-                                   ;
+                                   };
                                }
-        );
-
-        buttonSignIn = new TextButton("Sign In", skin);
-        menuActors.add(buttonSignIn);
-        buttonSignIn.addListener(new ClickListener() {
-                                     @Override
-                                     public void clicked(InputEvent event, float x, float y) {
-                                         showLoading();
-                                         multiplayerMessaging.signIn();
-                                     }
-
-                                     ;
-                                 }
-        );
-
-        buttonSignOut = new TextButton("Sign Out", skin);
-        menuActors.add(buttonSignOut);
-        buttonSignOut.addListener(new ClickListener() {
-                                      @Override
-                                      public void clicked(InputEvent event, float x, float y) {
-                                          showLoading();
-                                          multiplayerMessaging.signOut();
-                                      }
-
-                                      ;
-                                  }
         );
 
         //tableMenu
@@ -162,8 +137,6 @@ public class MainMenu implements Screen {
         table.add(heading).height(210).row();
         table.add(buttonPractice).row();
         table.add(buttonFriends).row();
-//        table.add(buttonSignOut).padBottom(20);
-//        table.add(buttonSignIn).padBottom(20).row();
         table.add(buttonExit).row();
 
         stage.addActor(table);
@@ -191,19 +164,13 @@ public class MainMenu implements Screen {
         }
     }
 
-    public void showMenu() {
-        clearMenu();
-        buttonPractice.setVisible(true);
-        buttonFriends.setVisible(true);
-        buttonSignOut.setVisible(true);
-        buttonExit.setVisible(true);
-    }
-
     public void showMenuSignIn() {
         clearMenu();
-        buttonPractice.setVisible(true);
-        buttonFriends.setVisible(true);
-        buttonExit.setVisible(true);
+        if (buttonPractice!=null && buttonFriends!=null && buttonExit!=null) {
+            buttonPractice.setVisible(true);
+            buttonFriends.setVisible(true);
+            buttonExit.setVisible(true);
+        }
     }
 
     public void showLoading() {

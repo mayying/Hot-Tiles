@@ -57,7 +57,7 @@ public class GameWorld {
         this.play = play;
 //        playerAtlas = new TextureAtlas("img/player2.txt");
         // Initialize all players
-        for (int id = 0; id < 2; id++) {
+        for (int id = 0; id < participants.size(); id++) {
             String characterName;
             if(id == 0) {
                 playerAtlas = new TextureAtlas("img/player2.txt");

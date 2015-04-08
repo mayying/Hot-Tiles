@@ -16,7 +16,7 @@ public interface MultiplayerMessaging {
     //for main menu usages
     public void startQuickGame();
     public void signIn();
-    public void signOut();
     public void exit();
     public void leaveGame();
+    public boolean isLoggedIn();
 }

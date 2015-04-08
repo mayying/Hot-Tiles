@@ -74,6 +74,7 @@ public class Play implements Screen {
         participants.add(myPlayerId);
         if (multiplayerMessaging != null) {
             participants = multiplayerMessaging.getJoinedParticipants();
+            Gdx.app.log("No of participants:", String.valueOf(participants.size()));
             myPlayerId = multiplayerMessaging.getMyId();
         }
 
