@@ -2,7 +2,6 @@ package com.mayying.tileMapGame.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,7 +24,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.Jukebox;
+import com.mayying.tileMapGame.entities.ScoreBoard;
+import com.mayying.tileMapGame.entities.ScoreBoard.Score;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
+
+import java.util.ArrayList;
 
 
 /**
@@ -36,34 +39,43 @@ import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 public class SideBar implements Screen {
 
     private Stage stage;
-    private Label timer, scoreboard, descriptionImg, descriptionText;
+    private Label timer, descriptionImg, descriptionText;
+    private Label[] scoreBoard1st, scoreBoard2nd;
     private Skin skin;
     private GameWorld world;
     private ImageButton buttonA, buttonB, sound, question, close;
     private TextureAtlas buttonAtlas;
     private OrthographicCamera hudCamera;
-    private Table table, descriptionTable, subTable;
-    private LabelStyle labelStyle;
-    //    private Boolean[] containsPU;
+    private Table table, descriptionTable, subTable, scoreBoardTable, scoreBoard1stTable, scoreBoard2ndTable;
+    private LabelStyle labelStyle, playerStyle, player2Style;
+    private ScoreBoard scoreBoard;
+    private ArrayList<Score> score;
     private String powerUpName;
+    private ImageButtonStyle imageButtonStyle;
 
     volatile static int timeLeft = 1;
 
     private float gameTime = 1 * 60 + 30;
     private int min, sec;
+    private boolean timeFrozen = true;
+    private static boolean scoreUpdated = true;
 
     SideBar(GameWorld world) {
         this.world = world;
         hudCamera = new OrthographicCamera();
         min = 1;
         sec = 30;
-//        screenBound = new Rectangle(GameWorld.screenBound.getX() + GameWorld.screenBound.getWidth() + GameWorld.TILE_WIDTH,
-//                0, GameWorld.TILE_WIDTH * 3,
-//                GameWorld.TILE_HEIGHT * 10);
-        labelStyle = new Label.LabelStyle();
-//        containsPU = new Boolean[2];
+        labelStyle = new LabelStyle();
+        // lmao should have made an arraylist/map to store them properly, initialize according to num players etc
+        playerStyle = new LabelStyle();
+        player2Style = new LabelStyle();
+        player2Style.font = playerStyle.font = labelStyle.font = new BitmapFont(Gdx.files.internal("font/black.fnt"));
+        imageButtonStyle = new ImageButtonStyle();
     }
 
+    public void unfreezeGameTimer(){
+        this.timeFrozen = false;
+    }
 
     @Override
     public void show() {
@@ -71,10 +83,7 @@ public class SideBar implements Screen {
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
 //
         inputMultiplexer.addProcessor(stage);
-//        inputMultiplexer.addProcessor(world.getDirectionGestureDetector());
         Gdx.input.setInputProcessor(inputMultiplexer);
-
-//        Gdx.input.setInputProcessor(stage);
 
         buttonAtlas = new TextureAtlas(Gdx.files.internal("skin/skin.txt"));
         skin = new Skin(Gdx.files.internal("skin/gameSkin.json"), buttonAtlas);
@@ -84,8 +93,6 @@ public class SideBar implements Screen {
         table.setFillParent(true);
         table.setBounds(0, 0, Play.V_WIDTH, Play.V_HEIGHT);
         table.align(Align.top);
-        // table.setDebug(true);
-        // tableBtm.setDebug(true);
 
         timer = new Label("Time Left\n" + min + " : " + sec, skin, "timer");
         timer.setAlignment(Align.center);
@@ -95,6 +102,7 @@ public class SideBar implements Screen {
         sound.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Jukebox.toggleMute();
                 Jukebox.toggleMute();
             }
         });
@@ -106,11 +114,39 @@ public class SideBar implements Screen {
             }
         });
 
-        scoreboard = new Label("Score Board", skin, "scoreboard");
+        scoreBoard = ScoreBoard.getInstance();
+        ArrayList<Score> score = scoreBoard.getScores();
 
-        descriptionImg = new Label("", skin, "description");
+        scoreBoard1stTable = new Table(skin);
+        scoreBoard1stTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/win_score210x89.png"))));
+        scoreBoard1st = new Label[2];
+        scoreBoard1st[0] = new Label("", skin, score.get(1).getPlayer().getName() + "head");
+        playerStyle.background = skin.getDrawable(score.get(1).getPlayer().getName() + "head");
+        scoreBoard1st[0].setStyle(playerStyle);
+        scoreBoard1st[1] = new Label("Score: 0", skin);
+
+        scoreBoard1stTable.add(scoreBoard1st[0]).height(55).width(55).padTop(15).padLeft(5);
+        scoreBoard1stTable.add(scoreBoard1st[1]).fill().expandX().padTop(10);
+
+        scoreBoard2ndTable = new Table(skin);
+        scoreBoard2ndTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/score210x89.png"))));
+        scoreBoard2nd = new Label[2];
+        scoreBoard2nd[0] = new Label("", skin, score.get(0).getPlayer().getName() + "head");
+        player2Style.background = skin.getDrawable(score.get(0).getPlayer().getName() + "head");
+        scoreBoard2nd[0].setStyle(player2Style);
+        scoreBoard2nd[1] = new Label("Score: 0", skin);
+
+        scoreBoard2ndTable.add(scoreBoard2nd[0]).height(55).width(55).padTop(15).padLeft(5);
+        scoreBoard2ndTable.add(scoreBoard2nd[1]).fill().expandX().padTop(10);
+
+        scoreBoardTable = new Table();
+        scoreBoardTable.add(scoreBoard1stTable).row();
+        scoreBoardTable.add(scoreBoard2ndTable).row();
+
+        descriptionImg = new Label("", skin);
         descriptionImg.setAlignment(Align.bottom);
-        descriptionText = new Label("", skin, "description");
+
+        descriptionText = new Label("", skin);
         descriptionText.setWrap(true);
         descriptionText.setAlignment(Align.top);
         descriptionText.setFontScale(0.75f);
@@ -164,7 +200,6 @@ public class SideBar implements Screen {
         descriptionTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/skinSquare280x210.png"))));
         descriptionTable.add(descriptionImg).padTop(40).width(90).height(90).row();
         descriptionTable.add(descriptionText).expandY().width(150).height(140).top().center();
-        // descriptionTable.setDebug(true);
 
         // putting stuff together
         //table.align(Align.center);
@@ -173,7 +208,7 @@ public class SideBar implements Screen {
         table.add(question).top();
         table.add(close).top().row();
 
-        table.add(scoreboard).left().expandX().height(280).width(210);
+        table.add(scoreBoardTable).left().expandX().height(178).width(210);
         table.add(descriptionTable).fill().colspan(3).row();
 
         table.add(world.getMyTouchPad().getTouchPad()).left().expandY().width(210);
@@ -184,42 +219,69 @@ public class SideBar implements Screen {
     }
 
     public void render(float delta) {
-        stage.act(delta);
-        stage.draw();
-        gameTime -= delta;
-        int minutes = (int) Math.floor(gameTime / 60.0f);
-        int seconds = (int) (gameTime - minutes * 60.0f);
-        timeLeft = minutes * 60 + seconds;
-        timer.setText("Time Left\n" + String.format("%02d : %02d", minutes, seconds));
+        if (timeLeft == 0) {
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+        } else {
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)){
-            ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenu());
-        }
+            stage.act(delta);
+            stage.draw();
+            if (!timeFrozen) {
+                gameTime -= delta;
+                int minutes = (int) Math.floor(gameTime / 60.0f);
+                int seconds = (int) (gameTime - minutes * 60.0f);
+                timeLeft = minutes * 60 + seconds;
+                timer.setText("Time Left\n" + String.format("%02d : %02d", minutes, seconds));
+            } else {
+                timer.setText("Time Left\n" + "-- : --");
+            }
+        
 
-        if (world.pickUpPowerUp()) {
-            powerUpName = world.getPowerUp().getName();
-            descriptionText.setText(powerUpName + "\n" + world.getPowerUp().getDescription());
-            labelStyle.background = skin.getDrawable(world.getPowerUp().getFilename());
-            labelStyle.font = new BitmapFont(Gdx.files.internal("font/black.fnt"));
-            descriptionImg.setStyle(labelStyle);
+            if(scoreUpdated){
+                Gdx.app.log("HT_Sidebar","Updating Board");
+                updateBoard();
+                scoreUpdated = false;
+            }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)){
+//            ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+//        }
 
-            ImageButtonStyle imageButtonStyle = new ImageButtonStyle();
-            imageButtonStyle.imageUp = skin.getDrawable(world.getPowerUp().getFilenameBtn());
-            imageButtonStyle.imageChecked = skin.getDrawable("skinRound140x140");
+            if (world.pickUpPowerUp()) {
+                powerUpName = world.getPowerUp().getName();
+                descriptionText.setText(powerUpName + "\n" + world.getPowerUp().getDescription());
+                labelStyle.background = skin.getDrawable(world.getPowerUp().getFilename());
+                descriptionImg.setStyle(labelStyle);
 
-            if (buttonA.isDisabled()) {
-                buttonA.setDisabled(false);
-                buttonA.setChecked(false);
-                buttonA.setStyle(imageButtonStyle);
+                imageButtonStyle.imageUp = skin.getDrawable(world.getPowerUp().getFilenameBtn());
+                imageButtonStyle.imageChecked = skin.getDrawable("skinRound140x140");
 
-            } else if (buttonB.isDisabled()) {
-                buttonB.setDisabled(false);
-                buttonB.setChecked(false);
-                buttonB.setStyle(imageButtonStyle);
+                if (buttonA.isDisabled()) {
+                    buttonA.setDisabled(false);
+                    buttonA.setChecked(false);
+                    buttonA.setStyle(imageButtonStyle);
+
+                } else if (buttonB.isDisabled()) {
+                    buttonB.setDisabled(false);
+                    buttonB.setChecked(false);
+                    buttonB.setStyle(imageButtonStyle);
+                }
             }
         }
     }
 
+    // there was brave attempt to implement elegant methods. there was failure. tears were shed, rares were lost T_T
+    public static void onScoreUpdated() {
+        scoreUpdated = true;
+    }
+
+    private void updateBoard(){
+        score = scoreBoard.getScores();
+
+        playerStyle.background = skin.getDrawable(score.get(1).getPlayer().getName() + "head");
+        scoreBoard1st[1].setText("Score: " + score.get(1).getScore());
+
+        player2Style.background = skin.getDrawable(score.get(0).getPlayer().getName() + "head");
+        scoreBoard2nd[1].setText("Score: " + score.get(0).getScore());
+    }
     @Override
     public void resize(int width, int height) {
         table.invalidateHierarchy();

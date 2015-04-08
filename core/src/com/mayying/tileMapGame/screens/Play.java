@@ -14,6 +14,12 @@ import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.BurningTiles;
 import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.entities.powerups.Blackout;
+import com.mayying.tileMapGame.multiplayer.MessageParser;
+import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by May Ying on 24/2/2015.
@@ -21,18 +27,34 @@ import com.mayying.tileMapGame.entities.powerups.Blackout;
 
 public class Play implements Screen {
     public static final int V_WIDTH = 1260, V_HEIGHT = 700;
-
+    private static final String TAG = "HT_Play";
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private StretchViewport viewport;
-
     private GameWorld world;
     private SideBar sideBar;
-
     private BurningTiles[] burningTiles;
     private int count = 0;
     private float spawnNewTile = 0f;
+    private static MultiplayerMessaging multiplayerMessaging;
+    private MessageParser messageParser;
+    private boolean allPlayersReady = false;
+    private Long randomSeed;
+
+    public Play() {
+        super();
+        multiplayerMessaging = null;
+        this.messageParser = null;
+        randomSeed = new Random().nextLong();
+    }
+
+    public Play(MultiplayerMessaging mmsg) {
+        super();
+        multiplayerMessaging = mmsg;
+        this.messageParser = null;
+        randomSeed = new Random().nextLong();
+    }
 
     @Override
     public void show() {
@@ -46,23 +68,42 @@ public class Play implements Screen {
         viewport = new StretchViewport(1260, 700, camera);
         viewport.apply();
 
-        world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"));
+        List<String> participants = new ArrayList<String>();
+        String myPlayerId = "me";
+        participants.add(myPlayerId);
+        if (multiplayerMessaging != null) {
+            participants = multiplayerMessaging.getJoinedParticipants();
+            myPlayerId = multiplayerMessaging.getMyId();
+        }
+
+        world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"), participants, myPlayerId, this);
+
         sideBar = new SideBar(world);
         sideBar.show();
 
-        burningTiles = new BurningTiles[80];
-        for (int i = 0; i < burningTiles.length; i++) {
-            burningTiles[i] = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
-            burningTiles[i].create();
-        }
+//        burningTiles = new BurningTiles[80];
+//        for (int i = 0; i < burningTiles.length; i++) {
+//            burningTiles[i] = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
+//            burningTiles[i].create();
+//        }
 
         Jukebox.load("sounds/fire.mp3", "fire");
-        // burningTiles = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
-        // burningTiles.create();
-        //  Gdx.input.setInputProcessor(new InputHandler(world.getPlayer()));
-//        world.swipe();
     }
 
+    public void initializeBurningTiles(Long randomSeed){
+        burningTiles = new BurningTiles[80];
+        int randomBase = 102312943;
+        for (int i = 0; i < burningTiles.length; i++) {
+            //randomBase is just to randomize even more.
+            burningTiles[i] = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"), randomSeed+i+randomBase);
+            burningTiles[i].create();
+        }
+        //start timer
+        sideBar.unfreezeGameTimer();
+        allPlayersReady = true;
+    }
+
+    long lastBroadcast = -1;
 
     @Override
     public void render(float delta) {
@@ -79,19 +120,24 @@ public class Play implements Screen {
         world.playerMovement(delta);
         world.drawAndUpdate(renderer.getBatch());
 
-        spawnNewTile += delta;
-        if (spawnNewTile >= Math.log10(0.02f * (SideBar.timeLeft + 10000))
-                && count < burningTiles.length) {
-            spawnNewTile = 0;
-            count++;
-        }
+        if (this.allPlayersReady) {
+//            spawnNewTile += delta;
+//            if (spawnNewTile >= Math.log10(0.02f * (SideBar.timeLeft + 10000))
+//                    && count < burningTiles.length) {
+//                spawnNewTile = 0;
+//                count++;
+//            }
+            if (SideBar.timeLeft>0) {
+                count = (int) Math.floor((92 - SideBar.timeLeft) / 1.75);
+            }
 
-        for (int i = 0; i < count; i++) {
-            burningTiles[i].render(delta);
+            for (int i = 0; i < count; i++) {
+                burningTiles[i].render(delta);
+            }
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            new Blackout().use(null);
+            new Blackout().use();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
@@ -100,6 +146,24 @@ public class Play implements Screen {
 
         renderer.getBatch().end();
         sideBar.render(delta);
+
+        // TODO - Might be better to create an additional thread that handles all the incoming messages
+        if (multiplayerMessaging != null) {
+            List<String> msgs = multiplayerMessaging.getMessageBuffer();
+            for (String msg : msgs) {
+                MessageParser.parse(msg);
+            }
+            //Broadcast Player Location
+            if (System.currentTimeMillis() - lastBroadcast > 100) {
+                lastBroadcast = System.currentTimeMillis();
+                multiplayerMessaging.broadcastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
+
+                if (!allPlayersReady){
+                    world.playerReady(multiplayerMessaging.getMyId(), randomSeed);
+                    multiplayerMessaging.broadcastMessage("ready," + randomSeed.toString());
+                }
+            }
+        }
     }
 
     @Override
@@ -128,5 +192,23 @@ public class Play implements Screen {
         map.dispose();
         renderer.dispose();
         sideBar.dispose();
+    }
+
+    //TODO This is bullshit
+    public static MultiplayerMessaging getMultiplayerMessaging() {
+        return multiplayerMessaging;
+    }
+    public static void broadcastMessage(String msg) {
+        Gdx.app.log(TAG, "Broadcasting message: " + msg);
+        multiplayerMessaging.broadcastMessage(msg);
+    }
+
+    public static void broadcastMessage(String... args) {
+        String msg = "";
+        for (String arg : args) {
+            msg += arg + ",";
+        }
+        Gdx.app.log(TAG, "Broadcasting message: " + msg);
+        multiplayerMessaging.broadcastMessage(msg);
     }
 }

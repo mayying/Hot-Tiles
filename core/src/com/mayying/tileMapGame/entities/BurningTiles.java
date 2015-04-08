@@ -24,14 +24,16 @@ public class BurningTiles implements Collidable{
     Map<String, TiledMapTile> fireTiles;
     float count = 0f;
     int currentAnimationFrame = 0, xCoord, yCoord;
+    private Random random;
 
 
-    public BurningTiles(TiledMap fireTile, GameWorld world, TiledMapTileLayer foreground) {
+    public BurningTiles(TiledMap fireTile, GameWorld world, TiledMapTileLayer foreground, long randomSeed) {
         this.fireTile = fireTile;
         this.world = world;
         this.foreground = foreground;
         cell = new TiledMapTileLayer.Cell();
         fireTiles = new HashMap<String, TiledMapTile>();
+        this.random = new Random(randomSeed);
     }
 
     public void create() {
@@ -51,8 +53,8 @@ public class BurningTiles implements Collidable{
             currentAnimationFrame++;
             if (currentAnimationFrame == 1) {
                 // Gdx.app.log(elapsedSinceAnimation + "", "elapsedSinceANimation");
-                xCoord = new Random().nextInt(world.getDevicePlayer().getCollisionLayer().getWidth() - 8);
-                yCoord = new Random().nextInt(world.getDevicePlayer().getCollisionLayer().getHeight() - 2);
+                xCoord = random.nextInt(world.getDevicePlayer().getCollisionLayer().getWidth() - 8);
+                yCoord = random.nextInt(world.getDevicePlayer().getCollisionLayer().getHeight() - 2);
                 foreground.setCell(xCoord + 4, yCoord + 1, cell);
                 cell = foreground.getCell(xCoord + 4, yCoord + 1);
             }else if(currentAnimationFrame >= 9){

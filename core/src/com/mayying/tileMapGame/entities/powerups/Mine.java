@@ -47,17 +47,17 @@ public class Mine extends Sprite implements Collidable, Usable {
     // Override this method to desired mine behavior
     @Override
     public void onCollisionDetected(Player hitPlayer) {
-        if (!hitPlayer.isInvulnerable) GameWorld.removeMine(this);
-        // TODO - KD logic for players, depending on the subclass type of mine
+        if (!hitPlayer.isInvulnerable) GameWorld.getInstance().removeMine(this);
     }
 
     @Override
     public void collisionCheck() {
         // Mine takes 2 seconds before activating
-        if(System.currentTimeMillis() - mineCreated > 2000l) {
+        if(System.currentTimeMillis() - mineCreated > 2000) {
             // Check for every player because only this device sees the mine, it has to tell the server if the mine hits.
-            for(int i=0; i<GameWorld.getNumPlayers(); i++) {
-                Player p = GameWorld.getPlayer(i);
+            GameWorld world = GameWorld.getInstance();
+            for(String key : world.getPlayers().keySet()) {
+                Player p = world.getPlayer(key);
                 if (p.getPlayerPosition().equals(coords))
                     onCollisionDetected(p);
             }
@@ -68,11 +68,11 @@ public class Mine extends Sprite implements Collidable, Usable {
 
 
     @Override
-    public void use(Player[] players) {
+    public void use() {
         // To Delay the mine before it can explode
         mineCreated = System.currentTimeMillis();
 
         // Add to render list
-        GameWorld.addMine(this);
+        GameWorld.getInstance().addMine(this);
     }
 }
