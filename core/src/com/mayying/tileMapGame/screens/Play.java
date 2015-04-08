@@ -70,7 +70,6 @@ public class Play implements Screen {
         viewport.apply();
 
         List<String> participants = new ArrayList<String>();
-        List<String> participantsName = new ArrayList<String>();
 
         String myPlayerId = "me";
 

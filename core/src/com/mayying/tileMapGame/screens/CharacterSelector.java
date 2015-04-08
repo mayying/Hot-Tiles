@@ -34,7 +34,7 @@ public class CharacterSelector implements Screen {
     private TextButton[] textButton;
     private float timeLeft = 6;
     private int min, sec;
-    private String playerName, mode, characterName;
+    private String myPlayerName, otherPlayerName, mode, myCharacterName, otherCharacterName;
     private MultiplayerMessaging multiplayerMessaging;
 
     public CharacterSelector() {
@@ -137,7 +137,8 @@ public class CharacterSelector implements Screen {
         stage.addActor(charSelTable);
 
 //        playerName = multiplayerMessaging.getMyName();
-        playerName = "May Ying";
+        myPlayerName = "May Ying";
+        otherPlayerName = "Mother";
         setDefaultCharacter();
     }
 
@@ -154,7 +155,7 @@ public class CharacterSelector implements Screen {
     // Do setting for toggling button
     private void toggleButton(int index) {
         Gdx.app.log("toggleButton in CharacterSelector", index + " Disabled? " + textButton[index].isDisabled());
-        textButton[index].setText(playerName);
+        textButton[index].setText(myPlayerName);
         textButton[index].setDisabled(true);
 
         for (int i = 0; i < textButton.length; i++) {
@@ -166,8 +167,12 @@ public class CharacterSelector implements Screen {
         }
     }
 
-    public String getCharacterName() {
-        return characterName;
+    public String getMyCharacterName() {
+        return "player_" + myCharacterName + "_";
+    }
+
+    public String getOtherCharacterName() {
+        return "player_" + myCharacterName + "_";
     }
 
     @Override
@@ -188,11 +193,12 @@ public class CharacterSelector implements Screen {
         timer.setText(String.format("%01d", sec));
 
         if (sec == 0) {
-            String characterName;
             for (int i = 0; i < textButton.length; i++) {
-                if (textButton[i].isChecked() && textButton[i].getText().equals(playerName)) {
-                    characterName = String.valueOf(i);
+                if (textButton[i].isChecked() && textButton[i].getText().equals(myPlayerName)) {
+                    myCharacterName = String.valueOf(i + 1);
                     break;
+                } else if (textButton[i].isChecked() && textButton[i].getText().equals(otherPlayerName)) {
+                    otherCharacterName = String.valueOf(i + 1);
                 }
             }
 
