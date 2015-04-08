@@ -1,19 +1,4 @@
 package com.mayying.tileMapGame.android;
-//
-//import android.os.Bundle;
-//
-//import com.badlogic.gdx.backends.android.AndroidApplication;
-//import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-//import com.mayying.tileMapGame.TiledMapGame;
-//
-//public class AndroidLauncher extends AndroidApplication {
-//	@Override
-//	protected void onCreate (Bundle savedInstanceState) {
-//		super.onCreate(savedInstanceState);
-//		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-//		initialize(new TiledMapGame(), config);
-//	}
-//}
 
 import android.app.Activity;
 import android.content.Intent;
@@ -50,8 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AndroidLauncher extends AndroidApplication implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        View.OnClickListener, RealTimeMessageReceivedListener,
+public class AndroidLauncher extends AndroidApplication implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, RealTimeMessageReceivedListener,
         RoomStatusUpdateListener, RoomUpdateListener, OnInvitationReceivedListener, MultiplayerMessaging {
 
    /*
@@ -120,14 +104,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
                 .addApi(Games.API).addScope(Games.SCOPE_GAMES)
                 .build();
 
-        // set up a click listener for everything we care about
-//        for (int id : CLICKABLES) {
-//            findViewById(id).setOnClickListener(this);
-//        }
-
         initialize(game, new AndroidApplicationConfiguration());
-//        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.screen_game);
-//        linearLayout.addView(gameView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
     }
 
     @Override
@@ -161,58 +138,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         System.exit(0);
     }
 
-    @Override
-    public void onClick(View v) {
-//        Intent intent;
-//
-//        switch (v.getId()) {
-//            case R.id.button_sign_in:
-//                // user wants to sign in
-//                // Check to see the developer who's running this sample code read the instructions :-)
-//                // NOTE: this check is here only because this is a sample! Don't include this
-//                // check in your actual production app.
-//                if (!BaseGameUtils.verifySampleSetup(this, R.string.app_id)) {
-//                    Log.w(TAG, "*** Warning: setup problems detected. Sign in may not work!");
-//                }
-//
-//                // start the sign-in flow
-//                Log.d(TAG, "Sign-in button clicked");
-//                mSignInClicked = true;
-//                mGoogleApiClient.connect();
-//                break;
-//            case R.id.button_sign_out:
-//                // user wants to sign out
-//                // sign out.
-//                Log.d(TAG, "Sign-out button clicked");
-//                mSignInClicked = false;
-//                Games.signOut(mGoogleApiClient);
-//                mGoogleApiClient.disconnect();
-////                switchToScreen(R.id.screen_sign_in);
-//                break;
-//            case R.id.button_invite_players:
-//                // show list of invitable players
-//                intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, 1, 3);
-////                switchToScreen(R.id.screen_wait);
-//                startActivityForResult(intent, RC_SELECT_PLAYERS);
-//                break;
-//            case R.id.button_see_invitations:
-//                // show list of pending invitations
-//                intent = Games.Invitations.getInvitationInboxIntent(mGoogleApiClient);
-////                switchToScreen(R.id.screen_wait);
-//                startActivityForResult(intent, RC_INVITATION_INBOX);
-//                break;
-//            case R.id.button_accept_popup_invitation:
-//                // user wants to accept the invitation shown on the invitation popup
-//                // (the one we got through the OnInvitationReceivedListener).
-//                acceptInviteToRoom(mIncomingInvitationId);
-//                mIncomingInvitationId = null;
-//                break;
-//            case R.id.button_quick_game:
-//                // user wants to play against a random opponent right now
-//                startQuickGame();
-//                break;
-//        }
-    }
 
     public void startQuickGame() {
         // quick-start a game with 1 randomly selected opponent

@@ -14,7 +14,7 @@ import com.mayying.tileMapGame.screens.Play;
 public class MessageParser {
     public static final String COMMAND_POSITION = "position";
 
-    private static final String TAG = "Parser";
+    private static final String TAG = "HT_Parser";
 
     /**
      * Parses the input string and runs the respective methods.
@@ -38,10 +38,9 @@ public class MessageParser {
         switch (command) {
             case COMMAND_POSITION:
 //                Gdx.app.log(TAG, String.format("Position of player %s: %s, %s", senderId, message[2], message[3]));
-                if (world!=null) {
-                    world.setPlayerPosition(senderId, new Vector2(Integer.valueOf(message[2]), Integer.valueOf(message[3])));
-                    world.getPlayer(senderId).animate(100l); //testing out animation. not sure what delta time should be
-                }
+                world.setPlayerPosition(senderId, new Vector2(Integer.valueOf(message[2]), Integer.valueOf(message[3])));
+                world.getPlayer(senderId).animate(100l); //testing out animation. not sure what delta time should be
+
                 break;
 
             case "effect":
@@ -100,21 +99,11 @@ public class MessageParser {
                 ScoreBoard.getInstance().incrementKillsAndOrDeath(message[2], message[3]);
                 break;
             case "ready":
-                if (world != null)
-                    world.playerReady(senderId, Long.valueOf(message[2]));
+                world.playerReady(senderId, Long.valueOf(message[2]));
                 break;
 
             default:
                 Gdx.app.log(TAG, "No such command: " + message[0]);
-        }
-    }
-
-    public static long getSeed(String inp){
-        String[] message = inp.split(",");
-        if(message[2].equals("f-seed")) {
-            return Long.valueOf(message[3]);
-        }else{
-            return -1;
         }
     }
 }
