@@ -106,6 +106,7 @@ public class MainMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
 //                switchScreen = true;
 //                GdxNativesLoader.load();
+                showLoading();
                 multiplayerMessaging.startQuickGame(); };
         });
 
@@ -126,6 +127,7 @@ public class MainMenu implements Screen {
         buttonSignIn.addListener(new ClickListener() {
                                    @Override
                                    public void clicked(InputEvent event, float x, float y) {
+                                       showLoading();
                                        multiplayerMessaging.signIn();
                                    };
                                }
@@ -136,6 +138,7 @@ public class MainMenu implements Screen {
         buttonSignOut.addListener(new ClickListener() {
                                    @Override
                                    public void clicked(InputEvent event, float x, float y) {
+                                       showLoading();
                                        multiplayerMessaging.signOut();
                                    };
                                }

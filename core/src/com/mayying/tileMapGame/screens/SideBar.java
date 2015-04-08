@@ -1,6 +1,5 @@
 package com.mayying.tileMapGame.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -110,7 +109,8 @@ public class SideBar implements Screen {
         close = new ImageButton(skin, "close");
         close.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                Play.getMultiplayerMessaging().leaveGame();
+//                Gdx.app.exit();
             }
         });
 
@@ -220,7 +220,7 @@ public class SideBar implements Screen {
 
     public void render(float delta) {
         if (timeLeft == 0) {
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(Play.getMultiplayerMessaging()));
+            Play.getMultiplayerMessaging().leaveGame();
         } else {
             stage.act(delta);
             stage.draw();

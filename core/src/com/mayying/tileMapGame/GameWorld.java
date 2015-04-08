@@ -46,6 +46,8 @@ public class GameWorld {
     private TiledMapTileLayer playableLayer;
     private Play play;
 
+    public static final long GAME_WAIT_OFFSET = 5000;
+
     public Rectangle screenBound;
     public static float TILE_WIDTH, TILE_HEIGHT, delta;
     public static final Vector<Sprite> bullets = new Vector<Sprite>();

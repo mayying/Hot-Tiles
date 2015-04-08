@@ -389,11 +389,16 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     public boolean onKeyDown(int keyCode, KeyEvent e) {
 //        if (keyCode == KeyEvent.KEYCODE_BACK && mCurScreen == R.id.screen_game) {
         if (keyCode == KeyEvent.KEYCODE_BACK && game.isInGame()) {
-            game.leaveGame();
-            leaveRoom();
+            leaveGame();
             return true;
         }
         return super.onKeyDown(keyCode, e);
+    }
+
+    @Override
+    public void leaveGame(){
+        game.leaveGame();
+        leaveRoom();
     }
 
     // Leave the room.
@@ -690,16 +695,22 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 
         byte[] bytes = taggedMsg.getBytes();
 
+        int peers = 0;
         for (Participant p : mParticipants) {
             if (p.getParticipantId().equals(mMyId))
                 continue;
             if (p.getStatus() != Participant.STATUS_JOINED)
                 continue;
-            Games.RealTimeMultiplayer.sendReliableMessage(mGoogleApiClient, null, bytes, mRoomId, p.getParticipantId());
-            if (mRoomId != null)
-                Games.RealTimeMultiplayer.sendReliableMessage(mGoogleApiClient, null,bytes, mRoomId, p.getParticipantId());
+            if (mRoomId != null) {
+                peers += 1;
+                Games.RealTimeMultiplayer.sendReliableMessage(mGoogleApiClient, null, bytes, mRoomId, p.getParticipantId());
+            }
         }
-
+        if (peers == 0){
+            if (game.isInGame()){
+                game.leaveGame();
+            }
+        }
     }
 
     @Override
@@ -795,12 +806,22 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     // game will be
     // cancelled.
     void keepScreenOn() {
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            }
+        });
     }
 
     // Clears the flag that keeps the screen on.
     void stopKeepingScreenOn() {
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            }
+        });
     }
 
 

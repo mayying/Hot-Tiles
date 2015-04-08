@@ -18,4 +18,5 @@ public interface MultiplayerMessaging {
     public void signIn();
     public void signOut();
     public void exit();
+    public void leaveGame();
 }
