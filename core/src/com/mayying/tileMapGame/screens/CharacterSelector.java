@@ -144,16 +144,25 @@ public class CharacterSelector implements Screen {
 
         stage.addActor(charSelTable);
 
-//        playerName = multiplayerMessaging.getMyName();
-        myPlayerName = "May Ying";
-        otherPlayerName = "Mother";
+        if (mode.equals("desktop")){
+            myPlayerName = "Kim Jong Un";
+            otherPlayerName = "Your Mother";
+        } else {
+            //TODO do this for 3 or more playah
+            myPlayerName = multiplayerMessaging.getMyName();
+            for (String name : multiplayerMessaging.getJoinedParticipantsName()){
+                if (!name.equals(myPlayerName)){
+                    otherPlayerName = name;
+                }
+            }
+        }
+
         setDefaultCharacter();
-
-
     }
 
 
     private void setDefaultCharacter() {
+        //TODO single player support broz
         if(imTheHost){
             toggleButton(0);
         }else{
@@ -167,7 +176,7 @@ public class CharacterSelector implements Screen {
         textButton[index].setDisabled(true);
 
         // Deselect the old button
-        if(otherPlayerSel != -1) {
+        if(otherPlayerSel != -1 && otherPlayerSel!=index) {
             textButton[otherPlayerSel].setText("");
             textButton[otherPlayerSel].setChecked(false);
             textButton[otherPlayerSel].setDisabled(false);
@@ -182,7 +191,7 @@ public class CharacterSelector implements Screen {
         textButton[index].setDisabled(true);
 
         // Deselect the old button
-        if(mySel != -1) {
+        if(mySel != -1 && mySel!=index) {
             textButton[mySel].setText("");
             textButton[mySel].setChecked(false);
             textButton[mySel].setDisabled(false);

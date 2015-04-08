@@ -444,7 +444,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         mRoomId = room.getRoomId();
         mParticipants = room.getParticipants();
         mMyId = room.getParticipantId(Games.Players.getCurrentPlayerId(mGoogleApiClient));
-        mMyName = room.getParticipant(Games.Players.getCurrentPlayerId(mGoogleApiClient)).getDisplayName();
+        mMyName = Games.Players.getCurrentPlayer(mGoogleApiClient).getDisplayName();
         // print out the list of participants (for debug purposes)
         Log.d(TAG, "Room ID: " + mRoomId);
         Log.d(TAG, "My ID " + mMyId);
@@ -667,6 +667,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
             if (p.getStatus() != Participant.STATUS_JOINED)
                 continue;
             name.add(p.getDisplayName());
+            Log.d("NAME", p.getDisplayName());
         }
 
         return name;

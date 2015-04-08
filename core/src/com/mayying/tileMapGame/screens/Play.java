@@ -42,6 +42,7 @@ public class Play implements Screen {
     private MessageParser messageParser;
     private boolean allPlayersReady = false;
     private Long randomSeed;
+    private long initializedTimeStamp;
 
     public Play() {
         super();
@@ -92,6 +93,7 @@ public class Play implements Screen {
 //        }
 
         Jukebox.load("sounds/fire.mp3", "fire");
+        initializedTimeStamp = System.currentTimeMillis();
     }
 
     public void initializeBurningTiles(Long randomSeed){
@@ -142,9 +144,10 @@ public class Play implements Screen {
 //            }
             if (SideBar.timeLeft>0) {
                 count = (int) Math.floor((92 - SideBar.timeLeft) / 1.75);
+                count = 5; //testin
             }
 
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < count; i++) {
                 burningTiles[i].render(delta);
             }
         }
@@ -171,12 +174,20 @@ public class Play implements Screen {
                 lastBroadcast = System.currentTimeMillis();
                 multiplayerMessaging.broadcastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
 
-                if (!allPlayersReady){
+                if (!allPlayersReady && iAmReady()){
                     world.playerReady(multiplayerMessaging.getMyId(), randomSeed);
                     multiplayerMessaging.broadcastMessage("ready," + randomSeed.toString());
                 }
             }
         }
+    }
+
+    public static final long GAME_SETUP_TIME = 5000;
+    private boolean iAmReady(){
+        if (System.currentTimeMillis()-initializedTimeStamp > GAME_SETUP_TIME){
+            return true;
+        }
+        return false;
     }
 
     @Override
