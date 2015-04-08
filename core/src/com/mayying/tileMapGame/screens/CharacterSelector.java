@@ -1,6 +1,5 @@
 package com.mayying.tileMapGame.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -33,7 +32,7 @@ public class CharacterSelector implements Screen {
     private Label heading, timer;
     private TextButton[] textButton;
     private float timeLeft = 6;
-    private int min, sec;
+    private int min, sec, otherPlayerSel;
     private String myPlayerName, otherPlayerName, mode, myCharacterName, otherCharacterName;
     private MultiplayerMessaging multiplayerMessaging;
 
@@ -140,29 +139,44 @@ public class CharacterSelector implements Screen {
         myPlayerName = "May Ying";
         otherPlayerName = "Mother";
         setDefaultCharacter();
+
+
     }
+
+    private void otherPlayerSelection(int index) {
+        textButton[3].setChecked(true);
+        textButton[3].setText(otherPlayerName);
+        textButton[3].setDisabled(true);
+        otherPlayerSel = index;
+    }
+
 
     private void setDefaultCharacter() {
         for (int i = 0; i < textButton.length; i++) {
             if (!textButton[i].isChecked()) {
                 toggleButton(i);
                 textButton[i].setChecked(true);
+                textButton[i].setText(myPlayerName);
+                textButton[i].setDisabled(true);
                 break;
             }
         }
     }
 
-    // Do setting for toggling button
+    // Do internal setting for toggling button
     private void toggleButton(int index) {
-        Gdx.app.log("toggleButton in CharacterSelector", index + " Disabled? " + textButton[index].isDisabled());
-        textButton[index].setText(myPlayerName);
-        textButton[index].setDisabled(true);
+//        Gdx.app.log("toggleButton in CharacterSelector", index + " Disabled? " + textButton[index].isDisabled());
+        if(index != otherPlayerSel) {
+            textButton[index].setText(myPlayerName);
+            textButton[index].setDisabled(true);
 
-        for (int i = 0; i < textButton.length; i++) {
-            if (i != index) {
-                textButton[i].setText("");
-                textButton[i].setChecked(false);
-                textButton[i].setDisabled(false);
+            for (int i = 0; i < textButton.length; i++) {
+                if (i != index && i != otherPlayerSel) {
+                    textButton[i].setText("");
+                    textButton[i].setChecked(false);
+                    textButton[i].setDisabled(false);
+
+                }
             }
         }
     }
@@ -192,23 +206,29 @@ public class CharacterSelector implements Screen {
         sec = (int) (timeLeft - min * 60.0f);
         timer.setText(String.format("%01d", sec));
 
-        if (sec == 0) {
-            for (int i = 0; i < textButton.length; i++) {
-                if (textButton[i].isChecked() && textButton[i].getText().equals(myPlayerName)) {
-                    myCharacterName = String.valueOf(i + 1);
-                    break;
-                } else if (textButton[i].isChecked() && textButton[i].getText().equals(otherPlayerName)) {
-                    otherCharacterName = String.valueOf(i + 1);
-                }
-            }
+        // Set Character Selection For Other Player
+        //TODO: Set other player's selection here
+        otherPlayerSelection(3);
 
-            if (mode.equals("desktop"))
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play());
-            else if (mode.equals("android")) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging));
-            }
-
-        }
+        //TODO: Uncomment me when ready for multiplayer
+        // Switch screen to Play when time's up
+//        if (sec == 0) {
+//            for (int i = 0; i < textButton.length; i++) {
+//                if (textButton[i].isChecked() && textButton[i].getText().equals(myPlayerName)) {
+//                    myCharacterName = String.valueOf(i + 1);
+//                    break;
+//                } else if (textButton[i].isChecked() && textButton[i].getText().equals(otherPlayerName)) {
+//                    otherCharacterName = String.valueOf(i + 1);
+//                }
+//            }
+//
+//            if (mode.equals("desktop"))
+//                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play());
+//            else if (mode.equals("android")) {
+//                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging));
+//            }
+//
+//        }
     }
 
     @Override
