@@ -38,8 +38,10 @@ public class MessageParser {
         switch (command) {
             case COMMAND_POSITION:
 //                Gdx.app.log(TAG, String.format("Position of player %s: %s, %s", senderId, message[2], message[3]));
-                world.setPlayerPosition(senderId, new Vector2(Integer.valueOf(message[2]), Integer.valueOf(message[3])));
-                world.getPlayer(senderId).animate(100l); //testing out animation. not sure what delta time should be
+                if (world!=null) {
+                    world.setPlayerPosition(senderId, new Vector2(Integer.valueOf(message[2]), Integer.valueOf(message[3])));
+                    world.getPlayer(senderId).animate(100l); //testing out animation. not sure what delta time should be
+                }
                 break;
 
             case "effect":

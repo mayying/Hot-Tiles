@@ -1,5 +1,6 @@
 package com.mayying.tileMapGame.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -103,10 +104,19 @@ public class Play implements Screen {
         allPlayersReady = true;
     }
 
+    boolean leavingGame = false;
+    public void leaveGame(){
+        leavingGame = true;
+    }
+
     long lastBroadcast = -1;
 
     @Override
     public void render(float delta) {
+        if (leavingGame){
+            leavingGame = false;
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(Play.getMultiplayerMessaging()));
+        }
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

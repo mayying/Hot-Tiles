@@ -4,11 +4,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 import com.mayying.tileMapGame.screens.MainMenu;
+import com.mayying.tileMapGame.screens.Play;
 
 public class TiledMapGame extends Game {
 
     String mode;
     MultiplayerMessaging multiplayerMessaging;
+    boolean inGame = false;
 
     public TiledMapGame(){
         super();
@@ -48,6 +50,7 @@ public class TiledMapGame extends Game {
     }
     public void startGame(){
         if (screen instanceof MainMenu) {
+            inGame = true;
             MainMenu s = (MainMenu) screen;
             s.startGame();
         }
@@ -55,6 +58,16 @@ public class TiledMapGame extends Game {
 ////            setScreen(new Play(multiplayerMessaging));
 //            ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging));
 //        }
+    }
+    public void leaveGame(){
+        if (screen instanceof Play) {
+            inGame = false;
+            Play s = (Play) screen;
+            s.leaveGame();
+        }
+    }
+    public boolean isInGame(){
+        return inGame;
     }
 
     @Override

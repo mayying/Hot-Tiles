@@ -387,7 +387,9 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     // Handle back key to make sure we cleanly leave a game if we are in the middle of one
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent e) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && mCurScreen == R.id.screen_game) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK && mCurScreen == R.id.screen_game) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && game.isInGame()) {
+            game.leaveGame();
             leaveRoom();
             return true;
         }
@@ -401,7 +403,11 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         if (mRoomId != null) {
             Games.RealTimeMultiplayer.leave(mGoogleApiClient, this, mRoomId);
             mRoomId = null;
-            game.setMainMenuScreen(TiledMapGame.SCREEN_LOADING);
+            if (game.isInGame()){
+                game.leaveGame();
+            } else {
+                game.setMainMenuScreen(TiledMapGame.SCREEN_LOADING);
+            }
 //            switchToScreen(R.id.screen_wait);
         } else {
             switchToMainScreen();
