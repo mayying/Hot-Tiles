@@ -10,11 +10,10 @@
     "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
         "default":      { "font": "black"}
         "timer":        { "font": "black", "fontColor": "white", "background": "skinRect210x140"}
-        "player1":      { "font": "black", "background": "player_1_head"}
+        "player_1_head":{ "font": "black", "background": "player_1_head"}
         "player_2_head":{ "font": "black", "background": "player_2_head"}
-        "player3":      { "font": "black", "background": "player_3_head"}
-        "player_3_head":      { "font": "black", "background": "player_3_head"}
-        "player4":      { "font": "black", "background": "player_4_head"}
+        "player_3_head":{ "font": "black", "background": "player_3_head"}
+        "player_4_head":{ "font": "black", "background": "player_4_head"}
     },
 
     "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
@@ -27,10 +26,4 @@
     com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
        default: { background: "skinRound210x210", knob: "touchKnob" }
     }
-
-
-
-
-
-
 }

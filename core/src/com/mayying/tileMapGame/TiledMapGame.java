@@ -3,6 +3,7 @@ package com.mayying.tileMapGame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
+import com.mayying.tileMapGame.screens.CharacterSelector;
 import com.mayying.tileMapGame.screens.MainMenu;
 import com.mayying.tileMapGame.screens.Play;
 
@@ -12,14 +13,14 @@ public class TiledMapGame extends Game {
     MultiplayerMessaging multiplayerMessaging;
     boolean inGame = false;
 
-    public TiledMapGame(){
+    public TiledMapGame() {
         super();
         //desktop launch
         mode = "desktop";
         this.multiplayerMessaging = null;
     }
 
-    public TiledMapGame(MultiplayerMessaging multiplayerMessaging){
+    public TiledMapGame(MultiplayerMessaging multiplayerMessaging) {
         super();
         mode = "android";
         this.multiplayerMessaging = multiplayerMessaging;
@@ -28,7 +29,8 @@ public class TiledMapGame extends Game {
     public static final int SCREEN_MAIN = 0;
     public static final int SCREEN_SIGNIN = 1;
     public static final int SCREEN_LOADING = 2;
-    public void setMainMenuScreen(int screenId){
+
+    public void setMainMenuScreen(int screenId) {
         if (screen instanceof MainMenu) {
             MainMenu s = (MainMenu) screen;
             switch (screenId) {
@@ -48,7 +50,8 @@ public class TiledMapGame extends Game {
             Gdx.app.log("Error", "Screen is not pointing at MainMenu");
         }
     }
-    public void startGame(){
+
+    public void startGame() {
         if (screen instanceof MainMenu) {
             inGame = true;
             MainMenu s = (MainMenu) screen;
@@ -59,21 +62,23 @@ public class TiledMapGame extends Game {
 //            ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging));
 //        }
     }
-    public void leaveGame(){
+
+    public void leaveGame() {
         if (screen instanceof Play) {
             inGame = false;
             Play s = (Play) screen;
             s.leaveGame();
         }
     }
-    public boolean isInGame(){
+
+    public boolean isInGame() {
         return inGame;
     }
 
     @Override
     public void create() {
         if (mode.equals("desktop")) {
-            setScreen(new MainMenu());
+            setScreen(new CharacterSelector());
         } else if (mode.equals("android")) {
             setScreen(new MainMenu(multiplayerMessaging));
         }

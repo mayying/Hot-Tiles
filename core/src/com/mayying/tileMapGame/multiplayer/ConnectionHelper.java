@@ -5,5 +5,7 @@ package com.mayying.tileMapGame.multiplayer;
  */
 public class ConnectionHelper {
     public static final int PLAY = 10000;
+    public static final int CLIENT_CONNECTED = 20000;
     public static int STATE = 0;
+
 }

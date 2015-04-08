@@ -107,7 +107,10 @@ public class MainMenu implements Screen {
 //                switchScreen = true;
 //                GdxNativesLoader.load();
                 showLoading();
-                multiplayerMessaging.startQuickGame(); };
+                multiplayerMessaging.startQuickGame();
+            }
+
+            ;
         });
 
         Gdx.app.log("MainMenu.java", "switchScreen: " + startGame + " ConnectionHelper.STATE: " + ConnectionHelper.STATE);
@@ -115,33 +118,39 @@ public class MainMenu implements Screen {
         buttonExit = new TextButton("Exit", skin);
         menuActors.add(buttonExit);
         buttonExit.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                multiplayerMessaging.exit();
-            };
-        }
+                                   @Override
+                                   public void clicked(InputEvent event, float x, float y) {
+                                       multiplayerMessaging.exit();
+                                   }
+
+                                   ;
+                               }
         );
 
         buttonSignIn = new TextButton("Sign In", skin);
         menuActors.add(buttonSignIn);
         buttonSignIn.addListener(new ClickListener() {
-                                   @Override
-                                   public void clicked(InputEvent event, float x, float y) {
-                                       showLoading();
-                                       multiplayerMessaging.signIn();
-                                   };
-                               }
+                                     @Override
+                                     public void clicked(InputEvent event, float x, float y) {
+                                         showLoading();
+                                         multiplayerMessaging.signIn();
+                                     }
+
+                                     ;
+                                 }
         );
 
         buttonSignOut = new TextButton("Sign Out", skin);
         menuActors.add(buttonSignOut);
         buttonSignOut.addListener(new ClickListener() {
-                                   @Override
-                                   public void clicked(InputEvent event, float x, float y) {
-                                       showLoading();
-                                       multiplayerMessaging.signOut();
-                                   };
-                               }
+                                      @Override
+                                      public void clicked(InputEvent event, float x, float y) {
+                                          showLoading();
+                                          multiplayerMessaging.signOut();
+                                      }
+
+                                      ;
+                                  }
         );
 
         //tableMenu
@@ -151,10 +160,10 @@ public class MainMenu implements Screen {
         table.align(Align.top);
 
         table.add(heading).height(210).row();
-        table.add(buttonPractice).padBottom(20);
-        table.add(buttonFriends).padBottom(20).row();
-        table.add(buttonSignOut).padBottom(20);
-        table.add(buttonSignIn).padBottom(20).row();
+        table.add(buttonPractice).row();
+        table.add(buttonFriends).row();
+//        table.add(buttonSignOut).padBottom(20);
+//        table.add(buttonSignIn).padBottom(20).row();
         table.add(buttonExit).row();
 
         stage.addActor(table);
@@ -176,28 +185,32 @@ public class MainMenu implements Screen {
                 .end().start(tweenManager);
     }
 
-    public void clearMenu(){
-        for (Actor actor : menuActors){
+    public void clearMenu() {
+        for (Actor actor : menuActors) {
             actor.setVisible(false);
         }
     }
-    public void showMenu(){
+
+    public void showMenu() {
         clearMenu();
         buttonPractice.setVisible(true);
         buttonFriends.setVisible(true);
         buttonSignOut.setVisible(true);
         buttonExit.setVisible(true);
     }
-    public void showMenuSignIn(){
+
+    public void showMenuSignIn() {
         clearMenu();
         buttonPractice.setVisible(true);
-        buttonSignIn.setVisible(true);
+        buttonFriends.setVisible(true);
         buttonExit.setVisible(true);
     }
-    public void showLoading(){
+
+    public void showLoading() {
         clearMenu();
     }
-    public void startGame(){
+
+    public void startGame() {
         startGame = true;
     }
 

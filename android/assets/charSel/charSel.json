@@ -1,0 +1,17 @@
+{
+    "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+        "red":      { "file": "font/red.fnt"}
+        "heading":  { "file": "font/heading80.fnt"}
+    },
+
+    "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+        "default":  { "font": "heading"}
+    },
+
+    "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+        "player1": {"up": "player_1", "checked": "player_1_sel", "font": "red"}
+        "player2": {"up": "player_2", "checked": "player_2_sel", "font": "red"}
+        "player3": {"up": "player_3", "checked": "player_3_sel", "font": "red"}
+        "player4": {"up": "player_4", "checked": "player_4_sel", "font": "red"}
+    }
+}

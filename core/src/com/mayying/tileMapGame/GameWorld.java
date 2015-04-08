@@ -55,9 +55,9 @@ public class GameWorld {
 
     public GameWorld(TiledMapTileLayer playableLayer, List<String> participants, String myId, Play play) {
         this.play = play;
-        playerAtlas = new TextureAtlas("img/player2.txt");
+//        playerAtlas = new TextureAtlas("img/player2.txt");
         // Initialize all players
-        for (int id = 0; id < participants.size(); id++) {
+        for (int id = 0; id < 2; id++) {
             String characterName;
             if(id == 0) {
                 playerAtlas = new TextureAtlas("img/player2.txt");
@@ -66,7 +66,9 @@ public class GameWorld {
                 playerAtlas = new TextureAtlas("img/player3.txt");
                 characterName = "player_3_";
             }
+
             Player player = new Player(playerAtlas, playableLayer, participants.get(id), characterName);
+            Gdx.app.log("Player from GameWorld: " + id, player.getName() + "");
             player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
             register(player);
         }

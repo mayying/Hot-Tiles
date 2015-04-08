@@ -50,7 +50,7 @@ public class SideBar implements Screen {
     private ScoreBoard scoreBoard;
     private ArrayList<Score> score;
     private String powerUpName;
-    private ImageButtonStyle imageButtonStyle;
+    private ImageButtonStyle imageButtonAStyle, imageButtonBStyle;
 
     volatile static int timeLeft = 1;
 
@@ -69,7 +69,8 @@ public class SideBar implements Screen {
         playerStyle = new LabelStyle();
         player2Style = new LabelStyle();
         player2Style.font = playerStyle.font = labelStyle.font = new BitmapFont(Gdx.files.internal("font/black.fnt"));
-        imageButtonStyle = new ImageButtonStyle();
+        imageButtonAStyle = new ImageButtonStyle();
+        imageButtonBStyle = new ImageButtonStyle();
     }
 
     public void unfreezeGameTimer(){
@@ -226,10 +227,10 @@ public class SideBar implements Screen {
             stage.draw();
             if (!timeFrozen) {
                 gameTime -= delta;
-                int minutes = (int) Math.floor(gameTime / 60.0f);
-                int seconds = (int) (gameTime - minutes * 60.0f);
-                timeLeft = minutes * 60 + seconds;
-                timer.setText("Time Left\n" + String.format("%02d : %02d", minutes, seconds));
+                min = (int) Math.floor(gameTime / 60.0f);
+                sec = (int) (gameTime - min * 60.0f);
+                timeLeft = min * 60 + sec;
+                timer.setText("Time Left\n" + String.format("%02d : %02d", min, sec));
             } else {
                 timer.setText("Time Left\n" + "-- : --");
             }
@@ -250,18 +251,20 @@ public class SideBar implements Screen {
                 labelStyle.background = skin.getDrawable(world.getPowerUp().getFilename());
                 descriptionImg.setStyle(labelStyle);
 
-                imageButtonStyle.imageUp = skin.getDrawable(world.getPowerUp().getFilenameBtn());
-                imageButtonStyle.imageChecked = skin.getDrawable("skinRound140x140");
-
+                Gdx.app.log("SideBar", "ButtonA: " + buttonA.isDisabled() + " ButtonB: " + buttonB.isDisabled());
                 if (buttonA.isDisabled()) {
                     buttonA.setDisabled(false);
                     buttonA.setChecked(false);
-                    buttonA.setStyle(imageButtonStyle);
+                    imageButtonAStyle.imageUp = skin.getDrawable(world.getPowerUp().getFilenameBtn());
+                    imageButtonAStyle.imageChecked = skin.getDrawable("skinRound140x140");
+                    buttonA.setStyle(imageButtonAStyle);
 
                 } else if (buttonB.isDisabled()) {
                     buttonB.setDisabled(false);
                     buttonB.setChecked(false);
-                    buttonB.setStyle(imageButtonStyle);
+                    imageButtonBStyle.imageUp = skin.getDrawable(world.getPowerUp().getFilenameBtn());
+                    imageButtonBStyle.imageChecked = skin.getDrawable("skinRound140x140");
+                    buttonB.setStyle(imageButtonBStyle);
                 }
             }
         }
@@ -285,10 +288,21 @@ public class SideBar implements Screen {
     public void resize(int width, int height) {
         table.invalidateHierarchy();
         table.setSize(width, height);
+
         descriptionTable.invalidateHierarchy();
         descriptionTable.setSize(width, height);
+
         subTable.invalidateHierarchy();
         subTable.setSize(width, height);
+
+        scoreBoardTable.invalidateHierarchy();
+        scoreBoardTable.setSize(width, height);
+
+        scoreBoard1stTable.invalidateHierarchy();
+        scoreBoard1stTable.setSize(width, height);
+
+        scoreBoard2ndTable.invalidateHierarchy();
+        scoreBoard2ndTable.setSize(width, height);
     }
 
     @Override

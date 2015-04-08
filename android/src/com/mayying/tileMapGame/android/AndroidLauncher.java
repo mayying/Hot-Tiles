@@ -685,12 +685,12 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
             String msgStr = rtm.getSenderParticipantId() + "," + msg.substring(msgTag.length());
             msgBuf.add(msgStr);
         }
-        Log.d("Receiving", msg);
+//        Log.d("Receiving", msg);
     }
 
     @Override
     public void broadcastMessage(String msg) {
-        Log.d("Sending", msg);
+//        Log.d("Sending", msg);
         String taggedMsg = msgTag + msg;
 
         byte[] bytes = taggedMsg.getBytes();
