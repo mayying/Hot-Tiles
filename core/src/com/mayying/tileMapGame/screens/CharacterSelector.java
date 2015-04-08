@@ -57,16 +57,11 @@ public class CharacterSelector implements Screen {
         textButton1.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-
-                return textButton1.isChecked();
+                return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if(textButton1.isChecked())
-                    charSelected++;
-                else if(!textButton1.isChecked())
-                    charSelected--;
             }
         });
 
@@ -74,16 +69,11 @@ public class CharacterSelector implements Screen {
         textButton2.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-
-                return textButton2.isChecked();
+                return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if(textButton2.isChecked())
-                    charSelected++;
-                else if(!textButton2.isChecked())
-                    charSelected--;
             }
         });
 
@@ -91,16 +81,11 @@ public class CharacterSelector implements Screen {
         textButton3.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-
-                return textButton3.isChecked();
+                return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if(textButton3.isChecked())
-                    charSelected++;
-                else if(!textButton3.isChecked())
-                    charSelected--;
             }
         });
 
@@ -108,15 +93,11 @@ public class CharacterSelector implements Screen {
         textButton4.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return textButton4.isChecked();
+                return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if(!textButton4.isChecked())
-                    charSelected++;
-                else if(textButton4.isChecked())
-                    charSelected--;
             }
         });
 
@@ -152,41 +133,59 @@ public class CharacterSelector implements Screen {
         sec = (int) (timeLeft - min * 60.0f);
         timer.setText(String.format("%01d", sec));
 
+//        Gdx.app.log("TextButton1", " isChecked: " + textButton1.isChecked() + " isDisabled: " + textButton1.isDisabled());
+//        Gdx.app.log("TextButton2", " isChecked: " + textButton2.isChecked() + " isDisabled: " + textButton2.isDisabled());
+//        Gdx.app.log("TextButton3", " isChecked: " + textButton3.isChecked() + " isDisabled: " + textButton3.isDisabled());
+//        Gdx.app.log("TextButton4", " isChecked: " + textButton4.isChecked() + " isDisabled: " + textButton4.isDisabled());
 
-        if (textButton1.isChecked() && charSelected == 0) {
+        if (textButton1.isChecked() && !textButton1.isDisabled()) {
             textButton1.setText("Player1");
-//            charSelected++;
+            textButton2.setDisabled(true);
+            textButton3.setDisabled(true);
+            textButton4.setDisabled(true);
+        }
+        if (textButton2.isChecked() && !textButton2.isDisabled()) {
+            textButton2.setText("Player1");
+            textButton1.setDisabled(true);
+            textButton3.setDisabled(true);
+            textButton4.setDisabled(true);
+        }
+        if (textButton3.isChecked() && !textButton3.isDisabled()) {
+            textButton3.setText("Player1");
+            textButton1.setDisabled(true);
+            textButton2.setDisabled(true);
+            textButton4.setDisabled(true);
+        } else if (textButton4.isChecked() && !textButton4.isDisabled()) {
+            textButton4.setText("Player1");
+            textButton1.setDisabled(true);
+            textButton2.setDisabled(true);
+            textButton3.setDisabled(true);
         } else if (!textButton1.isChecked()) {
             textButton1.setText("");
-//            charSelected--;
-        }
-
-        if (textButton2.isChecked() && charSelected == 0) {
-            textButton2.setText("Player2");
-//            charSelected++;
+            textButton1.setDisabled(false);
+            textButton2.setDisabled(false);
+            textButton3.setDisabled(false);
+            textButton4.setDisabled(false);
         } else if (!textButton2.isChecked()) {
             textButton2.setText("");
-//            charSelected--;
-        }
-
-        if (textButton3.isChecked() && charSelected == 0) {
-            textButton3.setText("Player3");
-//            charSelected++;
+            textButton1.setDisabled(false);
+            textButton2.setDisabled(false);
+            textButton3.setDisabled(false);
+            textButton4.setDisabled(false);
         } else if (!textButton3.isChecked()) {
             textButton3.setText("");
-//            charSelected--;
-        }
-
-
-        if (textButton4.isChecked() && charSelected == 0) {
-            textButton4.setText("Player4");
-//            charSelected++;
+            textButton1.setDisabled(false);
+            textButton2.setDisabled(false);
+            textButton3.setDisabled(false);
+            textButton4.setDisabled(false);
         } else if (!textButton4.isChecked()) {
-//            charSelected--;
             textButton4.setText("");
+            textButton1.setDisabled(false);
+            textButton2.setDisabled(false);
+            textButton3.setDisabled(false);
+            textButton4.setDisabled(false);
         }
-        Gdx.app.log(charSelected + "", textButton4.isChecked() + "");
-
+//        Gdx.app.log(charSelected + "", textButton4.isChecked() + "");
 
 
     }
