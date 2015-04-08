@@ -103,24 +103,26 @@ public class SpawnPowerUps implements Collidable {
 
     @Override
     public void onCollisionDetected(Player player) {
-//        Gdx.app.log("Player", "Player die from fire Q_Q");
-        if (player.canPickPowerUp()) {
+        // PowerUp disappear when a player steps over it. Easier to implement lol
+        state = 0; // picked up, restart state
+        if (player.canPickPowerUp() && player.equals(world.getDevicePlayer())) {
             player.addPowerUp(powerUp);
             powerUpIsPickedUp = true;
-            state = 0; // picked up, restart state
             Gdx.app.log("HT_Powerup", powerUp.getName() + " picked up.");
         }
     }
 
     @Override
     public void collisionCheck() {
-        // Only check for this device's player -  power ups appear to everyone differently
-        Player player = world.getDevicePlayer();
-
-        Vector2 playerPos = player.getPlayerPosition();
-//        Gdx.app.log("Player Coords: ", playerPos.toString());
-        if (playerPos.equals(this.coords)) {
-            onCollisionDetected(player);
+        // Check for every player. Unless we want to do a client-host handshake implementation, this is more concurrent with
+        // the rest of our implementation
+//        Player player = world.getDevicePlayer();
+        for (Player player : world.getPlayers().values()) {
+            Vector2 playerPos = player.getPlayerPosition();
+//            Gdx.app.log("Player Coords: ", playerPos.toString());
+            if (playerPos.equals(this.coords)) {
+                onCollisionDetected(player);
+            }
         }
     }
 
