@@ -144,7 +144,7 @@ public class Play implements Screen {
                 count = (int) Math.floor((92 - SideBar.timeLeft) / 1.75);
             }
 
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < 5; i++) {
                 burningTiles[i].render(delta);
             }
         }

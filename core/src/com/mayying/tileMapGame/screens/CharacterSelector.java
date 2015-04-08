@@ -1,5 +1,6 @@
 package com.mayying.tileMapGame.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,11 +19,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
+import java.util.List;
+
 /**
  * Created by May on 8/4/2015.
  */
 public class CharacterSelector implements Screen {
 
+    private static final String TAG = "HT_CHARSEL";
     private Table charSelTable, subTable;
     private Sprite background;
     private SpriteBatch spriteBatch;
@@ -31,10 +35,12 @@ public class CharacterSelector implements Screen {
     private Skin skin;
     private Label heading, timer;
     private TextButton[] textButton;
-    private float timeLeft = 6;
-    private int min, sec, otherPlayerSel;
+    private float timeLeft = 20;
+    private int min, sec, otherPlayerSel = -1, mySel = -1;
     private String myPlayerName, otherPlayerName, mode, myCharacterName, otherCharacterName;
     private MultiplayerMessaging multiplayerMessaging;
+    private boolean imTheHost;
+    private int selection;
 
     public CharacterSelector() {
         mode = "desktop";
@@ -47,6 +53,8 @@ public class CharacterSelector implements Screen {
 
     @Override
     public void show() {
+        imTheHost = multiplayerMessaging.getMyId().equals(multiplayerMessaging.getHostId());
+        Gdx.app.log(TAG,"I am the host: "+imTheHost);
         spriteBatch = new SpriteBatch();
         background = new Sprite(new Texture(Gdx.files.internal("charSel/background.png")));
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -98,6 +106,7 @@ public class CharacterSelector implements Screen {
         textButton[2].addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
                 return true;
             }
 
@@ -143,41 +152,55 @@ public class CharacterSelector implements Screen {
 
     }
 
-    private void otherPlayerSelection(int index) {
-        textButton[3].setChecked(true);
-        textButton[3].setText(otherPlayerName);
-        textButton[3].setDisabled(true);
+
+    private void setDefaultCharacter() {
+        if(imTheHost){
+            toggleButton(0);
+        }else{
+            toggleButton(textButton.length - 1);
+        }
+    }
+
+    private void setOtherPlayerSelection(int index) {
+        textButton[index].setText(otherPlayerName);
+        textButton[index].setChecked(true);
+        textButton[index].setDisabled(true);
+
+        // Deselect the old button
+        if(otherPlayerSel != -1) {
+            textButton[otherPlayerSel].setText("");
+            textButton[otherPlayerSel].setChecked(false);
+            textButton[otherPlayerSel].setDisabled(false);
+        }
         otherPlayerSel = index;
     }
 
+    private void setSelection(int index) {
+        // LAZY SYNCHRONIZE, GOT PROBLEM THEN DO
+        textButton[index].setText(myPlayerName);
+        textButton[index].setChecked(true);
+        textButton[index].setDisabled(true);
 
-    private void setDefaultCharacter() {
-        for (int i = 0; i < textButton.length; i++) {
-            if (!textButton[i].isChecked()) {
-                toggleButton(i);
-                textButton[i].setChecked(true);
-                textButton[i].setText(myPlayerName);
-                textButton[i].setDisabled(true);
-                break;
-            }
+        // Deselect the old button
+        if(mySel != -1) {
+            textButton[mySel].setText("");
+            textButton[mySel].setChecked(false);
+            textButton[mySel].setDisabled(false);
         }
+        mySel = index;
     }
 
     // Do internal setting for toggling button
     private void toggleButton(int index) {
 //        Gdx.app.log("toggleButton in CharacterSelector", index + " Disabled? " + textButton[index].isDisabled());
-        if(index != otherPlayerSel) {
-            textButton[index].setText(myPlayerName);
-            textButton[index].setDisabled(true);
-
-            for (int i = 0; i < textButton.length; i++) {
-                if (i != index && i != otherPlayerSel) {
-                    textButton[i].setText("");
-                    textButton[i].setChecked(false);
-                    textButton[i].setDisabled(false);
-
-                }
+        if (imTheHost) {
+            if (index != otherPlayerSel && index != mySel) {
+                broadcastMessage("charsel", "host", String.valueOf(index));
+                setSelection(index);
             }
+        } else {
+            broadcastMessage("charsel", "request", String.valueOf(index));
+            // wait for server to reply
         }
     }
 
@@ -207,12 +230,15 @@ public class CharacterSelector implements Screen {
         timer.setText(String.format("%01d", sec));
 
         // Set Character Selection For Other Player
-        //TODO: Set other player's selection here
-        otherPlayerSelection(3);
+        //TODO: maybe use a background thread
+        List<String> msgs = multiplayerMessaging.getMessageBuffer();
+        for (String msg : msgs) {
+            parse(msg);
+        }
 
         //TODO: Uncomment me when ready for multiplayer
         // Switch screen to Play when time's up
-//        if (sec == 0) {
+        if (sec == 0) {
 //            for (int i = 0; i < textButton.length; i++) {
 //                if (textButton[i].isChecked() && textButton[i].getText().equals(myPlayerName)) {
 //                    myCharacterName = String.valueOf(i + 1);
@@ -221,14 +247,45 @@ public class CharacterSelector implements Screen {
 //                    otherCharacterName = String.valueOf(i + 1);
 //                }
 //            }
-//
-//            if (mode.equals("desktop"))
-//                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play());
-//            else if (mode.equals("android")) {
-//                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging));
-//            }
-//
-//        }
+            myCharacterName = String.valueOf(mySel);
+            otherCharacterName = String.valueOf(otherPlayerSel);
+            if (mode.equals("desktop"))
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play());
+            else if (mode.equals("android")) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging));
+            }
+
+        }
+    }
+
+    private void parse(String msg) {
+        String[] message = msg.split(",");
+        String command = message[1];
+        if(command.equals("charsel")){
+            String type = message[2];
+            int idx = Integer.valueOf(message[3]);
+            switch (type) {
+                case "host":
+                    // Host = Kim Jong Un
+                    setOtherPlayerSelection(idx);
+                    break;
+                case "request":
+                    // Check for index collision, reply if no collision, else ignore the user because I'm Kim
+                    if (idx != mySel) {
+                        // Give client the ok signal
+                        broadcastMessage("charsel", "reply", String.valueOf(idx));
+                        // Set client's selection
+                        setOtherPlayerSelection(idx);
+                    }
+                    break;
+                case "reply":
+                    // lowly client
+                    setSelection(idx);
+                    break;
+            }
+        }else{
+            Gdx.app.log("HT_CHARSEL","Unknown message format: "+msg);
+        }
     }
 
     @Override
@@ -262,4 +319,13 @@ public class CharacterSelector implements Screen {
         charAtlas.dispose();
         skin.dispose();
     }
+    private void broadcastMessage(String... args) {
+        String msg = "";
+        for (String arg : args) {
+            msg += arg + ",";
+        }
+        Gdx.app.log(TAG, "Broadcasting message: " + msg);
+        multiplayerMessaging.broadcastMessage(msg);
+    }
+
 }

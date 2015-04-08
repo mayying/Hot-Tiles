@@ -108,7 +108,7 @@ public class SpawnPowerUps implements Collidable {
             player.addPowerUp(powerUp);
             powerUpIsPickedUp = true;
             state = 0; // picked up, restart state
-            Gdx.app.log("Powerup", powerUp.getName() + " picked up.");
+            Gdx.app.log("HT_Powerup", powerUp.getName() + " picked up.");
         }
     }
 

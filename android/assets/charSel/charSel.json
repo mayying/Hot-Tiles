@@ -9,9 +9,9 @@
     },
 
     "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
-        "player1": {"up": "player_1", "checked": "player_1_sel", "font": "red"}
-        "player2": {"up": "player_2", "checked": "player_2_sel", "font": "red"}
-        "player3": {"up": "player_3", "checked": "player_3_sel", "font": "red"}
-        "player4": {"up": "player_4", "checked": "player_4_sel", "font": "red"}
+        "player1": {"up": "player_1_sel", "disabled": "player_1", "font": "red"}
+        "player2": {"up": "player_2_sel", "disabled": "player_2", "font": "red"}
+        "player3": {"up": "player_3_sel", "disabled": "player_3", "font": "red"}
+        "player4": {"up": "player_4_sel", "disabled": "player_4", "font": "red"}
     }
 }
