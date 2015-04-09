@@ -310,6 +310,7 @@ public class GameWorld {
             mines.get(i).getTexture().dispose();
             mines.remove(i);
         }
+        instance = null;
         ScoreBoard.getInstance().reset();
         PowerUpFactory.getInstance(this).reset();
     }
