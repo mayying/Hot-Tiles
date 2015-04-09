@@ -53,8 +53,7 @@ public class CharacterSelector implements Screen {
 
     @Override
     public void show() {
-        imTheHost = multiplayerMessaging.getMyId().equals(multiplayerMessaging.getHostId());
-        Gdx.app.log(TAG,"I am the host: "+imTheHost);
+
         spriteBatch = new SpriteBatch();
         background = new Sprite(new Texture(Gdx.files.internal("charSel/background.png")));
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -77,6 +76,7 @@ public class CharacterSelector implements Screen {
         textButton = new TextButton[4];
 
         textButton[0] = new TextButton("", skin, "player1");
+        textButton[0].getLabel().setWrap(true);
         textButton[0].addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -90,6 +90,7 @@ public class CharacterSelector implements Screen {
         });
 
         textButton[1] = new TextButton("", skin, "player2");
+        textButton[1].getLabel().setWrap(true);
         textButton[1].addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -103,6 +104,7 @@ public class CharacterSelector implements Screen {
         });
 
         textButton[2] = new TextButton("", skin, "player3");
+        textButton[2].getLabel().setWrap(true);
         textButton[2].addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -117,6 +119,7 @@ public class CharacterSelector implements Screen {
         });
 
         textButton[3] = new TextButton("", skin, "player4");
+        textButton[3].getLabel().setWrap(true);
         textButton[3].addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -144,39 +147,43 @@ public class CharacterSelector implements Screen {
 
         stage.addActor(charSelTable);
 
-        if (mode.equals("desktop")){
-            myPlayerName = "Kim Jong Un";
+        if (mode.equals("desktop")) {
+            myPlayerName = "Kim Jong Un Dafuq are you crazy";
             myPlayerId = "me";
             otherPlayerName = "Your Mother";
             otherPlayerId = null;
+
+            imTheHost = true;
+
         } else {
             //TODO do this for 3 or more playah
+            imTheHost = multiplayerMessaging.getMyId().equals(multiplayerMessaging.getHostId());
             myPlayerName = multiplayerMessaging.getMyName();
             myPlayerId = multiplayerMessaging.getMyId();
-            for (String name : multiplayerMessaging.getJoinedParticipantsName()){
-                if (!name.equals(myPlayerName)){
+            for (String name : multiplayerMessaging.getJoinedParticipantsName()) {
+                if (!name.equals(myPlayerName)) {
                     otherPlayerName = name;
 //                    Gdx.app.log(TAG,"Other player name: "+otherPlayerName);
                 }
             }
             otherPlayerId = null;
-            for (String id : multiplayerMessaging.getJoinedParticipants()){
-                if (!id.equals(myPlayerId)){
+            for (String id : multiplayerMessaging.getJoinedParticipants()) {
+                if (!id.equals(myPlayerId)) {
                     otherPlayerId = id;
 //                    Gdx.app.log(TAG,"Other player ID: "+otherPlayerId);
                 }
             }
         }
-
+        Gdx.app.log(TAG, "I am the host: " + imTheHost);
         setDefaultCharacter();
     }
 
 
     private void setDefaultCharacter() {
         //TODO single player support broz
-        if(imTheHost){
+        if (imTheHost) {
             toggleButton(0);
-        }else{
+        } else {
             toggleButton(textButton.length - 1);
         }
     }
@@ -187,7 +194,7 @@ public class CharacterSelector implements Screen {
         textButton[index].setDisabled(true);
 
         // Deselect the old button
-        if(otherPlayerSel != -1 && otherPlayerSel!=index) {
+        if (otherPlayerSel != -1 && otherPlayerSel != index) {
             textButton[otherPlayerSel].setText("");
             textButton[otherPlayerSel].setChecked(false);
             textButton[otherPlayerSel].setDisabled(false);
@@ -202,7 +209,7 @@ public class CharacterSelector implements Screen {
         textButton[index].setDisabled(true);
 
         // Deselect the old button
-        if(mySel != -1 && mySel!=index) {
+        if (mySel != -1 && mySel != index) {
             textButton[mySel].setText("");
             textButton[mySel].setChecked(false);
             textButton[mySel].setDisabled(false);
@@ -251,6 +258,7 @@ public class CharacterSelector implements Screen {
 
         // Set Character Selection For Other Player
         //TODO: maybe use a background thread
+
         List<String> msgs = multiplayerMessaging.getMessageBuffer();
         for (String msg : msgs) {
             parse(msg);
@@ -269,12 +277,11 @@ public class CharacterSelector implements Screen {
 //            }
             HashMap<String, String> charselect = new HashMap<>();
             if (mode.equals("desktop")) {
-                charselect.put(myPlayerId, String.valueOf(mySel+1));
-            }
-            else if (mode.equals("android")){
-                charselect.put(myPlayerId, String.valueOf(mySel+1));
-                if (otherPlayerId!=null)
-                    charselect.put(otherPlayerId, String.valueOf(otherPlayerSel+1));
+                charselect.put(myPlayerId, String.valueOf(mySel + 1));
+            } else if (mode.equals("android")) {
+                charselect.put(myPlayerId, String.valueOf(mySel + 1));
+                if (otherPlayerId != null)
+                    charselect.put(otherPlayerId, String.valueOf(otherPlayerSel + 1));
             }
             ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging, charselect));
         }
@@ -283,7 +290,7 @@ public class CharacterSelector implements Screen {
     private void parse(String msg) {
         String[] message = msg.split(",");
         String command = message[1];
-        if(command.equals("charsel")){
+        if (command.equals("charsel")) {
             String type = message[2];
             int idx = Integer.valueOf(message[3]);
             switch (type) {
@@ -305,8 +312,8 @@ public class CharacterSelector implements Screen {
                     setSelection(idx);
                     break;
             }
-        }else{
-            Gdx.app.log("HT_CHARSEL","Unknown message format: "+msg);
+        } else {
+            Gdx.app.log("HT_CHARSEL", "Unknown message format: " + msg);
         }
     }
 
@@ -341,6 +348,7 @@ public class CharacterSelector implements Screen {
         charAtlas.dispose();
         skin.dispose();
     }
+
     private void broadcastMessage(String... args) {
         String msg = "";
         for (String arg : args) {

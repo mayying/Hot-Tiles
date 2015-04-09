@@ -63,9 +63,9 @@ public class GameWorld {
             String characterName;
             String char_selection = charselect.get(player_id);
             //TODO remove this when texture atlas are up
-            if (!char_selection.equals("2") && !char_selection.equals("3")){
+            if (char_selection.equals("4")) {
                 Gdx.app.log("NO", char_selection);
-                char_selection = "2";
+                char_selection = "1";
             }
 
             playerAtlas = new TextureAtlas(String.format("img/player%s.txt", char_selection));
@@ -112,14 +112,14 @@ public class GameWorld {
         players.put(p.getID(), p);
     }
 
-    public void playerReady(String id, Long randomSeed){
+    public void playerReady(String id, Long randomSeed) {
         this.randomSeeds.put(id, randomSeed);
-        if (randomSeeds.size() == players.size()){
+        if (randomSeeds.size() == players.size()) {
             this.gameStart();
         }
     }
 
-    public void gameStart(){
+    public void gameStart() {
         spawnPowerUps = new SpawnPowerUps(playableLayer, this, randomSeeds.get(Play.getMultiplayerMessaging().getHostId()));
         play.initializeBurningTiles(randomSeeds.get(Play.getMultiplayerMessaging().getHostId()));
     }
