@@ -231,14 +231,6 @@ public class CharacterSelector implements Screen {
         }
     }
 
-//    public String getMyCharacterName() {
-//        return "player_" + myCharacterName + "_";
-//    }
-//
-//    public String getOtherCharacterName() {
-//        return "player_" + myCharacterName + "_";
-//    }
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -264,17 +256,8 @@ public class CharacterSelector implements Screen {
             parse(msg);
         }
 
-        //TODO: Uncomment me when ready for multiplayer
         // Switch screen to Play when time's up
         if (sec == 0) {
-//            for (int i = 0; i < textButton.length; i++) {
-//                if (textButton[i].isChecked() && textButton[i].getText().equals(myPlayerName)) {
-//                    myCharacterName = String.valueOf(i + 1);
-//                    break;
-//                } else if (textButton[i].isChecked() && textButton[i].getText().equals(otherPlayerName)) {
-//                    otherCharacterName = String.valueOf(i + 1);
-//                }
-//            }
             HashMap<String, String> charselect = new HashMap<>();
             if (mode.equals("desktop")) {
                 charselect.put(myPlayerId, String.valueOf(mySel + 1));

@@ -22,7 +22,6 @@ import com.mayying.tileMapGame.multiplayer.MessageParser;
 import com.mayying.tileMapGame.screens.Play;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Vector;
 
 /**
@@ -49,15 +48,13 @@ public class GameWorld {
     public static final long GAME_WAIT_OFFSET = 5000;
 
     public Rectangle screenBound;
-    public static float TILE_WIDTH, TILE_HEIGHT, delta;
+    public static float TILE_WIDTH, TILE_HEIGHT;
     public static final Vector<Sprite> bullets = new Vector<Sprite>();
     public final Vector<Mine> mines = new Vector<Mine>();
 
-    private GameWorld(TiledMapTileLayer playableLayer, List<String> participants, String myId, HashMap<String, String> charselect,
+    private GameWorld(TiledMapTileLayer playableLayer, String myId, HashMap<String, String> charselect,
                       Play play) {
         this.play = play;
-
-
         // Initialize all players
         for (String player_id : charselect.keySet()) {
             String characterName;
@@ -70,13 +67,6 @@ public class GameWorld {
 
             playerAtlas = new TextureAtlas(String.format("img/player%s.txt", char_selection));
             characterName = String.format("player_%s_", char_selection);
-//            if(id == 0) {
-//                playerAtlas = new TextureAtlas("img/player2.txt");
-//                characterName = "player_2_";
-//            }else{
-//                playerAtlas = new TextureAtlas("img/player3.txt");
-//                characterName = "player_3_";
-//            }
 
             Player player = new Player(playerAtlas, playableLayer, player_id, characterName);
             Gdx.app.log("Player from GameWorld: " + char_selection, player_id);
@@ -98,13 +88,12 @@ public class GameWorld {
 //        spawnPowerUps = new SpawnPowerUps(playableLayer, this, randomSeeds.get(Play.getMultiplayerMessaging().getHostId()));
 
         setPlayerBound();
-        instance = this;
     }
 
-    public static GameWorld getInstance(TiledMapTileLayer playableLayer, List<String> participants, String myId, HashMap<String, String> charselect,
+    public static GameWorld getInstance(TiledMapTileLayer playableLayer, String myId, HashMap<String, String> charselect,
                                         Play play) {
         if(instance == null){
-            return new GameWorld(playableLayer, participants, myId, charselect, play);
+            instance = new GameWorld(playableLayer, myId, charselect, play);
         }
         return instance;
     }
@@ -145,9 +134,6 @@ public class GameWorld {
             spawnPowerUps.draw(batch);
             powerUp = spawnPowerUps.getPowerUp();
         }
-//        for (int i = 0; i < bullets.size(); i++) {
-//            bullets.get(i).draw(batch);
-//        }
 
         for (String key : players.keySet()) {
             players.get(key).draw(batch);
@@ -244,9 +230,8 @@ public class GameWorld {
 
     public String generateDevicePlayerCoordinatesBroadcastMessage() {
         Vector2 xy = devicePlayer.getPlayerPosition();
-        //TODO: safe conversion?
-        String broadcastMessage = MessageParser.COMMAND_POSITION + "," + String.valueOf((int) xy.x) + "," + String.valueOf((int) xy.y);
-        return broadcastMessage;
+        return MessageParser.COMMAND_POSITION + "," + String.valueOf((int) xy.x) + "," + String.valueOf((int) xy.y);
+
     }
 
     /**
@@ -301,7 +286,6 @@ public class GameWorld {
     public void setPlayerPosition(String playerId, Vector2 pos) {
         Player p = players.get(playerId);
         if (p != null) {
-            //TODO: Unsafe conversion?
             p.setPlayerPosition((int) pos.x, (int) pos.y);
         }
     }

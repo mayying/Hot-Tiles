@@ -80,12 +80,12 @@ public class Play implements Screen {
         //TODO shouldve removed this line....
         String myPlayerId = "me";
         if (multiplayerMessaging != null) {
-            participants = multiplayerMessaging.getJoinedParticipants();
-//            Gdx.app.log("No of participants:", String.valueOf(participants.size()));
+//            participants = multiplayerMessaging.getJoinedParticipants();
+////            Gdx.app.log("No of participants:", String.valueOf(participants.size()));
             myPlayerId = multiplayerMessaging.getMyId();
         }
 
-        world = GameWorld.getInstance((TiledMapTileLayer) map.getLayers().get("Background"), participants, myPlayerId, charselect, this);
+        world = GameWorld.getInstance((TiledMapTileLayer) map.getLayers().get("Background"), myPlayerId, charselect, this);
 
         sideBar = new SideBar(world);
         sideBar.show();
