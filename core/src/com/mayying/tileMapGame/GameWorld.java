@@ -79,7 +79,7 @@ public class GameWorld {
 //            }
 
             Player player = new Player(playerAtlas, playableLayer, player_id, characterName);
-            Gdx.app.log("Player from GameWorld: " + char_selection, player.getName() + "");
+            Gdx.app.log("Player from GameWorld: " + char_selection, player_id);
             player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
             register(player);
         }

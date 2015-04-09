@@ -159,6 +159,7 @@ public class CharacterSelector implements Screen {
                     otherPlayerName = name;
                 }
             }
+            otherPlayerId = null;
             for (String id : multiplayerMessaging.getJoinedParticipants()){
                 if (!id.equals(myPlayerId)){
                     otherPlayerId = id;
@@ -268,14 +269,15 @@ public class CharacterSelector implements Screen {
             myCharacterName = String.valueOf(mySel+1);
             otherCharacterName = String.valueOf(otherPlayerSel+1);
             HashMap<String, String> charselect = new HashMap<>();
-            charselect.put(myPlayerId, myCharacterName);
-            charselect.put(otherPlayerId, otherCharacterName);
-            if (mode.equals("desktop"))
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play());
-            else if (mode.equals("android")) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging, charselect));
+            if (mode.equals("desktop")) {
+                charselect.put(myPlayerId, myCharacterName);
             }
-
+            else if (mode.equals("android")){
+                charselect.put(myPlayerId, myCharacterName);
+                if (otherPlayerId!=null)
+                    charselect.put(otherPlayerId, otherCharacterName);
+            }
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging, charselect));
         }
     }
 

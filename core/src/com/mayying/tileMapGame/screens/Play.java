@@ -75,9 +75,8 @@ public class Play implements Screen {
 
         List<String> participants = new ArrayList<String>();
 
+        //TODO shouldve removed this line....
         String myPlayerId = "me";
-
-        participants.add(myPlayerId);
         if (multiplayerMessaging != null) {
             participants = multiplayerMessaging.getJoinedParticipants();
             Gdx.app.log("No of participants:", String.valueOf(participants.size()));
@@ -88,12 +87,6 @@ public class Play implements Screen {
 
         sideBar = new SideBar(world);
         sideBar.show();
-
-//        burningTiles = new BurningTiles[80];
-//        for (int i = 0; i < burningTiles.length; i++) {
-//            burningTiles[i] = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"));
-//            burningTiles[i].create();
-//        }
 
         Jukebox.load("sounds/fire.mp3", "fire");
         initializedTimeStamp = System.currentTimeMillis();

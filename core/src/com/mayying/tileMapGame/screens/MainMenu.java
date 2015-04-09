@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.multiplayer.ConnectionHelper;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
+import com.mayying.tileMapGame.multiplayer.SinglePlayerDummyMessaging;
 import com.mayying.tileMapGame.tween.ActorAccessor;
 import com.mayying.tileMapGame.tween.SpriteAccessor;
 
@@ -92,7 +93,7 @@ public class MainMenu implements Screen {
                 stage.addAction(Actions.sequence(Actions.moveBy(-stage.getWidth(), 0, 0.25f), Actions.run(new Runnable() {
                     @Override
                     public void run() {
-                        ((Game) Gdx.app.getApplicationListener()).setScreen(new Play());
+                        ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector(new SinglePlayerDummyMessaging(multiplayerMessaging)));
 
                     }
                 })));

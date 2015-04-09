@@ -121,9 +121,11 @@ public class SideBar implements Screen {
         scoreBoard1stTable = new Table(skin);
         scoreBoard1stTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/win_score210x89.png"))));
         scoreBoard1st = new Label[2];
-        scoreBoard1st[0] = new Label("", skin, score.get(1).getPlayer().getName() + "head");
-        playerStyle.background = skin.getDrawable(score.get(1).getPlayer().getName() + "head");
-        scoreBoard1st[0].setStyle(playerStyle);
+        if (score.size()>=2) {
+            scoreBoard1st[0] = new Label("", skin, score.get(1).getPlayer().getName() + "head");
+            playerStyle.background = skin.getDrawable(score.get(1).getPlayer().getName() + "head");
+            scoreBoard1st[0].setStyle(playerStyle);
+        }
         scoreBoard1st[1] = new Label("Score: 0", skin);
 
         scoreBoard1stTable.add(scoreBoard1st[0]).height(55).width(55).padTop(15).padLeft(5);
@@ -278,8 +280,10 @@ public class SideBar implements Screen {
     private void updateBoard() {
         score = scoreBoard.getScores();
 
-        playerStyle.background = skin.getDrawable(score.get(1).getPlayer().getName() + "head");
-        scoreBoard1st[1].setText("Score: " + score.get(1).getScore());
+        if (score.size()>=2) {
+            playerStyle.background = skin.getDrawable(score.get(1).getPlayer().getName() + "head");
+            scoreBoard1st[1].setText("Score: " + score.get(1).getScore());
+        }
 
         player2Style.background = skin.getDrawable(score.get(0).getPlayer().getName() + "head");
         scoreBoard2nd[1].setText("Score: " + score.get(0).getScore());
