@@ -87,7 +87,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     private TiledMapGame game;
     private ArrayList<String> participants = new ArrayList<String>();
 
-    public AndroidLauncher(){
+    public AndroidLauncher() {
         super();
         game = new TiledMapGame(this);
     }
@@ -109,7 +109,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     }
 
     @Override
-    public void signIn(){
+    public void signIn() {
         // user wants to sign in
         // Check to see the developer who's running this sample code read the instructions :-)
         // NOTE: this check is here only because this is a sample! Don't include this
@@ -122,13 +122,15 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         mSignInClicked = true;
         mGoogleApiClient.connect();
     }
+
     @Override
-    public void exit(){
+    public void exit() {
         this.finish();
         System.exit(0);
     }
+
     @Override
-    public boolean isLoggedIn(){
+    public boolean isLoggedIn() {
         return mGoogleApiClient != null && mGoogleApiClient.isConnected();
     }
 
@@ -315,7 +317,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     }
 
     @Override
-    public void leaveGame(){
+    public void leaveGame() {
         game.leaveGame();
         leaveRoom();
     }
@@ -327,7 +329,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         if (mRoomId != null) {
             Games.RealTimeMultiplayer.leave(mGoogleApiClient, this, mRoomId);
             mRoomId = null;
-            if (game.isInGame()){
+            if (game.isInGame()) {
                 game.leaveGame();
             } else {
                 game.setMainMenuScreen(TiledMapGame.SCREEN_LOADING);
@@ -574,7 +576,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         }
     }
 
-
     // Start the gameplay phase of the game.
     void startGame() {
         List<String> ids = getJoinedParticipants();
@@ -632,8 +633,8 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
                 Games.RealTimeMultiplayer.sendReliableMessage(mGoogleApiClient, null, bytes, mRoomId, p.getParticipantId());
             }
         }
-        if (peers == 0){
-            if (game.isInGame()){
+        if (peers == 0) {
+            if (game.isInGame()) {
                 game.leaveGame();
             }
         }
@@ -660,10 +661,10 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     }
 
     @Override
-    public List<String> getJoinedParticipantsName(){
+    public List<String> getJoinedParticipantsName() {
         List<String> name = new ArrayList<>();
 
-        for (Participant p : mParticipants){
+        for (Participant p : mParticipants) {
             if (p.getStatus() != Participant.STATUS_JOINED)
                 continue;
             name.add(p.getDisplayName());
@@ -683,7 +684,8 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         return msgBuf.getList();
     }
 
-    @Override public String getHostId(){
+    @Override
+    public String getHostId() {
         return hostId;
     }
 
