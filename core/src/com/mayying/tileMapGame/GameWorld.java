@@ -53,8 +53,8 @@ public class GameWorld {
     public static final Vector<Sprite> bullets = new Vector<Sprite>();
     public final Vector<Mine> mines = new Vector<Mine>();
 
-    public GameWorld(TiledMapTileLayer playableLayer, List<String> participants, String myId, HashMap<String, String> charselect,
-                     Play play) {
+    private GameWorld(TiledMapTileLayer playableLayer, List<String> participants, String myId, HashMap<String, String> charselect,
+                      Play play) {
         this.play = play;
 
 
@@ -101,7 +101,15 @@ public class GameWorld {
         instance = this;
     }
 
-    public static GameWorld getInstance() {
+    public static GameWorld getInstance(TiledMapTileLayer playableLayer, List<String> participants, String myId, HashMap<String, String> charselect,
+                                        Play play) {
+        if(instance == null){
+            return new GameWorld(playableLayer, participants, myId, charselect, play);
+        }
+        return instance;
+    }
+    // For methods that do not want to construct
+    public static GameWorld getInstance(){
         return instance;
     }
 

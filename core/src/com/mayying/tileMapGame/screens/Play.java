@@ -85,7 +85,7 @@ public class Play implements Screen {
             myPlayerId = multiplayerMessaging.getMyId();
         }
 
-        world = new GameWorld((TiledMapTileLayer) map.getLayers().get("Background"), participants, myPlayerId, charselect, this);
+        world = GameWorld.getInstance((TiledMapTileLayer) map.getLayers().get("Background"), participants, myPlayerId, charselect, this);
 
         sideBar = new SideBar(world);
         sideBar.show();

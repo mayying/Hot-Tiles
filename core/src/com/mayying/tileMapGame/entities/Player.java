@@ -23,7 +23,7 @@ public class Player extends Sprite {
     private int facing; // index of player
     private TiledMapTileLayer collisionLayer;
     private Animation forward, backward, left, right, burnt;
-    private float speed = 1, animationTime = 0;
+    private float speed = 1, animationTime = 0f;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
     private boolean isFrozen = false, isInverted = false;// for freezing animation and stuff?
     private String ID, lastHitBy, characterName;
@@ -111,7 +111,8 @@ public class Player extends Sprite {
     }
 
     public void animate(float delta) {
-        animationTime += delta;
+        animationTime += delta + 0.01;
+//        forward.
         setRegion(isDead ? burnt.getKeyFrame(animationTime) : facing == 4 ? left.getKeyFrame(animationTime) : facing == 6 ? right.getKeyFrame(animationTime) :
                 facing == 2 ? backward.getKeyFrame(animationTime) : forward.getKeyFrame(animationTime));
     }
