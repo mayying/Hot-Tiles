@@ -41,6 +41,7 @@ public class CharacterSelector implements Screen {
     private String myPlayerName, otherPlayerName, mode, myPlayerId, otherPlayerId;
     private MultiplayerMessaging multiplayerMessaging;
     private boolean imTheHost;
+    private static long start;
 
     public CharacterSelector() {
         mode = "desktop";
@@ -85,6 +86,9 @@ public class CharacterSelector implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+//                Gdx.app.log("HT_LAUNCHER","Sending int message");
+//                start = System.currentTimeMillis();
+//                multiplayerMessaging.broadcastMessage(12345);
                 toggleButton(0);
             }
         });
@@ -98,6 +102,9 @@ public class CharacterSelector implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+//                Gdx.app.log("HT_LAUNCHER","Sending String message");
+//                start = System.currentTimeMillis();
+//                multiplayerMessaging.broadcastMessage("asd");
                 toggleButton(1);
             }
         });
@@ -304,9 +311,18 @@ public class CharacterSelector implements Screen {
                     // lowly client
                     setSelection(idx);
                     break;
+                case "ping":
+                    Gdx.app.log("HT_LAUNCHER","PING BALL");
+                    CharacterSelector.pingBall();
+                    break;
             }
-        }else{
+        }else if(command.equals("asd")){
+            broadcastMessage("ping");
+        }
+        else{
             Gdx.app.log("HT_CHARSEL","Unknown message format: "+msg);
+            Gdx.app.log("HT_LAUNCHER","PING BALL");
+            CharacterSelector.pingBall();
         }
     }
 
@@ -341,6 +357,7 @@ public class CharacterSelector implements Screen {
         charAtlas.dispose();
         skin.dispose();
     }
+    //created because at this time Play is not instantiated and does not have a handle to multiplayerMessaging.
     private void broadcastMessage(String... args) {
         String msg = "";
         for (String arg : args) {
@@ -349,5 +366,7 @@ public class CharacterSelector implements Screen {
         Gdx.app.log(TAG, "Broadcasting message: " + msg);
         multiplayerMessaging.broadcastMessage(msg);
     }
-
+    public static void pingBall(){
+        Gdx.app.log("HT_LAUNCHER", "Roundtrip time: "+ (System.currentTimeMillis() - start));
+    }
 }

@@ -31,6 +31,11 @@ public class SinglePlayerDummyMessaging implements MultiplayerMessaging {
     }
 
     @Override
+    public void broadcastMessage(int msg) {
+
+    }
+
+    @Override
     public List<String> getParticipants() {
         return participants;
     }

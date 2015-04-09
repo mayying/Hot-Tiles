@@ -56,7 +56,7 @@ public class ScoreBoard {
     // Updates positions/sorting in scoreboard
     private void updateScores() {
         Collections.sort(scores);
-        Gdx.app.log(TAG, scores.toString());
+//        Gdx.app.log(TAG, scores.toString());
         SideBar.onScoreUpdated();
     }
 
