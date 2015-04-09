@@ -74,7 +74,7 @@ public class ScoreBoard {
             // TODO - initialize the sprite to display on scoreboard here
         }
 
-        public float getScore() {
+        public int getScore() {
             return kills - death;
         }
 

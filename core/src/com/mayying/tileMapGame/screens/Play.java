@@ -30,6 +30,8 @@ import java.util.Random;
 public class Play implements Screen {
     public static final int V_WIDTH = 1260, V_HEIGHT = 700;
     private static final String TAG = "HT_Play";
+    private static final int TILES_PER_INTERVAL = 5;
+    private static final int MAX_TILES = 40;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -93,7 +95,7 @@ public class Play implements Screen {
     }
 
     public void initializeBurningTiles(Long randomSeed){
-        burningTiles = new BurningTiles[40];
+        burningTiles = new BurningTiles[MAX_TILES];
         int randomBase = 102312943;
         for (int i = 0; i < burningTiles.length; i++) {
             //randomBase is just to randomize even more.
@@ -139,8 +141,10 @@ public class Play implements Screen {
 //                count++;
 //            }
             if (SideBar.timeLeft>0) {
-                count = (int) Math.floor((92 - SideBar.timeLeft) / 1.75);
-                count = 5; //testin
+//                Gdx.app.log(TAG, SideBar.timeLeft+"");
+//                count = (int) Math.floor((92 - SideBar.timeLeft) / 1.75);
+                count = Math.min(5 + (90 - SideBar.timeLeft)/10 * TILES_PER_INTERVAL, MAX_TILES); //testin
+                Gdx.app.log(TAG,"Count: " + count);
             }
 
             for (int i = 0; i < count; i++) {
