@@ -2,14 +2,14 @@ player1.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-player_1_back
+player_1_backward
   rotate: false
   xy: 2, 2
   size: 68, 70
   orig: 68, 70
   offset: 0, 0
   index: 1
-player_1_back
+player_1_backward
   rotate: false
   xy: 72, 2
   size: 68, 70
