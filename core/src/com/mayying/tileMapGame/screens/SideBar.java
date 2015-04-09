@@ -239,13 +239,10 @@ public class SideBar implements Screen {
 
 
             if (scoreUpdated) {
-                Gdx.app.log("HT_Sidebar", "Updating Board");
+//                Gdx.app.log("HT_Sidebar", "Updating Board");
                 updateBoard();
                 scoreUpdated = false;
             }
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)){
-//            ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenu());
-//        }
 
             if (world.pickUpPowerUp()) {
                 powerUpName = world.getPowerUp().getName();
@@ -253,7 +250,7 @@ public class SideBar implements Screen {
                 labelStyle.background = skin.getDrawable(world.getPowerUp().getFilename());
                 descriptionImg.setStyle(labelStyle);
 
-                Gdx.app.log("SideBar", "ButtonA: " + buttonA.isDisabled() + " ButtonB: " + buttonB.isDisabled());
+//                Gdx.app.log("SideBar", "ButtonA: " + buttonA.isDisabled() + " ButtonB: " + buttonB.isDisabled());
                 if (buttonA.isDisabled()) {
                     buttonA.setDisabled(false);
                     buttonA.setChecked(false);

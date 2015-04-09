@@ -81,7 +81,7 @@ public class Play implements Screen {
         String myPlayerId = "me";
         if (multiplayerMessaging != null) {
             participants = multiplayerMessaging.getJoinedParticipants();
-            Gdx.app.log("No of participants:", String.valueOf(participants.size()));
+//            Gdx.app.log("No of participants:", String.valueOf(participants.size()));
             myPlayerId = multiplayerMessaging.getMyId();
         }
 
@@ -144,7 +144,7 @@ public class Play implements Screen {
 //                Gdx.app.log(TAG, SideBar.timeLeft+"");
 //                count = (int) Math.floor((92 - SideBar.timeLeft) / 1.75);
                 count = Math.min(5 + (90 - SideBar.timeLeft)/10 * TILES_PER_INTERVAL, MAX_TILES); //testin
-                Gdx.app.log(TAG,"Count: " + count);
+//                Gdx.app.log(TAG,"Count: " + count);
             }
 
             for (int i = 0; i < count; i++) {
@@ -184,10 +184,7 @@ public class Play implements Screen {
 
     public static final long GAME_SETUP_TIME = 5000;
     private boolean iAmReady(){
-        if (System.currentTimeMillis()-initializedTimeStamp > GAME_SETUP_TIME){
-            return true;
-        }
-        return false;
+        return System.currentTimeMillis() - initializedTimeStamp > GAME_SETUP_TIME;
     }
 
     @Override
