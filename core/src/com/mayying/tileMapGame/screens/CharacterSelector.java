@@ -36,7 +36,7 @@ public class CharacterSelector implements Screen {
     private Skin skin;
     private Label heading, timer;
     private TextButton[] textButton;
-    private float timeLeft = 15;
+    private float timeLeft = 5;
     private int min, sec, otherPlayerSel = -1, mySel = -1;
     private String myPlayerName, otherPlayerName, mode, myPlayerId, otherPlayerId;
     private MultiplayerMessaging multiplayerMessaging;

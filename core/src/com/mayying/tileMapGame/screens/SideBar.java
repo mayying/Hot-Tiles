@@ -54,12 +54,12 @@ public class SideBar implements Screen {
 
     volatile static int timeLeft = 1;
 
-    private float gameTime = 1 * 60 + 30;
+    private float gameTime = 0 * 60 + 10;
     private int min, sec;
     private boolean timeFrozen = true;
     private static boolean scoreUpdated = true;
 
-    SideBar(GameWorld world) {
+    public SideBar(GameWorld world) {
         this.world = world;
         hudCamera = new OrthographicCamera();
         min = 1;
@@ -223,6 +223,7 @@ public class SideBar implements Screen {
 
     public void render(float delta) {
         if (timeLeft == 0) {
+            timeLeft = 1; //Allow game to be restarted next time
             Play.getMultiplayerMessaging().leaveGame();
         } else {
             stage.act(delta);
