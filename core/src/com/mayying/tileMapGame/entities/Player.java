@@ -57,7 +57,16 @@ public class Player extends Sprite {
 
     // Given matrix position, set position on map (non-matrix)
     public void setPlayerPosition(int x, int y) {
+        if (x<0)
+            x=0;
+        if (x>9)
+            x=9;
+        if (y<0)
+            y=0;
+        if (y>7)
+            y=7;
         float _x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 4);
+
         float _y = collisionLayer.getTileHeight() / 4 + collisionLayer.getTileHeight() * (y + 1);
         this.setPosition(_x, _y);
     }

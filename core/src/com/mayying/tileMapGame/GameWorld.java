@@ -156,6 +156,8 @@ public class GameWorld {
         }
     }
 
+    private long lastMovement = -1;
+    public final static long MOVEMENT_FREQUENCY = 350;
     // Should separate into collision/bounds logic and update movement so that when we factor in concurrent
     // updates from server we can just update movement via setX / setY
     // Movement logic shouldn't be here. OH WELL
@@ -165,47 +167,34 @@ public class GameWorld {
         velocity.x = getMyTouchPad().getTouchPad().getKnobPercentX();
         velocity.y = getMyTouchPad().getTouchPad().getKnobPercentY();
 
-        float screenLeft = screenBound.getX();
-        float screenBottom = screenBound.getY();
-        float screenTop = screenBottom + screenBound.getHeight();// + (world.getDevicePlayer().getHeight() / 2);
-        float screenRight = screenLeft + screenBound.getWidth();
+        int newX = (int)getDevicePlayer().getPlayerPosition().x;
+        int newY = (int)getDevicePlayer().getPlayerPosition().y;
 
-        float newX = getDevicePlayer().getX();
-        float newY = getDevicePlayer().getY();
         if (velocity.x > 0.5) {
             // add back in leftpressed rightpressed etc for direction, if we are using the bullets and stuff
-            newX += TILE_WIDTH * getDevicePlayer().getSpeed();
+            newX += getDevicePlayer().getSpeed();
             getDevicePlayer().rightPressed();
         } else if (velocity.x < -0.5) {
-            newX -= TILE_WIDTH * getDevicePlayer().getSpeed();
+            newX -= getDevicePlayer().getSpeed();
             getDevicePlayer().leftPressed();
         } else if (velocity.y > 0.5) {
-            newY += TILE_HEIGHT * getDevicePlayer().getSpeed();
+            newY += getDevicePlayer().getSpeed();
             getDevicePlayer().upPressed();
         } else if (velocity.y < -0.5) {
-            newY -= TILE_HEIGHT * getDevicePlayer().getSpeed();
+            newY -= getDevicePlayer().getSpeed();
             getDevicePlayer().downPressed();
         }
         // Animate player movement
         // if (velocity.x > 0.5 || velocity.x < -0.5 || velocity.y > 0.5 || velocity.y < -0.5)
         getDevicePlayer().animate(delta);
 
-        countX++;
-        countY++;
+        if (System.currentTimeMillis()-lastMovement>=MOVEMENT_FREQUENCY){
+            lastMovement = System.currentTimeMillis();
 
-        if (!getDevicePlayer().isDead && newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
-            if (myTouchPad.getTouchPad().getKnobPercentX() != 0 && countX > 17) {
-                getDevicePlayer().setX(newX);
-                countX = 0;
+            if (!getDevicePlayer().isDead) {
+                getDevicePlayer().setPlayerPosition(newX, newY);
             }
         }
-        if (!getDevicePlayer().isDead && newY >= screenBottom && newY <= screenTop) {
-            if (myTouchPad.getTouchPad().getKnobPercentY() != 0 && countY > 17) {
-                getDevicePlayer().setY(newY);
-                countY = 0;
-            }
-        }
-
     }
 
     public MyTouchpad getMyTouchPad() {
@@ -306,8 +295,8 @@ public class GameWorld {
             mines.get(i).getTexture().dispose();
             mines.remove(i);
         }
-        instance = null;
         ScoreBoard.getInstance().reset();
         PowerUpFactory.getInstance(this).reset();
+        instance = null;
     }
 }

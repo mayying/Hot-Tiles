@@ -105,9 +105,9 @@ public class SpawnPowerUps implements Collidable {
 
     @Override
     public void onCollisionDetected(Player player) {
-        // PowerUp disappear when a player steps over it. Easier to implement lol
-
-//        Gdx.app.log("HT_SPAWN","Player picked up power up: "+player.getName());
+        // README: PowerUp disappear when a player steps over it.
+        // If not implemented this way, we will have to broadcast message if powerup is picked up etc.
+//        state = 0; // picked up, restart state
         if (player.canPickPowerUp() && player.equals(world.getDevicePlayer())) {
             Play.broadcastMessage(MessageParser.POWERUP_PICKED_UP);
             state = 0; // picked up, restart state
@@ -134,7 +134,6 @@ public class SpawnPowerUps implements Collidable {
                 onCollisionDetected(player);
             }
     }
-
 
     public PowerUp getPowerUp() {
         return powerUp;
