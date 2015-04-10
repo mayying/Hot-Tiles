@@ -15,6 +15,7 @@ public class MessageParser {
     public static final String COMMAND_POSITION = "position";
 
     private static final String TAG = "HT_Parser";
+    public static final String POWERUP_PICKED_UP = "p";
 
     /**
      * Parses the input string and runs the respective methods.
@@ -100,7 +101,9 @@ public class MessageParser {
             case "ready":
                 world.playerReady(senderId, Long.valueOf(message[2]));
                 break;
-
+            case POWERUP_PICKED_UP:
+                GameWorld.getInstance().getSpawnPowerUps().reset();
+                break;
             default:
                 Gdx.app.log(TAG, "No such command: " + message[0]);
         }

@@ -216,6 +216,10 @@ public class GameWorld {
     public boolean pickUpPowerUp() {
         return spawnPowerUps != null && spawnPowerUps.isPowerUpPickedUp();
     }
+    public SpawnPowerUps getSpawnPowerUps() {
+        return spawnPowerUps;
+    }
+
 
     private void setPlayerBound() {
         playerBound = getDevicePlayer().getBoundingRectangle();

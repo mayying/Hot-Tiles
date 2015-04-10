@@ -9,6 +9,8 @@ import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUpFactory;
+import com.mayying.tileMapGame.multiplayer.MessageParser;
+import com.mayying.tileMapGame.screens.Play;
 import com.mayying.tileMapGame.tween.SpriteAccessor;
 
 import java.util.Random;
@@ -105,7 +107,9 @@ public class SpawnPowerUps implements Collidable {
     public void onCollisionDetected(Player player) {
         // PowerUp disappear when a player steps over it. Easier to implement lol
 
+//        Gdx.app.log("HT_SPAWN","Player picked up power up: "+player.getName());
         if (player.canPickPowerUp() && player.equals(world.getDevicePlayer())) {
+            Play.broadcastMessage(MessageParser.POWERUP_PICKED_UP);
             state = 0; // picked up, restart state
             player.addPowerUp(powerUp);
             powerUpIsPickedUp = true;
@@ -113,19 +117,24 @@ public class SpawnPowerUps implements Collidable {
         }
     }
 
+    //Resets the power up when another play picks it up
+    public void reset(){
+        state = 0;
+    }
+
     @Override
     public void collisionCheck() {
         // Check for every player. Unless we want to do a client-host handshake implementation, this is more concurrent with
         // the rest of our implementation
-//        Player player = world.getDevicePlayer();
-        for (Player player : world.getPlayers().values()) {
+        Player player = world.getDevicePlayer();
+//        for (Player player : world.getPlayers().values()) {
             Vector2 playerPos = player.getPlayerPosition();
 //            Gdx.app.log("Player Coords: ", playerPos.toString());
             if (playerPos.equals(this.coords)) {
                 onCollisionDetected(player);
             }
-        }
     }
+
 
     public PowerUp getPowerUp() {
         return powerUp;
