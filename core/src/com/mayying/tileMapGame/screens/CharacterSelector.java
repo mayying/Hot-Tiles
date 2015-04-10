@@ -17,9 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.mayying.tileMapGame.entities.PlayerMetaData;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ public class CharacterSelector implements Screen {
     private TextButton[] textButton;
     private float timeLeft = 5;
     private int min, sec, otherPlayerSel = -1, mySel = -1;
-    private String myPlayerName, otherPlayerName, mode, myPlayerId, otherPlayerId;
+    private String myPlayerName, otherPlayerName = "", mode, myPlayerId, otherPlayerId;
     private MultiplayerMessaging multiplayerMessaging;
     private boolean imTheHost;
 
@@ -53,7 +54,7 @@ public class CharacterSelector implements Screen {
 
     @Override
     public void show() {
-
+        broadcastMyInfo();
         spriteBatch = new SpriteBatch();
         background = new Sprite(new Texture(Gdx.files.internal("charSel/background.png")));
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -74,69 +75,24 @@ public class CharacterSelector implements Screen {
         subTable = new Table(skin);
 
         textButton = new TextButton[4];
+        for(int i = 0; i<4; i++) {
+            textButton[i] = new TextButton("", skin, String.format("player%s",(i+1)));
+            textButton[i].getLabel().setWrap(true);
+            final int finalI = i;
+            textButton[i].addListener(new InputListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    return true;
+                }
 
-        textButton[0] = new TextButton("", skin, "player1");
-        textButton[0].getLabel().setWrap(true);
-        textButton[0].addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    toggleButton(finalI);
+                }
+            });
+            subTable.add(textButton[i]);
+        }
 
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                toggleButton(0);
-            }
-        });
-
-        textButton[1] = new TextButton("", skin, "player2");
-        textButton[1].getLabel().setWrap(true);
-        textButton[1].addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                toggleButton(1);
-            }
-        });
-
-        textButton[2] = new TextButton("", skin, "player3");
-        textButton[2].getLabel().setWrap(true);
-        textButton[2].addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                toggleButton(2);
-            }
-        });
-
-        textButton[3] = new TextButton("", skin, "player4");
-        textButton[3].getLabel().setWrap(true);
-        textButton[3].addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                toggleButton(3);
-
-            }
-        });
-
-        subTable.add(textButton[0]);
-        subTable.add(textButton[1]);
-        subTable.add(textButton[2]);
-        subTable.add(textButton[3]);
         subTable.align(Align.center);
 
         timer = new Label(String.valueOf(timeLeft), skin);
@@ -160,12 +116,14 @@ public class CharacterSelector implements Screen {
             imTheHost = multiplayerMessaging.getMyId().equals(multiplayerMessaging.getHostId());
             myPlayerName = multiplayerMessaging.getMyName();
             myPlayerId = multiplayerMessaging.getMyId();
-            for (String name : multiplayerMessaging.getJoinedParticipantsName()) {
-                if (!name.equals(myPlayerName)) {
-                    otherPlayerName = name;
-//                    Gdx.app.log(TAG,"Other player name: "+otherPlayerName);
-                }
-            }
+
+//
+//            for (String name : multiplayerMessaging.getJoinedParticipantsName()) {
+//                if (!name.equals(myPlayerName)) {
+//                    otherPlayerName = name;
+////                    Gdx.app.log(TAG,"Other player name: "+otherPlayerName);
+//                }
+//            }
             otherPlayerId = null;
             for (String id : multiplayerMessaging.getJoinedParticipants()) {
                 if (!id.equals(myPlayerId)) {
@@ -176,6 +134,10 @@ public class CharacterSelector implements Screen {
         }
         Gdx.app.log(TAG, "I am the host: " + imTheHost);
         setDefaultCharacter();
+    }
+
+    private void broadcastMyInfo() {
+        broadcastMessage("info", multiplayerMessaging.getMyId(), multiplayerMessaging.getMyName());
     }
 
 
@@ -194,6 +156,7 @@ public class CharacterSelector implements Screen {
         textButton[index].setDisabled(true);
 
         // Deselect the old button
+        // To scale send buttonIndex, playerName (for button text), oldIndex
         if (otherPlayerSel != -1 && otherPlayerSel != index) {
             textButton[otherPlayerSel].setText("");
             textButton[otherPlayerSel].setChecked(false);
@@ -258,15 +221,14 @@ public class CharacterSelector implements Screen {
 
         // Switch screen to Play when time's up
         if (sec == 0) {
-            HashMap<String, String> charselect = new HashMap<>();
-            if (mode.equals("desktop")) {
-                charselect.put(myPlayerId, String.valueOf(mySel + 1));
-            } else if (mode.equals("android")) {
-                charselect.put(myPlayerId, String.valueOf(mySel + 1));
+            ArrayList<PlayerMetaData> metaData = new ArrayList<>();
+            metaData.add(new PlayerMetaData().setID(myPlayerId).setModel(String.valueOf(mySel + 1)).setName(myPlayerName));
+            if (mode.equals("android")) {
                 if (otherPlayerId != null)
-                    charselect.put(otherPlayerId, String.valueOf(otherPlayerSel + 1));
+                    metaData.add(new PlayerMetaData().setID(otherPlayerId).setModel(String.valueOf(otherPlayerSel + 1)).setName(otherPlayerName));
             }
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging, charselect));
+            Gdx.app.log(TAG, "Metadata: "+metaData);
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging, metaData));
         }
     }
 
@@ -294,8 +256,16 @@ public class CharacterSelector implements Screen {
                     // lowly client
                     setSelection(idx);
                     break;
+
+
             }
-        } else {
+        } else if(command.equals("info")){
+            // charsel, info, playerID, playerName
+            Gdx.app.log(TAG, "Player info received.");
+            otherPlayerId = message[2];
+            otherPlayerName = message[3];
+        }
+        else {
             Gdx.app.log("HT_CHARSEL", "Unknown message format: " + msg);
         }
     }

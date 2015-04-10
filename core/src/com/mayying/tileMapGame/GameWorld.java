@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.entities.MyTouchpad;
 import com.mayying.tileMapGame.entities.Player;
+import com.mayying.tileMapGame.entities.PlayerMetaData;
 import com.mayying.tileMapGame.entities.ScoreBoard;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
@@ -21,6 +22,7 @@ import com.mayying.tileMapGame.entities.powerups.factory.PowerUpFactory;
 import com.mayying.tileMapGame.multiplayer.MessageParser;
 import com.mayying.tileMapGame.screens.Play;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -40,6 +42,7 @@ public class GameWorld {
     private static GameWorld instance;
     private final HashMap<String, Player> players = new HashMap<String, Player>();
     private final HashMap<String, Long> randomSeeds = new HashMap<>();
+
     private TiledMapTileLayer playableLayer;
     private Play play;
 
@@ -50,24 +53,13 @@ public class GameWorld {
     public static final Vector<Sprite> bullets = new Vector<Sprite>();
     public final Vector<Mine> mines = new Vector<Mine>();
 
-    private GameWorld(TiledMapTileLayer playableLayer, String myId, HashMap<String, String> charselect,
+    private GameWorld(TiledMapTileLayer playableLayer, String myId, ArrayList<PlayerMetaData> metaData,
                       Play play) {
         this.play = play;
+
         // Initialize all players
-        for (String player_id : charselect.keySet()) {
-            String characterName;
-            String char_selection = charselect.get(player_id);
-            //TODO remove this when texture atlas are up
-            if (char_selection.equals("4")) {
-                Gdx.app.log("NO", char_selection);
-                char_selection = "1";
-            }
-
-            playerAtlas = new TextureAtlas(String.format("img/player%s.txt", char_selection));
-            characterName = String.format("player_%s_", char_selection);
-
-            Player player = new Player(playerAtlas, playableLayer, player_id, characterName);
-            Gdx.app.log("Player from GameWorld: " + char_selection, player_id);
+        for (PlayerMetaData data: metaData) {
+            Player player = new Player(playableLayer, data);
             player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
             register(player);
         }
@@ -83,13 +75,12 @@ public class GameWorld {
         //Moved to gameStart();
         this.playableLayer = playableLayer;
         this.play = play;
-//        spawnPowerUps = new SpawnPowerUps(playableLayer, this, randomSeeds.get(Play.getMultiplayerMessaging().getHostId()));
     }
 
-    public static GameWorld getInstance(TiledMapTileLayer playableLayer, String myId, HashMap<String, String> charselect,
+    public static GameWorld getInstance(TiledMapTileLayer playableLayer, String myId, ArrayList<PlayerMetaData> metaData,
                                         Play play) {
         if (instance == null) {
-            instance = new GameWorld(playableLayer, myId, charselect, play);
+            instance = new GameWorld(playableLayer, myId, metaData, play);
         }
         return instance;
     }

@@ -26,26 +26,25 @@ public class Player extends Sprite {
     private float speed = 1, animationTime = 0f;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
     private boolean isFrozen = false, isInverted = false;// for freezing animation and stuff?
-    private String ID, lastHitBy, characterName;
-    private final TextureAtlas playerAtlas;
+    private String lastHitBy;
+    private PlayerMetaData metaData;
 
     public PowerUp[] powerUpList = new PowerUp[2];
     public boolean isInvulnerable = false, isDead = false;
 
-    public Player(TextureAtlas atlas, TiledMapTileLayer collisionLayer, String ID, String characterName) {
-        super(new Animation(1 / 2f, atlas.findRegions(characterName + "forward")).getKeyFrame(0));
-        this.ID = ID;
+    public Player(TiledMapTileLayer collisionLayer, PlayerMetaData data) {
+        super(new Animation(1 / 2f, data.getAtlas().findRegions(data.getModel() + "forward")).getKeyFrame(0));
         this.collisionLayer = collisionLayer;
-        this.playerAtlas = atlas;
-        this.characterName = characterName;
-
+        this.metaData = data;
         facing = 8;
 
-        forward = new Animation(1 / 2f, playerAtlas.findRegions(characterName + "forward"));
-        backward = new Animation(1 / 2f, playerAtlas.findRegions(characterName + "backward"));
-        left = new Animation(1 / 2f, playerAtlas.findRegions(characterName + "left"));
-        right = new Animation(1 / 2f, playerAtlas.findRegions(characterName + "right"));
-        burnt = new Animation(1 / 6f, playerAtlas.findRegions(characterName + "burnt"));
+        TextureAtlas playerAtlas = data.getAtlas();
+        String model = data.getModel();
+        forward = new Animation(1 / 2f, playerAtlas.findRegions(model + "forward"));
+        backward = new Animation(1 / 2f, playerAtlas.findRegions(model + "backward"));
+        left = new Animation(1 / 2f, playerAtlas.findRegions(model + "left"));
+        right = new Animation(1 / 2f, playerAtlas.findRegions(model + "right"));
+        burnt = new Animation(1 / 6f, playerAtlas.findRegions(model + "burnt"));
 
         forward.setPlayMode(Animation.PlayMode.LOOP);
         backward.setPlayMode(Animation.PlayMode.LOOP);
@@ -210,7 +209,7 @@ public class Player extends Sprite {
     }
 
     public String getName() {
-        return characterName;
+        return this.metaData.getName();
     }
 
     /**
@@ -392,6 +391,11 @@ public class Player extends Sprite {
     }
 
     public String getID() {
-        return ID;
+        return this.metaData.getID();
     }
+
+    public String getModel(){
+        return this.metaData.getModel();
+    }
+
 }

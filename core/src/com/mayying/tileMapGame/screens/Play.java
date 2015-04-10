@@ -14,11 +14,11 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.BurningTiles;
 import com.mayying.tileMapGame.entities.Jukebox;
+import com.mayying.tileMapGame.entities.PlayerMetaData;
 import com.mayying.tileMapGame.multiplayer.MessageParser;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -27,10 +27,8 @@ import java.util.Random;
  */
 
 public class Play implements Screen {
-    public static final int V_WIDTH = 1260, V_HEIGHT = 700;
+    public static final int V_WIDTH = 1260, V_HEIGHT = 700, TILES_PER_INTERVAL = 5, MAX_TILES = 40;
     private static final String TAG = "HT_Play";
-    private static final int TILES_PER_INTERVAL = 5;
-    private static final int MAX_TILES = 40;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -44,7 +42,7 @@ public class Play implements Screen {
     private boolean allPlayersReady = false;
     private Long randomSeed;
     private long initializedTimeStamp;
-    private HashMap<String, String> charselect;
+    private ArrayList<PlayerMetaData> metaData;
     private TiledMapTileLayer collisionLayer;
     private long lastTouched = 0l;
 
@@ -54,11 +52,12 @@ public class Play implements Screen {
         randomSeed = new Random().nextLong();
     }
 
-    public Play(MultiplayerMessaging mmsg, HashMap<String, String> charselect) {
+    public Play(MultiplayerMessaging mmsg, ArrayList<PlayerMetaData> metaData) {
         super();
         multiplayerMessaging = mmsg;
         randomSeed = new Random().nextLong();
-        this.charselect = charselect;
+        this.metaData = metaData;
+
     }
 
     @Override
@@ -78,12 +77,10 @@ public class Play implements Screen {
         //TODO shouldve removed this line....
         String myPlayerId = "me";
         if (multiplayerMessaging != null) {
-//            participants = multiplayerMessaging.getJoinedParticipants();
-////            Gdx.app.log("No of participants:", String.valueOf(participants.size()));
             myPlayerId = multiplayerMessaging.getMyId();
         }
         collisionLayer  = (TiledMapTileLayer) map.getLayers().get("Background");
-        world = GameWorld.getInstance(collisionLayer, myPlayerId, charselect, this);
+        world = GameWorld.getInstance(collisionLayer, myPlayerId, metaData, this);
 
         sideBar = new SideBar(world);
         sideBar.show();

@@ -640,6 +640,10 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         }
     }
 
+    /**
+     *
+     * @return List of participants IDs.
+     */
     @Override
     public List<String> getParticipants() {
         participants.clear();
@@ -659,6 +663,8 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         }
         return participants;
     }
+
+
 
     @Override
     public List<String> getJoinedParticipantsName() {
