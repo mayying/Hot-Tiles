@@ -2,7 +2,6 @@ package com.mayying.tileMapGame.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,11 +9,11 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.BurningTiles;
 import com.mayying.tileMapGame.entities.Jukebox;
-import com.mayying.tileMapGame.entities.powerups.Blackout;
 import com.mayying.tileMapGame.multiplayer.MessageParser;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
@@ -42,23 +41,22 @@ public class Play implements Screen {
     private int count = 0;
     private float spawnNewTile = 0f;
     private static MultiplayerMessaging multiplayerMessaging;
-    private MessageParser messageParser;
     private boolean allPlayersReady = false;
     private Long randomSeed;
     private long initializedTimeStamp;
     private HashMap<String, String> charselect;
+    private TiledMapTileLayer collisionLayer;
+    private long lastTouched = 0l;
 
     public Play() {
         super();
         multiplayerMessaging = null;
-        this.messageParser = null;
         randomSeed = new Random().nextLong();
     }
 
     public Play(MultiplayerMessaging mmsg, HashMap<String, String> charselect) {
         super();
         multiplayerMessaging = mmsg;
-        this.messageParser = null;
         randomSeed = new Random().nextLong();
         this.charselect = charselect;
     }
@@ -84,8 +82,8 @@ public class Play implements Screen {
 ////            Gdx.app.log("No of participants:", String.valueOf(participants.size()));
             myPlayerId = multiplayerMessaging.getMyId();
         }
-
-        world = GameWorld.getInstance((TiledMapTileLayer) map.getLayers().get("Background"), myPlayerId, charselect, this);
+        collisionLayer  = (TiledMapTileLayer) map.getLayers().get("Background");
+        world = GameWorld.getInstance(collisionLayer, myPlayerId, charselect, this);
 
         sideBar = new SideBar(world);
         sideBar.show();
@@ -134,17 +132,8 @@ public class Play implements Screen {
         world.drawAndUpdate(renderer.getBatch());
 
         if (this.allPlayersReady) {
-//            spawnNewTile += delta;
-//            if (spawnNewTile >= Math.log10(0.02f * (SideBar.timeLeft + 10000))
-//                    && count < burningTiles.length) {
-//                spawnNewTile = 0;
-//                count++;
-//            }
             if (SideBar.timeLeft>0) {
-//                Gdx.app.log(TAG, SideBar.timeLeft+"");
-//                count = (int) Math.floor((92 - SideBar.timeLeft) / 1.75);
                 count = Math.min(5 + (90 - SideBar.timeLeft)/10 * TILES_PER_INTERVAL, MAX_TILES); //testin
-//                Gdx.app.log(TAG,"Count: " + count);
             }
 
             for (int i = 0; i < count; i++) {
@@ -152,12 +141,15 @@ public class Play implements Screen {
             }
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            new Blackout().use();
-        }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
-            world.getDevicePlayer().shield();
+        if(Gdx.input.justTouched() && (System.currentTimeMillis() - lastTouched > 1000l)){ // && not out of bounds
+            // Return matrix position
+            lastTouched = System.currentTimeMillis();
+            Vector3 v3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(v3);
+            String x = String.valueOf(Math.floor(v3.x / GameWorld.TILE_WIDTH) - 4);
+            String y = String.valueOf(Math.floor(v3.y / collisionLayer.getTileHeight() - 1));
+//            Gdx.app.log("HT_LIGHTNING","Zapperino at "+x+", "+y);
+            broadcastMessage(MessageParser.LIGHTNING, x, y);
         }
 
         renderer.getBatch().end();
@@ -214,6 +206,8 @@ public class Play implements Screen {
         renderer.dispose();
         sideBar.dispose();
     }
+
+
 
     //TODO This is bullshit
     public static MultiplayerMessaging getMultiplayerMessaging() {

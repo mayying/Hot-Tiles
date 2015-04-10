@@ -15,7 +15,8 @@ public class MessageParser {
     public static final String COMMAND_POSITION = "position";
 
     private static final String TAG = "HT_Parser";
-    public static final String POWERUP_PICKED_UP = "p";
+    public static final String POWERUP_PICKED_UP = "a";
+    public static final String LIGHTNING = "b";
 
     /**
      * Parses the input string and runs the respective methods.
@@ -104,8 +105,15 @@ public class MessageParser {
             case POWERUP_PICKED_UP:
                 GameWorld.getInstance().getSpawnPowerUps().reset();
                 break;
+            case LIGHTNING:
+//                Gdx.app.log("HT_LIGHTNING","LIGHTNING STRIKE");
+                // Format: LIGHTNING, x, y
+                world.lightningAt(Float.valueOf(message[2]), Float.valueOf(message[3]), senderId);
+                break;
             default:
                 Gdx.app.log(TAG, "No such command: " + message[0]);
         }
     }
+
+
 }

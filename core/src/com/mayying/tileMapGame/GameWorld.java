@@ -34,10 +34,8 @@ public class GameWorld {
     private MyTouchpad myTouchPad;
     private SpawnPowerUps spawnPowerUps = null;
     private PowerUp powerUp = null;
-    private Rectangle playerBound;
     private TextureAtlas playerAtlas;
     private Player devicePlayer;
-    private int countX = 0, countY = 0;
     private boolean blackout = false;
     private static GameWorld instance;
     private final HashMap<String, Player> players = new HashMap<String, Player>();
@@ -86,19 +84,18 @@ public class GameWorld {
         this.playableLayer = playableLayer;
         this.play = play;
 //        spawnPowerUps = new SpawnPowerUps(playableLayer, this, randomSeeds.get(Play.getMultiplayerMessaging().getHostId()));
-
-        setPlayerBound();
     }
 
     public static GameWorld getInstance(TiledMapTileLayer playableLayer, String myId, HashMap<String, String> charselect,
                                         Play play) {
-        if(instance == null){
+        if (instance == null) {
             instance = new GameWorld(playableLayer, myId, charselect, play);
         }
         return instance;
     }
+
     // For methods that do not want to construct
-    public static GameWorld getInstance(){
+    public static GameWorld getInstance() {
         return instance;
     }
 
@@ -158,6 +155,7 @@ public class GameWorld {
 
     private long lastMovement = -1;
     public final static long MOVEMENT_FREQUENCY = 350;
+
     // Should separate into collision/bounds logic and update movement so that when we factor in concurrent
     // updates from server we can just update movement via setX / setY
     // Movement logic shouldn't be here. OH WELL
@@ -167,8 +165,8 @@ public class GameWorld {
         velocity.x = getMyTouchPad().getTouchPad().getKnobPercentX();
         velocity.y = getMyTouchPad().getTouchPad().getKnobPercentY();
 
-        int newX = (int)getDevicePlayer().getPlayerPosition().x;
-        int newY = (int)getDevicePlayer().getPlayerPosition().y;
+        int newX = (int) getDevicePlayer().getPlayerPosition().x;
+        int newY = (int) getDevicePlayer().getPlayerPosition().y;
 
         if (velocity.x > 0.5) {
             // add back in leftpressed rightpressed etc for direction, if we are using the bullets and stuff
@@ -188,7 +186,7 @@ public class GameWorld {
         // if (velocity.x > 0.5 || velocity.x < -0.5 || velocity.y > 0.5 || velocity.y < -0.5)
         getDevicePlayer().animate(delta);
 
-        if (System.currentTimeMillis()-lastMovement>=MOVEMENT_FREQUENCY){
+        if (System.currentTimeMillis() - lastMovement >= MOVEMENT_FREQUENCY) {
             lastMovement = System.currentTimeMillis();
 
             if (!getDevicePlayer().isDead) {
@@ -205,13 +203,9 @@ public class GameWorld {
     public boolean pickUpPowerUp() {
         return spawnPowerUps != null && spawnPowerUps.isPowerUpPickedUp();
     }
+
     public SpawnPowerUps getSpawnPowerUps() {
         return spawnPowerUps;
-    }
-
-
-    private void setPlayerBound() {
-        playerBound = getDevicePlayer().getBoundingRectangle();
     }
 
     /**
@@ -298,5 +292,19 @@ public class GameWorld {
         ScoreBoard.getInstance().reset();
         PowerUpFactory.getInstance(this).reset();
         instance = null;
+    }
+
+    public void lightningAt(final Float x, final Float y, final String senderId) {
+        new DelayedThread(1000l){
+            @Override
+            public void run() {
+                super.run();
+                // bzzzzz
+                if (devicePlayer.getPlayerPosition().equals(new Vector2(x,y))){
+                    devicePlayer.setLastHitBy(senderId);
+                    devicePlayer.die();
+                }
+            }
+        }.start();
     }
 }

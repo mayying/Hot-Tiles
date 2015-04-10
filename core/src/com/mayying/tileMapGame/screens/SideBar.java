@@ -54,7 +54,7 @@ public class SideBar implements Screen {
 
     volatile static int timeLeft = 1;
 
-    private float gameTime = 0 * 60 + 10;
+    private float gameTime = 60 + 30;
     private int min, sec;
     private boolean timeFrozen = true;
     private static boolean scoreUpdated = true;
