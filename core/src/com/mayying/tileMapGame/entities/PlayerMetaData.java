@@ -31,8 +31,8 @@ public class PlayerMetaData {
      * @param index the character sprite model/index
      */
     public PlayerMetaData setModel(String index) {
-        if(index.equals("4")){
-            Gdx.app.log("HT_PlayerMeta","Model for player 4 is not done yet");
+        if (index.equals("4")) {
+            Gdx.app.log("HT_PlayerMeta", "Model for player 4 is not done yet");
             index = "1";
         }
         this.model = String.format("player_%s_", index);
@@ -49,7 +49,6 @@ public class PlayerMetaData {
     }
 
     /**
-     *
      * @return readable name
      */
     public String getName() {
@@ -57,7 +56,6 @@ public class PlayerMetaData {
     }
 
     /**
-     *
      * @return Model number of the player.
      */
     public String getModel() {
@@ -65,7 +63,6 @@ public class PlayerMetaData {
     }
 
     /**
-     *
      * @return GPS ID
      */
     public String getID() {

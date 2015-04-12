@@ -1,5 +1,6 @@
 package com.mayying.tileMapGame.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -29,7 +30,6 @@ import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 
 import java.util.ArrayList;
 
-
 /**
  * Created by May on 17/3/2015.
  */
@@ -39,7 +39,7 @@ public class SideBar implements Screen {
 
     private Stage stage;
     private Label timer, descriptionImg, descriptionText;
-    private Label[] scoreBoard1st, scoreBoard2nd;
+    private Label[][] scoreBoardLabel;
     private Skin skin;
     private GameWorld world;
     private ImageButton buttonA, buttonB, sound, question, close;
@@ -51,10 +51,12 @@ public class SideBar implements Screen {
     private ArrayList<Score> score;
     private String powerUpName;
     private ImageButtonStyle imageButtonAStyle, imageButtonBStyle;
+    public static String[] finalRankKD, finalRankScore, finalRankPlayer, finalRankCharName;
 
     volatile static int timeLeft = 1;
 
-    private float gameTime = 60 + 30;
+//    private float gameTime = 60 + 30;
+    private float gameTime = 5;
     private int min, sec;
     private boolean timeFrozen = true;
     private static boolean scoreUpdated = true;
@@ -81,7 +83,7 @@ public class SideBar implements Screen {
     public void show() {
         stage = new Stage(new ExtendViewport(Play.V_WIDTH, Play.V_HEIGHT, hudCamera));
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
-//
+
         inputMultiplexer.addProcessor(stage);
         Gdx.input.setInputProcessor(inputMultiplexer);
 
@@ -120,27 +122,26 @@ public class SideBar implements Screen {
 
         scoreBoard1stTable = new Table(skin);
         scoreBoard1stTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/win_score210x89.png"))));
-        scoreBoard1st = new Label[2];
-        if (score.size()>=2) {
-            scoreBoard1st[0] = new Label("", skin, score.get(1).getPlayer().getModel() + "head");
+        scoreBoardLabel = new Label[2][2];
+        if (score.size() >= 2) {
+            scoreBoardLabel[0][0] = new Label("", skin, score.get(1).getPlayer().getModel() + "head");
             playerStyle.background = skin.getDrawable(score.get(1).getPlayer().getModel() + "head");
-            scoreBoard1st[0].setStyle(playerStyle);
+            scoreBoardLabel[0][0].setStyle(playerStyle);
         }
-        scoreBoard1st[1] = new Label("Score: 0", skin);
+        scoreBoardLabel[0][1] = new Label("Score: 0", skin);
 
-        scoreBoard1stTable.add(scoreBoard1st[0]).height(55).width(55).padTop(15).padLeft(5);
-        scoreBoard1stTable.add(scoreBoard1st[1]).fill().expandX().padTop(10);
+        scoreBoard1stTable.add(scoreBoardLabel[0][0]).height(55).width(55).padTop(15).padLeft(5);
+        scoreBoard1stTable.add(scoreBoardLabel[0][1]).fill().expandX().padTop(10);
 
         scoreBoard2ndTable = new Table(skin);
         scoreBoard2ndTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/score210x89.png"))));
-        scoreBoard2nd = new Label[2];
-        scoreBoard2nd[0] = new Label("", skin, score.get(0).getPlayer().getModel() + "head");
+        scoreBoardLabel[1][0] = new Label("", skin, score.get(0).getPlayer().getModel() + "head");
         player2Style.background = skin.getDrawable(score.get(0).getPlayer().getModel() + "head");
-        scoreBoard2nd[0].setStyle(player2Style);
-        scoreBoard2nd[1] = new Label("Score: 0", skin);
+        scoreBoardLabel[1][0].setStyle(player2Style);
+        scoreBoardLabel[1][1] = new Label("Score: 0", skin);
 
-        scoreBoard2ndTable.add(scoreBoard2nd[0]).height(55).width(55).padTop(15).padLeft(5);
-        scoreBoard2ndTable.add(scoreBoard2nd[1]).fill().expandX().padTop(10);
+        scoreBoard2ndTable.add(scoreBoardLabel[1][0]).height(55).width(55).padTop(15).padLeft(5);
+        scoreBoard2ndTable.add(scoreBoardLabel[1][1]).fill().expandX().padTop(10);
 
         scoreBoardTable = new Table();
         scoreBoardTable.add(scoreBoard1stTable).row();
@@ -153,6 +154,12 @@ public class SideBar implements Screen {
         descriptionText.setWrap(true);
         descriptionText.setAlignment(Align.top);
         descriptionText.setFontScale(0.75f);
+
+        // For Game Over Screen
+        finalRankKD = new String[scoreBoardLabel[1].length];
+        finalRankScore = new String[scoreBoardLabel[1].length];
+        finalRankPlayer = new String[scoreBoardLabel[1].length];
+        finalRankCharName = new String[scoreBoardLabel[1].length];
 
         world.getMyTouchPad().getTouchPad().setPosition(0, 0);
 
@@ -222,9 +229,21 @@ public class SideBar implements Screen {
     }
 
     public void render(float delta) {
+        Gdx.app.log("SideBar", "Sidebar still running");
+
         if (timeLeft == 0) {
-            timeLeft = 1; //Allow game to be restarted next time
-            Play.getMultiplayerMessaging().leaveGame();
+            for (int i = 0; i < scoreBoardLabel[1].length; i++) {
+                finalRankScore[i] = scoreBoardLabel[i][1].getText().substring(7);
+                finalRankKD[i] = String.valueOf(scoreBoard.getScores().get(i).getKills());
+                finalRankKD[i] += "/" + scoreBoard.getScores().get(i).getDeath();
+                finalRankPlayer[i] = scoreBoard.getScores().get(0).getPlayer().getName();
+                finalRankCharName[i] = scoreBoard.getScores().get(0).getPlayer().getModel();
+            }
+
+            ((Game) (Gdx.app.getApplicationListener())).setScreen(new EndGame(world));
+
+//            timeLeft = 1; //Allow game to be restarted next time
+//            Play.getMultiplayerMessaging().leaveGame();
         } else {
             stage.act(delta);
             stage.draw();
@@ -278,13 +297,13 @@ public class SideBar implements Screen {
     private void updateBoard() {
         score = scoreBoard.getScores();
 
-        if (score.size()>=2) {
+        if (score.size() >= 2) {
             playerStyle.background = skin.getDrawable(score.get(1).getPlayer().getModel() + "head");
-            scoreBoard1st[1].setText("Score: " + score.get(1).getScore());
+            scoreBoardLabel[0][1].setText("Score: " + score.get(1).getScore());
         }
 
         player2Style.background = skin.getDrawable(score.get(0).getPlayer().getModel() + "head");
-        scoreBoard2nd[1].setText("Score: " + score.get(0).getScore());
+        scoreBoardLabel[1][1].setText("Score: " + score.get(0).getScore());
     }
 
     @Override

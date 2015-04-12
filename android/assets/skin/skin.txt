@@ -4,168 +4,238 @@ filter: Linear,Linear
 repeat: none
 blackoutBtn
   rotate: false
-  xy: 2, 2
+  xy: 356, 592
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+blackoutBtnP
+  rotate: false
+  xy: 286, 308
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 blackoutImg
   rotate: false
-  xy: 144, 2
+  xy: 94, 166
   size: 90, 90
   orig: 90, 90
   offset: 0, 0
   index: -1
 confusedBtn
   rotate: false
-  xy: 2, 144
+  xy: 144, 308
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+confusedBtnP
+  rotate: false
+  xy: 428, 308
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 confusedImg
   rotate: false
-  xy: 144, 144
+  xy: 449, 74
   size: 90, 90
   orig: 90, 90
   offset: 0, 0
   index: -1
 freezemineBtn
   rotate: false
-  xy: 2, 286
+  xy: 2, 450
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+freezemineBtnP
+  rotate: false
+  xy: 286, 450
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 freezemineImg
   rotate: false
-  xy: 144, 286
+  xy: 186, 166
   size: 90, 90
   orig: 90, 90
   offset: 0, 0
   index: -1
 player_1_head
   rotate: false
-  xy: 2, 428
+  xy: 160, 2
   size: 55, 55
   orig: 55, 55
   offset: 0, 0
   index: -1
 player_2_head
   rotate: false
-  xy: 59, 428
+  xy: 2, 2
   size: 55, 51
   orig: 55, 51
   offset: 0, 0
   index: -1
 player_3_head
   rotate: false
-  xy: 116, 428
+  xy: 116, 2
   size: 42, 55
   orig: 42, 55
   offset: 0, 0
   index: -1
 player_4_head
   rotate: false
-  xy: 160, 428
+  xy: 59, 2
   size: 55, 54
   orig: 55, 54
   offset: 0, 0
   index: -1
 shieldBtn
   rotate: false
-  xy: 2, 485
+  xy: 144, 450
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+shieldBtnP
+  rotate: false
+  xy: 428, 450
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 shieldImg
   rotate: false
-  xy: 144, 485
+  xy: 2, 166
   size: 90, 90
   orig: 90, 90
   offset: 0, 0
   index: -1
 skinRect210x140
   rotate: false
-  xy: 2, 627
+  xy: 144, 592
   size: 210, 140
   orig: 210, 140
   offset: 0, 0
   index: -1
 skinRound140x140
   rotate: false
-  xy: 2, 769
+  xy: 2, 308
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+skinRound140x140P
+  rotate: false
+  xy: 2, 592
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 skinRound210x210
   rotate: false
-  xy: 2, 911
+  xy: 2, 734
   size: 210, 210
   orig: 210, 210
   offset: 0, 0
   index: -1
 skinSquare280x210
   rotate: false
-  xy: 2, 1123
+  xy: 214, 734
   size: 210, 280
   orig: 210, 280
   offset: 0, 0
   index: -1
-skinSquare70x70
+skinSquare70x70P
   rotate: false
-  xy: 2, 1405
+  xy: 2, 74
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareClose70x70
   rotate: false
-  xy: 74, 1405
+  xy: 146, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+skinSquareClose70x70P
+  rotate: false
+  xy: 282, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareQuestion70x70
   rotate: false
-  xy: 146, 1405
+  xy: 498, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+skinSquareQuestion70x70P
+  rotate: false
+  xy: 426, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareSoundOff70x70
   rotate: false
-  xy: 2, 1477
+  xy: 354, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+skinSquareSoundOff70x70P
+  rotate: false
+  xy: 74, 74
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareSoundOn70x70
   rotate: false
-  xy: 74, 1477
+  xy: 290, 74
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+skinSquareSoundOn70x70P
+  rotate: false
+  xy: 218, 74
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 swapBtn
   rotate: false
-  xy: 2, 1549
+  xy: 420, 166
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: -1
+swapBtnP
+  rotate: false
+  xy: 278, 166
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 swapImg
   rotate: false
-  xy: 144, 1549
+  xy: 362, 74
   size: 85, 85
   orig: 85, 85
   offset: 0, 0
   index: -1
 touchKnob
   rotate: false
-  xy: 2, 1691
+  xy: 217, 2
   size: 63, 63
   orig: 63, 63
   offset: 0, 0

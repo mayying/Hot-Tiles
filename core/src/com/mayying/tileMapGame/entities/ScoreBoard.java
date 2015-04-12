@@ -36,6 +36,8 @@ public class ScoreBoard {
         return scores;
     }
 
+
+
     public void register(Player player) {
         Score s = new Score(player);
         playerMap.put(player.getID(), s);
@@ -90,6 +92,14 @@ public class ScoreBoard {
             return player;
         }
 
+        public int getKills(){
+            return kills;
+        }
+
+        public int getDeath(){
+            return death;
+        }
+
         @Override
         public int compareTo(Object another) {
             return this.getScore() < ((Score) another).getScore() ? -1 : 1;
@@ -97,7 +107,7 @@ public class ScoreBoard {
 
         @Override
         public String toString() {
-            return String.format("\nPlayer %s - %s / %s | Score: %s" , player.getName(), kills, death, this.getScore());
+            return String.format("\nPlayer %s - %s / %s | Score: %s" , player.getModel(), kills, death, this.getScore());
         }
     }
 

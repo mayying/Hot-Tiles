@@ -1,0 +1,32 @@
+endGame.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+mainMenuBtn
+  rotate: false
+  xy: 2, 2
+  size: 257, 70
+  orig: 257, 70
+  offset: 0, 0
+  index: -1
+mainMenuBtnP
+  rotate: false
+  xy: 261, 2
+  size: 257, 70
+  orig: 257, 70
+  offset: 0, 0
+  index: -1
+rematchBtn
+  rotate: false
+  xy: 520, 2
+  size: 330, 90
+  orig: 330, 90
+  offset: 0, 0
+  index: -1
+rematchBtnP
+  rotate: false
+  xy: 852, 2
+  size: 330, 90
+  orig: 330, 90
+  offset: 0, 0
+  index: -1

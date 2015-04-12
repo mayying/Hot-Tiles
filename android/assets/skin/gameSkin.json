@@ -17,10 +17,10 @@
     },
 
     "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
-        "default": {"up": "skinRound140x140", "down": "skinRound140x140"}
-        "sound": {"imageUp": "skinSquareSoundOn70x70", "imageChecked": "skinSquareSoundOff70x70"}
-        "question": {"up": "skinSquareQuestion70x70", "down": "skinSquareQuestion70x70"}
-        "close": {"up": "skinSquareClose70x70", "down": "skinSquareClose70x70"}
+        "default": {"up": "skinRound140x140", "down": "skinRound140x140P"}
+        "sound": {"imageUp": "skinSquareSoundOn70x70", "imageChecked": "skinSquareSoundOff70x70P"}
+        "question": {"up": "skinSquareQuestion70x70", "down": "skinSquareQuestion70x70P"}
+        "close": {"up": "skinSquareClose70x70", "down": "skinSquareClose70x70P"}
     },
 
     com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
