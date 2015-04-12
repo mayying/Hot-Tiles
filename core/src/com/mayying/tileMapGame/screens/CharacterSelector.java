@@ -75,8 +75,8 @@ public class CharacterSelector implements Screen {
         subTable = new Table(skin);
 
         textButton = new TextButton[4];
-        for(int i = 0; i<4; i++) {
-            textButton[i] = new TextButton("", skin, String.format("player%s",(i+1)));
+        for (int i = 0; i < 4; i++) {
+            textButton[i] = new TextButton("", skin, String.format("player%s", (i + 1)));
             textButton[i].getLabel().setWrap(true);
             final int finalI = i;
             textButton[i].addListener(new InputListener() {
@@ -117,13 +117,6 @@ public class CharacterSelector implements Screen {
             myPlayerName = multiplayerMessaging.getMyName();
             myPlayerId = multiplayerMessaging.getMyId();
 
-//
-//            for (String name : multiplayerMessaging.getJoinedParticipantsName()) {
-//                if (!name.equals(myPlayerName)) {
-//                    otherPlayerName = name;
-////                    Gdx.app.log(TAG,"Other player name: "+otherPlayerName);
-//                }
-//            }
             otherPlayerId = null;
             for (String id : multiplayerMessaging.getJoinedParticipants()) {
                 if (!id.equals(myPlayerId)) {
@@ -227,7 +220,7 @@ public class CharacterSelector implements Screen {
                 if (otherPlayerId != null)
                     metaData.add(new PlayerMetaData().setID(otherPlayerId).setModel(String.valueOf(otherPlayerSel + 1)).setName(otherPlayerName));
             }
-            Gdx.app.log(TAG, "Metadata: "+metaData);
+            Gdx.app.log(TAG, "Metadata: " + metaData);
             ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging, metaData));
         }
     }
@@ -259,13 +252,12 @@ public class CharacterSelector implements Screen {
 
 
             }
-        } else if(command.equals("info")){
+        } else if (command.equals("info")) {
             // charsel, info, playerID, playerName
             Gdx.app.log(TAG, "Player info received.");
             otherPlayerId = message[2];
             otherPlayerName = message[3];
-        }
-        else {
+        } else {
             Gdx.app.log("HT_CHARSEL", "Unknown message format: " + msg);
         }
     }
@@ -291,7 +283,7 @@ public class CharacterSelector implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override

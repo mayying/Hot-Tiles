@@ -1,6 +1,5 @@
 package com.mayying.tileMapGame.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 /**
@@ -31,10 +30,6 @@ public class PlayerMetaData {
      * @param index the character sprite model/index
      */
     public PlayerMetaData setModel(String index) {
-        if(index.equals("4")){
-            Gdx.app.log("HT_PlayerMeta","Model for player 4 is not done yet");
-            index = "1";
-        }
         this.model = String.format("player_%s_", index);
         atlas = new TextureAtlas(String.format("img/player%s.txt", index));
         return this;

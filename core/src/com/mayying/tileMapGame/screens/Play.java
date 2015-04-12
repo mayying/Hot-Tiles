@@ -79,7 +79,7 @@ public class Play implements Screen {
         if (multiplayerMessaging != null) {
             myPlayerId = multiplayerMessaging.getMyId();
         }
-        collisionLayer  = (TiledMapTileLayer) map.getLayers().get("Background");
+        collisionLayer = (TiledMapTileLayer) map.getLayers().get("Background");
         world = GameWorld.getInstance(collisionLayer, myPlayerId, metaData, this);
 
         sideBar = new SideBar(world);
@@ -89,12 +89,12 @@ public class Play implements Screen {
         initializedTimeStamp = System.currentTimeMillis();
     }
 
-    public void initializeBurningTiles(Long randomSeed){
+    public void initializeBurningTiles(Long randomSeed) {
         burningTiles = new BurningTiles[MAX_TILES];
         int randomBase = 102312943;
         for (int i = 0; i < burningTiles.length; i++) {
             //randomBase is just to randomize even more.
-            burningTiles[i] = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"), randomSeed+i+randomBase);
+            burningTiles[i] = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"), randomSeed + i + randomBase);
             burningTiles[i].create();
         }
         //start timer
