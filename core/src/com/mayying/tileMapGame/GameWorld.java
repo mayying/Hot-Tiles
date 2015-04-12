@@ -56,7 +56,7 @@ public class GameWorld {
     private GameWorld(TiledMapTileLayer playableLayer, String myId, ArrayList<PlayerMetaData> metaData,
                       Play play) {
         this.play = play;
-
+        ScoreBoard.getInstance().reset();
         // Initialize all players
         for (PlayerMetaData data: metaData) {
             Player player = new Player(playableLayer, data);
@@ -280,7 +280,6 @@ public class GameWorld {
             mines.get(i).getTexture().dispose();
             mines.remove(i);
         }
-        ScoreBoard.getInstance().reset();
         PowerUpFactory.getInstance(this).reset();
         instance = null;
     }

@@ -34,6 +34,7 @@ import java.util.ArrayList;
  * Created by May on 17/3/2015.
  */
 
+
 public class SideBar implements Screen {
 
     private Stage stage;
@@ -53,8 +54,8 @@ public class SideBar implements Screen {
 
     volatile static int timeLeft = 1;
 
-    private float gameTime = 60 + 30;
-//    private float gameTime = 5;
+//    private float gameTime = 60 + 30;
+    private float gameTime = 5;
     private int min, sec;
     private boolean timeFrozen = true;
     private static boolean scoreUpdated = true;
@@ -222,7 +223,7 @@ public class SideBar implements Screen {
     public void render(float delta) {
         if (timeLeft == 0) {
             ((Game) (Gdx.app.getApplicationListener())).setScreen(new EndGame(world));
-//            timeLeft = 1; //Allow game to be restarted next time
+            timeLeft = 1; //Allow game to be restarted next time
 //            Play.getMultiplayerMessaging().leaveGame();
         } else {
             stage.act(delta);

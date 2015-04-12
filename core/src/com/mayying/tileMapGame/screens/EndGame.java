@@ -17,8 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.GameWorld;
+import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.ScoreBoard;
-import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
 import java.util.ArrayList;
 
@@ -28,58 +28,33 @@ import java.util.ArrayList;
 public class EndGame implements Screen {
     private SpriteBatch batch;
     private Sprite background;
-    private String[] playerName, charName, kd, score;
-    private MultiplayerMessaging multiplayerMessaging;
     private GameWorld world;
     private Stage stage;
     private Skin skin;
     private Table table, scoreBoard;
     private TextButton mainMenu, rematch;
     private TextureAtlas atlas;
-    private ArrayList<Label> label;
-    private ArrayList<ScoreBoard.Score> scores;
+    private ArrayList<Label> label = new ArrayList<>();
+//    private ArrayList<ScoreBoard.Score> scores;
 
     // k/d/score will be passed by using this format score;kills;deaths
     // identify which one is you
 
     public EndGame(GameWorld world) {
         this.world = world;
-        scores = ScoreBoard.getInstance().getScores();
-        this.playerName = new String[scores.size()];
-        this.charName = new String[scores.size()];
-        this.kd = new String[scores.size()];
-        this.score = new String[scores.size()];
-        label = new ArrayList<>();
-
-        for (int i = 0; i < playerName.length; i++) {
-            playerName[i] = scores.get(i).getPlayer().getName();
-            charName[i] = scores.get(i).getPlayer().getModel();
-            kd[i] = scores.get(i).getKills() + " / " + scores.get(i).getDeath();
-            score[i] = String.valueOf(scores.get(i).getScore());
-            Gdx.app.log("EndGame", "playerName: " + playerName[i] + " charName: " + charName[i] + " kd: " + kd[i] + " score: " + score[i]);
-        }
     }
 
     @Override
     public void show() {
         Gdx.app.log("EndGame", "EndGame Screen initialized");
-        int myIndex = -1;
-
-        // to determine if you win or not, need this value to identify which background sprite we should show in the screen
-        for (int i = 0; i < playerName.length; i++) {
-            if (i == playerName.length - 1 && world.getDevicePlayer().getName().equals(playerName[i])) {
-                myIndex = i;
-                break;
-            }
-        }
-
-        Gdx.app.log("What is my index", myIndex + "");
+        ArrayList<ScoreBoard.Score> scores = ScoreBoard.getInstance().getScores();
         batch = new SpriteBatch();
         atlas = new TextureAtlas(Gdx.files.internal("endGame/endGame.txt"));
-        if (myIndex == -1)
+        Player devicePlayer = world.getDevicePlayer();
+        if(scores.get(0).getPlayer().getName().equals(devicePlayer.getName()))
             background = new Sprite(new Texture(Gdx.files.internal("endGame/backgroundLose.png")));
         else {
-            background = new Sprite(new Texture(Gdx.files.internal("endGame/" + charName[myIndex] + "win.png")));
+            background = new Sprite(new Texture(Gdx.files.internal("endGame/" + devicePlayer.getModel() + "win.png")));
         }
 
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -93,54 +68,44 @@ public class EndGame implements Screen {
         scoreBoard.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("endGame/scoreBoard.png"))));
         scoreBoard.setSize(728, 400);
         scoreBoard.align(Align.top);
+        scoreBoard.add(getCenteredLabel("Rank",skin)).width(150).padTop(100);
+        scoreBoard.add(getCenteredLabel("Player",skin)).width(278).padTop(100);
+        scoreBoard.add(getCenteredLabel("K/D",skin)).width(150).padTop(100);
+        scoreBoard.add(getCenteredLabel("Score",skin)).width(150).padTop(100).row();
 
-        label.add(new Label("Rank", skin));
-        label.add(new Label("Player", skin));
-        label.add(new Label("K/D", skin));
-        label.add(new Label("Score", skin));
 
-        scoreBoard.add(label.get(0)).width(150);
-        scoreBoard.add(label.get(1)).width(278);
-        scoreBoard.add(label.get(2)).width(150);
-        scoreBoard.add(label.get(3)).width(150).row();
-
-        int rankIndex = 0;
-        for (int i = playerName.length - 1; i > -1; i--) {
-            label.add(new Label(String.valueOf(++rankIndex), skin));
-            label.add(new Label(playerName[i], skin));
-            label.add(new Label(kd[i], skin));
-            label.add(new Label(score[i], skin));
+        for (int i = 0; i < scores.size(); i++) {
+            ScoreBoard.Score s = scores.get(i);
+            Player p = s.getPlayer();
+            // Rank
+            scoreBoard.add(getCenteredLabel(String.valueOf(i + 1),skin)).width(150).padTop(10);
+            // Name
+            scoreBoard.add(getCenteredLabel(p.getName(),skin)).padTop(10).width(278);
+            //KD
+            scoreBoard.add(getCenteredLabel(s.getKills() + " / " + s.getDeath(),skin)).padTop(10).width(150);
+            // Score
+            scoreBoard.add(getCenteredLabel(String.valueOf(s.getScore()), skin)).padTop(10).width(150).row();
         }
-
-        int nameIndex = 1, scoreIndex = 3;
-
-        for (int i = 0; i < label.size(); i++) {
-            label.get(i).setAlignment(Align.center);
-            if (i == nameIndex) {
-                nameIndex += 4;
-                scoreBoard.add(label.get(i)).width(278);
-            } else if (i == scoreIndex) {
-                scoreIndex += 4;
-                scoreBoard.add(label.get(i)).width(150).row();
-            } else
-                scoreBoard.add(label.get(i)).width(150);
-        }
-
         mainMenu = new TextButton("Main Menu", skin, "mainMenu");
         rematch = new TextButton("Rematch", skin, "rematch");
 
         table = new Table(skin);
         table.setFillParent(true);
         table.setBounds(0, 0, Play.V_WIDTH, Play.V_HEIGHT);
-
         table.add(scoreBoard).colspan(2).row();
+//        table.add(scoreBoard).center().row();
         table.add(mainMenu);
         table.add(rematch);
 //        table.setDebug(true);
-        scoreBoard.setDebug(true);
+//        scoreBoard.setDebug(true);
         stage.addActor(table);
     }
 
+    private Label getCenteredLabel(String s, Skin skin){
+        Label l = new Label(s, skin);
+        l.setAlignment(Align.center);
+        return l;
+    }
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -180,7 +145,6 @@ public class EndGame implements Screen {
 
     @Override
     public void dispose() {
-        ScoreBoard.getInstance().reset();
         batch.dispose();
         skin.dispose();
         atlas.dispose();

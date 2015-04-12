@@ -138,15 +138,17 @@ public class Play implements Screen {
             }
         }
 
-        if(Gdx.input.justTouched() && (System.currentTimeMillis() - lastTouched > 1000l)){ // && not out of bounds
-            // Return matrix position
-            lastTouched = System.currentTimeMillis();
+        if(Gdx.input.justTouched() &&  (System.currentTimeMillis() - lastTouched > 1000l)){
+
             Vector3 v3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(v3);
-            String x = String.valueOf(Math.floor(v3.x / GameWorld.TILE_WIDTH) - 4);
-            String y = String.valueOf(Math.floor(v3.y / collisionLayer.getTileHeight() - 1));
-//            Gdx.app.log("HT_LIGHTNING","Zapperino at "+x+", "+y);
-            broadcastMessage(MessageParser.LIGHTNING, x, y);
+            double x = Math.floor(v3.x / GameWorld.TILE_WIDTH) - 4;
+            double y = Math.floor(v3.y / collisionLayer.getTileHeight() - 1);
+            // Check bounds
+            if(x >= 0 && x <= 9 && y >= 0 && y <= 7 ) {
+                lastTouched = System.currentTimeMillis();
+                broadcastMessage(MessageParser.LIGHTNING, String.valueOf(x), String.valueOf(y));
+            }
         }
 
         renderer.getBatch().end();
@@ -198,10 +200,10 @@ public class Play implements Screen {
 
     @Override
     public void dispose() {
-        world.dispose();
         map.dispose();
         renderer.dispose();
         sideBar.dispose();
+        world.dispose();
     }
 
 
