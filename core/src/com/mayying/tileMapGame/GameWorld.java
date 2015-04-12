@@ -42,6 +42,7 @@ public class GameWorld {
     private static GameWorld instance;
     private final HashMap<String, Player> players = new HashMap<String, Player>();
     private final HashMap<String, Long> randomSeeds = new HashMap<>();
+    private ShapeRenderer shapeRenderer;
 
     private TiledMapTileLayer playableLayer;
     private Play play;
@@ -75,6 +76,7 @@ public class GameWorld {
         //Moved to gameStart();
         this.playableLayer = playableLayer;
         this.play = play;
+        shapeRenderer = new ShapeRenderer();
     }
 
     public static GameWorld getInstance(TiledMapTileLayer playableLayer, String myId, ArrayList<PlayerMetaData> metaData,
@@ -133,13 +135,10 @@ public class GameWorld {
 
 
         if (blackout) {
-            // This causes Player object to disappear for some reason
-            ShapeRenderer shapeRenderer = new ShapeRenderer();
             shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(new Color(Color.BLACK));
-            shapeRenderer.rect(TILE_WIDTH * 4, 0, TILE_WIDTH * 10, Gdx.graphics.getHeight());
-
+            shapeRenderer.rect(0, 0, Play.camera.viewportWidth, Play.camera.viewportHeight);
             shapeRenderer.end();
         }
     }

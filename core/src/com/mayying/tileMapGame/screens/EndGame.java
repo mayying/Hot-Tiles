@@ -1,5 +1,6 @@
 package com.mayying.tileMapGame.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -8,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -36,9 +39,6 @@ public class EndGame implements Screen {
     private TextureAtlas atlas;
     private ArrayList<Label> label = new ArrayList<>();
 //    private ArrayList<ScoreBoard.Score> scores;
-
-    // k/d/score will be passed by using this format score;kills;deaths
-    // identify which one is you
 
     public EndGame(GameWorld world) {
         this.world = world;
@@ -81,19 +81,33 @@ public class EndGame implements Screen {
             scoreBoard.add(getCenteredLabel(String.valueOf(i + 1),skin)).width(150).padTop(10);
             // Name
             scoreBoard.add(getCenteredLabel(p.getName(),skin)).padTop(10).width(278);
-            //KD
+            // KD
             scoreBoard.add(getCenteredLabel(s.getKills() + " / " + s.getDeath(),skin)).padTop(10).width(150);
             // Score
             scoreBoard.add(getCenteredLabel(String.valueOf(s.getScore()), skin)).padTop(10).width(150).row();
         }
         mainMenu = new TextButton("Main Menu", skin, "mainMenu");
+        mainMenu.addListener(new InputListener() {
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.log("EndGame", "touched");
+                Play.getMultiplayerMessaging().leaveGame();
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+            }
+        });
+
         rematch = new TextButton("Rematch", skin, "rematch");
 
         table = new Table(skin);
         table.setFillParent(true);
         table.setBounds(0, 0, Play.V_WIDTH, Play.V_HEIGHT);
         table.add(scoreBoard).colspan(2).row();
-//        table.add(scoreBoard).center().row();
         table.add(mainMenu);
         table.add(rematch);
 //        table.setDebug(true);

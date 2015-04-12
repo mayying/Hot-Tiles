@@ -56,14 +56,14 @@ public class Player extends Sprite {
 
     // Given matrix position, set position on map (non-matrix)
     public void setPlayerPosition(int x, int y) {
-        if (x<0)
-            x=0;
-        if (x>9)
-            x=9;
-        if (y<0)
-            y=0;
-        if (y>7)
-            y=7;
+        if (x < 0)
+            x = 0;
+        if (x > 9)
+            x = 9;
+        if (y < 0)
+            y = 0;
+        if (y > 7)
+            y = 7;
         float _x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 4);
 
         float _y = collisionLayer.getTileHeight() / 4 + collisionLayer.getTileHeight() * (y + 1);
@@ -339,9 +339,6 @@ public class Player extends Sprite {
         int xCoordinate = new Random().nextInt(getCollisionLayer().getWidth() - 8);
         int yCoordinate = new Random().nextInt(getCollisionLayer().getHeight() - 2);
         setPlayerPosition(xCoordinate, yCoordinate);
-//        Gdx.app.log(getPlayerPosition().x + "", "getX()");
-//        Gdx.app.log(getPlayerPosition().y + "", "getY()");
-//        gameWorld.addPlayer(this);
         isDead = false;
     }
 
@@ -354,7 +351,6 @@ public class Player extends Sprite {
      */
     public void spawn(int xCoordinate, int yCoordinate) {
         setPlayerPosition(xCoordinate, yCoordinate);
-//        gameWorld.addPlayer(this);
         isDead = false;
     }
 
@@ -366,14 +362,9 @@ public class Player extends Sprite {
                 break;
             }
         }
-
-//        Gdx.app.log("Player", "Picked up: "+powerUp.getName() + " powerUp");
-//        Gdx.app.log("Player",Arrays.toString(powerUpList) + "PLayer");
-
     }
 
     public void removePowerUp(int idx) {
-//        Gdx.app.log("Player", "Removed: "+powerUpList[idx].getName());
         powerUpList[idx] = null;
     }
 
@@ -394,7 +385,7 @@ public class Player extends Sprite {
         return this.metaData.getID();
     }
 
-    public String getModel(){
+    public String getModel() {
         return this.metaData.getModel();
     }
 

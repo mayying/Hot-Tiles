@@ -31,7 +31,7 @@ public class Play implements Screen {
     private static final String TAG = "HT_Play";
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
-    private OrthographicCamera camera;
+    public static OrthographicCamera camera;
     private StretchViewport viewport;
     private GameWorld world;
     private SideBar sideBar;
