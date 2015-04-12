@@ -54,6 +54,7 @@ public class CharacterSelector implements Screen {
 
     @Override
     public void show() {
+        //TODO fix this. sometimes info are lost
         broadcastMyInfo();
         spriteBatch = new SpriteBatch();
         background = new Sprite(new Texture(Gdx.files.internal("charSel/background.png")));

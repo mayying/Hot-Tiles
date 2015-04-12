@@ -24,6 +24,7 @@ import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.ScoreBoard;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by May on 10/4/2015.
@@ -39,9 +40,13 @@ public class EndGame implements Screen {
     private TextureAtlas atlas;
     private ArrayList<Label> label = new ArrayList<>();
 //    private ArrayList<ScoreBoard.Score> scores;
+    HashMap<String,Boolean> rematchPoll = new HashMap<>();
 
     public EndGame(GameWorld world) {
         this.world = world;
+        for (String p: Play.getMultiplayerMessaging().getJoinedParticipants()) {
+            rematchPoll.put(p, false);
+        }
     }
 
     @Override
@@ -99,7 +104,6 @@ public class EndGame implements Screen {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("EndGame", "touched");
                 Play.getMultiplayerMessaging().leaveGame();
-//                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenu());
             }
         });
 
@@ -113,7 +117,7 @@ public class EndGame implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Play.getMultiplayerMessaging().rematch();
+                rematchButtonClicked();
             }
         });
 
@@ -144,6 +148,54 @@ public class EndGame implements Screen {
         startGame = true;
     }
 
+    public void rematchButtonClicked(){
+        //im the host
+        if (Play.getMultiplayerMessaging().getMyId().equals(Play.getMultiplayerMessaging().getHostId())){
+            setRematch(!rematchPoll.get(Play.getMultiplayerMessaging().getMyId()));
+            Play.broadcastMessage("rematchAcknowledged," + Play.getMultiplayerMessaging().getMyId()
+                    +"," + String.valueOf(rematchPoll.get(Play.getMultiplayerMessaging().getMyId())));
+        } else {
+            Play.broadcastMessage("rematchRequest," + String.valueOf(!rematchPoll.get(Play.getMultiplayerMessaging().getMyId())));
+        }
+    }
+
+    public void setRematch(Boolean stat){
+        rematchPoll.put(Play.getMultiplayerMessaging().getMyId(), stat);
+        if (stat) {
+            rematch.setText("cancel rematch");
+        } else {
+            rematch.setText("rematch");
+        }
+    }
+
+    public void rematchCheck(){
+        for (String msg : Play.getMultiplayerMessaging().getMessageBuffer()){
+            String[] message = msg.split(",");
+            String command = message[1];
+            // <host_id>, <rematchAcknowledged>, <client_id>, <rematchPoll>
+            if (command.equals("rematchAcknowledged") && Play.getMultiplayerMessaging().getHostId().equals(message[0])) {
+                rematchPoll.put(message[2], Boolean.valueOf(message[3]));
+                //client update text
+                if (Play.getMultiplayerMessaging().getMyId().equals(message[2])){
+                    setRematch(Boolean.valueOf(message[3]));
+                }
+            }
+            //im the host
+            // <client_id>, <rematchRequest>, <rematchPoll>
+            if (Play.getMultiplayerMessaging().getMyId().equals(Play.getMultiplayerMessaging().getHostId())){
+                if (command.equals("rematchRequest")) {
+                    rematchPoll.put(message[0], Boolean.valueOf(message[2]));
+                    Play.broadcastMessage("rematchAcknowledged,"+message[0]+","+message[2]);
+                }
+            }
+        }
+        for (String key : rematchPoll.keySet()){
+            if (!rematchPoll.get(key))
+                return;
+        }
+        Play.getMultiplayerMessaging().rematch();
+    }
+
     @Override
     public void render(float delta) {
         if (leavingGame){
@@ -154,6 +206,7 @@ public class EndGame implements Screen {
             startGame = false;
             ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector(Play.getMultiplayerMessaging()));
         }
+        rematchCheck();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
