@@ -33,7 +33,6 @@ import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 public class AndroidLauncher extends AndroidApplication implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, RealTimeMessageReceivedListener,
@@ -641,14 +640,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         }
     }
 
-    /**
-     *
-     * @return List of participants IDs.
-     */
-    @Override
-    public HashMap<String, List> getParticipantsInfo(){
-        return null;
-    }
 
     @Override
     public List<String> getParticipants() {

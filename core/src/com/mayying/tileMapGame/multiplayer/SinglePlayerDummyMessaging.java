@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.mayying.tileMapGame.screens.MainMenu;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,10 +16,6 @@ public class SinglePlayerDummyMessaging implements MultiplayerMessaging {
     private List<String> messageBuffer = new ArrayList<>();
     private MultiplayerMessaging realMessaging;
 
-    @Override
-    public HashMap<String, List> getParticipantsInfo() {
-        return null;
-    }
 
     public SinglePlayerDummyMessaging(){
         participants.add("me");

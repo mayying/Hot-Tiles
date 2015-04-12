@@ -1,6 +1,5 @@
 package com.mayying.tileMapGame.multiplayer;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -8,7 +7,6 @@ import java.util.List;
  */
 public interface MultiplayerMessaging {
     public void broadcastMessage(String msg);
-    public HashMap<String, List> getParticipantsInfo();
     public List<String> getParticipants();
     public List<String> getJoinedParticipants();
     public List<String> getJoinedParticipantsName();

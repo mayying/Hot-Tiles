@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
@@ -36,7 +35,6 @@ public class GameWorld {
     private MyTouchpad myTouchPad;
     private SpawnPowerUps spawnPowerUps = null;
     private PowerUp powerUp = null;
-    private TextureAtlas playerAtlas;
     private Player devicePlayer;
     private boolean blackout = false;
     private static GameWorld instance;
@@ -280,7 +278,7 @@ public class GameWorld {
             mines.get(i).getTexture().dispose();
             mines.remove(i);
         }
-        ScoreBoard.getInstance().reset();
+
         PowerUpFactory.getInstance(this).reset();
         instance = null;
     }

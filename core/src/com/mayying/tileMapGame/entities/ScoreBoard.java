@@ -73,7 +73,6 @@ public class ScoreBoard {
         private Score(Player player) {
             this.player = player;
             kills = death = 0;
-            // TODO - initialize the sprite to display on scoreboard here
         }
 
         public int getScore() {

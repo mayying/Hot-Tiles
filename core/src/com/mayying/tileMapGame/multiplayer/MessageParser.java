@@ -6,6 +6,8 @@ import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.ScoreBoard;
 import com.mayying.tileMapGame.screens.Play;
+
+import java.util.Arrays;
 //import com.mayying.tileMapGame.entities.ScoreBoard;
 
 /**
@@ -36,82 +38,86 @@ public class MessageParser {
         String senderId = message[0];
         String command = message[1];
         GameWorld world = GameWorld.getInstance();
-        Player player  = world.getDevicePlayer();
-        switch (command) {
-            case COMMAND_POSITION:
+        if(world!=null) {
+            Player player = world.getDevicePlayer();
+            switch (command) {
+                case COMMAND_POSITION:
 //                Gdx.app.log(TAG, String.format("Position of player %s: %s, %s", senderId, message[2], message[3]));
-                world.setPlayerPosition(senderId, new Vector2(Integer.valueOf(message[2]), Integer.valueOf(message[3])));
-                world.getPlayer(senderId).animate(100l); //testing out animation. not sure what delta time should be
-                break;
+                    world.setPlayerPosition(senderId, new Vector2(Integer.valueOf(message[2]), Integer.valueOf(message[3])));
+                    world.getPlayer(senderId).animate(100l); //testing out animation. not sure what delta time should be
+                    break;
 
-            case "effect":
-                String id = message[2];
-                switch (id) {
-                    case "freeze":
-                        // Format: "effect","freeze",playerIdx, user
-                        // Effect to update the client on a player getting frozen. Updates animation accordingly.
-                        // Mostly just for the animation, since the player coordinates sent should be frozen as well
-                        world.getPlayer(message[3]).freeze(senderId); //sender is the person who put the mine
-                        break;
-                    case "fireMine":
-                        // Get player and burn, logic similar to freeze mine
-                        world.getPlayer(message[3]).burn(senderId);
-                        break;
-                    case "blackout":
-                        // Format: "effect","blackout", [user] (for last hit purpose)
-                        // Assumes that the message is only sent to those affected. If server does not support that
-                        // change this to take in playerIdx and check if this device's player has the same idx
-                        world.setBlackout();
-                        player.setLastHitBy(senderId);
-                        break;
-                    case "invert":
-                        // Format: "effect","invert", [user] (for last hit purpose)
-                        // Invert player's controls. Check for device's player's index if necessary
-                        player.invert();
-                        player.setLastHitBy(senderId);
-                        break;
-                    case "dieAndSpawn":
-                        // Format: "effect","dieAndSpawn",x , y
-                        // alerts device that someone has died and will spawn at x,y. Score is updated separately. ( updated by die() )
-                        world.getPlayer(senderId).dieAndSpawnAt(Integer.valueOf(message[3]), Integer.valueOf(message[4]));
-                        break;
-                    case "shield":
-                        // Format: "effect","shield", [user] (for animation)
-                        world.getPlayer(senderId).shield();
-                        break;
-                    case "swap":
-                        // Format: "effect", "swap", x, y , mode
-                        if(message[5].equals("1")){
-                            // broadcast back your location
-                            Vector2 playerPos = player.getPlayerPosition();
-                            int xCoord = (int) playerPos.x;
-                            int yCoord = (int) playerPos.y;
-                            Play.broadcastMessage("effect","swap",String.valueOf(xCoord), String.valueOf(yCoord),"0");
-                            // only setting last hit for the victim.
+                case "effect":
+                    String id = message[2];
+                    switch (id) {
+                        case "freeze":
+                            // Format: "effect","freeze",playerIdx, user
+                            // Effect to update the client on a player getting frozen. Updates animation accordingly.
+                            // Mostly just for the animation, since the player coordinates sent should be frozen as well
+                            world.getPlayer(message[3]).freeze(senderId); //sender is the person who put the mine
+                            break;
+                        case "fireMine":
+                            // Get player and burn, logic similar to freeze mine
+                            world.getPlayer(message[3]).burn(senderId);
+                            break;
+                        case "blackout":
+                            // Format: "effect","blackout", [user] (for last hit purpose)
+                            // Assumes that the message is only sent to those affected. If server does not support that
+                            // change this to take in playerIdx and check if this device's player has the same idx
+                            world.setBlackout();
                             player.setLastHitBy(senderId);
-                        }
-                        player.setPlayerPosition(Integer.valueOf(message[3]), Integer.valueOf(message[4]));
-                        break;
-                }
-                break;
-            case "score":
-                // Format: "score", killerIdx, victimIdx
-                // increments k and d accordingly if applicable, killerIdx = -1 if no update to kills
-                ScoreBoard.getInstance().incrementKillsAndOrDeath(message[2], message[3]);
-                break;
-            case "ready":
-                world.playerReady(senderId, Long.valueOf(message[2]));
-                break;
-            case POWERUP_PICKED_UP:
-                GameWorld.getInstance().getSpawnPowerUps().reset();
-                break;
-            case LIGHTNING:
+                            break;
+                        case "invert":
+                            // Format: "effect","invert", [user] (for last hit purpose)
+                            // Invert player's controls. Check for device's player's index if necessary
+                            player.invert();
+                            player.setLastHitBy(senderId);
+                            break;
+                        case "dieAndSpawn":
+                            // Format: "effect","dieAndSpawn",x , y
+                            // alerts device that someone has died and will spawn at x,y. Score is updated separately. ( updated by die() )
+                            world.getPlayer(senderId).dieAndSpawnAt(Integer.valueOf(message[3]), Integer.valueOf(message[4]));
+                            break;
+                        case "shield":
+                            // Format: "effect","shield", [user] (for animation)
+                            world.getPlayer(senderId).shield();
+                            break;
+                        case "swap":
+                            // Format: "effect", "swap", x, y , mode
+                            if (message[5].equals("1")) {
+                                // broadcast back your location
+                                Vector2 playerPos = player.getPlayerPosition();
+                                int xCoord = (int) playerPos.x;
+                                int yCoord = (int) playerPos.y;
+                                Play.broadcastMessage("effect", "swap", String.valueOf(xCoord), String.valueOf(yCoord), "0");
+                                // only setting last hit for the victim.
+                                player.setLastHitBy(senderId);
+                            }
+                            player.setPlayerPosition(Integer.valueOf(message[3]), Integer.valueOf(message[4]));
+                            break;
+                    }
+                    break;
+                case "score":
+                    // Format: "score", killerIdx, victimIdx
+                    // increments k and d accordingly if applicable, killerIdx = -1 if no update to kills
+                    ScoreBoard.getInstance().incrementKillsAndOrDeath(message[2], message[3]);
+                    break;
+                case "ready":
+                    world.playerReady(senderId, Long.valueOf(message[2]));
+                    break;
+                case POWERUP_PICKED_UP:
+                    GameWorld.getInstance().getSpawnPowerUps().reset();
+                    break;
+                case LIGHTNING:
 //                Gdx.app.log("HT_LIGHTNING","LIGHTNING STRIKE");
-                // Format: LIGHTNING, x, y
-                world.lightningAt(Float.valueOf(message[2]), Float.valueOf(message[3]), senderId);
-                break;
-            default:
-                Gdx.app.log(TAG, "No such command: " + message[0]);
+                    // Format: LIGHTNING, x, y
+                    world.lightningAt(Float.valueOf(message[2]), Float.valueOf(message[3]), senderId);
+                    break;
+                default:
+                    Gdx.app.log(TAG, "No such command: " + message[0]);
+            }
+        }else{
+            Gdx.app.log(TAG,"World has been destroyed. Not handling message: "+ Arrays.toString(message));
         }
     }
 

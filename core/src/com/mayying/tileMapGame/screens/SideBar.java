@@ -229,16 +229,14 @@ public class SideBar implements Screen {
     }
 
     public void render(float delta) {
-        Gdx.app.log("SideBar", "Sidebar still running");
-
         if (timeLeft == 0) {
-            for (int i = 0; i < scoreBoardLabel[1].length; i++) {
-                finalRankScore[i] = scoreBoardLabel[i][1].getText().substring(7);
-                finalRankKD[i] = String.valueOf(scoreBoard.getScores().get(i).getKills());
-                finalRankKD[i] += "/" + scoreBoard.getScores().get(i).getDeath();
-                finalRankPlayer[i] = scoreBoard.getScores().get(0).getPlayer().getName();
-                finalRankCharName[i] = scoreBoard.getScores().get(0).getPlayer().getModel();
-            }
+//            for (int i = 0; i < scoreBoardLabel[1].length; i++) {
+//                finalRankScore[i] = scoreBoardLabel[i][1].getText().substring(7);
+//                finalRankKD[i] = String.valueOf(scoreBoard.getScores().get(i).getKills());
+//                finalRankKD[i] += "/" + scoreBoard.getScores().get(i).getDeath();
+//                finalRankPlayer[i] = scoreBoard.getScores().get(0).getPlayer().getName();
+//                finalRankCharName[i] = scoreBoard.getScores().get(0).getPlayer().getModel();
+//            }
 
             ((Game) (Gdx.app.getApplicationListener())).setScreen(new EndGame(world));
 

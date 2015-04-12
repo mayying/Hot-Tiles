@@ -15,7 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.GameWorld;
+import com.mayying.tileMapGame.entities.Player;
+import com.mayying.tileMapGame.entities.ScoreBoard;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
+
+import java.util.ArrayList;
 
 /**
  * Created by May on 10/4/2015.
@@ -54,7 +58,7 @@ public class EndGame implements Screen {
 
     @Override
     public void show() {
-        Gdx.app.log("EndGame", "EndGame still running");
+        Gdx.app.log("EndGame", "EndGame Screen initialized");
         int myIndex = -1;
 
         // to determine if you win or not, need this value to identify which background sprite we should show in the screen
@@ -89,12 +93,14 @@ public class EndGame implements Screen {
         scoreBoard.add("Player").width(278).center();
         scoreBoard.add("K/D").width(150).center();
         scoreBoard.add("Score").width(150).center().row();
-
-        for (int i = 0; i < playerName.length; i++) {
+        ArrayList<ScoreBoard.Score> scores = ScoreBoard.getInstance().getScores();
+        for (int i = 0; i < scores.size(); i++) {
+            ScoreBoard.Score s = scores.get(i);
+            Player p = s.getPlayer();
             scoreBoard.add(String.valueOf(i + 1)).width(150).center();
-            scoreBoard.add(playerName[i]).width(278).center();
-            scoreBoard.add(kd[i]).width(150).center();
-            scoreBoard.add(score[i]).width(150).center().row();
+            scoreBoard.add(p.getName()).width(278).center();
+            scoreBoard.add(s.getKills() + " / " + s.getDeath()).width(150).center();
+            scoreBoard.add(String.valueOf(s.getScore())).width(150).center().row();
         }
 
         mainMenu = new TextButton("Main Menu", skin, "mainMenu");
@@ -151,9 +157,11 @@ public class EndGame implements Screen {
 
     @Override
     public void dispose() {
+        ScoreBoard.getInstance().reset();
         batch.dispose();
         skin.dispose();
         atlas.dispose();
+
 
     }
 }
