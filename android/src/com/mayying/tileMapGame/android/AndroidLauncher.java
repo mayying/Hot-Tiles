@@ -695,6 +695,14 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         return hostId;
     }
 
+    @Override
+    public void rematch(){
+        //TODO fix this
+        if (this.getJoinedParticipants().size()>1){
+            startGame();
+        }
+    }
+
     /*
      * UI SECTION. Methods that implement the game's UI.
      */

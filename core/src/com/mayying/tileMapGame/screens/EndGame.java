@@ -99,11 +99,23 @@ public class EndGame implements Screen {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("EndGame", "touched");
                 Play.getMultiplayerMessaging().leaveGame();
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+//                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenu());
             }
         });
 
         rematch = new TextButton("Rematch", skin, "rematch");
+        rematch.addListener(new InputListener() {
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                Play.getMultiplayerMessaging().rematch();
+            }
+        });
 
         table = new Table(skin);
         table.setFillParent(true);
@@ -121,8 +133,27 @@ public class EndGame implements Screen {
         l.setAlignment(Align.center);
         return l;
     }
+
+    boolean leavingGame = false;
+    public void leaveGame(){
+        leavingGame = true;
+    }
+
+    boolean startGame = false;
+    public void startGame() {
+        startGame = true;
+    }
+
     @Override
     public void render(float delta) {
+        if (leavingGame){
+            leavingGame = false;
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(Play.getMultiplayerMessaging()));
+        }
+        if (startGame){
+            startGame = false;
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector(Play.getMultiplayerMessaging()));
+        }
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

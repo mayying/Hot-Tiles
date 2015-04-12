@@ -54,8 +54,8 @@ public class SideBar implements Screen {
 
     volatile static int timeLeft = 1;
 
-    private float gameTime = 60 + 30;
-//    private float gameTime = 5;
+//    private float gameTime = 60 + 30;
+    private float gameTime = 5;
     private int min, sec;
     private boolean timeFrozen = true;
     private static boolean scoreUpdated = true;
@@ -63,8 +63,10 @@ public class SideBar implements Screen {
     public SideBar(GameWorld world) {
         this.world = world;
         hudCamera = new OrthographicCamera();
-        min = 1;
-        sec = 30;
+//        min = 1;
+//        sec = 30;
+        min = 0;
+        sec = 5;
         labelStyle = new LabelStyle();
         // lmao should have made an arraylist/map to store them properly, initialize according to num players etc
         playerStyle = new LabelStyle();
@@ -112,7 +114,6 @@ public class SideBar implements Screen {
         close.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 Play.getMultiplayerMessaging().leaveGame();
-//                Gdx.app.exit();
             }
         });
 
@@ -222,8 +223,8 @@ public class SideBar implements Screen {
 
     public void render(float delta) {
         if (timeLeft == 0) {
-            ((Game) (Gdx.app.getApplicationListener())).setScreen(new EndGame(world));
             timeLeft = 1; //Allow game to be restarted next time
+            ((Game) (Gdx.app.getApplicationListener())).setScreen(new EndGame(world));
 //            Play.getMultiplayerMessaging().leaveGame();
         } else {
             stage.act(delta);

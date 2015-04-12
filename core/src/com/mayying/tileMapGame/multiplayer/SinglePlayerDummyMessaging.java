@@ -97,4 +97,9 @@ public class SinglePlayerDummyMessaging implements MultiplayerMessaging {
     public boolean isLoggedIn() {
         return false;
     }
+
+    @Override
+    public void rematch(){
+        //do nothing
+    }
 }

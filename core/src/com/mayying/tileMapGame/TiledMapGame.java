@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 import com.mayying.tileMapGame.screens.CharacterSelector;
+import com.mayying.tileMapGame.screens.EndGame;
 import com.mayying.tileMapGame.screens.MainMenu;
 import com.mayying.tileMapGame.screens.Play;
 
@@ -56,6 +57,10 @@ public class TiledMapGame extends Game {
             inGame = true;
             MainMenu s = (MainMenu) screen;
             s.startGame();
+        } else if (screen instanceof EndGame) {
+            inGame = true;
+            EndGame s = (EndGame) screen;
+            s.startGame();
         }
 //        if (!(screen instanceof Play)) {
 ////            setScreen(new Play(multiplayerMessaging));
@@ -67,6 +72,10 @@ public class TiledMapGame extends Game {
         if (screen instanceof Play) {
             inGame = false;
             Play s = (Play) screen;
+            s.leaveGame();
+        } else if (screen instanceof EndGame){
+            inGame = false;
+            EndGame s = (EndGame) screen;
             s.leaveGame();
         }
     }
