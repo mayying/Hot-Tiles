@@ -142,12 +142,15 @@ public class Play implements Screen {
 
             Vector3 v3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(v3);
-            double x = Math.floor(v3.x / GameWorld.TILE_WIDTH) - 4;
-            double y = Math.floor(v3.y / collisionLayer.getTileHeight() - 1);
+            final double x = Math.floor(v3.x / GameWorld.TILE_WIDTH) - 4;
+            final double y = Math.floor(v3.y / collisionLayer.getTileHeight() - 1);
             // Check bounds
             if(x >= 0 && x <= 9 && y >= 0 && y <= 7 ) {
+                Gdx.app.log("Lightning", x+", "+y);
                 lastTouched = System.currentTimeMillis();
                 broadcastMessage(MessageParser.LIGHTNING, String.valueOf(x), String.valueOf(y));
+                // TESTING ONLY
+                GameWorld.getInstance().lightningAt((float)x , (float) y, "");
             }
         }
 

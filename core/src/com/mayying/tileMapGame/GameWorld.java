@@ -2,6 +2,7 @@ package com.mayying.tileMapGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -53,6 +54,9 @@ public class GameWorld {
     public static float TILE_WIDTH, TILE_HEIGHT;
     public static final Vector<Sprite> bullets = new Vector<Sprite>();
     public final Vector<Mine> mines = new Vector<Mine>();
+    public final Vector<Sprite> thunder = new Vector<>();
+
+
 
     private GameWorld(TiledMapTileLayer playableLayer, String myId, ArrayList<PlayerMetaData> metaData,
                       Play play) {
@@ -132,7 +136,9 @@ public class GameWorld {
         for (int i = 0; i < mines.size(); i++) {
             mines.get(i).draw(batch);
         }
-
+        for(int i = 0; i < thunder.size(); i++){
+            thunder.get(i).draw(batch);
+        }
 
         if (blackout) {
             shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
@@ -154,33 +160,32 @@ public class GameWorld {
 
         velocity.x = getMyTouchPad().getTouchPad().getKnobPercentX();
         velocity.y = getMyTouchPad().getTouchPad().getKnobPercentY();
-
-        int newX = (int) getDevicePlayer().getPlayerPosition().x;
-        int newY = (int) getDevicePlayer().getPlayerPosition().y;
+        Player player = getDevicePlayer();
+        int newX = (int) player.getPlayerPosition().x;
+        int newY = (int) player.getPlayerPosition().y;
 
         if (velocity.x > 0.5) {
-            // add back in leftpressed rightpressed etc for direction, if we are using the bullets and stuff
-            newX += getDevicePlayer().getSpeed();
-            getDevicePlayer().rightPressed();
+            newX += player.getSpeed();
+            player.rightPressed();
         } else if (velocity.x < -0.5) {
-            newX -= getDevicePlayer().getSpeed();
-            getDevicePlayer().leftPressed();
+            newX -= player.getSpeed();
+            player.leftPressed();
         } else if (velocity.y > 0.5) {
-            newY += getDevicePlayer().getSpeed();
-            getDevicePlayer().upPressed();
+            newY += player.getSpeed();
+            player.upPressed();
         } else if (velocity.y < -0.5) {
-            newY -= getDevicePlayer().getSpeed();
-            getDevicePlayer().downPressed();
+            newY -= player.getSpeed();
+            player.downPressed();
         }
         // Animate player movement
         // if (velocity.x > 0.5 || velocity.x < -0.5 || velocity.y > 0.5 || velocity.y < -0.5)
-        getDevicePlayer().animate(delta);
+        player.animate(delta);
 
         if (System.currentTimeMillis() - lastMovement >= MOVEMENT_FREQUENCY) {
             lastMovement = System.currentTimeMillis();
 
-            if (!getDevicePlayer().isDead) {
-                getDevicePlayer().setPlayerPosition(newX, newY);
+            if (!player.isDead) {
+                player.setPlayerPosition(newX, newY);
             }
         }
     }
@@ -207,7 +212,7 @@ public class GameWorld {
 
     public String generateDevicePlayerCoordinatesBroadcastMessage() {
         Vector2 xy = devicePlayer.getPlayerPosition();
-        return MessageParser.COMMAND_POSITION + "," + String.valueOf((int) xy.x) + "," + String.valueOf((int) xy.y);
+        return MessageParser.COMMAND_POSITION + "," + String.valueOf((int) xy.x) + "," + String.valueOf((int) xy.y) + "," + String.valueOf(devicePlayer.getFacing());
 
     }
 
@@ -260,12 +265,14 @@ public class GameWorld {
         mines.remove(mine);
     }
 
-    public void setPlayerPosition(String playerId, Vector2 pos) {
+    public void setPlayerPosition(String playerId, Vector2 pos, int facing) {
         Player p = players.get(playerId);
         if (p != null) {
+            p.setFacing(facing);
             p.setPlayerPosition((int) pos.x, (int) pos.y);
         }
     }
+
 
 
     public void dispose() {
@@ -288,11 +295,26 @@ public class GameWorld {
             @Override
             public void run() {
                 super.run();
+                // TODO - draw lightning
+                final Sprite sprite = new Sprite(new Texture(Gdx.files.internal("powerups/thunderbolt.png")));
+                Gdx.app.log("lightning",String.valueOf(x)+", "+String.valueOf(y));
+                sprite.setPosition(x, y);
+                thunder.add(sprite);
                 // bzzzzz
                 if (devicePlayer.getPlayerPosition().equals(new Vector2(x,y))){
                     devicePlayer.setLastHitBy(senderId);
                     devicePlayer.die();
                 }
+                synchronized (this){
+                    try {
+                        wait(250l);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    thunder.remove(sprite);
+                }
+
+
             }
         }.start();
     }

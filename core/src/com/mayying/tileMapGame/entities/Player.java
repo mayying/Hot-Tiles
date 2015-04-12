@@ -389,4 +389,7 @@ public class Player extends Sprite {
         return this.metaData.getModel();
     }
 
+    public void setFacing(int facing) {
+        this.facing = facing;
+    }
 }

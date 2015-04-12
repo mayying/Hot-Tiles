@@ -68,6 +68,7 @@ public class EndGame implements Screen {
         scoreBoard.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("endGame/scoreBoard.png"))));
         scoreBoard.setSize(728, 400);
         scoreBoard.align(Align.top);
+        //Headings
         scoreBoard.add(getCenteredLabel("Rank",skin)).width(150).padTop(100);
         scoreBoard.add(getCenteredLabel("Player",skin)).width(278).padTop(100);
         scoreBoard.add(getCenteredLabel("K/D",skin)).width(150).padTop(100);
