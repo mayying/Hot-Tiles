@@ -4,231 +4,231 @@ filter: Linear,Linear
 repeat: none
 blackoutBtn
   rotate: false
-  xy: 356, 592
+  xy: 428, 231
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 blackoutBtnP
   rotate: false
-  xy: 286, 308
+  xy: 2, 231
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 blackoutImg
   rotate: false
-  xy: 94, 166
+  xy: 186, 89
   size: 90, 90
   orig: 90, 90
   offset: 0, 0
   index: -1
 confusedBtn
   rotate: false
-  xy: 144, 308
+  xy: 512, 89
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 confusedBtnP
   rotate: false
-  xy: 428, 308
+  xy: 370, 89
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 confusedImg
   rotate: false
-  xy: 449, 74
+  xy: 94, 89
   size: 90, 90
   orig: 90, 90
   offset: 0, 0
   index: -1
+dpad
+  rotate: false
+  xy: 568, 373
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
 freezemineBtn
   rotate: false
-  xy: 2, 450
+  xy: 144, 231
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 freezemineBtnP
   rotate: false
-  xy: 286, 450
+  xy: 854, 231
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 freezemineImg
   rotate: false
-  xy: 186, 166
+  xy: 278, 89
   size: 90, 90
   orig: 90, 90
   offset: 0, 0
   index: -1
+knob
+  rotate: false
+  xy: 780, 373
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
 player_1_head
   rotate: false
-  xy: 160, 2
+  xy: 103, 2
   size: 55, 55
   orig: 55, 55
   offset: 0, 0
   index: -1
 player_2_head
   rotate: false
-  xy: 2, 2
+  xy: 160, 2
   size: 55, 51
   orig: 55, 51
   offset: 0, 0
   index: -1
 player_3_head
   rotate: false
-  xy: 116, 2
+  xy: 2, 2
   size: 42, 55
   orig: 42, 55
   offset: 0, 0
   index: -1
 player_4_head
   rotate: false
-  xy: 59, 2
+  xy: 46, 2
   size: 55, 54
   orig: 55, 54
   offset: 0, 0
   index: -1
 shieldBtn
   rotate: false
-  xy: 144, 450
+  xy: 712, 231
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 shieldBtnP
   rotate: false
-  xy: 428, 450
+  xy: 2, 373
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 shieldImg
   rotate: false
-  xy: 2, 166
+  xy: 2, 89
   size: 90, 90
   orig: 90, 90
   offset: 0, 0
   index: -1
 skinRect210x140
   rotate: false
-  xy: 144, 592
+  xy: 144, 373
   size: 210, 140
   orig: 210, 140
   offset: 0, 0
   index: -1
 skinRound140x140
   rotate: false
-  xy: 2, 308
+  xy: 286, 231
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 skinRound140x140P
   rotate: false
-  xy: 2, 592
+  xy: 570, 231
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 skinRound210x210
   rotate: false
-  xy: 2, 734
+  xy: 356, 373
   size: 210, 210
   orig: 210, 210
   offset: 0, 0
   index: -1
-skinSquare280x210
-  rotate: false
-  xy: 214, 734
-  size: 210, 280
-  orig: 210, 280
-  offset: 0, 0
-  index: -1
-skinSquare70x70P
-  rotate: false
-  xy: 2, 74
-  size: 70, 70
-  orig: 70, 70
-  offset: 0, 0
-  index: -1
 skinSquareClose70x70
-  rotate: false
-  xy: 146, 74
-  size: 70, 70
-  orig: 70, 70
-  offset: 0, 0
-  index: -1
-skinSquareClose70x70P
-  rotate: false
-  xy: 282, 2
-  size: 70, 70
-  orig: 70, 70
-  offset: 0, 0
-  index: -1
-skinSquareQuestion70x70
   rotate: false
   xy: 498, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
+skinSquareClose70x70P
+  rotate: false
+  xy: 570, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+skinSquareQuestion70x70
+  rotate: false
+  xy: 714, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
 skinSquareQuestion70x70P
   rotate: false
-  xy: 426, 2
+  xy: 786, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareSoundOff70x70
   rotate: false
-  xy: 354, 2
+  xy: 642, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareSoundOff70x70P
   rotate: false
-  xy: 74, 74
+  xy: 426, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareSoundOn70x70
   rotate: false
-  xy: 290, 74
+  xy: 354, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareSoundOn70x70P
   rotate: false
-  xy: 218, 74
+  xy: 282, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 swapBtn
   rotate: false
-  xy: 420, 166
+  xy: 654, 89
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 swapBtnP
   rotate: false
-  xy: 278, 166
+  xy: 796, 89
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
 swapImg
   rotate: false
-  xy: 362, 74
+  xy: 858, 2
   size: 85, 85
   orig: 85, 85
   offset: 0, 0

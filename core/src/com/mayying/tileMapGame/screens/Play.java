@@ -138,7 +138,7 @@ public class Play implements Screen {
             }
         }
 
-        if(Gdx.input.justTouched() && (System.currentTimeMillis() - lastTouched > 1000l)){ // TODO - && not out of bounds
+        if(Gdx.input.justTouched() && (System.currentTimeMillis() - lastTouched > 1000l)){ // && not out of bounds
             // Return matrix position
             lastTouched = System.currentTimeMillis();
             Vector3 v3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -198,10 +198,10 @@ public class Play implements Screen {
 
     @Override
     public void dispose() {
+        world.dispose();
         map.dispose();
         renderer.dispose();
         sideBar.dispose();
-        world.dispose();
     }
 
 

@@ -9,7 +9,7 @@
     },
 
     "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
-            "default": {"font": "black", "up": "skinRect350x150", "down": "skinRect350x150"}
+            "default": {"font": "black", "up": "skinRect350x150", "down": "skinRect350x150P"}
     }
 }
 

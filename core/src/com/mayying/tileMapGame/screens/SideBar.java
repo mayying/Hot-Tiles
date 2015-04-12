@@ -34,7 +34,6 @@ import java.util.ArrayList;
  * Created by May on 17/3/2015.
  */
 
-
 public class SideBar implements Screen {
 
     private Stage stage;
@@ -51,12 +50,11 @@ public class SideBar implements Screen {
     private ArrayList<Score> score;
     private String powerUpName;
     private ImageButtonStyle imageButtonAStyle, imageButtonBStyle;
-    public static String[] finalRankKD, finalRankScore, finalRankPlayer, finalRankCharName;
 
     volatile static int timeLeft = 1;
 
-//    private float gameTime = 60 + 30;
-    private float gameTime = 5;
+    private float gameTime = 60 + 30;
+//    private float gameTime = 5;
     private int min, sec;
     private boolean timeFrozen = true;
     private static boolean scoreUpdated = true;
@@ -155,12 +153,6 @@ public class SideBar implements Screen {
         descriptionText.setAlignment(Align.top);
         descriptionText.setFontScale(0.75f);
 
-        // For Game Over Screen
-        finalRankKD = new String[scoreBoardLabel[1].length];
-        finalRankScore = new String[scoreBoardLabel[1].length];
-        finalRankPlayer = new String[scoreBoardLabel[1].length];
-        finalRankCharName = new String[scoreBoardLabel[1].length];
-
         world.getMyTouchPad().getTouchPad().setPosition(0, 0);
 
         buttonA = new ImageButton(skin);
@@ -212,7 +204,6 @@ public class SideBar implements Screen {
         descriptionTable.add(descriptionText).expandY().width(150).height(140).top().center();
 
         // putting stuff together
-        //table.align(Align.center);
         table.add(timer).top().left().expandX().padTop(10).height(140).width(210);
         table.add(sound).top();
         table.add(question).top();
@@ -230,16 +221,7 @@ public class SideBar implements Screen {
 
     public void render(float delta) {
         if (timeLeft == 0) {
-//            for (int i = 0; i < scoreBoardLabel[1].length; i++) {
-//                finalRankScore[i] = scoreBoardLabel[i][1].getText().substring(7);
-//                finalRankKD[i] = String.valueOf(scoreBoard.getScores().get(i).getKills());
-//                finalRankKD[i] += "/" + scoreBoard.getScores().get(i).getDeath();
-//                finalRankPlayer[i] = scoreBoard.getScores().get(0).getPlayer().getName();
-//                finalRankCharName[i] = scoreBoard.getScores().get(0).getPlayer().getModel();
-//            }
-
             ((Game) (Gdx.app.getApplicationListener())).setScreen(new EndGame(world));
-
 //            timeLeft = 1; //Allow game to be restarted next time
 //            Play.getMultiplayerMessaging().leaveGame();
         } else {
@@ -337,7 +319,7 @@ public class SideBar implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     public void dispose() {
