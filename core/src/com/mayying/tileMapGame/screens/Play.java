@@ -79,7 +79,7 @@ public class Play implements Screen {
         if (multiplayerMessaging != null) {
             myPlayerId = multiplayerMessaging.getMyId();
         }
-        collisionLayer  = (TiledMapTileLayer) map.getLayers().get("Background");
+        collisionLayer = (TiledMapTileLayer) map.getLayers().get("Background");
         world = GameWorld.getInstance(collisionLayer, myPlayerId, metaData, this);
 
         sideBar = new SideBar(world);
@@ -89,12 +89,12 @@ public class Play implements Screen {
         initializedTimeStamp = System.currentTimeMillis();
     }
 
-    public void initializeBurningTiles(Long randomSeed){
+    public void initializeBurningTiles(Long randomSeed) {
         burningTiles = new BurningTiles[MAX_TILES];
         int randomBase = 102312943;
         for (int i = 0; i < burningTiles.length; i++) {
             //randomBase is just to randomize even more.
-            burningTiles[i] = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"), randomSeed+i+randomBase);
+            burningTiles[i] = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"), randomSeed + i + randomBase);
             burningTiles[i].create();
         }
         //start timer
@@ -103,7 +103,8 @@ public class Play implements Screen {
     }
 
     boolean leavingGame = false;
-    public void leaveGame(){
+
+    public void leaveGame() {
         leavingGame = true;
     }
 
@@ -111,7 +112,7 @@ public class Play implements Screen {
 
     @Override
     public void render(float delta) {
-        if (leavingGame){
+        if (leavingGame) {
             leavingGame = false;
             ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(Play.getMultiplayerMessaging()));
         }
@@ -129,8 +130,8 @@ public class Play implements Screen {
         world.drawAndUpdate(renderer.getBatch());
 
         if (this.allPlayersReady) {
-            if (SideBar.timeLeft>0) {
-                count = Math.min(5 + (90 - SideBar.timeLeft)/10 * TILES_PER_INTERVAL, MAX_TILES); //testin
+            if (SideBar.timeLeft > 0) {
+                count = Math.min(5 + (90 - SideBar.timeLeft) / 10 * TILES_PER_INTERVAL, MAX_TILES); //testin
             }
 
             for (int i = 0; i < count; i++) {
@@ -138,14 +139,13 @@ public class Play implements Screen {
             }
         }
 
-        if(Gdx.input.justTouched() &&  (System.currentTimeMillis() - lastTouched > 1000l)){
-
+        if (Gdx.input.justTouched() && (System.currentTimeMillis() - lastTouched > 1000l)) {
             Vector3 v3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(v3);
             double x = Math.floor(v3.x / GameWorld.TILE_WIDTH) - 4;
             double y = Math.floor(v3.y / collisionLayer.getTileHeight() - 1);
             // Check bounds
-            if(x >= 0 && x <= 9 && y >= 0 && y <= 7 ) {
+            if (x >= 0 && x <= 9 && y >= 0 && y <= 7) {
                 lastTouched = System.currentTimeMillis();
                 broadcastMessage(MessageParser.LIGHTNING, String.valueOf(x), String.valueOf(y));
             }
@@ -165,7 +165,7 @@ public class Play implements Screen {
                 lastBroadcast = System.currentTimeMillis();
                 multiplayerMessaging.broadcastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
 
-                if (!allPlayersReady && iAmReady()){
+                if (!allPlayersReady && iAmReady()) {
                     world.playerReady(multiplayerMessaging.getMyId(), randomSeed);
                     multiplayerMessaging.broadcastMessage("ready," + randomSeed.toString());
                 }
@@ -174,7 +174,8 @@ public class Play implements Screen {
     }
 
     public static final long GAME_SETUP_TIME = 5000;
-    private boolean iAmReady(){
+
+    private boolean iAmReady() {
         return System.currentTimeMillis() - initializedTimeStamp > GAME_SETUP_TIME;
     }
 
@@ -207,11 +208,11 @@ public class Play implements Screen {
     }
 
 
-
     //TODO This is bullshit
     public static MultiplayerMessaging getMultiplayerMessaging() {
         return multiplayerMessaging;
     }
+
     public static void broadcastMessage(String msg) {
         Gdx.app.log(TAG, "Broadcasting message: " + msg);
         multiplayerMessaging.broadcastMessage(msg);

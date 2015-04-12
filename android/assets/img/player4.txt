@@ -1,0 +1,74 @@
+player4.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+player_4_backward
+  rotate: false
+  xy: 2, 2
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 1
+player_4_backward
+  rotate: false
+  xy: 66, 2
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 2
+player_4_burnt
+  rotate: false
+  xy: 130, 2
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 1
+player_4_burnt
+  rotate: false
+  xy: 194, 2
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 2
+player_4_forward
+  rotate: false
+  xy: 258, 2
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 1
+player_4_forward
+  rotate: false
+  xy: 322, 2
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 2
+player_4_left
+  rotate: false
+  xy: 386, 2
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 1
+player_4_left
+  rotate: false
+  xy: 450, 2
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 2
+player_4_right
+  rotate: false
+  xy: 514, 2
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 1
+player_4_right
+  rotate: false
+  xy: 578, 2
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 2
