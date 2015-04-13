@@ -54,8 +54,8 @@ public class SideBar implements Screen {
 
     volatile static int timeLeft = 1;
 
-//    private float gameTime = 60 + 30;
-    private float gameTime = 5;
+    private float gameTime = 60 + 30;
+//    private float gameTime = 5;
     private int min, sec;
     private boolean timeFrozen = true;
     private static boolean scoreUpdated = true;
@@ -65,8 +65,8 @@ public class SideBar implements Screen {
         hudCamera = new OrthographicCamera();
 //        min = 1;
 //        sec = 30;
-        min = 0;
-        sec = 5;
+//        min = 0;
+//        sec = 5;
         labelStyle = new LabelStyle();
         // lmao should have made an arraylist/map to store them properly, initialize according to num players etc
         playerStyle = new LabelStyle();
@@ -130,8 +130,8 @@ public class SideBar implements Screen {
         }
         scoreBoardLabel[0][1] = new Label("Score: 0", skin);
 
-        scoreBoard1stTable.add(scoreBoardLabel[0][0]).height(55).width(55).padTop(15).padLeft(5);
-        scoreBoard1stTable.add(scoreBoardLabel[0][1]).fill().expandX().padTop(10);
+        scoreBoard1stTable.add(scoreBoardLabel[0][0]).height(55).width(55).padTop(15).padLeft(10);
+        scoreBoard1stTable.add(scoreBoardLabel[0][1]).fill().expandX().padTop(10).padLeft(10);
 
         scoreBoard2ndTable = new Table(skin);
         scoreBoard2ndTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/score210x89.png"))));
@@ -140,8 +140,8 @@ public class SideBar implements Screen {
         scoreBoardLabel[1][0].setStyle(player2Style);
         scoreBoardLabel[1][1] = new Label("Score: 0", skin);
 
-        scoreBoard2ndTable.add(scoreBoardLabel[1][0]).height(55).width(55).padTop(15).padLeft(5);
-        scoreBoard2ndTable.add(scoreBoardLabel[1][1]).fill().expandX().padTop(10);
+        scoreBoard2ndTable.add(scoreBoardLabel[1][0]).height(55).width(55).padTop(15).padLeft(10);
+        scoreBoard2ndTable.add(scoreBoardLabel[1][1]).fill().expandX().padTop(10).padLeft(10);
 
         scoreBoardTable = new Table();
         scoreBoardTable.add(scoreBoard1stTable).row();

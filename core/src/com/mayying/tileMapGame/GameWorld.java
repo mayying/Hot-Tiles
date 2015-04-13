@@ -278,8 +278,6 @@ public class GameWorld {
         }
     }
 
-
-
     public void dispose() {
         Gdx.app.log(TAG, "disposing");
         for (String key : players.keySet()) {

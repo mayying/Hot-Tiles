@@ -44,7 +44,6 @@ public class PlayerMetaData {
     }
 
     /**
-     *
      * @return readable name
      */
     public String getName() {
@@ -52,7 +51,6 @@ public class PlayerMetaData {
     }
 
     /**
-     *
      * @return Model number of the player.
      */
     public String getModel() {
@@ -60,7 +58,6 @@ public class PlayerMetaData {
     }
 
     /**
-     *
      * @return GPS ID
      */
     public String getID() {

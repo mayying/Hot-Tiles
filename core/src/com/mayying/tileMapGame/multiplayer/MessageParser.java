@@ -24,7 +24,7 @@ public class MessageParser {
      * Parses the input string and runs the respective methods. A better design would be to start this
      * in a separate thread / use wait() + notify() or CyclicBarrier to notify it when a message is added to the message buffer.
      * Would also be nice to implement message parser callbacks in other classes that require it. IT'S TOO LATE NOW BUT CAN STILL WRITE IN REPORT
-     *
+     * <p/>
      * Param should be in the following format:
      * [Sender id], [Command], [Command Parameter1], [Command Parameter2], [...]
      *
@@ -40,13 +40,13 @@ public class MessageParser {
         String senderId = message[0];
         String command = message[1];
         GameWorld world = GameWorld.getInstance();
-        if(world!=null) {
+        if (world != null) {
             Player player = world.getDevicePlayer();
             switch (command) {
                 case COMMAND_POSITION:
 //                Gdx.app.log(TAG, String.format("Position of player %s: %s, %s", senderId, message[2], message[3]));
                     world.setPlayerPosition(senderId, new Vector2(Integer.valueOf(message[2]), Integer.valueOf(message[3])), Integer.valueOf(message[4]));
-                    world.getPlayer(senderId).animate(100l); //testing out animation. not sure what delta time should be
+                    world.getPlayer(senderId).animate(Gdx.graphics.getDeltaTime() * 45); //testing out animation. not sure what delta time should be
                     break;
 
                 case "effect":
@@ -118,8 +118,8 @@ public class MessageParser {
                 default:
                     Gdx.app.log(TAG, "No such command: " + message[0]);
             }
-        }else{
-            Gdx.app.log(TAG,"World has been destroyed. Not handling message: "+ Arrays.toString(message));
+        } else {
+            Gdx.app.log(TAG, "World has been destroyed. Not handling message: " + Arrays.toString(message));
         }
     }
 

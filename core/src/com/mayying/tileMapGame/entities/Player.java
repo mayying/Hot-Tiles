@@ -353,7 +353,6 @@ public class Player extends Sprite {
         isDead = false;
     }
 
-
     public void addPowerUp(PowerUp powerUp) {
         for (int i = 0; i < powerUpList.length; i++) {
             if (powerUpList[i] == null) {
@@ -366,7 +365,6 @@ public class Player extends Sprite {
     public void removePowerUp(int idx) {
         powerUpList[idx] = null;
     }
-
 
     public PowerUp getPowerUp(int idx) {
         return powerUpList[idx];
