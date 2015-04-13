@@ -22,10 +22,10 @@ import java.util.Random;
 public class Player extends Sprite {
     private int facing; // index of player
     private TiledMapTileLayer collisionLayer;
-    private Animation forward, backward, left, right, burnt;
+    private Animation forward, backward, left, right, burnt, swap, freeze;
     private float speed = 1, animationTime = 0f;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
-    private boolean isFrozen = false, isInverted = false;// for freezing animation and stuff?
+    private boolean isFrozen = false, isInverted = false, isSwapped = false;
     private String lastHitBy;
     private PlayerMetaData metaData;
 
@@ -45,17 +45,21 @@ public class Player extends Sprite {
         left = new Animation(1 / 2f, playerAtlas.findRegions(model + "left"));
         right = new Animation(1 / 2f, playerAtlas.findRegions(model + "right"));
         burnt = new Animation(1 / 6f, playerAtlas.findRegions(model + "burnt"));
+        swap = new Animation(1 / 8f, playerAtlas.findRegions(model + "swap"));
+        freeze = new Animation(1 / 8f, playerAtlas.findRegions(model + "freeze"));
 
         forward.setPlayMode(Animation.PlayMode.LOOP);
         backward.setPlayMode(Animation.PlayMode.LOOP);
         left.setPlayMode(Animation.PlayMode.LOOP);
         right.setPlayMode(Animation.PlayMode.LOOP);
         burnt.setPlayMode(Animation.PlayMode.LOOP);
+        swap.setPlayMode(Animation.PlayMode.LOOP);
+        freeze.setPlayMode(Animation.PlayMode.LOOP);
     }
-
 
     // Given matrix position, set position on map (non-matrix)
     public void setPlayerPosition(int x, int y) {
+        float _x, _y;
         if (x < 0)
             x = 0;
         if (x > 9)
@@ -64,9 +68,14 @@ public class Player extends Sprite {
             y = 0;
         if (y > 7)
             y = 7;
-        float _x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 4);
 
-        float _y = collisionLayer.getTileHeight() / 4 + collisionLayer.getTileHeight() * (y + 1);
+        if (isFrozen || isSwapped) {
+            _x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 4);
+            _y = collisionLayer.getTileHeight() * (y + 1);
+        } else {
+            _x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 4);
+            _y = collisionLayer.getTileHeight() / 4 + collisionLayer.getTileHeight() * (y + 1);
+        }
         this.setPosition(_x, _y);
     }
 
@@ -118,13 +127,17 @@ public class Player extends Sprite {
         facing = 8;
     }
 
-    public void animate(float delta) {
-        animationTime += delta + 0.01;
-//        forward.
-        setRegion(isDead ? burnt.getKeyFrame(animationTime) : facing == 4 ? left.getKeyFrame(animationTime) : facing == 6 ? right.getKeyFrame(animationTime) :
-                facing == 2 ? backward.getKeyFrame(animationTime) : forward.getKeyFrame(animationTime));
+    public void toggleSwap(boolean yesNo) {
+        isSwapped = yesNo;
     }
 
+    public void animate(float delta) {
+        animationTime += delta + 0.01;
+        setRegion(isDead ? burnt.getKeyFrame(animationTime) : isFrozen ? freeze.getKeyFrame(animationTime) :
+                isSwapped ? swap.getKeyFrame(animationTime) : facing == 4 ? left.getKeyFrame(animationTime) :
+                        facing == 6 ? right.getKeyFrame(animationTime) : facing == 2 ? backward.getKeyFrame(animationTime) :
+                                forward.getKeyFrame(animationTime));
+    }
 
     // shuriken
     public boolean isHit(float x, float y) {
@@ -171,13 +184,14 @@ public class Player extends Sprite {
         // and eliminate interaction for when user is frozen and then inverted or something like that.
         // TL;DR GOT LAZY
         if (speed == 1 && !isInvulnerable) {
-            // other freezing animations?
             setSpeed(0);
+            isFrozen = true;
             new DelayedThread(2000l) {
                 @Override
                 public void run() {
                     super.run();
                     setSpeed(1);
+                    isFrozen = false;
                 }
             }.start();
 
@@ -286,7 +300,6 @@ public class Player extends Sprite {
      * @param y
      */
     public void dieAndSpawnAt(final int x, final int y) {
-
         // Remove from render list,
 //            gameWorld.removePlayer(this);
         isDead = true;

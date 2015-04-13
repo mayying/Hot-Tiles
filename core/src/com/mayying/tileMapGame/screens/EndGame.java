@@ -39,12 +39,12 @@ public class EndGame implements Screen {
     private TextButton mainMenu, rematch;
     private TextureAtlas atlas;
     private ArrayList<Label> label = new ArrayList<>();
-//    private ArrayList<ScoreBoard.Score> scores;
-    HashMap<String,Boolean> rematchPoll = new HashMap<>();
+    //    private ArrayList<ScoreBoard.Score> scores;
+    HashMap<String, Boolean> rematchPoll = new HashMap<>();
 
     public EndGame(GameWorld world) {
         this.world = world;
-        for (String p: Play.getMultiplayerMessaging().getJoinedParticipants()) {
+        for (String p : Play.getMultiplayerMessaging().getJoinedParticipants()) {
             rematchPoll.put(p, false);
         }
     }
@@ -56,7 +56,7 @@ public class EndGame implements Screen {
         batch = new SpriteBatch();
         atlas = new TextureAtlas(Gdx.files.internal("endGame/endGame.txt"));
         Player devicePlayer = world.getDevicePlayer();
-        if(scores.get(0).getPlayer().getName().equals(devicePlayer.getName()))
+        if (scores.get(0).getPlayer().getName().equals(devicePlayer.getName()))
             background = new Sprite(new Texture(Gdx.files.internal("endGame/backgroundLose.png")));
         else {
             background = new Sprite(new Texture(Gdx.files.internal("endGame/" + devicePlayer.getModel() + "win.png")));
@@ -74,21 +74,21 @@ public class EndGame implements Screen {
         scoreBoard.setSize(728, 400);
         scoreBoard.align(Align.top);
         //Headings
-        scoreBoard.add(getCenteredLabel("Rank",skin)).width(150).padTop(100);
-        scoreBoard.add(getCenteredLabel("Player",skin)).width(278).padTop(100);
-        scoreBoard.add(getCenteredLabel("K/D",skin)).width(150).padTop(100);
-        scoreBoard.add(getCenteredLabel("Score",skin)).width(150).padTop(100).row();
+        scoreBoard.add(getCenteredLabel("Rank", skin)).width(150).padTop(100);
+        scoreBoard.add(getCenteredLabel("Player", skin)).width(278).padTop(100);
+        scoreBoard.add(getCenteredLabel("K/D", skin)).width(150).padTop(100);
+        scoreBoard.add(getCenteredLabel("Score", skin)).width(150).padTop(100).row();
 
-
-        for (int i = 0; i < scores.size(); i++) {
+        int index = 0;
+        for (int i = scores.size() - 1; i > 0; i++) {
             ScoreBoard.Score s = scores.get(i);
             Player p = s.getPlayer();
             // Rank
-            scoreBoard.add(getCenteredLabel(String.valueOf(i + 1),skin)).width(150).padTop(10);
+            scoreBoard.add(getCenteredLabel(String.valueOf(++index), skin)).width(150).padTop(10);
             // Name
-            scoreBoard.add(getCenteredLabel(p.getName(),skin)).padTop(10).width(278);
+            scoreBoard.add(getCenteredLabel(p.getName(), skin)).padTop(10).width(278);
             // KD
-            scoreBoard.add(getCenteredLabel(s.getKills() + " / " + s.getDeath(),skin)).padTop(10).width(150);
+            scoreBoard.add(getCenteredLabel(s.getKills() + " / " + s.getDeath(), skin)).padTop(10).width(150);
             // Score
             scoreBoard.add(getCenteredLabel(String.valueOf(s.getScore()), skin)).padTop(10).width(150).row();
         }
@@ -132,34 +132,36 @@ public class EndGame implements Screen {
         stage.addActor(table);
     }
 
-    private Label getCenteredLabel(String s, Skin skin){
+    private Label getCenteredLabel(String s, Skin skin) {
         Label l = new Label(s, skin);
         l.setAlignment(Align.center);
         return l;
     }
 
     boolean leavingGame = false;
-    public void leaveGame(){
+
+    public void leaveGame() {
         leavingGame = true;
     }
 
     boolean startGame = false;
+
     public void startGame() {
         startGame = true;
     }
 
-    public void rematchButtonClicked(){
+    public void rematchButtonClicked() {
         //im the host
-        if (Play.getMultiplayerMessaging().getMyId().equals(Play.getMultiplayerMessaging().getHostId())){
+        if (Play.getMultiplayerMessaging().getMyId().equals(Play.getMultiplayerMessaging().getHostId())) {
             setRematch(!rematchPoll.get(Play.getMultiplayerMessaging().getMyId()));
             Play.broadcastMessage("rematchAcknowledged," + Play.getMultiplayerMessaging().getMyId()
-                    +"," + String.valueOf(rematchPoll.get(Play.getMultiplayerMessaging().getMyId())));
+                    + "," + String.valueOf(rematchPoll.get(Play.getMultiplayerMessaging().getMyId())));
         } else {
             Play.broadcastMessage("rematchRequest," + String.valueOf(!rematchPoll.get(Play.getMultiplayerMessaging().getMyId())));
         }
     }
 
-    public void setRematch(Boolean stat){
+    public void setRematch(Boolean stat) {
         rematchPoll.put(Play.getMultiplayerMessaging().getMyId(), stat);
         if (stat) {
             rematch.setText("cancel rematch");
@@ -168,28 +170,28 @@ public class EndGame implements Screen {
         }
     }
 
-    public void rematchCheck(){
-        for (String msg : Play.getMultiplayerMessaging().getMessageBuffer()){
+    public void rematchCheck() {
+        for (String msg : Play.getMultiplayerMessaging().getMessageBuffer()) {
             String[] message = msg.split(",");
             String command = message[1];
             // <host_id>, <rematchAcknowledged>, <client_id>, <rematchPoll>
             if (command.equals("rematchAcknowledged") && Play.getMultiplayerMessaging().getHostId().equals(message[0])) {
                 rematchPoll.put(message[2], Boolean.valueOf(message[3]));
                 //client update text
-                if (Play.getMultiplayerMessaging().getMyId().equals(message[2])){
+                if (Play.getMultiplayerMessaging().getMyId().equals(message[2])) {
                     setRematch(Boolean.valueOf(message[3]));
                 }
             }
             //im the host
             // <client_id>, <rematchRequest>, <rematchPoll>
-            if (Play.getMultiplayerMessaging().getMyId().equals(Play.getMultiplayerMessaging().getHostId())){
+            if (Play.getMultiplayerMessaging().getMyId().equals(Play.getMultiplayerMessaging().getHostId())) {
                 if (command.equals("rematchRequest")) {
                     rematchPoll.put(message[0], Boolean.valueOf(message[2]));
-                    Play.broadcastMessage("rematchAcknowledged,"+message[0]+","+message[2]);
+                    Play.broadcastMessage("rematchAcknowledged," + message[0] + "," + message[2]);
                 }
             }
         }
-        for (String key : rematchPoll.keySet()){
+        for (String key : rematchPoll.keySet()) {
             if (!rematchPoll.get(key))
                 return;
         }
@@ -198,11 +200,11 @@ public class EndGame implements Screen {
 
     @Override
     public void render(float delta) {
-        if (leavingGame){
+        if (leavingGame) {
             leavingGame = false;
             ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(Play.getMultiplayerMessaging()));
         }
-        if (startGame){
+        if (startGame) {
             startGame = false;
             ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector(Play.getMultiplayerMessaging()));
         }
@@ -234,7 +236,6 @@ public class EndGame implements Screen {
 
     @Override
     public void resume() {
-
     }
 
     @Override
@@ -247,7 +248,7 @@ public class EndGame implements Screen {
         batch.dispose();
         skin.dispose();
         atlas.dispose();
-
-
+        world.dispose();
+        stage.dispose();
     }
 }

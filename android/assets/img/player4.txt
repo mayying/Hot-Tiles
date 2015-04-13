@@ -44,31 +44,59 @@ player_4_forward
   orig: 62, 70
   offset: 0, 0
   index: 2
-player_4_left
+player_4_freeze
   rotate: false
   xy: 386, 2
+  size: 80, 90
+  orig: 80, 90
+  offset: 0, 0
+  index: 1
+player_4_freeze
+  rotate: false
+  xy: 468, 2
+  size: 80, 90
+  orig: 80, 90
+  offset: 0, 0
+  index: 2
+player_4_left
+  rotate: false
+  xy: 550, 2
   size: 62, 70
   orig: 62, 70
   offset: 0, 0
   index: 1
 player_4_left
   rotate: false
-  xy: 450, 2
+  xy: 614, 2
   size: 62, 70
   orig: 62, 70
   offset: 0, 0
   index: 2
 player_4_right
   rotate: false
-  xy: 514, 2
+  xy: 678, 2
   size: 62, 70
   orig: 62, 70
   offset: 0, 0
   index: 1
 player_4_right
   rotate: false
-  xy: 578, 2
+  xy: 742, 2
   size: 62, 70
   orig: 62, 70
+  offset: 0, 0
+  index: 2
+player_4_swap
+  rotate: false
+  xy: 806, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 1
+player_4_swap
+  rotate: false
+  xy: 908, 2
+  size: 100, 100
+  orig: 100, 100
   offset: 0, 0
   index: 2

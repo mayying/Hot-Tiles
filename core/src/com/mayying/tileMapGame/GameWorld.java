@@ -56,13 +56,12 @@ public class GameWorld {
     public final Vector<Sprite> thunder = new Vector<>();
 
 
-
     private GameWorld(TiledMapTileLayer playableLayer, String myId, ArrayList<PlayerMetaData> metaData,
                       Play play) {
         this.play = play;
         ScoreBoard.getInstance().reset();
         // Initialize all players
-        for (PlayerMetaData data: metaData) {
+        for (PlayerMetaData data : metaData) {
             Player player = new Player(playableLayer, data);
             player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
             register(player);
@@ -135,7 +134,7 @@ public class GameWorld {
         for (int i = 0; i < mines.size(); i++) {
             mines.get(i).draw(batch);
         }
-        for(int i = 0; i < thunder.size(); i++){
+        for (int i = 0; i < thunder.size(); i++) {
             thunder.get(i).draw(batch);
         }
 
@@ -263,18 +262,23 @@ public class GameWorld {
         mine.setAlpha(0);
         mines.remove(mine);
     }
-    public synchronized void addThunder(Thunderbolt t){thunder.add(t);}
+
+    public synchronized void addThunder(Thunderbolt t) {
+        thunder.add(t);
+    }
+
     public synchronized void removeThunder(Thunderbolt t) {
         t.getTexture().dispose();
         t.setAlpha(0);
         thunder.remove(t);
     }
+
     public void setPlayerPosition(String playerId, Vector2 pos, int facing) {
         Player p = players.get(playerId);
         if (p != null) {
             p.setFacing(facing);
             p.setPlayerPosition((int) pos.x, (int) pos.y);
-        }else{
+        } else {
             Gdx.app.log(TAG, "Error while setting player's position. Player is null");
         }
     }
@@ -297,7 +301,7 @@ public class GameWorld {
     public void lightningAt(final Float x, final Float y, final String senderId) {
         // todo - Delay this
         new Thunderbolt(x, y, playableLayer);
-        if (devicePlayer.getPlayerPosition().equals(new Vector2(x,y))){
+        if (devicePlayer.getPlayerPosition().equals(new Vector2(x, y))) {
             devicePlayer.setLastHitBy(senderId);
             devicePlayer.die();
         }

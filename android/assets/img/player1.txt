@@ -25,50 +25,78 @@ player_1_burnt
   index: 1
 player_1_burnt
   rotate: false
-  xy: 212, 2
+  xy: 2, 74
   size: 68, 70
   orig: 68, 70
   offset: 0, 0
   index: 2
 player_1_forward
   rotate: false
-  xy: 282, 2
+  xy: 72, 74
   size: 68, 70
   orig: 68, 70
   offset: 0, 0
   index: 1
 player_1_forward
   rotate: false
-  xy: 352, 2
+  xy: 142, 74
   size: 68, 70
   orig: 68, 70
   offset: 0, 0
   index: 2
+player_1_freeze
+  rotate: false
+  xy: 2, 146
+  size: 80, 90
+  orig: 80, 90
+  offset: 0, 0
+  index: 1
+player_1_freeze
+  rotate: false
+  xy: 84, 146
+  size: 80, 90
+  orig: 80, 90
+  offset: 0, 0
+  index: 2
 player_1_left
   rotate: false
-  xy: 422, 2
+  xy: 166, 146
   size: 68, 70
   orig: 68, 70
   offset: 0, 0
   index: 1
 player_1_left
   rotate: false
-  xy: 492, 2
+  xy: 2, 238
   size: 68, 70
   orig: 68, 70
   offset: 0, 0
   index: 2
 player_1_right
   rotate: false
-  xy: 562, 2
+  xy: 72, 238
   size: 68, 70
   orig: 68, 70
   offset: 0, 0
   index: 1
 player_1_right
   rotate: false
-  xy: 632, 2
+  xy: 142, 238
   size: 68, 70
   orig: 68, 70
+  offset: 0, 0
+  index: 2
+player_1_swap
+  rotate: false
+  xy: 2, 310
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 1
+player_1_swap
+  rotate: false
+  xy: 104, 310
+  size: 100, 100
+  orig: 100, 100
   offset: 0, 0
   index: 2
