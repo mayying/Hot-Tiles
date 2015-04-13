@@ -69,13 +69,12 @@ public class Player extends Sprite {
         if (y > 7)
             y = 7;
 
-        if (isFrozen || isSwapped) {
-            _x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 4);
+        if (isFrozen || isSwapped)
             _y = collisionLayer.getTileHeight() * (y + 1);
-        } else {
-            _x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 4);
+        else
             _y = collisionLayer.getTileHeight() / 4 + collisionLayer.getTileHeight() * (y + 1);
-        }
+
+        _x = collisionLayer.getTileWidth() / 2 - getWidth() / 2 + collisionLayer.getTileWidth() * (x + 4);
         this.setPosition(_x, _y);
     }
 

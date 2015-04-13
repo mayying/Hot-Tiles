@@ -22,23 +22,8 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.mayying.tileMapGame.android" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f75184eb-7abc-43a3-bbf1-4b46b7b39042" name="Default" comment="Corrected animation delta time">
-      <change type="DELETED" beforePath="C:\Users\May\Documents\GitHub\Hot-Tiles\android\assets\img\lightning.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/model_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/model_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/img/player1.png" afterPath="$PROJECT_DIR$/android/assets/img/player1.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/img/player2.png" afterPath="$PROJECT_DIR$/android/assets/img/player2.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/img/player3.png" afterPath="$PROJECT_DIR$/android/assets/img/player3.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/img/player4.png" afterPath="$PROJECT_DIR$/android/assets/img/player4.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/EndGame.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/EndGame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/GameWorld.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/GameWorld.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/multiplayer/MessageParser.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/multiplayer/MessageParser.java" />
+    <list default="true" id="f75184eb-7abc-43a3-bbf1-4b46b7b39042" name="Default" comment="Added animation for freeze and swap.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Player.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/SideBar.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/SideBar.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/powerups/Swap.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/powerups/Swap.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/img/player1.txt" afterPath="$PROJECT_DIR$/android/assets/img/player1.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/img/player2.txt" afterPath="$PROJECT_DIR$/android/assets/img/player2.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/img/player3.txt" afterPath="$PROJECT_DIR$/android/assets/img/player3.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/img/player4.txt" afterPath="$PROJECT_DIR$/android/assets/img/player4.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="TiledMapGame.iws" />
@@ -115,13 +100,13 @@
       <file leaf-file-name="Player.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6138433" vertical-offset="917" max-vertical-offset="8096">
-              <caret line="71" column="20" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
+            <state vertical-scroll-proportion="0.8142077" vertical-offset="895" max-vertical-offset="8074">
+              <caret line="75" column="1" selection-start-line="75" selection-start-column="1" selection-end-line="75" selection-end-column="1" />
               <folding>
-                <element signature="e#4665#4666#0" expanded="true" />
-                <element signature="e#4698#4699#0" expanded="true" />
-                <element signature="e#12978#12979#0" expanded="true" />
-                <element signature="e#13017#13018#0" expanded="true" />
+                <element signature="e#4543#4544#0" expanded="true" />
+                <element signature="e#4576#4577#0" expanded="true" />
+                <element signature="e#12856#12857#0" expanded="true" />
+                <element signature="e#12895#12896#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2272,7 +2257,11 @@
       <created>1428911228658</created>
       <updated>1428911228659</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Added animation for freeze and swap.">
+      <created>1428949366265</created>
+      <updated>1428949366265</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -2311,6 +2300,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875144" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.556701" sideWeight="0.4791444" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21497326" sideWeight="0.5010571" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40778923" sideWeight="0.52192515" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.62657505" sideWeight="0.5149733" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928804" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875144" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2327,7 +2317,6 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2631016" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40778923" sideWeight="0.52192515" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -2381,7 +2370,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="changed getPosition to setPlayerPosition and added getPlayerPosition&#10;" />
     <MESSAGE value="add skin" />
     <MESSAGE value="Sprite Animation" />
     <MESSAGE value="Player burn image and sound" />
@@ -2406,7 +2394,8 @@
     <MESSAGE value="EndGame" />
     <MESSAGE value="Added lightning.png and player4 sprite" />
     <MESSAGE value="Corrected animation delta time" />
-    <option name="LAST_COMMIT_MESSAGE" value="Corrected animation delta time" />
+    <MESSAGE value="Added animation for freeze and swap." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added animation for freeze and swap." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -2768,13 +2757,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6138433" vertical-offset="917" max-vertical-offset="8096">
-          <caret line="71" column="20" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.8142077" vertical-offset="895" max-vertical-offset="8074">
+          <caret line="75" column="1" selection-start-line="75" selection-start-column="1" selection-end-line="75" selection-end-column="1" />
           <folding>
-            <element signature="e#4665#4666#0" expanded="true" />
-            <element signature="e#4698#4699#0" expanded="true" />
-            <element signature="e#12978#12979#0" expanded="true" />
-            <element signature="e#13017#13018#0" expanded="true" />
+            <element signature="e#4543#4544#0" expanded="true" />
+            <element signature="e#4576#4577#0" expanded="true" />
+            <element signature="e#12856#12857#0" expanded="true" />
+            <element signature="e#12895#12896#0" expanded="true" />
           </folding>
         </state>
       </provider>
