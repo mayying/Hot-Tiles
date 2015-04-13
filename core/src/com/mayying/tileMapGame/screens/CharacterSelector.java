@@ -26,6 +26,18 @@ import java.util.List;
 /**
  * Created by May on 8/4/2015.
  */
+
+/**
+ * CharacterSelector Screen allowing players to choose their characters. Initially tried to do this by broadcasting
+ * directly each player's selection. We quickly realized that there was a concurrency issue where the other player selects the
+ * same character before the message was received, thereby allowing both players to use the same character.
+ * We attempted to solve this by adding on the timestamp as well, using it as the comparator to decide who gets to
+ * select it. However this design was not optimal as we would have to deselect and reselect the player's old selection
+ * when the concurrency issue mentioned above occurred, giving the player a less than optimal experience.
+ *
+ * The current implementation chooses one of the players as the host. The other clients have to send requests and poll
+ * for the characters that they want, and the host will decide whether they can select the character.
+ */
 public class CharacterSelector implements Screen {
 
     private static final String TAG = "HT_CHARSEL";
