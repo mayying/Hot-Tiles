@@ -2,7 +2,6 @@ package com.mayying.tileMapGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -18,6 +17,7 @@ import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.Mine;
 import com.mayying.tileMapGame.entities.powerups.SpawnPowerUps;
+import com.mayying.tileMapGame.entities.powerups.Thunderbolt;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUpFactory;
 import com.mayying.tileMapGame.multiplayer.MessageParser;
@@ -264,7 +264,12 @@ public class GameWorld {
         mine.setAlpha(0);
         mines.remove(mine);
     }
-
+    public synchronized void addThunder(Thunderbolt t){thunder.add(t);}
+    public synchronized void removeThunder(Thunderbolt t) {
+        t.getTexture().dispose();
+        t.setAlpha(0);
+        mines.remove(t);
+    }
     public void setPlayerPosition(String playerId, Vector2 pos, int facing) {
         Player p = players.get(playerId);
         if (p != null) {
@@ -291,31 +296,10 @@ public class GameWorld {
     }
 
     public void lightningAt(final Float x, final Float y, final String senderId) {
-        new DelayedThread(1000l){
-            @Override
-            public void run() {
-                super.run();
-                // TODO - draw lightning
-                final Sprite sprite = new Sprite(new Texture(Gdx.files.internal("powerups/thunderbolt.png")));
-                Gdx.app.log("lightning",String.valueOf(x)+", "+String.valueOf(y));
-                sprite.setPosition(x, y);
-                thunder.add(sprite);
-                // bzzzzz
-                if (devicePlayer.getPlayerPosition().equals(new Vector2(x,y))){
-                    devicePlayer.setLastHitBy(senderId);
-                    devicePlayer.die();
-                }
-                synchronized (this){
-                    try {
-                        wait(250l);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    thunder.remove(sprite);
-                }
-
-
-            }
-        }.start();
+        new Thunderbolt(x, y, playableLayer);
+        if (devicePlayer.getPlayerPosition().equals(new Vector2(x,y))){
+            devicePlayer.setLastHitBy(senderId);
+            devicePlayer.die();
+        }
     }
 }

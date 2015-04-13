@@ -146,11 +146,10 @@ public class Play implements Screen {
             final double y = Math.floor(v3.y / collisionLayer.getTileHeight() - 1);
             // Check bounds
             if(x >= 0 && x <= 9 && y >= 0 && y <= 7 ) {
-                Gdx.app.log("Lightning", x+", "+y);
                 lastTouched = System.currentTimeMillis();
                 broadcastMessage(MessageParser.LIGHTNING, String.valueOf(x), String.valueOf(y));
                 // TESTING ONLY
-                GameWorld.getInstance().lightningAt((float)x , (float) y, "");
+                GameWorld.getInstance().lightningAt((float)x , (float) y, world.getDevicePlayer().getID());
             }
         }
 

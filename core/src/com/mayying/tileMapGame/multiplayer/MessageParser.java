@@ -21,7 +21,9 @@ public class MessageParser {
     public static final String LIGHTNING = "b";
 
     /**
-     * Parses the input string and runs the respective methods.
+     * Parses the input string and runs the respective methods. A better design would be to start this
+     * in a separate thread / use wait() + notify() or CyclicBarrier to notify it when a message is added to the message buffer.
+     * Would also be nice to implement message parser callbacks in other classes that require it. IT'S TOO LATE NOW BUT CAN STILL WRITE IN REPORT
      *
      * Param should be in the following format:
      * [Sender id], [Command], [Command Parameter1], [Command Parameter2], [...]

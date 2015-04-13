@@ -268,7 +268,6 @@ public class Player extends Sprite {
     }
 
     private void updateScore() {
-        // TODO - Update score in other devices
         String killerID = getLastHitBy();
         Gdx.app.log("Player " + getID(), "Killed by Player " + killerID);
         ScoreBoard.getInstance().incrementKillsAndOrDeath(killerID.equals(getID()) ? "null" : killerID, getID());
