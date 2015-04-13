@@ -24,10 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by May on 8/4/2015.
- */
-
-/**
  * CharacterSelector Screen allowing players to choose their characters. Initially tried to do this by broadcasting
  * directly each player's selection. We quickly realized that there was a concurrency issue where the other player selects the
  * same character before the message was received, thereby allowing both players to use the same character.

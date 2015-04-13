@@ -138,7 +138,7 @@ public class Play implements Screen {
             }
         }
 
-        if(Gdx.input.justTouched() &&  (System.currentTimeMillis() - lastTouched > 1000l)){
+        if(Gdx.input.justTouched() &&  (System.currentTimeMillis() - lastTouched > 3000l)){
 
             Vector3 v3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(v3);
@@ -165,11 +165,11 @@ public class Play implements Screen {
             //Broadcast Player Location
             if (System.currentTimeMillis() - lastBroadcast > 100) {
                 lastBroadcast = System.currentTimeMillis();
-                multiplayerMessaging.broadcastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
+                broadcastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
 
                 if (!allPlayersReady && iAmReady()){
                     world.playerReady(multiplayerMessaging.getMyId(), randomSeed);
-                    multiplayerMessaging.broadcastMessage("ready," + randomSeed.toString());
+                    broadcastMessage("ready," + randomSeed.toString());
                 }
             }
         }

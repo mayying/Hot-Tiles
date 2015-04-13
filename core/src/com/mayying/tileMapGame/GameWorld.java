@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
@@ -28,7 +27,8 @@ import java.util.HashMap;
 import java.util.Vector;
 
 /**
- * Created by Luccan on 2/3/2015.
+ * Concurrency issues/ design choices:
+ * ????
  */
 
 // MAYBE CHANGE THIS TO A SINGLETON
@@ -37,7 +37,6 @@ public class GameWorld {
     private MyTouchpad myTouchPad;
     private SpawnPowerUps spawnPowerUps = null;
     private PowerUp powerUp = null;
-    private TextureAtlas playerAtlas;
     private Player devicePlayer;
     private boolean blackout = false;
     private static GameWorld instance;
@@ -268,13 +267,15 @@ public class GameWorld {
     public synchronized void removeThunder(Thunderbolt t) {
         t.getTexture().dispose();
         t.setAlpha(0);
-        mines.remove(t);
+        thunder.remove(t);
     }
     public void setPlayerPosition(String playerId, Vector2 pos, int facing) {
         Player p = players.get(playerId);
         if (p != null) {
             p.setFacing(facing);
             p.setPlayerPosition((int) pos.x, (int) pos.y);
+        }else{
+            Gdx.app.log(TAG, "Error while setting player's position. Player is null");
         }
     }
 
@@ -294,6 +295,7 @@ public class GameWorld {
     }
 
     public void lightningAt(final Float x, final Float y, final String senderId) {
+        // todo - Delay this
         new Thunderbolt(x, y, playableLayer);
         if (devicePlayer.getPlayerPosition().equals(new Vector2(x,y))){
             devicePlayer.setLastHitBy(senderId);
