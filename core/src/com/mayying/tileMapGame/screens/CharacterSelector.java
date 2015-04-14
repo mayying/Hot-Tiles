@@ -66,7 +66,7 @@ public class CharacterSelector implements Screen {
     public void show() {
         //TODO fix this. sometimes info are lost
         broadcastMyInfo();
-        // Broadcast again in case message was cleared in end game. This is a hotfix and hopeuflly
+        // Broadcast again in case message was cleared in end game. This is a hotfix and hopefully a better fix will come
         new DelayedThread(1000l){
             @Override
             public void run() {
@@ -148,7 +148,6 @@ public class CharacterSelector implements Screen {
 
 
     private void setDefaultCharacter() {
-        //TODO single player support broz
         Gdx.app.log(TAG, " Setting default character");
         if (imTheHost) {
             toggleButton(0);
@@ -272,6 +271,8 @@ public class CharacterSelector implements Screen {
 
             otherPlayerId = message[2];
             otherPlayerName = message[3];
+            // TODO - REMOVE HOTFIX
+            setOtherPlayerSelection(otherPlayerSel);
             Gdx.app.log(TAG, "Player info from "+message[3]+" received.");
         } else {
             Gdx.app.log("HT_CHARSEL", "Unknown message format: " + msg);
