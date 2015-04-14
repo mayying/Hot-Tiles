@@ -23,7 +23,10 @@ public class Thunderbolt extends Sprite {
             @Override
             public void run() {
                 super.run();
-                GameWorld.getInstance().removeThunder(Thunderbolt.this);
+                GameWorld world = GameWorld.getInstance();
+                if(world!=null) {
+                    world.removeThunder(Thunderbolt.this);
+                }
             }
         }.start();
     }

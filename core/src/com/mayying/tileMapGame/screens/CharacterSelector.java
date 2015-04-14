@@ -272,7 +272,9 @@ public class CharacterSelector implements Screen {
             otherPlayerId = message[2];
             otherPlayerName = message[3];
             // TODO - REMOVE HOTFIX
-            setOtherPlayerSelection(otherPlayerSel);
+            if(otherPlayerSel != -1) {
+                setOtherPlayerSelection(otherPlayerSel);
+            }
             Gdx.app.log(TAG, "Player info from "+message[3]+" received.");
         } else {
             Gdx.app.log("HT_CHARSEL", "Unknown message format: " + msg);
