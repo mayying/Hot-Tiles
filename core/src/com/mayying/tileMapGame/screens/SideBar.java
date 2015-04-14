@@ -51,6 +51,7 @@ public class SideBar implements Screen {
     private ArrayList<Score> score;
     private String powerUpName;
     private ImageButtonStyle imageButtonAStyle, imageButtonBStyle;
+    private boolean mute = false;
 
     volatile static int timeLeft = 1;
 
@@ -63,10 +64,6 @@ public class SideBar implements Screen {
     public SideBar(GameWorld world) {
         this.world = world;
         hudCamera = new OrthographicCamera();
-//        min = 1;
-//        sec = 30;
-//        min = 0;
-//        sec = 5;
         labelStyle = new LabelStyle();
         // lmao should have made an arraylist/map to store them properly, initialize according to num players etc
         playerStyle = new LabelStyle();
@@ -105,8 +102,14 @@ public class SideBar implements Screen {
         sound.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Jukebox.toggleMute();
-                Jukebox.toggleMute();
+                if (!mute) {
+                    mute = true;
+                    Jukebox.toggleMute("background", mute);
+                } else {
+                    mute = false;
+                    Jukebox.toggleMute("background", mute);
+
+                }
             }
         });
         question = new ImageButton(skin, "question");

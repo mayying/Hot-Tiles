@@ -1,5 +1,6 @@
 package com.mayying.tileMapGame.screens;
 
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -17,8 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.multiplayer.ConnectionHelper;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 import com.mayying.tileMapGame.multiplayer.SinglePlayerDummyMessaging;
@@ -62,11 +64,12 @@ public class MainMenu implements Screen {
 
     @Override
     public void show() {
+        Gdx.app.log("MainMenu", "is called");
         startGame = false;
+
         tweenManager = new TweenManager();
         Tween.registerAccessor(Actor.class, new ActorAccessor());
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
-
 
         batch = new SpriteBatch();
         background = new Sprite(new Texture(Gdx.files.internal("mainMenu/background.png")));
@@ -87,9 +90,16 @@ public class MainMenu implements Screen {
         heading = new Label("Hot Tiles", skin);
         buttonPractice = new TextButton("Practice", skin);
         menuActors.add(buttonPractice);
-        buttonPractice.addListener(new ClickListener() {
+        buttonPractice.addListener(new InputListener() {
+
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Jukebox.play("buttonPressed");
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 stage.addAction(Actions.sequence(Actions.moveBy(-stage.getWidth(), 0, 0.25f), Actions.run(new Runnable() {
                     @Override
                     public void run() {
@@ -102,9 +112,15 @@ public class MainMenu implements Screen {
 
         buttonFriends = new TextButton("Friends", skin);
         menuActors.add(buttonFriends);
-        buttonFriends.addListener(new ClickListener() {
+        buttonFriends.addListener(new InputListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Jukebox.play("buttonPressed");
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (multiplayerMessaging.isLoggedIn()) {
                     showLoading();
                     multiplayerMessaging.startQuickGame();
@@ -113,21 +129,27 @@ public class MainMenu implements Screen {
                     multiplayerMessaging.signIn();
                 }
             }
-
-            ;
         });
 
         Gdx.app.log("MainMenu.java", "switchScreen: " + startGame + " ConnectionHelper.STATE: " + ConnectionHelper.STATE);
 
         buttonExit = new TextButton("Exit", skin);
         menuActors.add(buttonExit);
-        buttonExit.addListener(new ClickListener() {
-                                   @Override
-                                   public void clicked(InputEvent event, float x, float y) {
-                                       multiplayerMessaging.exit();
-                                   };
-                               }
-        );
+
+        buttonExit.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Jukebox.play("buttonPressed");
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                Jukebox.stopAll();
+                Jukebox.stopMusic("mainMenu");
+                multiplayerMessaging.exit();
+            }
+        });
 
         //tableMenu
         table = new Table(skin);
@@ -157,6 +179,8 @@ public class MainMenu implements Screen {
                 .push(Tween.to(buttonFriends, ActorAccessor.ALPHA, .2f).target(1))
                 .push(Tween.to(buttonExit, ActorAccessor.ALPHA, .2f).target(1))
                 .end().start(tweenManager);
+
+        Jukebox.playMusic("mainMenu");
     }
 
     public void clearMenu() {
@@ -167,7 +191,8 @@ public class MainMenu implements Screen {
 
     public void showMenuSignIn() {
         clearMenu();
-        if (buttonPractice!=null && buttonFriends!=null && buttonExit!=null) {
+
+        if (buttonPractice != null && buttonFriends != null && buttonExit != null) {
             buttonPractice.setVisible(true);
             buttonFriends.setVisible(true);
             buttonExit.setVisible(true);

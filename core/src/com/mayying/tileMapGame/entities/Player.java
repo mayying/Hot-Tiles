@@ -25,12 +25,12 @@ public class Player extends Sprite {
     private Animation forward, backward, left, right, burnt, swap, freeze;
     private float speed = 1, animationTime = 0f;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
-    private boolean isFrozen = false, isInverted = false, isSwapped = false;
+    private boolean isInverted = false;
     private String lastHitBy;
     private PlayerMetaData metaData;
 
     public PowerUp[] powerUpList = new PowerUp[2];
-    public boolean isInvulnerable = false, isDead = false;
+    public boolean isInvulnerable = false, isDead = false, isFrozen = false, isSwapped = false;
 
     public Player(TiledMapTileLayer collisionLayer, PlayerMetaData data) {
         super(new Animation(1 / 2f, data.getAtlas().findRegions(data.getModel() + "forward")).getKeyFrame(0));
@@ -55,6 +55,8 @@ public class Player extends Sprite {
         burnt.setPlayMode(Animation.PlayMode.LOOP);
         swap.setPlayMode(Animation.PlayMode.LOOP);
         freeze.setPlayMode(Animation.PlayMode.LOOP);
+
+
     }
 
     // Given matrix position, set position on map (non-matrix)
@@ -128,6 +130,7 @@ public class Player extends Sprite {
 
     public void toggleSwap(boolean yesNo) {
         isSwapped = yesNo;
+        Gdx.app.log("Player", "is Swapped? " + isSwapped);
     }
 
     public void animate(float delta) {
@@ -175,7 +178,7 @@ public class Player extends Sprite {
 
     public void freeze(String lastHitPlayerID) {
         setLastHitBy(lastHitPlayerID); //static cause i'm lazy
-        this.freeze(3000l);
+        this.freeze(2000l);
     }
 
     public void freeze(long millis) {
@@ -185,7 +188,8 @@ public class Player extends Sprite {
         if (speed == 1 && !isInvulnerable) {
             setSpeed(0);
             isFrozen = true;
-            new DelayedThread(2000l) {
+            Jukebox.play("freeze");
+            new DelayedThread(millis) {
                 @Override
                 public void run() {
                     super.run();
@@ -201,6 +205,7 @@ public class Player extends Sprite {
         // Last hit is set when called by message parser
         Gdx.app.log("Player", "player inverted");
         if (speed == 1 && !isInvulnerable) {
+            Jukebox.play("confused");
             setSpeed(-1);
             new DelayedThread(4000l) {
                 @Override
@@ -243,6 +248,7 @@ public class Player extends Sprite {
                     // Commented out unsafe method, dead players should not share the same ArrayList
                     // as players because it will lead to conflict
 //                    gameWorld.addPlayer(getPlayer());
+                    Jukebox.stopAll();
                     Jukebox.play("fire");
                     super.run();
                     Jukebox.stop("fire");
@@ -332,6 +338,7 @@ public class Player extends Sprite {
         Gdx.app.log("Player", "player shielded");
         if (!isInvulnerable) {
             isInvulnerable = true;
+            Jukebox.play("shield");
             new DelayedThread(5000l) {
                 @Override
                 public void run() {
@@ -350,6 +357,8 @@ public class Player extends Sprite {
         int xCoordinate = new Random().nextInt(getCollisionLayer().getWidth() - 8);
         int yCoordinate = new Random().nextInt(getCollisionLayer().getHeight() - 2);
         setPlayerPosition(xCoordinate, yCoordinate);
+        isFrozen = false;
+        isSwapped = false;
         isDead = false;
     }
 

@@ -53,10 +53,14 @@ public class SpawnPowerUps implements Collidable {
                 // picking random stringID from list
                 powerUpIsPickedUp = false;
                 powerUp = powerUpFactory.createPowerUp(spawnRNG.nextInt(5)); //TODO - only 5? no hardcode?
+//                powerUp = powerUpFactory.createPowerUp(4); //TODO - revert back to to previous line after done debugging
+
                 sprite = new Sprite(powerUp.getTextureVector());
 
                 // set random spawn time for powerup
-                randomSpawnTime = (float) spawnRNG.nextInt(10);
+                //TODO - only 5? no hardcode?
+//                randomSpawnTime = (float) spawnRNG.nextInt(10);
+                randomSpawnTime = (float) spawnRNG.nextInt(1);
 
                 // sprite position
                 coords.x = spawnRNG.nextInt(tileLayer.getWidth() - 8);

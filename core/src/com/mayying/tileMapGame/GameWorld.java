@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.entities.MyTouchpad;
 import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.PlayerMetaData;
@@ -79,6 +80,7 @@ public class GameWorld {
         this.playableLayer = playableLayer;
         this.play = play;
         shapeRenderer = new ShapeRenderer();
+        Jukebox.load("blackout");
     }
 
     public static GameWorld getInstance(TiledMapTileLayer playableLayer, String myId, ArrayList<PlayerMetaData> metaData,
@@ -243,6 +245,7 @@ public class GameWorld {
     public void setBlackout() {
         if (!blackout) {
             blackout = true;
+            Jukebox.play("blackout");
             new DelayedThread(3000l) {
                 @Override
                 public void run() {
@@ -301,6 +304,7 @@ public class GameWorld {
     public void lightningAt(final Float x, final Float y, final String senderId) {
         // todo - Delay this
         new Thunderbolt(x, y, playableLayer);
+        Jukebox.play("lightning");
         if (devicePlayer.getPlayerPosition().equals(new Vector2(x, y))) {
             devicePlayer.setLastHitBy(senderId);
             devicePlayer.die();

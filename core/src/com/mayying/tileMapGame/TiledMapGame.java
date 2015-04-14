@@ -2,6 +2,7 @@ package com.mayying.tileMapGame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 import com.mayying.tileMapGame.screens.CharacterSelector;
 import com.mayying.tileMapGame.screens.EndGame;
@@ -73,7 +74,7 @@ public class TiledMapGame extends Game {
             inGame = false;
             Play s = (Play) screen;
             s.leaveGame();
-        } else if (screen instanceof EndGame){
+        } else if (screen instanceof EndGame) {
             inGame = false;
             EndGame s = (EndGame) screen;
             s.leaveGame();
@@ -84,8 +85,23 @@ public class TiledMapGame extends Game {
         return inGame;
     }
 
+    public void loadSound(){
+        Jukebox.loadMusic("mainMenu");
+        Jukebox.loadMusic("background");
+        Jukebox.load("freeze");
+        Jukebox.load("confused");
+        Jukebox.load("shield");
+        Jukebox.load("freezeMine");
+        Jukebox.load("fire");
+        Jukebox.load("lightning");
+        Jukebox.load("swap");
+        Jukebox.load("blackout");
+        Jukebox.load("buttonPressed");
+    }
+
     @Override
     public void create() {
+        loadSound();
         if (mode.equals("desktop")) {
             setScreen(new CharacterSelector());
         } else if (mode.equals("android")) {

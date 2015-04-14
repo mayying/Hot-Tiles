@@ -3,8 +3,10 @@ package com.mayying.tileMapGame.multiplayer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.GameWorld;
+import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.ScoreBoard;
+import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.screens.Play;
 
 import java.util.Arrays;
@@ -37,15 +39,19 @@ public class MessageParser {
      */
     public static void parse(String inp) {
         String[] message = inp.split(",");
-        String senderId = message[0];
+        final String senderId = message[0];
         String command = message[1];
         GameWorld world = GameWorld.getInstance();
         if (world != null) {
-            Player player = world.getDevicePlayer();
+            final Player player = world.getDevicePlayer();
             switch (command) {
                 case COMMAND_POSITION:
 //                Gdx.app.log(TAG, String.format("Position of player %s: %s, %s", senderId, message[2], message[3]));
+
                     world.setPlayerPosition(senderId, new Vector2(Integer.valueOf(message[2]), Integer.valueOf(message[3])), Integer.valueOf(message[4]));
+                    if (world.getPlayer(senderId).isFrozen || world.getPlayer(senderId).isDead || world.getPlayer(senderId).isSwapped) {
+                        world.getPlayer(senderId).animate(Gdx.graphics.getDeltaTime() * 20);
+                    }
                     world.getPlayer(senderId).animate(Gdx.graphics.getDeltaTime() * 45); //testing out animation. not sure what delta time should be
                     break;
 
@@ -87,6 +93,14 @@ public class MessageParser {
                         case "swap":
                             // Format: "effect", "swap", x, y , mode
                             if (message[5].equals("1")) {
+                                Jukebox.play("swap");
+                                world.getPlayer(senderId).toggleSwap(true);
+                                player.toggleSwap(true);
+
+                                Gdx.app.log(TAG, "swapped? " + world.getPlayer(senderId).isSwapped);
+                                world.getPlayer(senderId).animate(Gdx.graphics.getDeltaTime() * 20);
+                                player.animate(Gdx.graphics.getDeltaTime() * 20);
+
                                 // broadcast back your location
                                 Vector2 playerPos = player.getPlayerPosition();
                                 int xCoord = (int) playerPos.x;
@@ -95,8 +109,17 @@ public class MessageParser {
                                 // only setting last hit for the victim.
                                 player.setLastHitBy(senderId);
                             }
-                            player.setPlayerPosition(Integer.valueOf(message[3]), Integer.valueOf(message[4]));
-                            player.toggleSwap(false);
+
+                            new DelayedThread(10000l, player, message[3], message[4]) {
+                                @Override
+                                public void run() {
+                                    Gdx.app.log(TAG, "SWAP DONE");
+                                    getPlayer().setPlayerPosition(Integer.valueOf(getMessage()[0]), Integer.valueOf(getMessage()[1]));
+                                    getPlayer().toggleSwap(false);
+                                    GameWorld.getInstance().getPlayer(senderId).toggleSwap(false);
+                                }
+                            }.start();
+
                             break;
                     }
                     break;

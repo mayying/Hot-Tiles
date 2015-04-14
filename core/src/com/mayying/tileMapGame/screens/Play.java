@@ -85,8 +85,10 @@ public class Play implements Screen {
         sideBar = new SideBar(world);
         sideBar.show();
 
-        Jukebox.load("sounds/fire.mp3", "fire");
         initializedTimeStamp = System.currentTimeMillis();
+
+        Jukebox.stopMusic("mainMenu");
+        Jukebox.playMusic("background");
     }
 
     public void initializeBurningTiles(Long randomSeed) {
@@ -103,7 +105,8 @@ public class Play implements Screen {
     }
 
     boolean leavingGame = false;
-    public void leaveGame(){
+
+    public void leaveGame() {
         leavingGame = true;
     }
 
@@ -111,10 +114,11 @@ public class Play implements Screen {
 
     @Override
     public void render(float delta) {
-        if (leavingGame){
+        if (leavingGame) {
             leavingGame = false;
             ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(Play.getMultiplayerMessaging()));
         }
+
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -129,8 +133,8 @@ public class Play implements Screen {
         world.drawAndUpdate(renderer.getBatch());
 
         if (this.allPlayersReady) {
-            if (SideBar.timeLeft>0) {
-                count = Math.min(5 + (90 - SideBar.timeLeft)/10 * TILES_PER_INTERVAL, MAX_TILES); //testin
+            if (SideBar.timeLeft > 0) {
+                count = Math.min(5 + (90 - SideBar.timeLeft) / 10 * TILES_PER_INTERVAL, MAX_TILES); //testin
             }
 
             for (int i = 0; i < count; i++) {
@@ -138,18 +142,18 @@ public class Play implements Screen {
             }
         }
 
-        if(Gdx.input.justTouched() &&  (System.currentTimeMillis() - lastTouched > 3000l)){
+        if (Gdx.input.justTouched() && (System.currentTimeMillis() - lastTouched > 3000l)) {
 
             Vector3 v3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(v3);
             final double x = Math.floor(v3.x / GameWorld.TILE_WIDTH) - 4;
             final double y = Math.floor(v3.y / collisionLayer.getTileHeight() - 1);
             // Check bounds
-            if(x >= 0 && x <= 9 && y >= 0 && y <= 7 ) {
+            if (x >= 0 && x <= 9 && y >= 0 && y <= 7) {
                 lastTouched = System.currentTimeMillis();
                 broadcastMessage(MessageParser.LIGHTNING, String.valueOf(x), String.valueOf(y));
                 // TESTING ONLY
-                GameWorld.getInstance().lightningAt((float)x , (float) y, world.getDevicePlayer().getID());
+                GameWorld.getInstance().lightningAt((float) x, (float) y, world.getDevicePlayer().getID());
             }
         }
 
@@ -167,7 +171,7 @@ public class Play implements Screen {
                 lastBroadcast = System.currentTimeMillis();
                 broadcastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
 
-                if (!allPlayersReady && iAmReady()){
+                if (!allPlayersReady && iAmReady()) {
                     world.playerReady(multiplayerMessaging.getMyId(), randomSeed);
                     broadcastMessage("ready," + randomSeed.toString());
                 }
@@ -176,7 +180,8 @@ public class Play implements Screen {
     }
 
     public static final long GAME_SETUP_TIME = 5000;
-    private boolean iAmReady(){
+
+    private boolean iAmReady() {
         return System.currentTimeMillis() - initializedTimeStamp > GAME_SETUP_TIME;
     }
 
@@ -208,12 +213,11 @@ public class Play implements Screen {
         world.dispose();
     }
 
-
-
     //TODO This is bullshit
     public static MultiplayerMessaging getMultiplayerMessaging() {
         return multiplayerMessaging;
     }
+
     public static void broadcastMessage(String msg) {
         Gdx.app.log(TAG, "Broadcasting message: " + msg);
         multiplayerMessaging.broadcastMessage(msg);

@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.GameWorld;
+import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.ScoreBoard;
 
@@ -51,7 +52,9 @@ public class EndGame implements Screen {
 
     @Override
     public void show() {
-        Gdx.app.log("EndGame", "EndGame Screen initialized");
+        Jukebox.stopAll();
+        Jukebox.stopMusic("background");
+
         ArrayList<ScoreBoard.Score> scores = ScoreBoard.getInstance().getScores();
         batch = new SpriteBatch();
         atlas = new TextureAtlas(Gdx.files.internal("endGame/endGame.txt"));
@@ -80,7 +83,7 @@ public class EndGame implements Screen {
         scoreBoard.add(getCenteredLabel("Score", skin)).width(150).padTop(100).row();
 
         int index = 0;
-        for (int i = scores.size() - 1; i > 0; i++) {
+        for (int i = scores.size() - 1; i > -1; i--) {
             ScoreBoard.Score s = scores.get(i);
             Player p = s.getPlayer();
             // Rank
@@ -103,6 +106,7 @@ public class EndGame implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("EndGame", "touched");
+                Jukebox.play("buttonPressed");
                 Play.getMultiplayerMessaging().leaveGame();
             }
         });
@@ -117,6 +121,7 @@ public class EndGame implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                Jukebox.play("buttonPressed");
                 rematchButtonClicked();
             }
         });
@@ -127,8 +132,6 @@ public class EndGame implements Screen {
         table.add(scoreBoard).colspan(2).row();
         table.add(mainMenu);
         table.add(rematch);
-//        table.setDebug(true);
-//        scoreBoard.setDebug(true);
         stage.addActor(table);
     }
 

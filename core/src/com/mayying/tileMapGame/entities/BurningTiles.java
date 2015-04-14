@@ -58,6 +58,7 @@ public class BurningTiles implements Collidable{
                 foreground.setCell(xCoord + 4, yCoord + 1, cell);
                 cell = foreground.getCell(xCoord + 4, yCoord + 1);
             }else if(currentAnimationFrame >= 9){
+//                TODO: UNCOMMENT AFTER DONE DEBUGGING
                 collisionCheck();
             }
 
