@@ -31,16 +31,16 @@ public class Jukebox {
     }
 
     public static void play(String name) {
-        Gdx.app.log("Jukebox", "MUTE? " + mute + " Now playing: " + name);
+//        Gdx.app.log("Jukebox", "MUTE? " + mute + " Now playing: " + name);
         if (!mute) {
-            Gdx.app.log("Jukebox", "Now playing: " + name);
+//            Gdx.app.log("Jukebox", "Now playing: " + name);
             sounds.get(name).play();
         }
     }
 
     public static void playMusic(String name) {
         if (!mute) {
-            Gdx.app.log("Jukebox", "Now playing: " + name);
+//            Gdx.app.log("Jukebox", "Now playing: " + name);
             musics.get(name).play();
             musics.get(name).setLooping(true);
         }

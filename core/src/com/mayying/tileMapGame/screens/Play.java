@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.BurningTiles;
@@ -45,7 +46,9 @@ public class Play implements Screen {
     private ArrayList<PlayerMetaData> metaData;
     private TiledMapTileLayer collisionLayer;
     private long lastTouched = 0l;
-
+    long lightningDelta;
+    private ProgressBar bar;
+    private boolean cooldown;
     public Play() {
         super();
         multiplayerMessaging = null;
@@ -89,6 +92,18 @@ public class Play implements Screen {
 
         Jukebox.stopMusic("mainMenu");
         Jukebox.playMusic("background");
+// TODO - THIS IS THE PROGRESS BAR
+//
+//        Skin skin = new Skin();
+//        Pixmap pixmap = new Pixmap(10, 10, Pixmap.Format.RGBA8888);
+//        pixmap.setColor(Color.WHITE);
+//        pixmap.fill();
+//        skin.add("white", new Texture(pixmap));
+//        ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle(skin.newDrawable("white",Color.DARK_GRAY), new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/shuriken.png")))));
+////        style.background = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/shuriken.png"))));
+//        bar = new ProgressBar(0,1000, 10, false, style);
+//        bar.setValue(0);
+//        bar.setPosition(250,250);
     }
 
     public void initializeBurningTiles(Long randomSeed) {
@@ -118,7 +133,6 @@ public class Play implements Screen {
             leavingGame = false;
             ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(Play.getMultiplayerMessaging()));
         }
-
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -127,7 +141,7 @@ public class Play implements Screen {
         renderer.getBatch().begin();
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("Background"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("Foreground"));
-
+//        bar.draw(renderer.getBatch(), 50);
         // Screen
         world.playerMovement(delta);
         world.drawAndUpdate(renderer.getBatch());
@@ -142,19 +156,25 @@ public class Play implements Screen {
             }
         }
 
-        if (Gdx.input.justTouched() && (System.currentTimeMillis() - lastTouched > 3000l)) {
-
-            Vector3 v3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(v3);
-            final double x = Math.floor(v3.x / GameWorld.TILE_WIDTH) - 4;
-            final double y = Math.floor(v3.y / collisionLayer.getTileHeight() - 1);
-            // Check bounds
-            if (x >= 0 && x <= 9 && y >= 0 && y <= 7) {
-                lastTouched = System.currentTimeMillis();
-                broadcastMessage(MessageParser.LIGHTNING, String.valueOf(x), String.valueOf(y));
-                // TESTING ONLY
-                GameWorld.getInstance().lightningAt((float) x, (float) y, world.getDevicePlayer().getID());
+        lightningDelta = System.currentTimeMillis() - lastTouched;
+        if(lightningDelta > 1000l) {
+            if (Gdx.input.justTouched()) {
+//                Gdx.app.log("Play", String.valueOf(bar.getValue()));
+                Vector3 v3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+                camera.unproject(v3);
+                final double x = Math.floor(v3.x / GameWorld.TILE_WIDTH) - 4;
+                final double y = Math.floor(v3.y / collisionLayer.getTileHeight() - 1);
+                // Check bounds
+                if (x >= 0 && x <= 9 && y >= 0 && y <= 7) {
+                    Gdx.app.log(TAG, "Sending Thunder strike");
+                    lastTouched = System.currentTimeMillis();
+                    broadcastMessage(MessageParser.LIGHTNING, String.valueOf(x), String.valueOf(y));
+                    // TESTING ONLY
+                    GameWorld.getInstance().lightningAt((float) x, (float) y, world.getDevicePlayer().getID());
+                }
             }
+        }else{
+//            bar.setValue(lightningDelta);
         }
 
         renderer.getBatch().end();
@@ -213,13 +233,15 @@ public class Play implements Screen {
         world.dispose();
     }
 
+
+
     //TODO This is bullshit
     public static MultiplayerMessaging getMultiplayerMessaging() {
         return multiplayerMessaging;
     }
 
     public static void broadcastMessage(String msg) {
-        Gdx.app.log(TAG, "Broadcasting message: " + msg);
+//        Gdx.app.log(TAG, "Broadcasting message: " + msg);
         multiplayerMessaging.broadcastMessage(msg);
     }
 
@@ -228,7 +250,7 @@ public class Play implements Screen {
         for (String arg : args) {
             msg += arg + ",";
         }
-        Gdx.app.log(TAG, "Broadcasting message: " + msg);
+//        Gdx.app.log(TAG, "Broadcasting message: " + msg);
         multiplayerMessaging.broadcastMessage(msg);
     }
 }

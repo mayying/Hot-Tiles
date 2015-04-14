@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.entities.PlayerMetaData;
+import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
 import java.util.ArrayList;
@@ -65,6 +66,15 @@ public class CharacterSelector implements Screen {
     public void show() {
         //TODO fix this. sometimes info are lost
         broadcastMyInfo();
+        // Broadcast again in case message was cleared in end game. This is a hotfix and hopeuflly
+        new DelayedThread(1000l){
+            @Override
+            public void run() {
+                super.run();
+                broadcastMyInfo();
+            }
+        }.start();
+        Gdx.app.log(TAG,"show charsel");
         spriteBatch = new SpriteBatch();
         background = new Sprite(new Texture(Gdx.files.internal("charSel/background.png")));
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -127,14 +137,6 @@ public class CharacterSelector implements Screen {
             imTheHost = multiplayerMessaging.getMyId().equals(multiplayerMessaging.getHostId());
             myPlayerName = multiplayerMessaging.getMyName();
             myPlayerId = multiplayerMessaging.getMyId();
-
-            otherPlayerId = null;
-            for (String id : multiplayerMessaging.getJoinedParticipants()) {
-                if (!id.equals(myPlayerId)) {
-                    otherPlayerId = id;
-//                    Gdx.app.log(TAG,"Other player ID: "+otherPlayerId);
-                }
-            }
         }
         Gdx.app.log(TAG, "I am the host: " + imTheHost);
         setDefaultCharacter();
@@ -147,6 +149,7 @@ public class CharacterSelector implements Screen {
 
     private void setDefaultCharacter() {
         //TODO single player support broz
+        Gdx.app.log(TAG, " Setting default character");
         if (imTheHost) {
             toggleButton(0);
         } else {
@@ -258,6 +261,7 @@ public class CharacterSelector implements Screen {
                     break;
                 case "reply":
                     // lowly client
+//                    Gdx.app.log(TAG,"The Great Leader Approves");
                     setSelection(idx);
                     break;
 
@@ -265,9 +269,10 @@ public class CharacterSelector implements Screen {
             }
         } else if (command.equals("info")) {
             // charsel, info, playerID, playerName
-            Gdx.app.log(TAG, "Player info received.");
+
             otherPlayerId = message[2];
             otherPlayerName = message[3];
+            Gdx.app.log(TAG, "Player info from "+message[3]+" received.");
         } else {
             Gdx.app.log("HT_CHARSEL", "Unknown message format: " + msg);
         }
