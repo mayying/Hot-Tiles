@@ -110,9 +110,10 @@ public class MessageParser {
                                 player.setLastHitBy(senderId);
                             }
 
-                            new DelayedThread(10000l, player, message[3], message[4]) {
+                            new DelayedThread(500l, player, message[3], message[4]) {
                                 @Override
                                 public void run() {
+                                    super.run();
                                     Gdx.app.log(TAG, "SWAP DONE");
                                     getPlayer().setPlayerPosition(Integer.valueOf(getMessage()[0]), Integer.valueOf(getMessage()[1]));
                                     getPlayer().toggleSwap(false);
