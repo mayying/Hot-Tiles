@@ -28,7 +28,7 @@ import java.util.Random;
  */
 
 public class Play implements Screen {
-    public static final int V_WIDTH = 1260, V_HEIGHT = 700, TILES_PER_INTERVAL = 5, MAX_TILES = 40;
+    public static final int V_WIDTH = 1260, V_HEIGHT = 700, TILES_PER_INTERVAL = 3, MAX_TILES = 25;
     private static final String TAG = "HT_Play";
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -92,18 +92,6 @@ public class Play implements Screen {
 
         Jukebox.stopMusic("mainMenu");
         Jukebox.playMusic("background");
-// TODO - THIS IS THE PROGRESS BAR
-//
-//        Skin skin = new Skin();
-//        Pixmap pixmap = new Pixmap(10, 10, Pixmap.Format.RGBA8888);
-//        pixmap.setColor(Color.WHITE);
-//        pixmap.fill();
-//        skin.add("white", new Texture(pixmap));
-//        ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle(skin.newDrawable("white",Color.DARK_GRAY), new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/shuriken.png")))));
-////        style.background = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/shuriken.png"))));
-//        bar = new ProgressBar(0,1000, 10, false, style);
-//        bar.setValue(0);
-//        bar.setPosition(250,250);
     }
 
     public void initializeBurningTiles(Long randomSeed) {
@@ -148,7 +136,7 @@ public class Play implements Screen {
 
         if (this.allPlayersReady) {
             if (SideBar.timeLeft > 0) {
-                count = Math.min(5 + (90 - SideBar.timeLeft) / 10 * TILES_PER_INTERVAL, MAX_TILES); //testin
+                count = Math.min(5 + (90 - SideBar.timeLeft) / 10 * TILES_PER_INTERVAL, MAX_TILES); //testing
             }
 
             for (int i = 0; i < count; i++) {

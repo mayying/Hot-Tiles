@@ -51,12 +51,12 @@ public class SideBar implements Screen {
     private ArrayList<Score> score;
     private String powerUpName;
     private ImageButtonStyle imageButtonAStyle, imageButtonBStyle;
-    private boolean mute = false;
+    private boolean mute = false, remind = false;
 
     volatile static int timeLeft = 1;
 
     private float gameTime = 60 + 30;
-//        private float gameTime = 5;
+    //        private float gameTime = 5;
     private int min, sec;
     private boolean timeFrozen = true;
     private static boolean scoreUpdated = true;
@@ -217,10 +217,20 @@ public class SideBar implements Screen {
         table.add(scoreBoardTable).left().expandX().height(178).width(210);
         table.add(descriptionTable).fill().colspan(3).row();
 
-        table.add(world.getMyTouchPad().getTouchPad()).left().expandY().width(210);
+        table.add(world.getMyTouchPad().getTouchPad()).left().expandY().width(300).height(300);
         table.add(subTable).fill().colspan(3);
-
         stage.addActor(table);
+
+//        Skin skin = new Skin();
+//        Pixmap pixmap = new Pixmap(10, 10, Pixmap.Format.RGBA8888);
+//        pixmap.setColor(Color.WHITE);
+//        pixmap.fill();
+//        skin.add("white", new Texture(pixmap));
+//        ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle(skin.newDrawable("white",Color.DARK_GRAY), new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/shuriken.png")))));
+////        style.background = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/shuriken.png"))));
+//        bar = new ProgressBar(0,1000, 10, false, style);
+//        bar.setValue(0);
+//        bar.setPosition(250,250);
 
     }
 
@@ -229,6 +239,10 @@ public class SideBar implements Screen {
             timeLeft = 1; //Allow game to be restarted next time
             ((Game) (Gdx.app.getApplicationListener())).setScreen(new EndGame(world));
 //            Play.getMultiplayerMessaging().leaveGame();
+        } else if (timeLeft == 2 && !remind) {
+            Jukebox.play("reminder");
+            remind = true;
+            timer.setScale(1.5f);
         } else {
             stage.act(delta);
             stage.draw();

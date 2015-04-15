@@ -52,9 +52,8 @@ public class EndGame implements Screen {
 
     @Override
     public void show() {
-        Jukebox.stopAll();
         Jukebox.stopMusic("background");
-
+        Jukebox.playMusic("mainMenu");
         ArrayList<ScoreBoard.Score> scores = ScoreBoard.getInstance().getScores();
         batch = new SpriteBatch();
         atlas = new TextureAtlas(Gdx.files.internal("endGame/endGame.txt"));

@@ -154,6 +154,9 @@ public class MainMenu implements Screen {
             }
         });
 
+        Gdx.app.log("Main Menu", "show called: " + buttonExit.getWidth() + " " + buttonExit.getHeight());
+
+
         //tableMenu
         table = new Table(skin);
         table.setFillParent(true);
@@ -194,7 +197,6 @@ public class MainMenu implements Screen {
 
     public void showMenuSignIn() {
         clearMenu();
-
         if (buttonPractice != null && buttonFriends != null && buttonExit != null) {
             buttonPractice.setVisible(true);
             buttonFriends.setVisible(true);
@@ -233,13 +235,11 @@ public class MainMenu implements Screen {
             }
         }
     }
+
     @Override
     public void resize(int width, int height) {
         table.invalidateHierarchy();
         table.setSize(width, height);
-
-//        camera.setToOrtho(false);
-//        batch.setProjectionMatrix(camera.combined);
     }
 
     @Override
@@ -249,12 +249,13 @@ public class MainMenu implements Screen {
 
     @Override
     public void resume() {
-
+        Gdx.app.log("Main Menu", "resume called: " + buttonExit.getWidth() + " " + buttonExit.getHeight());
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override

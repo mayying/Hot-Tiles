@@ -19,6 +19,7 @@ public class MyTouchpad {
     public MyTouchpad() {
         touchPadSkin = new Skin(Gdx.files.internal("skin/gameSkin.json"), new TextureAtlas(Gdx.files.internal("skin/skin.txt")));
         touchpad = new Touchpad(10, touchPadSkin);
+        touchpad.setSize(400,400);
 
     }
 
