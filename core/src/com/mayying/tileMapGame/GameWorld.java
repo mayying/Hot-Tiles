@@ -177,14 +177,14 @@ public class GameWorld {
             newY -= player.getSpeed();
             player.downPressed();
         }
+
         // Animate player movement
-        // if (velocity.x > 0.5 || velocity.x < -0.5 || velocity.y > 0.5 || velocity.y < -0.5)
         player.animate(delta);
 
         if (System.currentTimeMillis() - lastMovement >= MOVEMENT_FREQUENCY) {
             lastMovement = System.currentTimeMillis();
-
             if (!player.isDead) {
+                Gdx.app.log("GameWorld", "newX: " + newX + " newY: " + newY);
                 player.setPlayerPosition(newX, newY);
             }
         }

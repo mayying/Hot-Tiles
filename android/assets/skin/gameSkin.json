@@ -24,6 +24,6 @@
     },
 
     com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
-       default: { background: "skinRound210x210", knob: "touchKnob" }
+       default: { background: "touchPad", knob: "touchKnob" }
     }
 }

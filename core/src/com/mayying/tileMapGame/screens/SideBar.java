@@ -221,17 +221,6 @@ public class SideBar implements Screen {
         table.add(subTable).fill().colspan(3);
         stage.addActor(table);
 
-//        Skin skin = new Skin();
-//        Pixmap pixmap = new Pixmap(10, 10, Pixmap.Format.RGBA8888);
-//        pixmap.setColor(Color.WHITE);
-//        pixmap.fill();
-//        skin.add("white", new Texture(pixmap));
-//        ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle(skin.newDrawable("white",Color.DARK_GRAY), new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/shuriken.png")))));
-////        style.background = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/shuriken.png"))));
-//        bar = new ProgressBar(0,1000, 10, false, style);
-//        bar.setValue(0);
-//        bar.setPosition(250,250);
-
     }
 
     public void render(float delta) {
@@ -242,7 +231,6 @@ public class SideBar implements Screen {
         } else if (timeLeft == 2 && !remind) {
             Jukebox.play("reminder");
             remind = true;
-            timer.setScale(1.5f);
         } else {
             stage.act(delta);
             stage.draw();

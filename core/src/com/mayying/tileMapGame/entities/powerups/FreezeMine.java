@@ -18,8 +18,7 @@ import com.mayying.tileMapGame.screens.Play;
 public class FreezeMine extends Mine {
 
     public FreezeMine(Player player, TiledMapTileLayer collisionLayer){
-        super(new Sprite(new Texture(Gdx.files.internal("powerups/freezemine.png"))),player,collisionLayer);
-
+        super(new Sprite(new Texture(Gdx.files.internal("powerups/freezeMineS.png"))),player,collisionLayer);
     }
 
     @Override
