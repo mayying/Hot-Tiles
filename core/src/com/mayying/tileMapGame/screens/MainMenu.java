@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -42,15 +43,17 @@ public class MainMenu implements Screen {
     private Sprite background;
     private TextButton buttonPractice, buttonFriends, buttonExit, buttonSignIn, buttonSignOut;
     private Label heading;
-    private List<Actor> menuActors = new ArrayList<Actor>();
-
     private Stage stage;
     private TextureAtlas buttonAtlas;
     private Skin skin;
     private TweenManager tweenManager;
     private Table table;
-    private String mode;
+    private OrthographicCamera camera;
+
     private MultiplayerMessaging multiplayerMessaging;
+
+    private List<Actor> menuActors = new ArrayList<Actor>();
+    private String mode;
     private boolean startGame;
 
     public MainMenu() {
@@ -64,7 +67,7 @@ public class MainMenu implements Screen {
 
     @Override
     public void show() {
-        Gdx.app.log("MainMenu", "is called");
+        camera = new OrthographicCamera();
         startGame = false;
 
         tweenManager = new TweenManager();
@@ -75,7 +78,7 @@ public class MainMenu implements Screen {
         background = new Sprite(new Texture(Gdx.files.internal("mainMenu/background.png")));
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        stage = new Stage(new ExtendViewport(Play.V_WIDTH, Play.V_HEIGHT));
+        stage = new Stage(new ExtendViewport(Play.V_WIDTH, Play.V_HEIGHT, camera));
 
         Gdx.input.setInputProcessor(stage);
 
@@ -230,11 +233,13 @@ public class MainMenu implements Screen {
             }
         }
     }
-
     @Override
     public void resize(int width, int height) {
         table.invalidateHierarchy();
         table.setSize(width, height);
+
+//        camera.setToOrtho(false);
+//        batch.setProjectionMatrix(camera.combined);
     }
 
     @Override

@@ -28,6 +28,7 @@ public class Jukebox {
     public static void loadMusic(String name) {
         Music music = Gdx.audio.newMusic(Gdx.files.internal("sounds/" + name + ".mp3"));
         musics.put(name, music);
+        music.setLooping(true);
     }
 
     public static void play(String name) {
@@ -42,12 +43,14 @@ public class Jukebox {
         if (!mute) {
 //            Gdx.app.log("Jukebox", "Now playing: " + name);
             musics.get(name).play();
-            musics.get(name).setLooping(true);
         }
+
+        if (name.equals("buttonPressed"))
+            musics.get(name).setVolume(2f);
     }
 
     public static void toggleMute(String name, boolean mute) {
-        if(mute)
+        if (mute)
             musics.get(name).setVolume(0f);
         else
             musics.get(name).setVolume(1f);

@@ -47,7 +47,6 @@ public class MessageParser {
             switch (command) {
                 case COMMAND_POSITION:
 //                Gdx.app.log(TAG, String.format("Position of player %s: %s, %s", senderId, message[2], message[3]));
-
                     world.setPlayerPosition(senderId, new Vector2(Integer.valueOf(message[2]), Integer.valueOf(message[3])), Integer.valueOf(message[4]));
                     if (world.getPlayer(senderId).isFrozen || world.getPlayer(senderId).isDead || world.getPlayer(senderId).isSwapped) {
                         world.getPlayer(senderId).animate(Gdx.graphics.getDeltaTime() * 20);
@@ -110,9 +109,10 @@ public class MessageParser {
                                 player.setLastHitBy(senderId);
                             }
 
-                            new DelayedThread(10000l, player, message[3], message[4]) {
+                            new DelayedThread(200l, player, message[3], message[4]) {
                                 @Override
                                 public void run() {
+                                    super.run();
                                     Gdx.app.log(TAG, "SWAP DONE");
                                     getPlayer().setPlayerPosition(Integer.valueOf(getMessage()[0]), Integer.valueOf(getMessage()[1]));
                                     getPlayer().toggleSwap(false);

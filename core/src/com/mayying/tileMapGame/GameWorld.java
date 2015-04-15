@@ -150,7 +150,7 @@ public class GameWorld {
     }
 
     private long lastMovement = -1;
-    public final static long MOVEMENT_FREQUENCY = 350;
+    public final static long MOVEMENT_FREQUENCY = 250;
 
     // Should separate into collision/bounds logic and update movement so that when we factor in concurrent
     // updates from server we can just update movement via setX / setY
