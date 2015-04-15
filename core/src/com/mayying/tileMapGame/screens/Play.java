@@ -182,7 +182,7 @@ public class Play implements Screen {
 
         // TODO - Might be better to create an additional thread that handles all the incoming messages
         if (multiplayerMessaging != null) {
-            List<String> msgs = multiplayerMessaging.getMessageBuffer();
+            List<String> msgs = multiplayerMessaging.getMessageBuffer("play");
             for (String msg : msgs) {
                 MessageParser.parse(msg);
             }
@@ -242,7 +242,7 @@ public class Play implements Screen {
 
     public static void broadcastMessage(String msg) {
 //        Gdx.app.log(TAG, "Broadcasting message: " + msg);
-        multiplayerMessaging.broadcastMessage(msg);
+        multiplayerMessaging.broadcastMessage(msg, "play");
     }
 
     public static void broadcastMessage(String... args) {
@@ -251,6 +251,6 @@ public class Play implements Screen {
             msg += arg + ",";
         }
 //        Gdx.app.log(TAG, "Broadcasting message: " + msg);
-        multiplayerMessaging.broadcastMessage(msg);
+        multiplayerMessaging.broadcastMessage(msg, "play");
     }
 }

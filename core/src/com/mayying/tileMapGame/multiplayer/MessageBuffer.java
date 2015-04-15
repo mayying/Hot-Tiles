@@ -21,6 +21,20 @@ public class MessageBuffer {
         }
     }
 
+    public List<String> getList(String filter){
+        synchronized (this){
+            List<String> ret = list;
+            list = new ArrayList<String>();
+            for (String s : ret){
+                if (!s.endsWith(filter)){
+                    list.add(s);
+                }
+            }
+            ret.removeAll(list);
+            return ret;
+        }
+    }
+
     public void add(String msg){
         synchronized (this){
             list.add(msg);

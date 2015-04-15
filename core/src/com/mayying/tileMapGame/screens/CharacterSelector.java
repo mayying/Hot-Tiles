@@ -19,7 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.entities.PlayerMetaData;
-import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
 import java.util.ArrayList;
@@ -67,13 +66,13 @@ public class CharacterSelector implements Screen {
         //TODO fix this. sometimes info are lost
         broadcastMyInfo();
         // Broadcast again in case message was cleared in end game. This is a hotfix and hopefully a better fix will come
-        new DelayedThread(1000l){
-            @Override
-            public void run() {
-                super.run();
-                broadcastMyInfo();
-            }
-        }.start();
+//        new DelayedThread(1000l){
+//            @Override
+//            public void run() {
+//                super.run();
+//                broadcastMyInfo();
+//            }
+//        }.start();
         Gdx.app.log(TAG,"show charsel");
         spriteBatch = new SpriteBatch();
         background = new Sprite(new Texture(Gdx.files.internal("charSel/background.png")));
@@ -220,8 +219,9 @@ public class CharacterSelector implements Screen {
         // Set Character Selection For Other Player
         //TODO: maybe use a background thread
 
-        List<String> msgs = multiplayerMessaging.getMessageBuffer();
+        List<String> msgs = multiplayerMessaging.getMessageBuffer("charsel");
         for (String msg : msgs) {
+            Gdx.app.log("msgs", msg);
             parse(msg);
         }
 
@@ -319,7 +319,7 @@ public class CharacterSelector implements Screen {
             msg += arg + ",";
         }
         Gdx.app.log(TAG, "Broadcasting message: " + msg);
-        multiplayerMessaging.broadcastMessage(msg);
+        multiplayerMessaging.broadcastMessage(msg, "charsel");
     }
 
 }

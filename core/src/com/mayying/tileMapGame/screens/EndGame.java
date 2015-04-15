@@ -157,10 +157,10 @@ public class EndGame implements Screen {
         //im the host
         if (Play.getMultiplayerMessaging().getMyId().equals(Play.getMultiplayerMessaging().getHostId())) {
             setRematch(!rematchPoll.get(Play.getMultiplayerMessaging().getMyId()));
-            Play.broadcastMessage("rematchAcknowledged," + Play.getMultiplayerMessaging().getMyId()
+            broadcastMessage("rematchAcknowledged," + Play.getMultiplayerMessaging().getMyId()
                     + "," + String.valueOf(rematchPoll.get(Play.getMultiplayerMessaging().getMyId())));
         } else {
-            Play.broadcastMessage("rematchRequest," + String.valueOf(!rematchPoll.get(Play.getMultiplayerMessaging().getMyId())));
+            broadcastMessage("rematchRequest," + String.valueOf(!rematchPoll.get(Play.getMultiplayerMessaging().getMyId())));
         }
     }
 
@@ -174,7 +174,7 @@ public class EndGame implements Screen {
     }
 
     public void rematchCheck() {
-        for (String msg : Play.getMultiplayerMessaging().getMessageBuffer()) {
+        for (String msg : Play.getMultiplayerMessaging().getMessageBuffer("endgame")) {
             String[] message = msg.split(",");
             String command = message[1];
             // <host_id>, <rematchAcknowledged>, <client_id>, <rematchPoll>
@@ -190,7 +190,7 @@ public class EndGame implements Screen {
             if (Play.getMultiplayerMessaging().getMyId().equals(Play.getMultiplayerMessaging().getHostId())) {
                 if (command.equals("rematchRequest")) {
                     rematchPoll.put(message[0], Boolean.valueOf(message[2]));
-                    Play.broadcastMessage("rematchAcknowledged," + message[0] + "," + message[2]);
+                    broadcastMessage("rematchAcknowledged," + message[0] + "," + message[2]);
                 }
             }
         }
@@ -253,5 +253,9 @@ public class EndGame implements Screen {
         atlas.dispose();
         world.dispose();
         stage.dispose();
+    }
+
+    private void broadcastMessage(String msg){
+        Play.getMultiplayerMessaging().broadcastMessage(msg, "endgame");
     }
 }

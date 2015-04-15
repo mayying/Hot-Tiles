@@ -617,8 +617,13 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 
     @Override
     public void broadcastMessage(String msg) {
+        broadcastMessage(msg, "game");
+    }
+
+    @Override
+    public void broadcastMessage(String msg, String screenTag) {
 //        Log.d("Sending", msg);
-        String taggedMsg = msgTag + msg;
+        String taggedMsg = msgTag + msg + "," + screenTag;
 
         byte[] bytes = taggedMsg.getBytes();
 
@@ -688,6 +693,11 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     @Override
     public List<String> getMessageBuffer() {
         return msgBuf.getList();
+    }
+
+    @Override
+    public List<String> getMessageBuffer(String filter) {
+        return msgBuf.getList(filter);
     }
 
     @Override

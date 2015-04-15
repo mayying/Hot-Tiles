@@ -31,6 +31,10 @@ public class SinglePlayerDummyMessaging implements MultiplayerMessaging {
         //do nothing
     }
 
+    @Override
+    public void broadcastMessage(String msg, String screenTag) {
+        //do nothing
+    }
 
     @Override
     public List<String> getParticipants() {
@@ -59,6 +63,11 @@ public class SinglePlayerDummyMessaging implements MultiplayerMessaging {
 
     @Override
     public List<String> getMessageBuffer() {
+        return messageBuffer;
+    }
+
+    @Override
+    public List<String> getMessageBuffer(String filter) {
         return messageBuffer;
     }
 
