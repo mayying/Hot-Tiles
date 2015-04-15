@@ -19,11 +19,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.entities.PlayerMetaData;
-import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CyclicBarrier;
 
 /**
  * CharacterSelector Screen allowing players to choose their characters. Initially tried to do this by broadcasting
@@ -36,6 +36,7 @@ import java.util.List;
  * The current implementation chooses one of the players as the host. The other clients have to send requests and poll
  * for the characters that they want, and the host will decide whether they can select the character.
  */
+// Must tap to show/sometimes still not received --> freeze time and selection until the data is obtained, detect with host
 public class CharacterSelector implements Screen {
 
     private static final String TAG = "HT_CHARSEL";
@@ -52,6 +53,8 @@ public class CharacterSelector implements Screen {
     private String myPlayerName, otherPlayerName = "", mode, myPlayerId, otherPlayerId;
     private MultiplayerMessaging multiplayerMessaging;
     private boolean imTheHost;
+    private int otherReadyPlayers = 0;
+    private CyclicBarrier barrier = new CyclicBarrier(2);
 
     public CharacterSelector() {
         mode = "desktop";
@@ -64,17 +67,6 @@ public class CharacterSelector implements Screen {
 
     @Override
     public void show() {
-        //TODO fix this. sometimes info are lost
-        broadcastMyInfo();
-        // Broadcast again in case message was cleared in end game. This is a hotfix and hopefully a better fix will come
-        new DelayedThread(1000l){
-            @Override
-            public void run() {
-                super.run();
-                broadcastMyInfo();
-            }
-        }.start();
-        Gdx.app.log(TAG,"show charsel");
         spriteBatch = new SpriteBatch();
         background = new Sprite(new Texture(Gdx.files.internal("charSel/background.png")));
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -137,6 +129,36 @@ public class CharacterSelector implements Screen {
             imTheHost = multiplayerMessaging.getMyId().equals(multiplayerMessaging.getHostId());
             myPlayerName = multiplayerMessaging.getMyName();
             myPlayerId = multiplayerMessaging.getMyId();
+
+            //TODO fix this. sometimes info are lost
+            while(otherPlayerId == null && otherPlayerName.equals("")) {
+                Gdx.app.log(TAG,"Broadcasting info until others receive it...");
+                broadcastMyInfo();
+                synchronized (this){
+                    try {
+                        wait(300l);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                parseMessages();
+            }
+            // Wait for others to be ready, as of now this obviously doesn't work for more than 2 players due to duplicate messages
+            while(otherReadyPlayers < 1){
+                synchronized (this){
+                    try {
+                        wait(100l);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                parseMessages();
+            }
+            // Clear the messages just in case.
+            multiplayerMessaging.getMessageBuffer();
+
+            Gdx.app.log(TAG,"Other players are ready!");
+            // There's still a rare bug where one player (probably the client) does not have anything selected e.g. probably not in sync, buffers cleared too early and stuff
         }
         Gdx.app.log(TAG, "I am the host: " + imTheHost);
         setDefaultCharacter();
@@ -217,14 +239,7 @@ public class CharacterSelector implements Screen {
         sec = (int) (timeLeft - min * 60.0f);
         timer.setText(String.format("%01d", sec));
 
-        // Set Character Selection For Other Player
-        //TODO: maybe use a background thread
-
-        List<String> msgs = multiplayerMessaging.getMessageBuffer();
-        for (String msg : msgs) {
-            parse(msg);
-        }
-
+        parseMessages();
         // Switch screen to Play when time's up
         if (sec == 0) {
             ArrayList<PlayerMetaData> metaData = new ArrayList<>();
@@ -238,6 +253,13 @@ public class CharacterSelector implements Screen {
         }
     }
 
+    private void parseMessages(){
+        List<String> msgs = multiplayerMessaging.getMessageBuffer();
+        for (String msg : msgs) {
+            parse(msg);
+        }
+    }
+
     private void parse(String msg) {
         String[] message = msg.split(",");
         String command = message[1];
@@ -247,10 +269,12 @@ public class CharacterSelector implements Screen {
             switch (type) {
                 case "host":
                     // Host = Kim Jong Un
+                    Gdx.app.log(TAG,"Host selects "+idx);
                     setOtherPlayerSelection(idx);
                     break;
                 case "request":
                     // Check for index collision, reply if no collision, else ignore the user because I'm Kim
+                    Gdx.app.log(TAG,"Client requested "+idx);
                     if (idx != mySel) {
                         // Give client the ok signal
                         broadcastMessage("charsel", "reply", String.valueOf(idx));
@@ -260,7 +284,7 @@ public class CharacterSelector implements Screen {
                     break;
                 case "reply":
                     // lowly client
-//                    Gdx.app.log(TAG,"The Great Leader Approves");
+                    Gdx.app.log(TAG,"The Great Leader Approves of "+idx);
                     setSelection(idx);
                     break;
 
@@ -271,12 +295,15 @@ public class CharacterSelector implements Screen {
 
             otherPlayerId = message[2];
             otherPlayerName = message[3];
-            // TODO - REMOVE HOTFIX
-            if(otherPlayerSel != -1) {
-                setOtherPlayerSelection(otherPlayerSel);
-            }
+//            if(otherPlayerSel != -1) {
+//                setOtherPlayerSelection(otherPlayerSel);
+//            }
             Gdx.app.log(TAG, "Player info from "+message[3]+" received.");
-        } else {
+            broadcastMessage("rdy");
+        }else if(command.equals("rdy")){
+            otherReadyPlayers++;
+        }
+        else {
             Gdx.app.log("HT_CHARSEL", "Unknown message format: " + msg);
         }
     }
