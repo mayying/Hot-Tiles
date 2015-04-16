@@ -173,7 +173,7 @@ public class EndGame implements Screen {
     }
 
     public void rematchCheck() {
-        for (String msg : Play.getMultiplayerMessaging().getMessageBuffer()) {
+        for (String msg : Play.getMultiplayerMessaging().getMessageBuffer('e')) {
             String[] message = msg.split(",");
             String command = message[1];
             // <host_id>, <rematchAcknowledged>, <client_id>, <rematchPoll>

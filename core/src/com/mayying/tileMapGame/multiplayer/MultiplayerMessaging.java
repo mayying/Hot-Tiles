@@ -12,7 +12,7 @@ public interface MultiplayerMessaging {
     public List<String> getJoinedParticipantsName();
     public String getMyId();
     public String getMyName();
-    public List<String> getMessageBuffer();
+    public List<String> getMessageBuffer(char screenTag);
     public String getHostId();
 
     //for main menu usages

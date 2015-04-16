@@ -170,7 +170,7 @@ public class Play implements Screen {
 
         // TODO - Might be better to create an additional thread that handles all the incoming messages
         if (multiplayerMessaging != null) {
-            List<String> msgs = multiplayerMessaging.getMessageBuffer();
+            List<String> msgs = multiplayerMessaging.getMessageBuffer('p');
             for (String msg : msgs) {
                 MessageParser.parse(msg);
             }

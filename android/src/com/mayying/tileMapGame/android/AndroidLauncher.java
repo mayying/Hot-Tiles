@@ -609,16 +609,16 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         String msg = new String(buf);
         if (msg.startsWith(msgTag)) {
             //parse message
-            String msgStr = rtm.getSenderParticipantId() + "," + msg.substring(msgTag.length());
-            msgBuf.add(msgStr);
+            String msgStr = rtm.getSenderParticipantId() + "," + msg.substring(msgTag.length(), msg.length()-1);
+            msgBuf.add(msgStr, msg.charAt(msg.length()-1));
         }
-//        Log.d("Receiving", msg);
+        Log.d("Receiving", msg);
     }
 
     @Override
     public void broadcastMessage(String msg) {
 //        Log.d("Sending", msg);
-        String taggedMsg = msgTag + msg;
+        String taggedMsg = msgTag + msg + game.getScreenTag();
 
         byte[] bytes = taggedMsg.getBytes();
 
@@ -686,8 +686,8 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     }
 
     @Override
-    public List<String> getMessageBuffer() {
-        return msgBuf.getList();
+    public List<String> getMessageBuffer(char screenTag) {
+        return msgBuf.getList(screenTag);
     }
 
     @Override

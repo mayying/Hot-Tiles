@@ -85,6 +85,17 @@ public class TiledMapGame extends Game {
         return inGame;
     }
 
+    public char getScreenTag(){
+        if (screen instanceof Play) {
+            return 'p';
+        } else if (screen instanceof EndGame) {
+            return 'e';
+        } else if (screen instanceof CharacterSelector) {
+            return 'c';
+        }
+        return 'd';
+    }
+
     public void loadSound(){
         Jukebox.loadMusic("mainMenu");
         Jukebox.loadMusic("background");

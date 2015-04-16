@@ -128,6 +128,7 @@ public class CharacterSelector implements Screen {
             myPlayerName = multiplayerMessaging.getMyName();
             myPlayerId = multiplayerMessaging.getMyId();
 
+//            broadcastMyInfo();
             if(multiplayerMessaging.getJoinedParticipants().size() > 1) {
                 while (otherPlayerId == null && otherPlayerName.equals("")) {
                     Gdx.app.log(TAG, "Broadcasting info until others receive it...");
@@ -153,11 +154,11 @@ public class CharacterSelector implements Screen {
                     parseMessages();
                 }
                 // Clear the messages just in case.
-                multiplayerMessaging.getMessageBuffer();
+                multiplayerMessaging.getMessageBuffer('c');
 
                 Gdx.app.log(TAG, "Other players are ready!");
             }
-            // There's still a rare bug where one player (probably the client) does not have anything selected e.g. probably not in sync, buffers cleared too early and stuff
+            //There's still a rare bug where one player (probably the client) does not have anything selected e.g. probably not in sync, buffers cleared too early and stuff
         }
         Gdx.app.log(TAG, "I am the host: " + imTheHost);
         setDefaultCharacter();
@@ -253,7 +254,7 @@ public class CharacterSelector implements Screen {
     }
 
     private void parseMessages(){
-        List<String> msgs = multiplayerMessaging.getMessageBuffer();
+        List<String> msgs = multiplayerMessaging.getMessageBuffer('c');
         for (String msg : msgs) {
             parse(msg);
         }

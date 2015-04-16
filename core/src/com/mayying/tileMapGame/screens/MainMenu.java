@@ -186,6 +186,7 @@ public class MainMenu implements Screen {
                 .push(Tween.to(buttonExit, ActorAccessor.ALPHA, .2f).target(1))
                 .end().start(tweenManager);
 
+        Jukebox.stopMusic("background");
         Jukebox.playMusic("mainMenu");
     }
 

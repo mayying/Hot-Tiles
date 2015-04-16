@@ -58,7 +58,7 @@ public class SinglePlayerDummyMessaging implements MultiplayerMessaging {
     }
 
     @Override
-    public List<String> getMessageBuffer() {
+    public List<String> getMessageBuffer(char screenTag) {
         return messageBuffer;
     }
 

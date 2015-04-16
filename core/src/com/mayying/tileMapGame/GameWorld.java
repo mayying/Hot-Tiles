@@ -80,7 +80,6 @@ public class GameWorld {
         this.playableLayer = playableLayer;
         this.play = play;
         shapeRenderer = new ShapeRenderer();
-        Jukebox.load("blackout");
     }
 
     public static GameWorld getInstance(TiledMapTileLayer playableLayer, String myId, ArrayList<PlayerMetaData> metaData,
