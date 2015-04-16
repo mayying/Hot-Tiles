@@ -184,7 +184,7 @@ public class GameWorld {
         if (System.currentTimeMillis() - lastMovement >= MOVEMENT_FREQUENCY) {
             lastMovement = System.currentTimeMillis();
             if (!player.isDead) {
-                Gdx.app.log("GameWorld", "newX: " + newX + " newY: " + newY);
+//                Gdx.app.log("GameWorld", "newX: " + newX + " newY: " + newY);
                 player.setPlayerPosition(newX, newY);
             }
         }

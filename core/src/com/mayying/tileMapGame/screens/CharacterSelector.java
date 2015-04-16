@@ -23,7 +23,6 @@ import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CyclicBarrier;
 
 /**
  * CharacterSelector Screen allowing players to choose their characters. Initially tried to do this by broadcasting
@@ -54,7 +53,6 @@ public class CharacterSelector implements Screen {
     private MultiplayerMessaging multiplayerMessaging;
     private boolean imTheHost;
     private int otherReadyPlayers = 0;
-    private CyclicBarrier barrier = new CyclicBarrier(2);
 
     public CharacterSelector() {
         mode = "desktop";
@@ -130,34 +128,35 @@ public class CharacterSelector implements Screen {
             myPlayerName = multiplayerMessaging.getMyName();
             myPlayerId = multiplayerMessaging.getMyId();
 
-            //TODO fix this. sometimes info are lost
-            while(otherPlayerId == null && otherPlayerName.equals("")) {
-                Gdx.app.log(TAG,"Broadcasting info until others receive it...");
-                broadcastMyInfo();
-                synchronized (this){
-                    try {
-                        wait(300l);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+            if(multiplayerMessaging.getJoinedParticipants().size() > 1) {
+                while (otherPlayerId == null && otherPlayerName.equals("")) {
+                    Gdx.app.log(TAG, "Broadcasting info until others receive it...");
+                    broadcastMyInfo();
+                    synchronized (this) {
+                        try {
+                            wait(300l);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
+                    parseMessages();
                 }
-                parseMessages();
-            }
-            // Wait for others to be ready, as of now this obviously doesn't work for more than 2 players due to duplicate messages
-            while(otherReadyPlayers < 1){
-                synchronized (this){
-                    try {
-                        wait(100l);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                // Wait for others to be ready, as of now this obviously doesn't work for more than 2 players due to duplicate messages
+                while (otherReadyPlayers < 1) {
+                    synchronized (this) {
+                        try {
+                            wait(100l);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
+                    parseMessages();
                 }
-                parseMessages();
-            }
-            // Clear the messages just in case.
-            multiplayerMessaging.getMessageBuffer();
+                // Clear the messages just in case.
+                multiplayerMessaging.getMessageBuffer();
 
-            Gdx.app.log(TAG,"Other players are ready!");
+                Gdx.app.log(TAG, "Other players are ready!");
+            }
             // There's still a rare bug where one player (probably the client) does not have anything selected e.g. probably not in sync, buffers cleared too early and stuff
         }
         Gdx.app.log(TAG, "I am the host: " + imTheHost);
