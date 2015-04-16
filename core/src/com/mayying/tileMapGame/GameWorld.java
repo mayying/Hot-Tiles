@@ -149,7 +149,7 @@ public class GameWorld {
     }
 
     private long lastMovement = -1;
-    public final static long MOVEMENT_FREQUENCY = 220;
+    public final static long MOVEMENT_FREQUENCY = 350;
 
     // Should separate into collision/bounds logic and update movement so that when we factor in concurrent
     // updates from server we can just update movement via setX / setY
@@ -162,6 +162,7 @@ public class GameWorld {
         Player player = getDevicePlayer();
         int newX = (int) player.getPlayerPosition().x;
         int newY = (int) player.getPlayerPosition().y;
+        boolean pressed = true;
 
         if (velocity.x > 0.5) {
             newX += player.getSpeed();
@@ -175,18 +176,21 @@ public class GameWorld {
         } else if (velocity.y < -0.5) {
             newY -= player.getSpeed();
             player.downPressed();
+        } else {
+            pressed = false;
+        }
+
+        if (System.currentTimeMillis() - lastMovement >= MOVEMENT_FREQUENCY) {
+            if (pressed) {
+                lastMovement = System.currentTimeMillis();
+                if (!player.isDead) {
+                    player.setPlayerPosition(newX, newY);
+                }
+            }
         }
 
         // Animate player movement
         player.animate(delta);
-
-        if (System.currentTimeMillis() - lastMovement >= MOVEMENT_FREQUENCY) {
-            lastMovement = System.currentTimeMillis();
-            if (!player.isDead) {
-//                Gdx.app.log("GameWorld", "newX: " + newX + " newY: " + newY);
-                player.setPlayerPosition(newX, newY);
-            }
-        }
     }
 
     public MyTouchpad getMyTouchPad() {
