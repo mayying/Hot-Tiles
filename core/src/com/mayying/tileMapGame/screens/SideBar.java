@@ -67,6 +67,7 @@ public class SideBar implements Screen {
     private boolean mute = false, remind = false;
     private static boolean scoreUpdated = true;
     private float gameTime = 60 + 30;
+//    private float gameTime = 10;
     private int min, sec;
     private boolean timeFrozen = true;
 

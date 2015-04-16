@@ -22,6 +22,7 @@ import com.mayying.tileMapGame.entities.PlayerMetaData;
 import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -47,9 +48,11 @@ public class CharacterSelector implements Screen {
     private Skin skin;
     private Label heading, timer;
     private TextButton[] textButton;
-    private float timeLeft = 10;
-    private int min, sec, otherPlayerSel = -1, mySel = -1;
-    private String myPlayerName, otherPlayerName = "", mode, myPlayerId, otherPlayerId;
+    private float timeLeft = 20;
+    private int min, sec; //, otherPlayerSel = -1, mySel = -1;
+    private String mode;
+//    private String myPlayerName, otherPlayerName = "", mode, myPlayerId, otherPlayerId;
+    private HashMap<String, PlayerData> playerData = new HashMap<String, PlayerData>();
     private MultiplayerMessaging multiplayerMessaging;
     private boolean imTheHost;
     private int otherReadyPlayers = 0;
@@ -115,49 +118,49 @@ public class CharacterSelector implements Screen {
         stage.addActor(charSelTable);
 
         if (mode.equals("desktop")) {
-            myPlayerName = "Kim Jong Un Dafuq are you crazy";
-            myPlayerId = "me";
-            otherPlayerName = "Your Mother";
-            otherPlayerId = null;
+            String myPlayerName = "Kim Jong Un Dafuq are you crazy";
+            String myPlayerId = "me";
+            playerData.put(myPlayerId, new PlayerData(myPlayerName, myPlayerId, -1));
 
             imTheHost = true;
 
         } else {
             //TODO do this for 3 or more playah
             imTheHost = multiplayerMessaging.getMyId().equals(multiplayerMessaging.getHostId());
-            myPlayerName = multiplayerMessaging.getMyName();
-            myPlayerId = multiplayerMessaging.getMyId();
+            String myPlayerName = multiplayerMessaging.getMyName();
+            String myPlayerId = multiplayerMessaging.getMyId();
+            playerData.put(myPlayerId, new PlayerData(myPlayerName, myPlayerId, -1));
 
-//            broadcastMyInfo();
-            if(multiplayerMessaging.getJoinedParticipants().size() > 1) {
-                while (otherPlayerId == null && otherPlayerName.equals("")) {
-                    Gdx.app.log(TAG, "Broadcasting info until others receive it...");
-                    broadcastMyInfo();
-                    synchronized (this) {
-                        try {
-                            wait(300l);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    parseMessages();
-                }
-                // Wait for others to be ready, as of now this obviously doesn't work for more than 2 players due to duplicate messages
-                while (otherReadyPlayers < 1) {
-                    synchronized (this) {
-                        try {
-                            wait(100l);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    parseMessages();
-                }
-                // Clear the messages just in case.
-                multiplayerMessaging.getMessageBuffer('c');
-
-                Gdx.app.log(TAG, "Other players are ready!");
-            }
+            broadcastMyInfo();
+//            if(multiplayerMessaging.getJoinedParticipants().size() > 1) {
+//                while (otherPlayerId == null && otherPlayerName.equals("")) {
+//                    Gdx.app.log(TAG, "Broadcasting info until others receive it...");
+//                    broadcastMyInfo();
+//                    synchronized (this) {
+//                        try {
+//                            wait(300l);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    parseMessages();
+//                }
+//                // Wait for others to be ready, as of now this obviously doesn't work for more than 2 players due to duplicate messages
+//                while (otherReadyPlayers < 1) {
+//                    synchronized (this) {
+//                        try {
+//                            wait(100l);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    parseMessages();
+//                }
+//                // Clear the messages just in case.
+//                multiplayerMessaging.getMessageBuffer('c');
+//
+//                Gdx.app.log(TAG, "Other players are ready!");
+//            }
             //There's still a rare bug where one player (probably the client) does not have anything selected e.g. probably not in sync, buffers cleared too early and stuff
         }
         Gdx.app.log(TAG, "I am the host: " + imTheHost);
@@ -174,48 +177,55 @@ public class CharacterSelector implements Screen {
         if (imTheHost) {
             toggleButton(0);
         } else {
-            toggleButton(textButton.length - 1);
+            //try to select one
+//            for (int i=0;i<textButton.length;i++) {
+//                toggleButton(i);
+//            }
         }
     }
 
-    private void setOtherPlayerSelection(int index) {
-        textButton[index].setText(otherPlayerName);
+    private void setPlayerSelection(int index, String playerId) {
+        textButton[index].setText(playerData.get(playerId).getName());
         textButton[index].setChecked(true);
         textButton[index].setDisabled(true);
 
         // Deselect the old button
         // To scale send buttonIndex, playerName (for button text), oldIndex
-        if (otherPlayerSel != -1 && otherPlayerSel != index) {
-            textButton[otherPlayerSel].setText("");
-            textButton[otherPlayerSel].setChecked(false);
-            textButton[otherPlayerSel].setDisabled(false);
+        int oldIndex = playerData.get(playerId).getSel();
+        if (oldIndex != -1 && oldIndex != index) {
+            textButton[oldIndex].setText("");
+            textButton[oldIndex].setChecked(false);
+            textButton[oldIndex].setDisabled(false);
         }
-        otherPlayerSel = index;
+        playerData.get(playerId).setSel(index);
     }
 
-    private void setSelection(int index) {
-        // LAZY SYNCHRONIZE, GOT PROBLEM THEN DO
-        textButton[index].setText(myPlayerName);
-        textButton[index].setChecked(true);
-        textButton[index].setDisabled(true);
-
-        // Deselect the old button
-        if (mySel != -1 && mySel != index) {
-            textButton[mySel].setText("");
-            textButton[mySel].setChecked(false);
-            textButton[mySel].setDisabled(false);
-        }
-        mySel = index;
-    }
+//    private void setSelection(int index) {
+//        // LAZY SYNCHRONIZE, GOT PROBLEM THEN DO
+//        textButton[index].setText(myPlayerName);
+//        textButton[index].setChecked(true);
+//        textButton[index].setDisabled(true);
+//
+//        // Deselect the old button
+//        if (mySel != -1 && mySel != index) {
+//            textButton[mySel].setText("");
+//            textButton[mySel].setChecked(false);
+//            textButton[mySel].setDisabled(false);
+//        }
+//        mySel = index;
+//    }
 
     // Do internal setting for toggling button
     private void toggleButton(int index) {
 //        Gdx.app.log("toggleButton in CharacterSelector", index + " Disabled? " + textButton[index].isDisabled());
         if (imTheHost) {
-            if (index != otherPlayerSel && index != mySel) {
-                broadcastMessage("charsel", "host", String.valueOf(index));
-                setSelection(index);
+            for (String key : playerData.keySet()){
+                if (playerData.get(key).getSel() == index){
+                    return; //this character is taken
+                }
             }
+            broadcastMessage("charsel", "host", String.valueOf(index));
+            setPlayerSelection(index, multiplayerMessaging.getMyId());
         } else {
             broadcastMessage("charsel", "request", String.valueOf(index));
             // wait for server to reply
@@ -234,7 +244,9 @@ public class CharacterSelector implements Screen {
         stage.act(delta);
         stage.draw();
 
-        timeLeft -= delta;
+        if (multiplayerMessaging.getJoinedParticipants().size()==playerData.size()) {
+            timeLeft -= delta;
+        }
         min = (int) Math.floor(timeLeft / 60.0f);
         sec = (int) (timeLeft - min * 60.0f);
         timer.setText(String.format("%01d", sec));
@@ -242,12 +254,16 @@ public class CharacterSelector implements Screen {
         parseMessages();
         // Switch screen to Play when time's up
         if (sec == 0) {
+            //Clear the message buffer.
+            multiplayerMessaging.getMessageBuffer('c');
             ArrayList<PlayerMetaData> metaData = new ArrayList<>();
-            metaData.add(new PlayerMetaData().setID(myPlayerId).setModel(String.valueOf(mySel + 1)).setName(myPlayerName));
-            if (mode.equals("android")) {
-                if (otherPlayerId != null)
-                    metaData.add(new PlayerMetaData().setID(otherPlayerId).setModel(String.valueOf(otherPlayerSel + 1)).setName(otherPlayerName));
+            for (String key : playerData.keySet()) {
+                metaData.add(new PlayerMetaData().setID(playerData.get(key).getId()).setModel(String.valueOf(playerData.get(key).getSel() + 1)).setName(playerData.get(key).getName()));
             }
+//            if (mode.equals("android")) {
+//                if (otherPlayerId != null)
+//                    metaData.add(new PlayerMetaData().setID(otherPlayerId).setModel(String.valueOf(otherPlayerSel + 1)).setName(otherPlayerName));
+//            }
             Gdx.app.log(TAG, "Metadata: " + metaData);
             ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging, metaData));
         }
@@ -270,34 +286,55 @@ public class CharacterSelector implements Screen {
                 case "host":
                     // Host = Kim Jong Un
                     Gdx.app.log(TAG,"Host selects "+idx);
-                    setOtherPlayerSelection(idx);
+                    setPlayerSelection(idx, message[0]);
                     break;
                 case "request":
-                    // Check for index collision, reply if no collision, else ignore the user because I'm Kim
-                    Gdx.app.log(TAG,"Client requested "+idx);
-                    if (idx != mySel) {
+                    //else, ignore request.
+                    if (imTheHost) {
+                        // Check for index collision, reply if no collision, else ignore the user because I'm Kim
+                        Gdx.app.log(TAG, "Client requested " + idx);
+                        for (String key : playerData.keySet()) {
+                            if (playerData.get(key).getSel() == idx) {
+                                return; //this character is taken
+                            }
+                        }
                         // Give client the ok signal
-                        broadcastMessage("charsel", "reply", String.valueOf(idx));
+                        broadcastMessage("charsel", "reply", String.valueOf(idx), message[0]);
                         // Set client's selection
-                        setOtherPlayerSelection(idx);
+                        setPlayerSelection(idx, message[0]);
                     }
                     break;
                 case "reply":
                     // lowly client
-                    Gdx.app.log(TAG,"The Great Leader Approves of "+idx);
-                    setSelection(idx);
+                    Gdx.app.log(TAG,"The Great Leader Approves of "+message[4]+"'s selection: "+idx);
+                    setPlayerSelection(idx, message[4]);
                     break;
 
 
             }
         } else if (command.equals("info")) {
             // charsel, info, playerID, playerName
+            String otherPlayerId = message[2];
+            String otherPlayerName = message[3];
+            playerData.put(otherPlayerId, new PlayerData(otherPlayerName, otherPlayerId, -1));
+            if (imTheHost) {
+                for (int i = 0; i < textButton.length; i++) {
+                    boolean taken = false;
+                    for (String key : playerData.keySet()) {
+                        if (playerData.get(key).getSel() == i) {
+                            taken = true;
+                            break;
+                        }
+                    }
+                    if (!taken){
+                        Gdx.app.log(TAG,"The Great Leader Allocates character "+i+" for player "+otherPlayerName);
+                        broadcastMessage("charsel", "reply", String.valueOf(i), otherPlayerId);
+                        setPlayerSelection(i, otherPlayerId);
+                        break;
+                    }
+                }
+            }
 
-            otherPlayerId = message[2];
-            otherPlayerName = message[3];
-//            if(otherPlayerSel != -1) {
-//                setOtherPlayerSelection(otherPlayerSel);
-//            }
             Gdx.app.log(TAG, "Player info from "+message[3]+" received.");
             broadcastMessage("rdy");
         }else if(command.equals("rdy")){
@@ -345,8 +382,26 @@ public class CharacterSelector implements Screen {
         for (String arg : args) {
             msg += arg + ",";
         }
+        if (msg.length()>1){
+            msg = msg.substring(0, msg.length()-1);//remove comma
+        }
         Gdx.app.log(TAG, "Broadcasting message: " + msg);
         multiplayerMessaging.broadcastMessage(msg);
+    }
+
+    class PlayerData {
+        private String playerName;
+        private String playerId;
+        private int sel;
+        public String getName(){ return playerName;}
+        public String getId() { return playerId;}
+        public synchronized int getSel() { return sel;}
+        public synchronized void setSel(int sel) { this.sel = sel;}
+        public PlayerData(String name, String id, int sel){
+            this.playerName = name;
+            this.playerId = id;
+            this.sel = sel;
+        }
     }
 
 }
