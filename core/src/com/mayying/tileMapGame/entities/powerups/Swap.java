@@ -1,5 +1,6 @@
 package com.mayying.tileMapGame.entities.powerups;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.Jukebox;
@@ -13,12 +14,25 @@ public class Swap implements Usable {
 
     @Override
     public void use() {
-        Jukebox.load("swap");
+        Jukebox.play("swap");
         GameWorld world = GameWorld.getInstance();
         Player p = world.getDevicePlayer();
 
-        for (String key : world.getPlayers().keySet()) {
-            world.getPlayers().get(key).toggleSwap(true);
+        if (world.getPlayers().size()>1) {
+            for (String key : world.getPlayers().keySet()) {
+                world.getPlayers().get(key).toggleSwap(true);
+            }
+        } else {
+            //single player swap
+            p.toggleSwap(true);
+            p.animate(Gdx.graphics.getDeltaTime() * 20);
+            new DelayedThread(200l, p) {
+                @Override
+                public void run() {
+                    super.run();
+                    getPlayer().toggleSwap(false);
+                }
+            }.start();
         }
 
         Vector2 playerPos = p.getPlayerPosition();

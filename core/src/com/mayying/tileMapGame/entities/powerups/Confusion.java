@@ -1,5 +1,6 @@
 package com.mayying.tileMapGame.entities.powerups;
 
+import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.screens.Play;
 
 /**
@@ -12,6 +13,7 @@ import com.mayying.tileMapGame.screens.Play;
 public class Confusion implements Usable {
     @Override
     public void use() {
+        Jukebox.play("confused");
         Play.broadcastMessage("effect","invert");
     }
 }

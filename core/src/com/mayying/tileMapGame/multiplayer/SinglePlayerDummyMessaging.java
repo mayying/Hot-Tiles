@@ -28,7 +28,7 @@ public class SinglePlayerDummyMessaging implements MultiplayerMessaging {
 
     @Override
     public void broadcastMessage(String msg) {
-        //do nothing
+        //do nothin
     }
 
 

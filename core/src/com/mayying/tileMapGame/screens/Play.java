@@ -145,7 +145,7 @@ public class Play implements Screen {
         }
 
         lightningDelta = System.currentTimeMillis() - lastTouched;
-        if(lightningDelta > 1000l) {
+        if(lightningDelta > 3000l) {
             if (Gdx.input.justTouched()) {
 //                Gdx.app.log("Play", String.valueOf(bar.getValue()));
                 Vector3 v3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
