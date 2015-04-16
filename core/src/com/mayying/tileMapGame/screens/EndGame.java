@@ -52,6 +52,7 @@ public class EndGame implements Screen {
 
     @Override
     public void show() {
+        Jukebox.toggleMute("background", false);
         Jukebox.stopMusic("background");
         Jukebox.playMusic("mainMenu");
         ArrayList<ScoreBoard.Score> scores = ScoreBoard.getInstance().getScores();
@@ -90,7 +91,7 @@ public class EndGame implements Screen {
             // Name
             scoreBoard.add(getCenteredLabel(p.getName(), skin)).padTop(10).width(278);
             // KD
-            scoreBoard.add(getCenteredLabel(s.getKills() + " / " + s.getDeath(), skin)).padTop(10).width(150);
+            scoreBoard.add(getCenteredLabel(s.getKills() + "/" + s.getDeath(), skin)).padTop(10).width(150);
             // Score
             scoreBoard.add(getCenteredLabel(String.valueOf(s.getScore()), skin)).padTop(10).width(150).row();
         }

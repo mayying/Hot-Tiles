@@ -10,7 +10,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.BurningTiles;
@@ -47,7 +46,6 @@ public class Play implements Screen {
     private TiledMapTileLayer collisionLayer;
     private long lastTouched = 0l;
     long lightningDelta;
-    private ProgressBar bar;
     private boolean cooldown;
     public Play() {
         super();
@@ -135,19 +133,17 @@ public class Play implements Screen {
         world.drawAndUpdate(renderer.getBatch());
 
         if (this.allPlayersReady) {
-            if (SideBar.timeLeft > 0) {
+            if (SideBar.timeLeft > 0)
                 count = Math.min(5 + (90 - SideBar.timeLeft) / 10 * TILES_PER_INTERVAL, MAX_TILES); //testing
-            }
 
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
                 burningTiles[i].render(delta);
-            }
         }
 
         lightningDelta = System.currentTimeMillis() - lastTouched;
         if(lightningDelta > 3000l) {
+            sideBar.showLightning(true);
             if (Gdx.input.justTouched()) {
-//                Gdx.app.log("Play", String.valueOf(bar.getValue()));
                 Vector3 v3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                 camera.unproject(v3);
                 final double x = Math.floor(v3.x / GameWorld.TILE_WIDTH) - 4;
@@ -160,9 +156,10 @@ public class Play implements Screen {
                     // TESTING ONLY
                     GameWorld.getInstance().lightningAt((float) x, (float) y, world.getDevicePlayer().getID());
                 }
+                sideBar.showLightning(false);
             }
         }else{
-//            bar.setValue(lightningDelta);
+            sideBar.showLightning(false);
         }
 
         renderer.getBatch().end();

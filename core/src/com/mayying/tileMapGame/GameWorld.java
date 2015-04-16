@@ -183,9 +183,8 @@ public class GameWorld {
         if (System.currentTimeMillis() - lastMovement >= MOVEMENT_FREQUENCY) {
             if (pressed) {
                 lastMovement = System.currentTimeMillis();
-                if (!player.isDead) {
+                if (!player.isDead)
                     player.setPlayerPosition(newX, newY);
-                }
             }
         }
 

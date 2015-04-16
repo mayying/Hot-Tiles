@@ -103,6 +103,7 @@ public class MainMenu implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                SideBar.NUM_OF_PLAYER = 1;
                 stage.addAction(Actions.sequence(Actions.moveBy(-stage.getWidth(), 0, 0.25f), Actions.run(new Runnable() {
                     @Override
                     public void run() {

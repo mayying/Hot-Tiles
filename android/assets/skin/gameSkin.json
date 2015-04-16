@@ -1,15 +1,17 @@
 {
-    "com.badlogic.gdx.graphics.Color": {
-        "white": { "r": 1, "g": 1, "b": 1, "a": 1}
-    },
-
     "com.badlogic.gdx.graphics.g2d.BitmapFont": {
         "black": { "file": "font/black.fnt"}
+        "white": { "file": "font/white.fnt"}
+        "black20": { "file": "font/black20.fnt"}
+        "black36": { "file": "font/black36.fnt"}
     },
 
     "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
         "default":      { "font": "black"}
-        "timer":        { "font": "black", "background": "skinRect210x140"}
+        "timer":        { "font": "white"}
+        "description":  { "font": "black20"}
+        "lightningFont":{ "font": "black36"}
+        "lightning":    { "font": "black36", "background": "lightning"}
         "player_1_head":{ "font": "black", "background": "player_1_head"}
         "player_2_head":{ "font": "black", "background": "player_2_head"}
         "player_3_head":{ "font": "black", "background": "player_3_head"}

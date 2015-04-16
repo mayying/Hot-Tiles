@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -27,8 +28,13 @@ import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.entities.ScoreBoard;
 import com.mayying.tileMapGame.entities.ScoreBoard.Score;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
+import com.mayying.tileMapGame.tween.ActorAccessor;
 
 import java.util.ArrayList;
+
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
 
 /**
  * Created by May on 17/3/2015.
@@ -39,36 +45,47 @@ public class SideBar implements Screen {
 
     private Stage stage;
     private Label timer, descriptionImg, descriptionText;
-    private Label[][] scoreBoardLabel;
     private Skin skin;
     private GameWorld world;
     private ImageButton buttonA, buttonB, sound, question, close;
     private TextureAtlas buttonAtlas;
     private OrthographicCamera hudCamera;
-    private Table table, descriptionTable, subTable, scoreBoardTable, scoreBoard1stTable, scoreBoard2ndTable;
-    private LabelStyle labelStyle, playerStyle, player2Style;
+    private Table table, descriptionTable, subTable, scoreBoardTable;
+    private LabelStyle labelStyle;
+    private TweenManager tweenManager;
+    private ImageButtonStyle imageButtonAStyle, imageButtonBStyle;
+
+    private Label[][] scoreBoardLabel;
+    private Table[] scoreBoardSubTable;
+    private LabelStyle[] playerStyle;
+
     private ScoreBoard scoreBoard;
+
     private ArrayList<Score> score;
     private String powerUpName;
-    private ImageButtonStyle imageButtonAStyle, imageButtonBStyle;
+
     private boolean mute = false, remind = false;
-
-    volatile static int timeLeft = 1;
-
+    private static boolean scoreUpdated = true;
     private float gameTime = 60 + 30;
-//    private float gameTime = 5;
     private int min, sec;
     private boolean timeFrozen = true;
-    private static boolean scoreUpdated = true;
+
+    public static int NUM_OF_PLAYER = 2;
+    volatile static int timeLeft = 1;
 
     public SideBar(GameWorld world) {
         this.world = world;
         hudCamera = new OrthographicCamera();
         labelStyle = new LabelStyle();
-        // lmao should have made an arraylist/map to store them properly, initialize according to num players etc
-        playerStyle = new LabelStyle();
-        player2Style = new LabelStyle();
-        player2Style.font = playerStyle.font = labelStyle.font = new BitmapFont(Gdx.files.internal("font/black.fnt"));
+        playerStyle = new LabelStyle[NUM_OF_PLAYER];
+
+        for (int i = 0; i < NUM_OF_PLAYER; i++) {
+            playerStyle[i] = new LabelStyle();
+            playerStyle[i].font = new BitmapFont(Gdx.files.internal("font/black.fnt"));
+        }
+
+        labelStyle.font = playerStyle[0].font;
+
         imageButtonAStyle = new ImageButtonStyle();
         imageButtonBStyle = new ImageButtonStyle();
     }
@@ -80,6 +97,10 @@ public class SideBar implements Screen {
     @Override
     public void show() {
         stage = new Stage(new ExtendViewport(Play.V_WIDTH, Play.V_HEIGHT, hudCamera));
+
+        tweenManager = new TweenManager();
+        Tween.registerAccessor(Sprite.class, new ActorAccessor());
+
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
         inputMultiplexer.addProcessor(stage);
@@ -94,11 +115,10 @@ public class SideBar implements Screen {
         table.setBounds(0, 0, Play.V_WIDTH, Play.V_HEIGHT);
         table.align(Align.top);
 
-        timer = new Label("Time Left\n" + min + " : " + sec, skin, "timer");
+        timer = new Label(min + ":" + sec, skin, "timer");
         timer.setAlignment(Align.center);
 
         sound = new ImageButton(skin, "sound");
-
         sound.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -112,7 +132,9 @@ public class SideBar implements Screen {
                 }
             }
         });
+
         question = new ImageButton(skin, "question");
+
         close = new ImageButton(skin, "close");
         close.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -123,40 +145,47 @@ public class SideBar implements Screen {
         scoreBoard = ScoreBoard.getInstance();
         ArrayList<Score> score = scoreBoard.getScores();
 
-        scoreBoard1stTable = new Table(skin);
-        scoreBoard1stTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/win_score210x89.png"))));
-        scoreBoardLabel = new Label[2][2];
-        if (score.size() >= 2) {
-            scoreBoardLabel[0][0] = new Label("", skin, score.get(1).getPlayer().getModel() + "head");
-            playerStyle.background = skin.getDrawable(score.get(1).getPlayer().getModel() + "head");
-            scoreBoardLabel[0][0].setStyle(playerStyle);
+        // +1 for lightning place holder, cause I lazy to create a new subTable
+        scoreBoardLabel = new Label[NUM_OF_PLAYER + 1][2];
+
+        int index = NUM_OF_PLAYER - 1;
+
+        for (int i = 0; i < NUM_OF_PLAYER; i++) {
+            scoreBoardLabel[i][0] = new Label("", skin, score.get(index).getPlayer().getModel() + "head");
+            playerStyle[i].background = skin.getDrawable(score.get(index--).getPlayer().getModel() + "head");
+            scoreBoardLabel[i][0].setStyle(playerStyle[i]);
+            scoreBoardLabel[i][1] = new Label("Score: 0", skin);
         }
-        scoreBoardLabel[0][1] = new Label("Score: 0", skin);
 
-        scoreBoard1stTable.add(scoreBoardLabel[0][0]).height(55).width(55).padTop(15).padLeft(10);
-        scoreBoard1stTable.add(scoreBoardLabel[0][1]).fill().expandX().padTop(10).padLeft(10);
+        scoreBoardLabel[NUM_OF_PLAYER][0] = new Label("Zap it!", skin, "lightningFont");
+        scoreBoardLabel[NUM_OF_PLAYER][1] = new Label("", skin, "lightning");
 
-        scoreBoard2ndTable = new Table(skin);
-        scoreBoard2ndTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/score210x89.png"))));
-        scoreBoardLabel[1][0] = new Label("", skin, score.get(0).getPlayer().getModel() + "head");
-        player2Style.background = skin.getDrawable(score.get(0).getPlayer().getModel() + "head");
-        scoreBoardLabel[1][0].setStyle(player2Style);
-        scoreBoardLabel[1][1] = new Label("Score: 0", skin);
-
-        scoreBoard2ndTable.add(scoreBoardLabel[1][0]).height(55).width(55).padTop(15).padLeft(10);
-        scoreBoard2ndTable.add(scoreBoardLabel[1][1]).fill().expandX().padTop(10).padLeft(10);
-
+        // +1 for lightning place holder, cause I lazy to create a new subTable
+        scoreBoardSubTable = new Table[NUM_OF_PLAYER + 1];
         scoreBoardTable = new Table();
-        scoreBoardTable.add(scoreBoard1stTable).row();
-        scoreBoardTable.add(scoreBoard2ndTable).row();
+
+        for (int i = 0; i < NUM_OF_PLAYER; i++) {
+            scoreBoardSubTable[i] = new Table(skin);
+            if (i == 0)
+                scoreBoardSubTable[i].setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/win_score210x89.png"))));
+            else
+                scoreBoardSubTable[i].setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/score210x89.png"))));
+            scoreBoardSubTable[i].add(scoreBoardLabel[i][0]).height(55).width(55).padTop(15).padLeft(15);
+            scoreBoardSubTable[i].add(scoreBoardLabel[i][1]).fill().expandX().padTop(10).padLeft(10);
+            scoreBoardTable.add(scoreBoardSubTable[i]).row();
+        }
+
+        scoreBoardSubTable[NUM_OF_PLAYER] = new Table(skin);
+        scoreBoardSubTable[NUM_OF_PLAYER].add(scoreBoardLabel[NUM_OF_PLAYER][0]).padTop(15).fill().height(55).expandX();
+        scoreBoardSubTable[NUM_OF_PLAYER].add(scoreBoardLabel[NUM_OF_PLAYER][1]).padTop(15).padLeft(30).right().height(55).width(55);
+        scoreBoardTable.add(scoreBoardSubTable[NUM_OF_PLAYER]).row();
 
         descriptionImg = new Label("", skin);
         descriptionImg.setAlignment(Align.bottom);
 
-        descriptionText = new Label("", skin);
+        descriptionText = new Label("", skin, "description");
         descriptionText.setWrap(true);
         descriptionText.setAlignment(Align.top);
-        descriptionText.setFontScale(0.75f);
 
         world.getMyTouchPad().getTouchPad().setPosition(0, 0);
 
@@ -179,6 +208,7 @@ public class SideBar implements Screen {
                 }
             }
         });
+
         buttonB = new ImageButton(skin);
         buttonB.setDisabled(true);
         buttonB.addListener(new InputListener() {
@@ -200,8 +230,8 @@ public class SideBar implements Screen {
         });
 
         subTable = new Table();
-        subTable.add(buttonA).right().expandX().expandY().width(140).height(140).center().row();
-        subTable.add(buttonB).left().expandX().width(140).height(140).row();
+        subTable.add(buttonA).right().fill().expandX().expandY().width(140).height(140).row();
+        subTable.add(buttonB).left().fill().expandX().width(140).height(140).row();
 
         descriptionTable = new Table();
         descriptionTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/skinSquare280x210.png"))));
@@ -209,21 +239,47 @@ public class SideBar implements Screen {
         descriptionTable.add(descriptionText).expandY().width(150).height(140).top().center();
 
         // putting stuff together
-        table.add(timer).top().left().expandX().padTop(10).height(140).width(210);
+        table.add(timer).top().left().padTop(25).width(210);
         table.add(sound).top();
         table.add(question).top();
         table.add(close).top().row();
 
-        table.add(scoreBoardTable).left().expandX().height(178).width(210);
-        table.add(descriptionTable).fill().colspan(3).row();
+        table.add(scoreBoardTable).top().left().expandX().height(178).width(210);
+        table.add(descriptionTable).fill().colspan(3).padTop(0.05f * table.getHeight()).row();
 
         table.add(world.getMyTouchPad().getTouchPad()).left().expandY().width(300).height(300);
         table.add(subTable).fill().colspan(3);
         stage.addActor(table);
 
+        animateLightning();
+
     }
 
+    public void showLightning(boolean show) {
+        if (show && !scoreBoardSubTable[NUM_OF_PLAYER].isVisible()) {
+            scoreBoardTable.add(scoreBoardSubTable[NUM_OF_PLAYER]).row();
+            scoreBoardSubTable[NUM_OF_PLAYER].setVisible(true);
+        } else if (!show) {
+            scoreBoardSubTable[NUM_OF_PLAYER].setVisible(false);
+        }
+    }
+
+    public void animateLightning() {
+        Timeline.createSequence().beginSequence()
+                .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][1], ActorAccessor.RGB, .5f).target(1, 1, 0))
+                .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][1], ActorAccessor.RGB, .5f).target(0, 1, 0))
+                .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][1], ActorAccessor.RGB, .5f).target(1, 0, 0))
+                .end().repeat(Tween.INFINITY, 0).start(tweenManager);
+
+//        Timeline.createSequence().beginSequence()
+//                .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][0], ActorAccessor.POSITION, .5f).target(scoreBoardLabel[NUM_OF_PLAYER][0].getX() + 20f))
+//                .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][0], ActorAccessor.POSITION, .5f).target(scoreBoardLabel[NUM_OF_PLAYER][0].getX() - 20f))
+//                .end().repeat(Tween.INFINITY, .2f).start(tweenManager);
+    }
+
+
     public void render(float delta) {
+        tweenManager.update(Gdx.graphics.getDeltaTime());
         if (timeLeft == 0) {
             timeLeft = 1; //Allow game to be restarted next time
             ((Game) (Gdx.app.getApplicationListener())).setScreen(new EndGame(world));
@@ -239,11 +295,9 @@ public class SideBar implements Screen {
                 min = (int) Math.floor(gameTime / 60.0f);
                 sec = (int) (gameTime - min * 60.0f);
                 timeLeft = min * 60 + sec;
-                timer.setText("Time Left\n" + String.format("%02d : %02d", min, sec));
-            } else {
-                timer.setText("Time Left\n" + "-- : --");
-            }
-
+                timer.setText(String.format("%02d:%02d", min, sec));
+            } else
+                timer.setText("--:--");
 
             if (scoreUpdated) {
                 updateBoard();
@@ -282,14 +336,14 @@ public class SideBar implements Screen {
 
     private void updateBoard() {
         score = scoreBoard.getScores();
-
+        int index = NUM_OF_PLAYER - 1;
         if (score.size() >= 2) {
-            playerStyle.background = skin.getDrawable(score.get(1).getPlayer().getModel() + "head");
-            scoreBoardLabel[0][1].setText("Score: " + score.get(1).getScore());
+            for (int i = 0; i < NUM_OF_PLAYER; i++) {
+                playerStyle[i].background = skin.getDrawable(score.get(index).getPlayer().getModel() + "head");
+                scoreBoardLabel[i][1].setText("Score: " + score.get(index--).getScore());
+            }
         }
 
-        player2Style.background = skin.getDrawable(score.get(0).getPlayer().getModel() + "head");
-        scoreBoardLabel[1][1].setText("Score: " + score.get(0).getScore());
     }
 
     @Override
@@ -306,11 +360,10 @@ public class SideBar implements Screen {
         scoreBoardTable.invalidateHierarchy();
         scoreBoardTable.setSize(width, height);
 
-        scoreBoard1stTable.invalidateHierarchy();
-        scoreBoard1stTable.setSize(width, height);
-
-        scoreBoard2ndTable.invalidateHierarchy();
-        scoreBoard2ndTable.setSize(width, height);
+        for (int i = 0; i < NUM_OF_PLAYER; i++) {
+            scoreBoardSubTable[i].invalidateHierarchy();
+            scoreBoardSubTable[i].setSize(width, height);
+        }
     }
 
     @Override

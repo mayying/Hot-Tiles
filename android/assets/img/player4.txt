@@ -4,98 +4,154 @@ filter: Linear,Linear
 repeat: none
 player_4_backward
   rotate: false
-  xy: 2, 2
+  xy: 66, 146
   size: 62, 70
   orig: 62, 70
   offset: 0, 0
   index: 1
 player_4_backward
   rotate: false
-  xy: 66, 2
+  xy: 130, 146
   size: 62, 70
   orig: 62, 70
   offset: 0, 0
   index: 2
 player_4_burnt
+  rotate: false
+  xy: 2, 146
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 1
+player_4_burnt
+  rotate: false
+  xy: 194, 146
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 2
+player_4_forward
+  rotate: false
+  xy: 322, 74
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 1
+player_4_forward
+  rotate: false
+  xy: 322, 146
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 2
+player_4_freeze
+  rotate: false
+  xy: 84, 218
+  size: 80, 90
+  orig: 80, 90
+  offset: 0, 0
+  index: 1
+player_4_freeze
+  rotate: false
+  xy: 2, 218
+  size: 80, 90
+  orig: 80, 90
+  offset: 0, 0
+  index: 2
+player_4_left
+  rotate: false
+  xy: 258, 146
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 1
+player_4_left
+  rotate: false
+  xy: 258, 74
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 2
+player_4_right
+  rotate: false
+  xy: 2, 2
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 1
+player_4_right
+  rotate: false
+  xy: 194, 74
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 2
+player_4_suicide_backward
   rotate: false
   xy: 130, 2
   size: 62, 70
   orig: 62, 70
   offset: 0, 0
   index: 1
-player_4_burnt
+player_4_suicide_backward
   rotate: false
   xy: 194, 2
   size: 62, 70
   orig: 62, 70
   offset: 0, 0
   index: 2
-player_4_forward
+player_4_suicide_forward
+  rotate: false
+  xy: 66, 2
+  size: 62, 70
+  orig: 62, 70
+  offset: 0, 0
+  index: 1
+player_4_suicide_forward
   rotate: false
   xy: 258, 2
   size: 62, 70
   orig: 62, 70
   offset: 0, 0
-  index: 1
-player_4_forward
+  index: 2
+player_4_suicide_left
   rotate: false
   xy: 322, 2
   size: 62, 70
   orig: 62, 70
   offset: 0, 0
-  index: 2
-player_4_freeze
-  rotate: false
-  xy: 386, 2
-  size: 80, 90
-  orig: 80, 90
-  offset: 0, 0
   index: 1
-player_4_freeze
+player_4_suicide_left
   rotate: false
-  xy: 468, 2
-  size: 80, 90
-  orig: 80, 90
-  offset: 0, 0
-  index: 2
-player_4_left
-  rotate: false
-  xy: 550, 2
-  size: 62, 70
-  orig: 62, 70
-  offset: 0, 0
-  index: 1
-player_4_left
-  rotate: false
-  xy: 614, 2
+  xy: 66, 74
   size: 62, 70
   orig: 62, 70
   offset: 0, 0
   index: 2
-player_4_right
+player_4_suicide_right
   rotate: false
-  xy: 678, 2
+  xy: 130, 74
   size: 62, 70
   orig: 62, 70
   offset: 0, 0
   index: 1
-player_4_right
+player_4_suicide_right
   rotate: false
-  xy: 742, 2
+  xy: 2, 74
   size: 62, 70
   orig: 62, 70
   offset: 0, 0
   index: 2
 player_4_swap
   rotate: false
-  xy: 806, 2
+  xy: 166, 218
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: 1
 player_4_swap
   rotate: false
-  xy: 908, 2
+  xy: 268, 218
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
