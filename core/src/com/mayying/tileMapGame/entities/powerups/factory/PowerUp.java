@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.powerups.Blackout;
 import com.mayying.tileMapGame.entities.powerups.Confusion;
-import com.mayying.tileMapGame.entities.powerups.FireMine;
+import com.mayying.tileMapGame.entities.powerups.Fire;
 import com.mayying.tileMapGame.entities.powerups.FreezeMine;
 import com.mayying.tileMapGame.entities.powerups.Invulnerability;
 import com.mayying.tileMapGame.entities.powerups.Swap;
@@ -63,8 +63,8 @@ public class PowerUp {
             case "Confusion":
                 new Confusion().use();
                 break;
-            case "Fire Mine":
-                new FireMine(world.getDevicePlayer(), world.getDevicePlayer().getCollisionLayer()).use();
+            case "Torch":
+                new Fire().use();
                 break;
 
 

@@ -49,8 +49,8 @@ public class CharacterSelector implements Screen {
     private Skin skin;
     private Label heading, timer;
     private TextButton[] textButton;
-    private float timeLeft = 20;
-    private int min, sec; //, otherPlayerSel = -1, mySel = -1;
+    private float timeLeft = 10;
+    private int min, sec;
     private String mode;
 //    private String myPlayerName, otherPlayerName = "", mode, myPlayerId, otherPlayerId;
     private HashMap<String, PlayerData> playerData = new HashMap<String, PlayerData>();

@@ -198,14 +198,14 @@ suicideImg
   orig: 58, 90
   offset: 0, 0
   index: -1
-suicideImgBtn
+suicideBtn
   rotate: false
   xy: 796, 94
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
   index: -1
-suicideImgBtnP
+suicideBtnP
   rotate: false
   xy: 654, 94
   size: 140, 140

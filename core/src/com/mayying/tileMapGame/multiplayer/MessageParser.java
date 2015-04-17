@@ -120,9 +120,9 @@ public class MessageParser {
                                     super.run();
                                     if (!target.isInvulnerable) {
                                         target.setPlayerPosition(x, y);
-                                        target.toggleSwap(false);
-                                        sender.toggleSwap(false);
                                     }
+                                    target.toggleSwap(false);
+                                    sender.toggleSwap(false);
                                 }
                             }.start();
 

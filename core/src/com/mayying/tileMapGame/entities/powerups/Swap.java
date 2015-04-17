@@ -23,13 +23,14 @@ public class Swap implements Usable {
         String deviceID = p.getID();
         // Add all other IDs into one LinkedList
         LinkedList<String> targets = new LinkedList<>();
-        for(String key: world.getPlayers().keySet()){
-            if(!key.equals(deviceID)){
+        for (String key : world.getPlayers().keySet()) {
+            if (!key.equals(deviceID)) {
                 targets.add(key);
             }
         }
+
         // Select a random player
-        int idx = new Random().nextInt(world.getPlayers().size()) - 1;
+        int idx = new Random().nextInt(world.getPlayers().size() - 1);
         Vector2 playerPos = p.getPlayerPosition();
         int xCoord = (int) playerPos.x;
         int yCoord = (int) playerPos.y;

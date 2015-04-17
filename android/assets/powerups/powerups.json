@@ -30,6 +30,13 @@
 	"description"       : "Invulnerable to all damages for 2 seconds",
 },
 {
+	"filenameVector"    : "suicide.png",
+	"filenameBtn"       : "suicideBtn",
+	"filename"          : "suicideImg",
+	"name"              : "Torch",
+	"description"       : "Set self on fire, harming both enemy and self",
+},
+{
 	"filenameVector"    : "swap.png",
 	"filenameBtn"       : "swapBtn",
 	"filename"          : "swapImg",

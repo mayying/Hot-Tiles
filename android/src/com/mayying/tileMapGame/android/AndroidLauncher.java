@@ -613,7 +613,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
             String msgStr = rtm.getSenderParticipantId() + "," + msg.substring(msgTag.length(), msg.length()-1);
             msgBuf.add(msgStr, msg.charAt(msg.length()-1));
         }
-        Log.d("Receiving", msg);
+//        Log.d("Receiving", msg);
     }
 
     @Override

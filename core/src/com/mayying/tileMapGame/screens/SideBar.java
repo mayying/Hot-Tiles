@@ -243,20 +243,19 @@ public class SideBar implements Screen {
         descriptionTable.add(descriptionText).expandY().width(150).height(140).top().center();
 
         // putting stuff together
-        table.add(timer).top().left().padTop(25).width(210);
+        table.add(timer).top().left().padTop(20).width(210);
         table.add(sound).top();
         table.add(question).top();
         table.add(close).top().row();
 
-        table.add(scoreBoardTable).top().left().expandX().height(178).width(210);
+        table.add(scoreBoardTable).left().expandX().height(178).width(210);
         table.add(descriptionTable).fill().colspan(3).padTop(0.05f * table.getHeight()).row();
 
         table.add(world.getMyTouchPad().getTouchPad()).left().expandY().width(300).height(300);
         table.add(subTable).fill().colspan(3);
         stage.addActor(table);
-
+//        table.setDebug(true);
         animateLightning();
-
     }
 
     public void showLightning(boolean show) {
@@ -280,7 +279,6 @@ public class SideBar implements Screen {
 //                .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][0], ActorAccessor.POSITION, .5f).target(scoreBoardLabel[NUM_OF_PLAYER][0].getX() - 20f))
 //                .end().repeat(Tween.INFINITY, .2f).start(tweenManager);
     }
-
 
     public void render(float delta) {
         tweenManager.update(Gdx.graphics.getDeltaTime());

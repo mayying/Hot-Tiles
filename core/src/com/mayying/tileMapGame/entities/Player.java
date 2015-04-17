@@ -23,7 +23,7 @@ import java.util.Random;
 public class Player extends Sprite implements Collidable {
     private int facing; // index of player
     private TiledMapTileLayer collisionLayer;
-    private Animation forward, backward, left, right, burnt, swap, freeze;
+    private Animation forward, backward, left, right, burnt, swap, freeze, suicide_forward, suicide_backward, suicide_left, suicide_right;
     private float speed = 1, animationTime = 0f;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
     private boolean isInverted = false, fireAnimation = false;
@@ -49,6 +49,10 @@ public class Player extends Sprite implements Collidable {
         burnt = new Animation(1 / 6f, playerAtlas.findRegions(model + "burnt"));
         swap = new Animation(1 / 8f, playerAtlas.findRegions(model + "swap"));
         freeze = new Animation(1 / 8f, playerAtlas.findRegions(model + "freeze"));
+        suicide_forward = new Animation(1 / 6f, playerAtlas.findRegions(model + "suicide_forward"));
+        suicide_backward = new Animation(1 / 6f, playerAtlas.findRegions(model + "suicide_backward"));
+        suicide_right = new Animation(1 / 6f, playerAtlas.findRegions(model + "suicide_right"));
+        suicide_left = new Animation(1 / 6f, playerAtlas.findRegions(model + "suicide_left"));
 
         forward.setPlayMode(Animation.PlayMode.LOOP);
         backward.setPlayMode(Animation.PlayMode.LOOP);
@@ -57,6 +61,10 @@ public class Player extends Sprite implements Collidable {
         burnt.setPlayMode(Animation.PlayMode.LOOP);
         swap.setPlayMode(Animation.PlayMode.LOOP);
         freeze.setPlayMode(Animation.PlayMode.LOOP);
+        suicide_forward.setPlayMode(Animation.PlayMode.LOOP);
+        suicide_backward.setPlayMode(Animation.PlayMode.LOOP);
+        suicide_left.setPlayMode(Animation.PlayMode.LOOP);
+        suicide_right.setPlayMode(Animation.PlayMode.LOOP);
     }
 
     // Given matrix position, set position on map (non-matrix)
@@ -91,8 +99,10 @@ public class Player extends Sprite implements Collidable {
     public void draw(Batch batch) {
         if (isInvulnerable) {
             this.setAlpha(0.7f);
-        } else
+        } else {
             this.setAlpha(1);
+        }
+        if (isOnFire) collisionCheck();
         super.draw(batch);
     }
 
@@ -135,8 +145,12 @@ public class Player extends Sprite implements Collidable {
 
     public void animate(float delta) {
         animationTime += delta + 0.01;
+        if (fireAnimation)
+            Gdx.app.log("Player", "Fire Animation Activated");
         setRegion(isDead ? burnt.getKeyFrame(animationTime) : isFrozen ? freeze.getKeyFrame(animationTime) :
-                isSwapped ? swap.getKeyFrame(animationTime) : facing == 4 ? left.getKeyFrame(animationTime) :
+                isSwapped ? swap.getKeyFrame(animationTime) : fireAnimation ? (facing == 4 ? suicide_left.getKeyFrame(animationTime) :
+                        facing == 6 ? suicide_right.getKeyFrame(animationTime) : facing == 2 ? suicide_backward.getKeyFrame(animationTime) :
+                                suicide_forward.getKeyFrame(animationTime)) : facing == 4 ? left.getKeyFrame(animationTime) :
                         facing == 6 ? right.getKeyFrame(animationTime) : facing == 2 ? backward.getKeyFrame(animationTime) :
                                 forward.getKeyFrame(animationTime));
     }
@@ -240,6 +254,8 @@ public class Player extends Sprite implements Collidable {
         // Commits sudoku
         if (!isInvulnerable) {
             isDead = true;
+            toggleSwap(false);
+            fireAnimation = isOnFire = false;
             final int xCoordinate = new Random().nextInt(getCollisionLayer().getWidth() - 8);
             final int yCoordinate = new Random().nextInt(getCollisionLayer().getHeight() - 2);
             new DelayedThread(1500l, this) {
@@ -279,11 +295,9 @@ public class Player extends Sprite implements Collidable {
 
             // Update score (local + server)
             updateScore();
-
             return new Vector2(xCoordinate, yCoordinate);
-        } else {
+        } else
             return null;
-        }
     }
 
     private void updateScore() {
@@ -413,24 +427,28 @@ public class Player extends Sprite implements Collidable {
 
     public void setOnFire() {
         isOnFire = true;
-        new DelayedThread(10000l){
+        setFireAnimation();
+        new DelayedThread(10000l) {
             @Override
             public void run() {
                 super.run();
-                if(GameWorld.getInstance() != null){
-                    isOnFire = false;
-                    die();
+                if (GameWorld.getInstance() != null) {
+                    if (isOnFire) {
+                        isOnFire = false;
+                        die();
+                    }
                 }
             }
         }.start();
     }
-    public void setFireAnimation(){
+
+    public void setFireAnimation() {
         fireAnimation = true; // update this for animation, because we use isOnFire for other logic
-        new DelayedThread(10000l){
+        new DelayedThread(10000l) {
             @Override
             public void run() {
                 super.run();
-                if(GameWorld.getInstance() != null){
+                if (GameWorld.getInstance() != null) {
                     fireAnimation = false;
                 }
             }
@@ -439,7 +457,7 @@ public class Player extends Sprite implements Collidable {
 
     @Override
     public void onCollisionDetected(Player player) {
-        Play.broadcastMessage("effect","fire","1");
+        Play.broadcastMessage("effect", "fire", "1");
     }
 
     @Override
