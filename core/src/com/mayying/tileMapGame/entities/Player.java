@@ -259,15 +259,10 @@ public class Player extends Sprite implements Collidable {
             new DelayedThread(1500l, this) {
                 @Override
                 public void run() {
-                    // Commented out unsafe method, dead players should not share the same ArrayList
-                    // as players because it will lead to conflict
-//                    gameWorld.addPlayer(getPlayer());
                     Jukebox.stopAll();
                     Jukebox.play("fire");
                     super.run();
                     Jukebox.stop("fire");
-//                    gameWorld.removePlayer(getPlayer());
-                    //This thread is called after dispose and causes a new player to be added.
                     spawn(xCoordinate, yCoordinate);
                 }
             }.start();
@@ -467,7 +462,7 @@ public class Player extends Sprite implements Collidable {
             if(key.equals(getID())) continue;
 
             Player p = world.getPlayer(key);
-            if (p.getPlayerPosition().equals(this.getPlayerPosition()))
+            if (p.getPlayerPosition().equals(this.getPlayerPosition()) && !p.isInvulnerable)
                 onCollisionDetected(p);
         }
     }
