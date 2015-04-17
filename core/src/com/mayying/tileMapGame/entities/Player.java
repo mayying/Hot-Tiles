@@ -457,13 +457,15 @@ public class Player extends Sprite implements Collidable {
 
     @Override
     public void onCollisionDetected(Player player) {
-        Play.broadcastMessage("effect", "fire", "1");
+        Play.broadcastMessage("effect", "fire", "1",player.getID());
     }
 
     @Override
     public void collisionCheck() {
         GameWorld world = GameWorld.getInstance();
         for (String key : world.getPlayers().keySet()) {
+            if(key.equals(getID())) continue;
+
             Player p = world.getPlayer(key);
             if (p.getPlayerPosition().equals(this.getPlayerPosition()))
                 onCollisionDetected(p);

@@ -1,6 +1,5 @@
 package com.mayying.tileMapGame.entities.powerups;
 
-import com.badlogic.gdx.Gdx;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.screens.Play;
 
@@ -12,6 +11,5 @@ public class Fire implements Usable {
     public void use() {
         GameWorld.getInstance().getDevicePlayer().setOnFire();
         Play.broadcastMessage("effect", "fire", "0");
-        Gdx.app.log("Fire", "Using fire");
     }
 }

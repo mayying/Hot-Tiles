@@ -129,12 +129,12 @@ public class MessageParser {
                             break;
 
                         case "fire":
-                            // Format: "effect","fire",["1"/"0"] - 0 for animation, 1 to inform the client that he died from this
+                            // Format: "effect","fire",["1"/"0"], victimID - 0 for animation, 1 to inform the client that he died from this
                             int mode = Integer.valueOf(message[3]);
                             if(mode == 0){
                                 world.getPlayer(senderId).setFireAnimation(); // TODO ADD THE ANIMATION TO THAT METHOD, PLAY SADISTIC AHHH SOUND
                             }else if(mode == 1){
-                                player.burn(senderId);
+                                world.getPlayer(message[4]).burn(senderId);
                             }
                             break;
 
