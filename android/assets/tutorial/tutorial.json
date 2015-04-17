@@ -1,0 +1,8 @@
+{
+    "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
+            "left":     {"up": "leftButton", "down": "leftButtonP"}
+            "right":    {"up": "rightButton", "down": "rightButtonP"}
+            "close":    {"up": "skinSquareClose70x70", "down": "skinSquareClose70x70P"}
+    }
+}
+

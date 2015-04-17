@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="D:\time2code\Hot-Tiles\core\build\libs\core-1.0.jar"
+        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\core\build\libs\core-1.0.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="72e6a8d7e99cf69f5a9851a85819674e98b59a49">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\core-1.0-7679bf07410e88a9de0adbe37813ade4043487b0.jar" />
+        sha1="835cc62e1949b6d629bd89e9bda046dc3111dad2">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\core-1.0-5a3adb6bbec24ec12b8671ce083d06e11f14e0a7.jar" />
     </item>
 
 </items>

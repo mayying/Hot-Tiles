@@ -143,6 +143,7 @@ public class GameWorld {
             shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(new Color(Color.BLACK));
+//            shapeRenderer.setColor(0, 0, 0, 0.7f);
             shapeRenderer.rect(0, 0, Play.camera.viewportWidth, Play.camera.viewportHeight);
             shapeRenderer.end();
         }
@@ -318,7 +319,7 @@ public class GameWorld {
 //        }.start();
         new Thunderbolt(x, y, playableLayer);
         Jukebox.play("lightning");
-        if (devicePlayer.getPlayerPosition().equals(new Vector2(x,y))) {
+        if (devicePlayer.getPlayerPosition().equals(new Vector2(x, y))) {
             devicePlayer.setLastHitBy(senderId);
             devicePlayer.die();
         }

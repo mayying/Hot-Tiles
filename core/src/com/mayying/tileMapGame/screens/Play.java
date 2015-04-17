@@ -127,7 +127,7 @@ public class Play implements Screen {
         renderer.getBatch().begin();
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("Background"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("Foreground"));
-//        bar.draw(renderer.getBatch(), 50);
+
         // Screen
         world.playerMovement(delta);
         world.drawAndUpdate(renderer.getBatch());

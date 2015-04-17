@@ -422,6 +422,7 @@ public class Player extends Sprite implements Collidable {
         if (!isOnFire) {
             isOnFire = true;
             setFireAnimation();
+            Jukebox.play("suicide");
             new DelayedThread(10000l) {
                 @Override
                 public void run() {

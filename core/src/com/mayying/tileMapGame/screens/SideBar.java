@@ -47,7 +47,7 @@ public class SideBar implements Screen {
     private Label timer, descriptionImg, descriptionText;
     private Skin skin;
     private GameWorld world;
-    private ImageButton buttonA, buttonB, sound, question, close;
+    private ImageButton buttonA, buttonB, music, sound, close;
     private TextureAtlas buttonAtlas;
     private OrthographicCamera hudCamera;
     private Table table, descriptionTable, subTable, scoreBoardTable;
@@ -64,7 +64,7 @@ public class SideBar implements Screen {
     private ArrayList<Score> score;
     private String powerUpName;
 
-    private boolean mute = false, remind = false;
+    private boolean muteMusic = false, muteSfx = false, remind = false;
     private static boolean scoreUpdated = true;
     private float gameTime = 60 + 30;
     private int min, sec;
@@ -121,22 +121,34 @@ public class SideBar implements Screen {
         timer = new Label(min + ":" + sec, skin, "timer");
         timer.setAlignment(Align.center);
 
-        sound = new ImageButton(skin, "sound");
-        sound.addListener(new ClickListener() {
+        music = new ImageButton(skin, "music");
+        music.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (!mute) {
-                    mute = true;
-                    Jukebox.toggleMute("background", mute);
+                if (!muteMusic) {
+                    muteMusic = true;
+                    Jukebox.toggleMuteMusic("background", muteMusic);
                 } else {
-                    mute = false;
-                    Jukebox.toggleMute("background", mute);
+                    muteMusic = false;
+                    Jukebox.toggleMuteMusic("background", muteMusic);
 
                 }
             }
         });
 
-        question = new ImageButton(skin, "question");
+        sound = new ImageButton(skin, "sound");
+        sound.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (!muteSfx) {
+                    muteSfx = true;
+                    Jukebox.toggleMuteSfx(muteSfx);
+                } else {
+                    muteSfx = false;
+                    Jukebox.toggleMuteSfx(muteSfx);
+                }
+            }
+        });
 
         close = new ImageButton(skin, "close");
         close.addListener(new ClickListener() {
@@ -173,13 +185,13 @@ public class SideBar implements Screen {
                 scoreBoardSubTable[i].setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/win_score210x89.png"))));
             else
                 scoreBoardSubTable[i].setBackground(new TextureRegionDrawable(new TextureRegion(new Texture("skin/score210x89.png"))));
-            scoreBoardSubTable[i].add(scoreBoardLabel[i][0]).height(55).width(55).padTop(15).padLeft(15);
+            scoreBoardSubTable[i].add(scoreBoardLabel[i][0]).width(45).height(45).padTop(15).padLeft(15);
             scoreBoardSubTable[i].add(scoreBoardLabel[i][1]).fill().expandX().padTop(10).padLeft(10);
             scoreBoardTable.add(scoreBoardSubTable[i]).row();
         }
 
         scoreBoardSubTable[NUM_OF_PLAYER] = new Table(skin);
-        scoreBoardSubTable[NUM_OF_PLAYER].add(scoreBoardLabel[NUM_OF_PLAYER][0]).padTop(15).padLeft(30).fill().height(55).expandX();
+        scoreBoardSubTable[NUM_OF_PLAYER].add(scoreBoardLabel[NUM_OF_PLAYER][0]).padTop(15).padLeft(30).fill().expandX();
         scoreBoardSubTable[NUM_OF_PLAYER].add(scoreBoardLabel[NUM_OF_PLAYER][1]).padTop(15).padLeft(30).right().height(55).width(55);
         scoreBoardTable.add(scoreBoardSubTable[NUM_OF_PLAYER]).row();
 
@@ -242,9 +254,9 @@ public class SideBar implements Screen {
         descriptionTable.add(descriptionText).expandY().width(150).height(140).top().center();
 
         // putting stuff together
-        table.add(timer).top().left().padTop(20).width(210);
+        table.add(timer).top().left().padTop(0.02f * table.getHeight()).width(210);
+        table.add(music).top();
         table.add(sound).top();
-        table.add(question).top();
         table.add(close).top().row();
 
         table.add(scoreBoardTable).left().expandX().height(178).width(210);

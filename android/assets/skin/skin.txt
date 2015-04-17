@@ -163,28 +163,28 @@ skinSquareQuestion70x70P
   orig: 70, 70
   offset: 0, 0
   index: -1
-skinSquareSoundOff70x70
+skinSquareSfx
   rotate: false
   xy: 788, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
-skinSquareSoundOff70x70P
+skinSquareSfxMute
   rotate: false
   xy: 644, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
-skinSquareSoundOn70x70
+skinSquareSoundOff70x70
   rotate: false
   xy: 572, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
-skinSquareSoundOn70x70P
+skinSquareSoundOn70x70
   rotate: false
   xy: 716, 2
   size: 70, 70

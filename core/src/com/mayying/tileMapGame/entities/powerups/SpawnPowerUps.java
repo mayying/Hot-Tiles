@@ -52,8 +52,8 @@ public class SpawnPowerUps implements Collidable {
                 // !created
                 // picking random stringID from list
                 powerUpIsPickedUp = false;
-//                powerUp = powerUpFactory.createPowerUp(spawnRNG.nextInt(6));
-                powerUp = powerUpFactory.createPowerUp(4); //TODO - revert back to to previous line after done debugging
+                powerUp = powerUpFactory.createPowerUp(spawnRNG.nextInt(6));
+//                powerUp = powerUpFactory.createPowerUp(4); //TODO - revert back to to previous line after done debugging
 
                 sprite = new Sprite(powerUp.getTextureVector());
 

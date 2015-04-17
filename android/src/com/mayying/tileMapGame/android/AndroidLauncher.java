@@ -105,8 +105,9 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
                 .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
                 .addApi(Games.API).addScope(Games.SCOPE_GAMES)
                 .build();
-
-        initialize(game, new AndroidApplicationConfiguration());
+        AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+        config.useImmersiveMode = true;
+        initialize(game, config);
     }
 
     @Override

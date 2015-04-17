@@ -52,7 +52,8 @@ public class EndGame implements Screen {
 
     @Override
     public void show() {
-        Jukebox.toggleMute("background", false);
+        Jukebox.toggleMuteMusic("background", false);
+        Jukebox.toggleMuteSfx(false);
         Jukebox.stopMusic("background");
         Jukebox.playMusic("mainMenu");
         ArrayList<ScoreBoard.Score> scores = ScoreBoard.getInstance().getScores();
@@ -100,13 +101,12 @@ public class EndGame implements Screen {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Jukebox.play("buttonPressed");
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("EndGame", "touched");
-                Jukebox.play("buttonPressed");
                 Play.getMultiplayerMessaging().leaveGame();
             }
         });
@@ -116,12 +116,12 @@ public class EndGame implements Screen {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Jukebox.play("buttonPressed");
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Jukebox.play("buttonPressed");
                 rematchButtonClicked();
             }
         });

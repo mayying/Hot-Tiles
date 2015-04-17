@@ -13,6 +13,7 @@ public class Jukebox {
     private static HashMap<String, Sound> sounds;
     private static HashMap<String, Music> musics;
     private static boolean mute = false;
+    private static float volume = 1;
 
     static {
         sounds = new HashMap<String, Sound>();
@@ -20,9 +21,9 @@ public class Jukebox {
     }
 
     public static void load(String name) {
-//        Gdx.app.log("Jukebox", "Loading: " + name);
         Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/" + name + ".mp3"));
         sounds.put(name, sound);
+        sound.setLooping(0, true);
     }
 
     public static void loadMusic(String name) {
@@ -32,33 +33,35 @@ public class Jukebox {
     }
 
     public static void play(String name) {
-//        Gdx.app.log("Jukebox", "MUTE? " + mute + " Now playing: " + name);
-        if (!mute) {
-//            Gdx.app.log("Jukebox", "Now playing: " + name);
-            sounds.get(name).play();
-        }
+        sounds.get(name).play(volume);
     }
 
     public static void playMusic(String name) {
-        if (!mute) {
-//            Gdx.app.log("Jukebox", "Now playing: " + name);
-            musics.get(name).play();
-        }
-
-        if (name.equals("buttonPressed"))
-            musics.get(name).setVolume(2f);
+        musics.get(name).play();
     }
 
-    public static void toggleMute(String name, boolean mute) {
+    public static void toggleMuteMusic(String name, boolean mute) {
         if (mute)
             musics.get(name).setVolume(0f);
         else
             musics.get(name).setVolume(1f);
     }
 
-    public static void loop(String name) {
-        sounds.get(name).loop();
+    public static void toggleMuteSfx(boolean mute) {
+        for (Sound s : sounds.values()) {
+            if (mute) {
+                s.setVolume(0, 0f);
+                volume = 0f;
+            } else {
+                s.setVolume(0, 1f);
+                volume = 1f;
+            }
+        }
     }
+
+//    public static void loop(String name) {
+//        sounds.get(name).loop();
+//    }
 
     public static void stop(String name) {
         sounds.get(name).stop();
