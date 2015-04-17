@@ -94,22 +94,24 @@ public class MessageParser {
                             if (message[5].equals("1")) {
                                 Jukebox.play("swap");
                                 world.getPlayer(senderId).toggleSwap(true);
-                                player.toggleSwap(true);
+                                world.getPlayer(message[6]).toggleSwap(true);
 
                                 Gdx.app.log(TAG, "swapped? " + world.getPlayer(senderId).isSwapped);
                                 world.getPlayer(senderId).animate(Gdx.graphics.getDeltaTime() * 20);
-                                player.animate(Gdx.graphics.getDeltaTime() * 20);
+                                world.getPlayer(message[6]).animate(Gdx.graphics.getDeltaTime() * 20);
 
-                                // broadcast back your location
-                                Vector2 playerPos = player.getPlayerPosition();
-                                int xCoord = (int) playerPos.x;
-                                int yCoord = (int) playerPos.y;
-                                Play.broadcastMessage("effect", "swap", String.valueOf(xCoord), String.valueOf(yCoord), "0");
+                                if (Play.getMultiplayerMessaging().getMyId().equals(message[6])) {
+                                    // broadcast back your location
+                                    Vector2 playerPos = player.getPlayerPosition();
+                                    int xCoord = (int) playerPos.x;
+                                    int yCoord = (int) playerPos.y;
+                                    Play.broadcastMessage("effect", "swap", String.valueOf(xCoord), String.valueOf(yCoord), "0", senderId);
+                                }
                                 // only setting last hit for the victim.
-                                player.setLastHitBy(senderId);
+                                world.getPlayer(message[6]).setLastHitBy(senderId);
                             }
 
-                            new DelayedThread(200l, player, message[3], message[4]) {
+                            new DelayedThread(200l, world.getPlayer(message[6]), message[3], message[4]) {
                                 @Override
                                 public void run() {
                                     super.run();

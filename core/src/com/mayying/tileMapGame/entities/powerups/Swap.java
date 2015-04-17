@@ -7,6 +7,8 @@ import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.screens.Play;
 
+import java.util.Random;
+
 /**
  * Created by User on 28/3/15.
  */
@@ -19,9 +21,25 @@ public class Swap implements Usable {
         Player p = world.getDevicePlayer();
 
         if (world.getPlayers().size()>1) {
+            int random = (new Random()).nextInt(world.getPlayers().size()-1)+1;
+            String targetPlayer = Play.getMultiplayerMessaging().getMyId();
             for (String key : world.getPlayers().keySet()) {
-                world.getPlayers().get(key).toggleSwap(true);
+                if (!key.equals(Play.getMultiplayerMessaging().getMyId())) {
+                    random -= 1;
+                    if (random<=0) {
+                        world.getPlayers().get(key).toggleSwap(true);
+                        world.getPlayers().get(Play.getMultiplayerMessaging().getMyId()).toggleSwap(true);
+                        targetPlayer = key;
+                        break;
+                    }
+                }
             }
+
+            Vector2 playerPos = p.getPlayerPosition();
+            int xCoord = (int) playerPos.x;
+            int yCoord = (int) playerPos.y;
+
+            Play.broadcastMessage("effect", "swap", String.valueOf(xCoord), String.valueOf(yCoord), "1", targetPlayer);
         } else {
             //single player swap
             p.toggleSwap(true);
@@ -34,12 +52,6 @@ public class Swap implements Usable {
                 }
             }.start();
         }
-
-        Vector2 playerPos = p.getPlayerPosition();
-        int xCoord = (int) playerPos.x;
-        int yCoord = (int) playerPos.y;
-
-        Play.broadcastMessage("effect", "swap", String.valueOf(xCoord), String.valueOf(yCoord), "1");
 
 //        Player p1 = GameWorld.getInstance().getDevicePlayer();
 //        HashMap<String, Player> map = GameWorld.getInstance().getPlayers();

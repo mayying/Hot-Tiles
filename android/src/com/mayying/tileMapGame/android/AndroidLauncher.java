@@ -634,7 +634,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
                 Games.RealTimeMultiplayer.sendUnreliableMessage(mGoogleApiClient, bytes, mRoomId, p.getParticipantId());
             }
         }
-        if (peers == 0) {
+        if (peers+1 < mParticipants.size()) {
             if (game.isInGame()) {
                 game.leaveGame();
             }
