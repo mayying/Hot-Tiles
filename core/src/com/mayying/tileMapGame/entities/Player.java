@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.powerups.Bullet;
+import com.mayying.tileMapGame.entities.powerups.Collidable;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 import com.mayying.tileMapGame.screens.Play;
@@ -19,18 +20,19 @@ import java.util.Random;
 /**
  * Created by May Ying on 24/2/2015.
  */
-public class Player extends Sprite {
+public class Player extends Sprite implements Collidable {
     private int facing; // index of player
     private TiledMapTileLayer collisionLayer;
     private Animation forward, backward, left, right, burnt, swap, freeze;
     private float speed = 1, animationTime = 0f;
     private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
-    private boolean isInverted = false;
+    private boolean isInverted = false, fireAnimation = false;
     private String lastHitBy;
     private PlayerMetaData metaData;
 
     public PowerUp[] powerUpList = new PowerUp[2];
-    public boolean isInvulnerable = false, isDead = false, isFrozen = false, isSwapped = false;
+    public boolean isInvulnerable = false, isDead = false, isFrozen = false, isSwapped = false, isOnFire = false;
+
 
     public Player(TiledMapTileLayer collisionLayer, PlayerMetaData data) {
         super(new Animation(1 / 2f, data.getAtlas().findRegions(data.getModel() + "forward")).getKeyFrame(0));
@@ -55,8 +57,6 @@ public class Player extends Sprite {
         burnt.setPlayMode(Animation.PlayMode.LOOP);
         swap.setPlayMode(Animation.PlayMode.LOOP);
         freeze.setPlayMode(Animation.PlayMode.LOOP);
-
-
     }
 
     // Given matrix position, set position on map (non-matrix)
@@ -409,5 +409,46 @@ public class Player extends Sprite {
 
     public void setFacing(int facing) {
         this.facing = facing;
+    }
+
+    public void setOnFire() {
+        isOnFire = true;
+        new DelayedThread(10000l){
+            @Override
+            public void run() {
+                super.run();
+                if(GameWorld.getInstance() != null){
+                    isOnFire = false;
+                    die();
+                }
+            }
+        }.start();
+    }
+    public void setFireAnimation(){
+        fireAnimation = true; // update this for animation, because we use isOnFire for other logic
+        new DelayedThread(10000l){
+            @Override
+            public void run() {
+                super.run();
+                if(GameWorld.getInstance() != null){
+                    fireAnimation = false;
+                }
+            }
+        }.start();
+    }
+
+    @Override
+    public void onCollisionDetected(Player player) {
+        Play.broadcastMessage("effect","fire","1");
+    }
+
+    @Override
+    public void collisionCheck() {
+        GameWorld world = GameWorld.getInstance();
+        for (String key : world.getPlayers().keySet()) {
+            Player p = world.getPlayer(key);
+            if (p.getPlayerPosition().equals(this.getPlayerPosition()))
+                onCollisionDetected(p);
+        }
     }
 }
