@@ -222,6 +222,11 @@ public class Tutorial implements Screen, MultiplayerMessaging{
     }
 
     @Override
+    public void clearMessageBufferExcept(char screenTag) {
+
+    }
+
+    @Override
     public String getHostId() {
         return null;
     }

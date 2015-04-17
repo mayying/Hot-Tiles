@@ -150,7 +150,8 @@ public class GameWorld {
     }
 
     private long lastMovement = -1;
-    public final static long MOVEMENT_FREQUENCY = 350;
+    public final static long MOVEMENT_FREQUENCY = 400;
+    public final static long MOVEMENT_FREQUENCY_HASTED = 275;
 
     // Should separate into collision/bounds logic and update movement so that when we factor in concurrent
     // updates from server we can just update movement via setX / setY
@@ -181,7 +182,11 @@ public class GameWorld {
             pressed = false;
         }
 
-        if (System.currentTimeMillis() - lastMovement >= MOVEMENT_FREQUENCY) {
+        long freq = MOVEMENT_FREQUENCY;
+        if (getDevicePlayer().isHasted){
+            freq = MOVEMENT_FREQUENCY_HASTED;
+        }
+        if (System.currentTimeMillis() - lastMovement >= freq) {
             if (pressed) {
                 lastMovement = System.currentTimeMillis();
                 if (!player.isDead)

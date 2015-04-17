@@ -18,6 +18,16 @@ public class MessageBuffer {
         hashMap.put('x', new ArrayList<String>());
     }
 
+    public void clearMessageBufferExcept(char screenTag){
+        synchronized (this){
+            for (char key : hashMap.keySet()){
+                if (key!=screenTag){
+                    hashMap.put(key, new ArrayList<String>());
+                }
+            }
+        }
+    }
+
     public List<String> getList(char screenTag){
         synchronized (this) {
             List<String> ret = hashMap.get(screenTag);

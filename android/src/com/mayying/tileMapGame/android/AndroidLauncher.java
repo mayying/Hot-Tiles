@@ -693,6 +693,9 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     }
 
     @Override
+    public void clearMessageBufferExcept(char screenTag) { msgBuf.clearMessageBufferExcept(screenTag);}
+
+    @Override
     public String getHostId() {
         return hostId;
     }

@@ -164,6 +164,7 @@ public class CharacterSelector implements Screen {
         }
         Gdx.app.log(TAG, "I am the host: " + imTheHost);
         setDefaultCharacter();
+        multiplayerMessaging.clearMessageBufferExcept('c');
     }
 
     private void broadcastMyInfo() {
@@ -228,8 +229,19 @@ public class CharacterSelector implements Screen {
         }
     }
 
+    boolean leavingGame = false;
+
+    public void leaveGame() {
+        leavingGame = true;
+    }
+
     @Override
     public void render(float delta) {
+        if (leavingGame) {
+            leavingGame = false;
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(multiplayerMessaging));
+        }
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

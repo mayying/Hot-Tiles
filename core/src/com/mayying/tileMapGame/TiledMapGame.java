@@ -78,6 +78,10 @@ public class TiledMapGame extends Game {
             inGame = false;
             EndGame s = (EndGame) screen;
             s.leaveGame();
+        } else if (screen instanceof CharacterSelector) {
+            inGame = false;
+            CharacterSelector s = (CharacterSelector) screen;
+            s.leaveGame();
         }
     }
 

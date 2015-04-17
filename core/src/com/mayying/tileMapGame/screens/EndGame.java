@@ -133,6 +133,8 @@ public class EndGame implements Screen {
         table.add(mainMenu);
         table.add(rematch);
         stage.addActor(table);
+
+        Play.getMultiplayerMessaging().clearMessageBufferExcept('e');
     }
 
     private Label getCenteredLabel(String s, Skin skin) {

@@ -6,6 +6,7 @@ import com.mayying.tileMapGame.entities.powerups.Blackout;
 import com.mayying.tileMapGame.entities.powerups.Confusion;
 import com.mayying.tileMapGame.entities.powerups.Fire;
 import com.mayying.tileMapGame.entities.powerups.FreezeMine;
+import com.mayying.tileMapGame.entities.powerups.Haste;
 import com.mayying.tileMapGame.entities.powerups.Invulnerability;
 import com.mayying.tileMapGame.entities.powerups.Swap;
 
@@ -65,6 +66,9 @@ public class PowerUp {
                 break;
             case "Torch":
                 new Fire().use();
+                break;
+            case "Haste":
+                new Haste().use();
                 break;
 
 

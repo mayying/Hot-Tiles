@@ -13,6 +13,7 @@ public interface MultiplayerMessaging {
     public String getMyId();
     public String getMyName();
     public List<String> getMessageBuffer(char screenTag);
+    public void clearMessageBufferExcept(char screenTag);
     public String getHostId();
 
     //for main menu usages

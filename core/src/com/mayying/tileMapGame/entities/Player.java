@@ -31,7 +31,7 @@ public class Player extends Sprite implements Collidable {
     private PlayerMetaData metaData;
 
     public PowerUp[] powerUpList = new PowerUp[2];
-    public boolean isInvulnerable = false, isDead = false, isFrozen = false, isSwapped = false, isOnFire = false;
+    public boolean isInvulnerable = false, isDead = false, isFrozen = false, isSwapped = false, isOnFire = false, isHasted = false;
 
 
     public Player(TiledMapTileLayer collisionLayer, PlayerMetaData data) {
@@ -449,6 +449,24 @@ public class Player extends Sprite implements Collidable {
                 }
             }
         }.start();
+    }
+
+    public void setHasted() {
+        if (!isHasted) {
+            isHasted = true;
+            Jukebox.play("lightning");
+            new DelayedThread(5000l) {
+                @Override
+                public void run() {
+                    super.run();
+                    if (GameWorld.getInstance() != null) {
+                        if (isHasted) { // this is false only if the player has died
+                            isHasted = false;
+                        }
+                    }
+                }
+            }.start();
+        }
     }
 
     @Override

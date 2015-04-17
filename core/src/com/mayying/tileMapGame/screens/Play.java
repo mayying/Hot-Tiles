@@ -90,6 +90,7 @@ public class Play implements Screen {
 
         Jukebox.stopMusic("mainMenu");
         Jukebox.playMusic("background");
+        multiplayerMessaging.clearMessageBufferExcept('p');
     }
 
     public void initializeBurningTiles(Long randomSeed) {

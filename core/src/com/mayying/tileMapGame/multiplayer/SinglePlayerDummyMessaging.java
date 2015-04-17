@@ -63,6 +63,11 @@ public class SinglePlayerDummyMessaging implements MultiplayerMessaging {
     }
 
     @Override
+    public void clearMessageBufferExcept(char screenTag) {
+        //do nothing
+    }
+
+    @Override
     public String getHostId() {
         return "me";
     }
