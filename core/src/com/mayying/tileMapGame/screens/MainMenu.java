@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -43,8 +42,7 @@ import aurelienribon.tweenengine.TweenManager;
 public class MainMenu implements Screen {
     private SpriteBatch batch;
     private Sprite background;
-    private TextButton buttonPractice, buttonFriends, buttonExit;
-    private ImageButton buttonNoOfPlayers;
+    private TextButton buttonPractice, buttonFriends, buttonExit, buttonPlus, buttonMinus;
     private Label heading;
     private Stage stage;
     private TextureAtlas buttonAtlas;
@@ -94,6 +92,7 @@ public class MainMenu implements Screen {
         table.align(Align.top);
 
         heading = new Label("Hot Tiles", skin);
+
         buttonPractice = new TextButton("Practice", skin);
         menuActors.add(buttonPractice);
         buttonPractice.addListener(new InputListener() {
@@ -118,7 +117,22 @@ public class MainMenu implements Screen {
         });
 
         multiplayerMessaging.setNoOfPlayers(2);
-        buttonFriends = new TextButton("Friends (2p)", skin);
+
+        buttonMinus = new TextButton("-", skin, "plusMinus");
+        menuActors.add(buttonMinus);
+        buttonMinus.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (multiplayerMessaging.getNoOfPlayers() > 2) {
+                    int noOfPlayers = multiplayerMessaging.getNoOfPlayers() - 1;
+                    buttonFriends.setText(String.valueOf(noOfPlayers) + " Friends");
+                    multiplayerMessaging.setNoOfPlayers(noOfPlayers);
+                    Jukebox.play("buttonPressed");
+                }
+            }
+        });
+
+        buttonFriends = new TextButton("2 Friends", skin);
         menuActors.add(buttonFriends);
         buttonFriends.addListener(new InputListener() {
             @Override
@@ -135,6 +149,20 @@ public class MainMenu implements Screen {
                 } else {
                     showLoading();
                     multiplayerMessaging.signIn();
+                }
+            }
+        });
+
+        buttonPlus = new TextButton("+", skin, "plusMinus");
+        menuActors.add(buttonPlus);
+        buttonPlus.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (multiplayerMessaging.getNoOfPlayers() < 4) {
+                    int noOfPlayers = multiplayerMessaging.getNoOfPlayers() + 1;
+                    buttonFriends.setText(String.valueOf(noOfPlayers) + " Friends");
+                    multiplayerMessaging.setNoOfPlayers(noOfPlayers);
+                    Jukebox.play("buttonPressed");
                 }
             }
         });
@@ -161,34 +189,18 @@ public class MainMenu implements Screen {
 
         Gdx.app.log("Main Menu", "show called: " + buttonExit.getWidth() + " " + buttonExit.getHeight());
 
-        //TODO: Change texture atlas
-        TextureAtlas buttonAtlasSmall = new TextureAtlas(Gdx.files.internal("skin/skin.txt"));
-        Skin skinSmall = new Skin(Gdx.files.internal("skin/gameSkin.json"), buttonAtlasSmall);
-        buttonNoOfPlayers = new ImageButton(skinSmall, "sound");
-        menuActors.add(buttonNoOfPlayers);
-        buttonNoOfPlayers.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                int noOfPlayers = multiplayerMessaging.getNoOfPlayers()+1;
-                if (noOfPlayers>4){
-                    noOfPlayers = 2;
-                }
-                buttonFriends.setText("Friends (" + String.valueOf(noOfPlayers) + "p)");
-                multiplayerMessaging.setNoOfPlayers(noOfPlayers);
-            }
-        });
-
         //tableMenu
         table = new Table(skin);
         table.setFillParent(true);
         table.setBounds(0, 0, Play.V_WIDTH, Play.V_HEIGHT);
         table.align(Align.top);
 
-        table.add(heading).height(210).row();
-        table.add(buttonPractice).padBottom(20);
-        table.add(buttonNoOfPlayers).padBottom(20).row();
-        table.add(buttonFriends).padBottom(20).row();
-        table.add(buttonExit).row();
+        table.add(heading).height(210).colspan(3).expandX().row();
+        table.add(buttonPractice).colspan(3).padBottom(20).expandX().row();
+        table.add(buttonMinus).right().padRight(30).padBottom(20);
+        table.add(buttonFriends).padBottom(20);
+        table.add(buttonPlus).left().padBottom(20).padLeft(30).row();
+        table.add(buttonExit).colspan(3).expandX().row();
 
         stage.addActor(table);
 
@@ -198,13 +210,17 @@ public class MainMenu implements Screen {
                 .push(Tween.set(background, SpriteAccessor.ALPHA).target(0))
                 .push(Tween.set(heading, ActorAccessor.ALPHA).target(0))
                 .push(Tween.set(buttonPractice, ActorAccessor.ALPHA).target(0))
+                .push(Tween.set(buttonMinus, ActorAccessor.ALPHA).target(0))
                 .push(Tween.set(buttonFriends, ActorAccessor.ALPHA).target(0))
+                .push(Tween.set(buttonPlus, ActorAccessor.ALPHA).target(0))
                 .push(Tween.set(buttonExit, ActorAccessor.ALPHA).target(0))
                 .push(Tween.from(background, SpriteAccessor.ALPHA, 1f).target(0))
                 .push(Tween.to(background, SpriteAccessor.ALPHA, 1f).target(1))
                 .push(Tween.to(heading, ActorAccessor.ALPHA, .5f).target(1))
                 .push(Tween.to(buttonPractice, ActorAccessor.ALPHA, .2f).target(1))
+                .push(Tween.to(buttonMinus, ActorAccessor.ALPHA, .2f).target(1))
                 .push(Tween.to(buttonFriends, ActorAccessor.ALPHA, .2f).target(1))
+                .push(Tween.to(buttonPlus, ActorAccessor.ALPHA, .2f).target(1))
                 .push(Tween.to(buttonExit, ActorAccessor.ALPHA, .2f).target(1))
                 .end().start(tweenManager);
 
@@ -222,9 +238,10 @@ public class MainMenu implements Screen {
         clearMenu();
         if (buttonPractice != null && buttonFriends != null && buttonExit != null) {
             buttonPractice.setVisible(true);
+            buttonMinus.setVisible(true);
             buttonFriends.setVisible(true);
+            buttonPlus.setVisible(true);
             buttonExit.setVisible(true);
-            buttonNoOfPlayers.setVisible(true);
         }
     }
 

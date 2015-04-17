@@ -135,6 +135,7 @@ public class MessageParser {
                                 world.getPlayer(senderId).setFireAnimation(); // TODO ADD THE ANIMATION TO THAT METHOD, PLAY SADISTIC AHHH SOUND
                             }else if(mode == 1){
                                 world.getPlayer(message[4]).burn(senderId);
+                                Gdx.app.log(TAG, world.getPlayer(message[4]).getName()+" kena burn");
                             }
                             break;
 

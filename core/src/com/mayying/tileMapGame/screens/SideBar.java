@@ -67,7 +67,6 @@ public class SideBar implements Screen {
     private boolean mute = false, remind = false;
     private static boolean scoreUpdated = true;
     private float gameTime = 60 + 30;
-//    private float gameTime = 10;
     private int min, sec;
     private boolean timeFrozen = true;
 
@@ -180,7 +179,7 @@ public class SideBar implements Screen {
         }
 
         scoreBoardSubTable[NUM_OF_PLAYER] = new Table(skin);
-        scoreBoardSubTable[NUM_OF_PLAYER].add(scoreBoardLabel[NUM_OF_PLAYER][0]).padTop(15).fill().height(55).expandX();
+        scoreBoardSubTable[NUM_OF_PLAYER].add(scoreBoardLabel[NUM_OF_PLAYER][0]).padTop(15).padLeft(30).fill().height(55).expandX();
         scoreBoardSubTable[NUM_OF_PLAYER].add(scoreBoardLabel[NUM_OF_PLAYER][1]).padTop(15).padLeft(30).right().height(55).width(55);
         scoreBoardTable.add(scoreBoardSubTable[NUM_OF_PLAYER]).row();
 

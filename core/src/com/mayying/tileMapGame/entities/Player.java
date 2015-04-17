@@ -145,8 +145,6 @@ public class Player extends Sprite implements Collidable {
 
     public void animate(float delta) {
         animationTime += delta + 0.01;
-        if (fireAnimation)
-            Gdx.app.log("Player", "Fire Animation Activated");
         setRegion(isDead ? burnt.getKeyFrame(animationTime) : isFrozen ? freeze.getKeyFrame(animationTime) :
                 isSwapped ? swap.getKeyFrame(animationTime) : fireAnimation ? (facing == 4 ? suicide_left.getKeyFrame(animationTime) :
                         facing == 6 ? suicide_right.getKeyFrame(animationTime) : facing == 2 ? suicide_backward.getKeyFrame(animationTime) :

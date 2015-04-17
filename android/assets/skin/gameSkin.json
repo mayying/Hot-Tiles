@@ -1,6 +1,6 @@
 {
     "com.badlogic.gdx.graphics.g2d.BitmapFont": {
-        "black": { "file": "font/black.fnt"}
+        "black": { "file": "font/black28.fnt"}
         "white": { "file": "font/white.fnt"}
         "black20": { "file": "font/black20.fnt"}
         "black36": { "file": "font/black36.fnt"}
