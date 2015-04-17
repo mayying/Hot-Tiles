@@ -91,7 +91,7 @@ public class MessageParser {
                             break;
                         case "swap":
                             // Format: "effect", "swap", x, y , mode, target
-                            final Player sender =  world.getPlayer(senderId);
+                            final Player sender = world.getPlayer(senderId);
                             final Player target = world.getPlayer(message[6]);
                             final int x = Integer.valueOf(message[3]);
                             final int y = Integer.valueOf(message[4]);
@@ -131,11 +131,11 @@ public class MessageParser {
                         case "fire":
                             // Format: "effect","fire",["1"/"0"], victimID - 0 for animation, 1 to inform the client that he died from this
                             int mode = Integer.valueOf(message[3]);
-                            if(mode == 0){
+                            if (mode == 0) {
                                 world.getPlayer(senderId).setFireAnimation(); // TODO ADD THE ANIMATION TO THAT METHOD, PLAY SADISTIC AHHH SOUND
-                            }else if(mode == 1){
+                            } else if (mode == 1) {
                                 world.getPlayer(message[4]).burn(senderId);
-                                Gdx.app.log(TAG, world.getPlayer(message[4]).getName()+" kena burn");
+                                Gdx.app.log(TAG, world.getPlayer(message[4]).getName() + " kena burn");
                             }
                             break;
 

@@ -74,30 +74,30 @@ lightning
   index: -1
 player_1_head
   rotate: false
-  xy: 72, 2
-  size: 55, 55
-  orig: 55, 55
+  xy: 68, 2
+  size: 50, 50
+  orig: 50, 50
   offset: 0, 0
   index: -1
 player_2_head
   rotate: false
-  xy: 129, 2
-  size: 55, 51
-  orig: 55, 51
+  xy: 120, 2
+  size: 50, 46
+  orig: 50, 46
   offset: 0, 0
   index: -1
 player_3_head
   rotate: false
   xy: 28, 2
-  size: 42, 55
-  orig: 42, 55
+  size: 38, 50
+  orig: 38, 50
   offset: 0, 0
   index: -1
 player_4_head
   rotate: false
-  xy: 186, 2
-  size: 55, 54
-  orig: 55, 54
+  xy: 172, 2
+  size: 50, 49
+  orig: 50, 49
   offset: 0, 0
   index: -1
 shieldBtn
@@ -137,65 +137,58 @@ skinRound140x140P
   index: -1
 skinSquareClose70x70
   rotate: false
-  xy: 375, 2
+  xy: 284, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareClose70x70P
   rotate: false
-  xy: 519, 2
+  xy: 500, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareQuestion70x70
   rotate: false
-  xy: 447, 2
+  xy: 356, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareQuestion70x70P
   rotate: false
-  xy: 303, 2
+  xy: 428, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareSoundOff70x70
   rotate: false
-  xy: 807, 2
+  xy: 788, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareSoundOff70x70P
   rotate: false
-  xy: 663, 2
+  xy: 644, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareSoundOn70x70
   rotate: false
-  xy: 591, 2
+  xy: 572, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquareSoundOn70x70P
   rotate: false
-  xy: 735, 2
+  xy: 716, 2
   size: 70, 70
   orig: 70, 70
-  offset: 0, 0
-  index: -1
-suicideImg
-  rotate: false
-  xy: 243, 2
-  size: 58, 90
-  orig: 58, 90
   offset: 0, 0
   index: -1
 suicideBtn
@@ -210,6 +203,13 @@ suicideBtnP
   xy: 654, 94
   size: 140, 140
   orig: 140, 140
+  offset: 0, 0
+  index: -1
+suicideImg
+  rotate: false
+  xy: 224, 2
+  size: 58, 90
+  orig: 58, 90
   offset: 0, 0
   index: -1
 swapBtn
@@ -228,7 +228,7 @@ swapBtnP
   index: -1
 swapImg
   rotate: false
-  xy: 879, 2
+  xy: 860, 2
   size: 85, 85
   orig: 85, 85
   offset: 0, 0
