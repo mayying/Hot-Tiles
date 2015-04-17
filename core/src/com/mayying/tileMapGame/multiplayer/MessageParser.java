@@ -92,21 +92,21 @@ public class MessageParser {
                         case "swap":
                             // Format: "effect", "swap", x, y , mode
                             if (message[5].equals("1")) {
-                                Jukebox.play("swap");
-                                world.getPlayer(senderId).toggleSwap(true);
-                                player.toggleSwap(true);
-
-                                Gdx.app.log(TAG, "swapped? " + world.getPlayer(senderId).isSwapped);
-                                world.getPlayer(senderId).animate(Gdx.graphics.getDeltaTime() * 20);
-                                player.animate(Gdx.graphics.getDeltaTime() * 20);
-
+                                if(!player.isInvulnerable) {
+                                    Jukebox.play("swap");
+                                    world.getPlayer(senderId).toggleSwap(true);
+                                    player.toggleSwap(true);
+                                    world.getPlayer(senderId).animate(Gdx.graphics.getDeltaTime() * 20);
+                                    player.animate(Gdx.graphics.getDeltaTime() * 20);
+                                    player.setLastHitBy(senderId);
+                                }
                                 // broadcast back your location
                                 Vector2 playerPos = player.getPlayerPosition();
                                 int xCoord = (int) playerPos.x;
                                 int yCoord = (int) playerPos.y;
                                 Play.broadcastMessage("effect", "swap", String.valueOf(xCoord), String.valueOf(yCoord), "0");
                                 // only setting last hit for the victim.
-                                player.setLastHitBy(senderId);
+
                             }
 
                             new DelayedThread(200l, player, message[3], message[4]) {
@@ -121,6 +121,17 @@ public class MessageParser {
                             }.start();
 
                             break;
+
+                        case "fire":
+                            // Format: "effect","fire",["1"/"0"] - 0 for animation, 1 to inform the client that he died from this
+                            int mode = Integer.valueOf(message[3]);
+                            if(mode == 0){
+                                world.getPlayer(senderId).setFireAnimation(); // TODO ADD THE ANIMATION TO THAT METHOD, PLAY SADISTIC AHHH SOUND
+                            }else if(mode == 1){
+                                player.burn(senderId);
+                            }
+                            break;
+
                     }
                     break;
                 case "score":
