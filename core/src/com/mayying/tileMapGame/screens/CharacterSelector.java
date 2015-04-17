@@ -37,6 +37,7 @@ import java.util.List;
  * for the characters that they want, and the host will decide whether they can select the character.
  */
 // Must tap to show/sometimes still not received --> freeze time and selection until the data is obtained, detect with host
+    // let host decide the indexes of the player
 public class CharacterSelector implements Screen {
 
     private static final String TAG = "HT_CHARSEL";
@@ -160,7 +161,6 @@ public class CharacterSelector implements Screen {
 
                 Gdx.app.log(TAG, "Other players are ready!");
             }
-            //There's still a rare bug where one player (probably the client) does not have anything selected e.g. probably not in sync, buffers cleared too early and stuff
         }
         Gdx.app.log(TAG, "I am the host: " + imTheHost);
         setDefaultCharacter();
@@ -210,20 +210,6 @@ public class CharacterSelector implements Screen {
         textButton[oldIndex].setDisabled(false);
     }
 
-//    private void setSelection(int index) {
-//        // LAZY SYNCHRONIZE, GOT PROBLEM THEN DO
-//        textButton[index].setText(myPlayerName);
-//        textButton[index].setChecked(true);
-//        textButton[index].setDisabled(true);
-//
-//        // Deselect the old button
-//        if (mySel != -1 && mySel != index) {
-//            textButton[mySel].setText("");
-//            textButton[mySel].setChecked(false);
-//            textButton[mySel].setDisabled(false);
-//        }
-//        mySel = index;
-//    }
 
     // Do internal setting for toggling button
     private void toggleButton(int index) {

@@ -90,35 +90,39 @@ public class MessageParser {
                             world.getPlayer(senderId).shield();
                             break;
                         case "swap":
-                            // Format: "effect", "swap", x, y , mode
+                            // Format: "effect", "swap", x, y , mode, target
+                            final Player sender =  world.getPlayer(senderId);
+                            final Player target = world.getPlayer(message[6]);
+                            final int x = Integer.valueOf(message[3]);
+                            final int y = Integer.valueOf(message[4]);
                             if (message[5].equals("1")) {
                                 Jukebox.play("swap");
-                                world.getPlayer(senderId).toggleSwap(true);
-                                world.getPlayer(message[6]).toggleSwap(true);
+                                // Animation on the 2 players
+                                sender.toggleSwap(true);
+                                target.toggleSwap(true);
+                                sender.animate(Gdx.graphics.getDeltaTime() * 20);
+                                target.animate(Gdx.graphics.getDeltaTime() * 20);
 
-                                Gdx.app.log(TAG, "swapped? " + world.getPlayer(senderId).isSwapped);
-                                world.getPlayer(senderId).animate(Gdx.graphics.getDeltaTime() * 20);
-                                world.getPlayer(message[6]).animate(Gdx.graphics.getDeltaTime() * 20);
-
-                                if (Play.getMultiplayerMessaging().getMyId().equals(message[6])) {
-                                    // broadcast back your location
+                                // If you are the target, broadcast back your location
+                                if (player.getID().equals(message[6])) {
                                     Vector2 playerPos = player.getPlayerPosition();
                                     int xCoord = (int) playerPos.x;
                                     int yCoord = (int) playerPos.y;
                                     Play.broadcastMessage("effect", "swap", String.valueOf(xCoord), String.valueOf(yCoord), "0", senderId);
                                 }
                                 // only setting last hit for the victim.
-                                world.getPlayer(message[6]).setLastHitBy(senderId);
+                                target.setLastHitBy(senderId);
                             }
 
-                            new DelayedThread(200l, world.getPlayer(message[6]), message[3], message[4]) {
+                            new DelayedThread(200l) {
                                 @Override
                                 public void run() {
                                     super.run();
-                                    Gdx.app.log(TAG, "SWAP DONE");
-                                    getPlayer().setPlayerPosition(Integer.valueOf(getMessage()[0]), Integer.valueOf(getMessage()[1]));
-                                    getPlayer().toggleSwap(false);
-                                    GameWorld.getInstance().getPlayer(senderId).toggleSwap(false);
+                                    if (!target.isInvulnerable) {
+                                        target.setPlayerPosition(x, y);
+                                        target.toggleSwap(false);
+                                        sender.toggleSwap(false);
+                                    }
                                 }
                             }.start();
 
