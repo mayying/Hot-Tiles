@@ -426,20 +426,22 @@ public class Player extends Sprite implements Collidable {
     }
 
     public void setOnFire() {
-        isOnFire = true;
-        setFireAnimation();
-        new DelayedThread(10000l) {
-            @Override
-            public void run() {
-                super.run();
-                if (GameWorld.getInstance() != null) {
-                    if (isOnFire) {
-                        isOnFire = false;
-                        die();
+        if (!isOnFire) {
+            isOnFire = true;
+            setFireAnimation();
+            new DelayedThread(10000l) {
+                @Override
+                public void run() {
+                    super.run();
+                    if (GameWorld.getInstance() != null) {
+                        if (isOnFire) { // this is false only if the player has died
+                            isOnFire = false;
+                            die();
+                        }
                     }
                 }
-            }
-        }.start();
+            }.start();
+        }
     }
 
     public void setFireAnimation() {
