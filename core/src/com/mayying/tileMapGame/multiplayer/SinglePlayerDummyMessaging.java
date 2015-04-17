@@ -102,4 +102,14 @@ public class SinglePlayerDummyMessaging implements MultiplayerMessaging {
     public void rematch(){
         //do nothing
     }
+
+    @Override
+    public void setNoOfPlayers(int noOfPlayers) {
+        //do nothing
+    }
+
+    @Override
+    public int getNoOfPlayers() {
+        return 4;
+    }
 }

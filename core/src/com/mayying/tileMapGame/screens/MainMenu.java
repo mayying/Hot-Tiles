@@ -15,11 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.multiplayer.ConnectionHelper;
@@ -41,7 +43,8 @@ import aurelienribon.tweenengine.TweenManager;
 public class MainMenu implements Screen {
     private SpriteBatch batch;
     private Sprite background;
-    private TextButton buttonPractice, buttonFriends, buttonExit, buttonSignIn, buttonSignOut;
+    private TextButton buttonPractice, buttonFriends, buttonExit;
+    private ImageButton buttonNoOfPlayers;
     private Label heading;
     private Stage stage;
     private TextureAtlas buttonAtlas;
@@ -103,7 +106,7 @@ public class MainMenu implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                SideBar.NUM_OF_PLAYER = 1;
+//                SideBar.NUM_OF_PLAYER = 1;
                 stage.addAction(Actions.sequence(Actions.moveBy(-stage.getWidth(), 0, 0.25f), Actions.run(new Runnable() {
                     @Override
                     public void run() {
@@ -114,7 +117,8 @@ public class MainMenu implements Screen {
             }
         });
 
-        buttonFriends = new TextButton("Friends", skin);
+        multiplayerMessaging.setNoOfPlayers(2);
+        buttonFriends = new TextButton("Friends (2p)", skin);
         menuActors.add(buttonFriends);
         buttonFriends.addListener(new InputListener() {
             @Override
@@ -157,6 +161,22 @@ public class MainMenu implements Screen {
 
         Gdx.app.log("Main Menu", "show called: " + buttonExit.getWidth() + " " + buttonExit.getHeight());
 
+        //TODO: Change texture atlas
+        TextureAtlas buttonAtlasSmall = new TextureAtlas(Gdx.files.internal("skin/skin.txt"));
+        Skin skinSmall = new Skin(Gdx.files.internal("skin/gameSkin.json"), buttonAtlasSmall);
+        buttonNoOfPlayers = new ImageButton(skinSmall, "sound");
+        menuActors.add(buttonNoOfPlayers);
+        buttonNoOfPlayers.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                int noOfPlayers = multiplayerMessaging.getNoOfPlayers()+1;
+                if (noOfPlayers>4){
+                    noOfPlayers = 2;
+                }
+                buttonFriends.setText("Friends (" + String.valueOf(noOfPlayers) + "p)");
+                multiplayerMessaging.setNoOfPlayers(noOfPlayers);
+            }
+        });
 
         //tableMenu
         table = new Table(skin);
@@ -165,7 +185,8 @@ public class MainMenu implements Screen {
         table.align(Align.top);
 
         table.add(heading).height(210).row();
-        table.add(buttonPractice).padBottom(20).row();
+        table.add(buttonPractice).padBottom(20);
+        table.add(buttonNoOfPlayers).padBottom(20).row();
         table.add(buttonFriends).padBottom(20).row();
         table.add(buttonExit).row();
 
@@ -203,6 +224,7 @@ public class MainMenu implements Screen {
             buttonPractice.setVisible(true);
             buttonFriends.setVisible(true);
             buttonExit.setVisible(true);
+            buttonNoOfPlayers.setVisible(true);
         }
     }
 

@@ -83,7 +83,7 @@ public class Play implements Screen {
         collisionLayer = (TiledMapTileLayer) map.getLayers().get("Background");
         world = GameWorld.getInstance(collisionLayer, myPlayerId, metaData, this);
 
-        sideBar = new SideBar(world);
+        sideBar = new SideBar(world, this.metaData.size());
         sideBar.show();
 
         initializedTimeStamp = System.currentTimeMillis();
@@ -141,7 +141,7 @@ public class Play implements Screen {
         }
 
         lightningDelta = System.currentTimeMillis() - lastTouched;
-        if(lightningDelta > 3000l) {
+        if(lightningDelta > 3000l && !sideBar.isTimeFrozen()) {
             sideBar.showLightning(true);
             if (Gdx.input.justTouched()) {
                 Vector3 v3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);

@@ -71,11 +71,12 @@ public class SideBar implements Screen {
     private int min, sec;
     private boolean timeFrozen = true;
 
-    public static int NUM_OF_PLAYER = 2;
+    private int NUM_OF_PLAYER = 2;
     volatile static int timeLeft = 1;
 
-    public SideBar(GameWorld world) {
+    public SideBar(GameWorld world, int noOfPlayer) {
         this.world = world;
+        NUM_OF_PLAYER = noOfPlayer;
         hudCamera = new OrthographicCamera();
         labelStyle = new LabelStyle();
         playerStyle = new LabelStyle[NUM_OF_PLAYER];
@@ -94,6 +95,8 @@ public class SideBar implements Screen {
     public void unfreezeGameTimer() {
         this.timeFrozen = false;
     }
+
+    public boolean isTimeFrozen() { return timeFrozen;}
 
     @Override
     public void show() {

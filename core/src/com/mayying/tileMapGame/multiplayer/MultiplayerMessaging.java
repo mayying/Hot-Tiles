@@ -22,4 +22,6 @@ public interface MultiplayerMessaging {
     public void leaveGame();
     public boolean isLoggedIn();
     public void rematch();
+    public void setNoOfPlayers(int noOfPlayers);
+    public int getNoOfPlayers();
 }

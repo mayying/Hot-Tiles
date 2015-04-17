@@ -55,7 +55,7 @@ public class CharacterSelector implements Screen {
     private HashMap<String, PlayerData> playerData = new HashMap<String, PlayerData>();
     private MultiplayerMessaging multiplayerMessaging;
     private boolean imTheHost;
-    private int otherReadyPlayers = 0;
+    private HashMap<String, Boolean> otherReadyPlayers = new HashMap<String, Boolean>();
 
     public CharacterSelector() {
         mode = "desktop";
@@ -125,42 +125,41 @@ public class CharacterSelector implements Screen {
             imTheHost = true;
 
         } else {
-            //TODO do this for 3 or more playah
             imTheHost = multiplayerMessaging.getMyId().equals(multiplayerMessaging.getHostId());
             String myPlayerName = multiplayerMessaging.getMyName();
             String myPlayerId = multiplayerMessaging.getMyId();
-            playerData.put(myPlayerId, new PlayerData(myPlayerName, myPlayerId, -1));
+            playerData.put(myPlayerId, new PlayerData(myPlayerName, myPlayerId, 0));
 
-            broadcastMyInfo();
-//            if(multiplayerMessaging.getJoinedParticipants().size() > 1) {
-//                while (otherPlayerId == null && otherPlayerName.equals("")) {
-//                    Gdx.app.log(TAG, "Broadcasting info until others receive it...");
-//                    broadcastMyInfo();
-//                    synchronized (this) {
-//                        try {
-//                            wait(300l);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    parseMessages();
-//                }
-//                // Wait for others to be ready, as of now this obviously doesn't work for more than 2 players due to duplicate messages
-//                while (otherReadyPlayers < 1) {
-//                    synchronized (this) {
-//                        try {
-//                            wait(100l);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    parseMessages();
-//                }
-//                // Clear the messages just in case.
-//                multiplayerMessaging.getMessageBuffer('c');
-//
-//                Gdx.app.log(TAG, "Other players are ready!");
-//            }
+//            broadcastMyInfo();
+            if(multiplayerMessaging.getJoinedParticipants().size() > 1) {
+                while (playerData.size()<multiplayerMessaging.getJoinedParticipants().size()) {
+                    Gdx.app.log(TAG, "Broadcasting info until others receive it...");
+                    broadcastMyInfo();
+                    synchronized (this) {
+                        try {
+                            wait(300l);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    parseMessages();
+                }
+                // Wait for others to be ready, as of now this obviously doesn't work for more than 2 players due to duplicate messages
+                while (otherReadyPlayers.keySet().size() < multiplayerMessaging.getJoinedParticipants().size()-1) {
+                    synchronized (this) {
+                        try {
+                            wait(100l);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    parseMessages();
+                }
+                // Clear the messages just in case.
+                multiplayerMessaging.getMessageBuffer('c');
+
+                Gdx.app.log(TAG, "Other players are ready!");
+            }
             //There's still a rare bug where one player (probably the client) does not have anything selected e.g. probably not in sync, buffers cleared too early and stuff
         }
         Gdx.app.log(TAG, "I am the host: " + imTheHost);
@@ -175,6 +174,8 @@ public class CharacterSelector implements Screen {
     private void setDefaultCharacter() {
         Gdx.app.log(TAG, " Setting default character");
         if (imTheHost) {
+            //dont question why. This is a bad hack.
+            playerData.get(multiplayerMessaging.getMyId()).setSel(-1);
             toggleButton(0);
         } else {
             //try to select one
@@ -185,6 +186,7 @@ public class CharacterSelector implements Screen {
     }
 
     private void setPlayerSelection(int index, String playerId) {
+        if (!playerData.containsKey(playerId)){ return;}
         textButton[index].setText(playerData.get(playerId).getName());
         textButton[index].setChecked(true);
         textButton[index].setDisabled(true);
@@ -192,12 +194,20 @@ public class CharacterSelector implements Screen {
         // Deselect the old button
         // To scale send buttonIndex, playerName (for button text), oldIndex
         int oldIndex = playerData.get(playerId).getSel();
-        if (oldIndex != -1 && oldIndex != index) {
-            textButton[oldIndex].setText("");
-            textButton[oldIndex].setChecked(false);
-            textButton[oldIndex].setDisabled(false);
-        }
         playerData.get(playerId).setSel(index);
+        if (oldIndex==-1) { return; }
+
+        for (String key : playerData.keySet()){
+            if (playerData.get(key).getSel()==oldIndex){
+                textButton[oldIndex].setText(playerData.get(key).getName());
+                textButton[oldIndex].setChecked(true);
+                textButton[oldIndex].setDisabled(true);
+                return;
+            }
+        }
+        textButton[oldIndex].setText("");
+        textButton[oldIndex].setChecked(false);
+        textButton[oldIndex].setDisabled(false);
     }
 
 //    private void setSelection(int index) {
@@ -283,6 +293,7 @@ public class CharacterSelector implements Screen {
             String type = message[2];
             int idx = Integer.valueOf(message[3]);
             switch (type) {
+                //TODO client will fail if client A have not received client B info, but host approves client B's request
                 case "host":
                     // Host = Kim Jong Un
                     Gdx.app.log(TAG,"Host selects "+idx);
@@ -293,15 +304,18 @@ public class CharacterSelector implements Screen {
                     if (imTheHost) {
                         // Check for index collision, reply if no collision, else ignore the user because I'm Kim
                         Gdx.app.log(TAG, "Client requested " + idx);
-                        for (String key : playerData.keySet()) {
-                            if (playerData.get(key).getSel() == idx) {
-                                return; //this character is taken
+                        if (playerData.containsKey(message[0])) { //if info not received, no go.
+                            for (String key : playerData.keySet()) {
+                                if (playerData.get(key).getSel() == idx) {
+                                    Gdx.app.log(TAG, "Clash with player " + key);
+                                    return; //this character is taken
+                                }
                             }
+                            // Give client the ok signal
+                            broadcastMessage("charsel", "reply", String.valueOf(idx), message[0]);
+                            // Set client's selection
+                            setPlayerSelection(idx, message[0]);
                         }
-                        // Give client the ok signal
-                        broadcastMessage("charsel", "reply", String.valueOf(idx), message[0]);
-                        // Set client's selection
-                        setPlayerSelection(idx, message[0]);
                     }
                     break;
                 case "reply":
@@ -338,7 +352,7 @@ public class CharacterSelector implements Screen {
             Gdx.app.log(TAG, "Player info from "+message[3]+" received.");
             broadcastMessage("rdy");
         }else if(command.equals("rdy")){
-            otherReadyPlayers++;
+            otherReadyPlayers.put(message[0], true);
         }
         else {
             Gdx.app.log("HT_CHARSEL", "Unknown message format: " + msg);

@@ -86,6 +86,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 
     private TiledMapGame game;
     private ArrayList<String> participants = new ArrayList<String>();
+    private int noOfPlayers = 2;
 
     public AndroidLauncher() {
         super();
@@ -138,7 +139,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     public void startQuickGame() {
         // quick-start a game with 1 randomly selected opponent
 
-        final int MIN_OPPONENTS = 2, MAX_OPPONENTS = 3;
+        final int MIN_OPPONENTS = noOfPlayers-1, MAX_OPPONENTS = noOfPlayers-1;
         Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(MIN_OPPONENTS,
                 MAX_OPPONENTS, 0);
         RoomConfig.Builder rtmConfigBuilder = RoomConfig.builder(this);
@@ -701,6 +702,15 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         if (this.getJoinedParticipants().size()>1){
             startGame();
         }
+    }
+
+    @Override
+    public void setNoOfPlayers(int noOfPlayers){
+        this.noOfPlayers = noOfPlayers;
+    }
+    @Override
+    public int getNoOfPlayers(){
+        return noOfPlayers;
     }
 
     /*
