@@ -16,6 +16,10 @@
         "player_2_head":{ "font": "black", "background": "player_2_head"}
         "player_3_head":{ "font": "black", "background": "player_3_head"}
         "player_4_head":{ "font": "black", "background": "player_4_head"}
+        "player_5_head":{ "font": "black", "background": "player_5_head"}
+        "player_6_head":{ "font": "black", "background": "player_6_head"}
+        "player_7_head":{ "font": "black", "background": "player_7_head"}
+        "player_8_head":{ "font": "black", "background": "player_8_head"}
     },
 
     "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {

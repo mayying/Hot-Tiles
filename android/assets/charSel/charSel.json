@@ -13,5 +13,10 @@
         "player2": {"up": "player_2_sel", "disabled": "player_2", "font": "red"}
         "player3": {"up": "player_3_sel", "disabled": "player_3", "font": "red"}
         "player4": {"up": "player_4_sel", "disabled": "player_4", "font": "red"}
+        "player5": {"up": "player_5_sel", "disabled": "player_5", "font": "red"}
+        "player6": {"up": "player_6_sel", "disabled": "player_6", "font": "red"}
+        "player7": {"up": "player_7_sel", "disabled": "player_7", "font": "red"}
+        "player8": {"up": "player_8_sel", "disabled": "player_8", "font": "red"}
+
     }
 }
