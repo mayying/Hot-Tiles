@@ -140,7 +140,7 @@ public class Player extends Sprite implements Collidable {
 
     public void toggleSwap(boolean yesNo) {
         isSwapped = yesNo;
-        Gdx.app.log("Player", "is Swapped? " + isSwapped);
+//        Gdx.app.log("Player", "is Swapped? " + isSwapped);
     }
 
     public void animate(float delta) {
@@ -294,7 +294,8 @@ public class Player extends Sprite implements Collidable {
     }
 
     private void updateScore() {
-        String killerID = getLastHitBy();
+        String lastHit = getLastHitBy();
+        String killerID = lastHit.equals(getID())? "null":lastHit;
         Gdx.app.log("Player " + getID(), "Killed by Player " + killerID);
         ScoreBoard.getInstance().incrementKillsAndOrDeath(killerID.equals(getID()) ? "null" : killerID, getID());
 

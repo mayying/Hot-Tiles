@@ -310,18 +310,6 @@ public class GameWorld {
     }
 
     public void lightningAt(final Float x, final Float y, final String senderId) {
-//        new DelayedThread(1000, devicePlayer, playableLayer, String.valueOf(x), String.valueOf(y), senderId){
-//            @Override
-//            public void run(){
-//                super.run();
-//                new Thunderbolt(Float.valueOf(getMessage()[0]), Float.valueOf(getMessage()[1]), getPlayableLayer());
-//                Jukebox.play("lightning");
-//                if (getPlayer().getPlayerPosition().equals(new Vector2(Float.valueOf(getMessage()[0]), Float.valueOf(getMessage()[1])))) {
-//                    getPlayer().setLastHitBy(getMessage()[2]);
-//                    getPlayer().die();
-//                }
-//            }
-//        }.start();
         new Thunderbolt(x, y, playableLayer);
         Jukebox.play("lightning");
         if (devicePlayer.getPlayerPosition().equals(new Vector2(x, y))) {
