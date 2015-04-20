@@ -114,6 +114,7 @@ public class TiledMapGame extends Game {
         Jukebox.load("buttonPressed");
         Jukebox.load("reminder");
         Jukebox.load("suicide");
+        Jukebox.load("bloodlust");
     }
 
     @Override

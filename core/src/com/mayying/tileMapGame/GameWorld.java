@@ -147,11 +147,19 @@ public class GameWorld {
             shapeRenderer.rect(0, 0, Play.camera.viewportWidth, Play.camera.viewportHeight);
             shapeRenderer.end();
         }
+        if (devicePlayer.isHasted){
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(new Color(Color.BLACK));
+            shapeRenderer.setColor(1.0f, 0, 0, 0.3f);
+            shapeRenderer.rect(0, 0, Play.camera.viewportWidth, Play.camera.viewportHeight);
+            shapeRenderer.end();
+        }
     }
 
     private long lastMovement = -1;
     public final static long MOVEMENT_FREQUENCY = 400;
-    public final static long MOVEMENT_FREQUENCY_HASTED = 275;
+    public final static long MOVEMENT_FREQUENCY_HASTED = 225;
 
     // Should separate into collision/bounds logic and update movement so that when we factor in concurrent
     // updates from server we can just update movement via setX / setY
@@ -185,6 +193,19 @@ public class GameWorld {
         long freq = MOVEMENT_FREQUENCY;
         if (getDevicePlayer().isHasted){
             freq = MOVEMENT_FREQUENCY_HASTED;
+            if (!pressed) {
+                pressed = true;
+                int facing = player.getFacing();
+                if (facing==6) {
+                    newX += player.getSpeed();
+                } else if (facing==4) {
+                    newX -= player.getSpeed();
+                } else if (facing==2) {
+                    newY += player.getSpeed();
+                } else if (facing==8) {
+                    newY -= player.getSpeed();
+                }
+            }
         }
         if (System.currentTimeMillis() - lastMovement >= freq) {
             if (pressed) {

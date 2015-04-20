@@ -26,7 +26,7 @@
 	"filenameVector"    : "shield.png",
 	"filenameBtn"       : "shieldBtn",
 	"filename"          : "shieldImg",
-	"name"              : "Shield",
+	"name"              : "Haste",
 	"description"       : "Invulnerable to all damages for 2 seconds",
 },
 {

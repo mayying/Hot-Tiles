@@ -455,8 +455,8 @@ public class Player extends Sprite implements Collidable {
     public void setHasted() {
         if (!isHasted) {
             isHasted = true;
-            Jukebox.play("lightning");
-            new DelayedThread(5000l) {
+            Jukebox.play("bloodlust");
+            new DelayedThread(4000l) {
                 @Override
                 public void run() {
                     super.run();

@@ -2,6 +2,7 @@ package com.mayying.tileMapGame.multiplayer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.mayying.tileMapGame.screens.CharacterSelector;
 import com.mayying.tileMapGame.screens.MainMenu;
 
 import java.util.ArrayList;
@@ -105,7 +106,8 @@ public class SinglePlayerDummyMessaging implements MultiplayerMessaging {
 
     @Override
     public void rematch(){
-        //do nothing
+        //replay
+        ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector(this));
     }
 
     @Override

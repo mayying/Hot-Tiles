@@ -1,6 +1,7 @@
 package com.mayying.tileMapGame.entities.powerups;
 
-import com.mayying.tileMapGame.GameWorld;
+import com.mayying.tileMapGame.entities.Jukebox;
+import com.mayying.tileMapGame.screens.Play;
 
 /**
  * Created by Luccan on 18/4/2015.
@@ -8,7 +9,8 @@ import com.mayying.tileMapGame.GameWorld;
 public class Haste implements Usable {
     @Override
     public void use() {
-        GameWorld.getInstance().getDevicePlayer().setHasted();
-//        Play.broadcastMessage("effect", "haste");
+//        GameWorld.getInstance().getDevicePlayer().setHasted();
+        Jukebox.play("bloodlust");
+        Play.broadcastMessage("effect", "haste");
     }
 }
