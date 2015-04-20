@@ -120,7 +120,7 @@ public class TiledMapGame extends Game {
     public void create() {
         loadSound();
         if (mode.equals("desktop")) {
-            setScreen(new CharacterSelector());
+            setScreen(new Play());
         } else if (mode.equals("android")) {
             setScreen(new MainMenu(multiplayerMessaging));
         }

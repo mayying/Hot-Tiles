@@ -181,6 +181,7 @@ public class EndGame implements Screen {
             String command = message[1];
             // <host_id>, <rematchAcknowledged>, <client_id>, <rematchPoll>
             if (command.equals("rematchAcknowledged") && Play.getMultiplayerMessaging().getHostId().equals(message[0])) {
+                Gdx.app.log("EndGame","Rematch Acknowledged by server");
                 rematchPoll.put(message[2], Boolean.valueOf(message[3]));
                 //client update text
                 if (Play.getMultiplayerMessaging().getMyId().equals(message[2])) {
