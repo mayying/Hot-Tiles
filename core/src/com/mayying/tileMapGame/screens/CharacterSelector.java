@@ -148,11 +148,10 @@ public class CharacterSelector implements Screen {
                 }
                 Gdx.app.log(TAG,"Player Data Received: "+playerData);
 
-                // Broadcast the ready signal when client has all the data, ensures that everyone has all the necessary fields
-                broadcastMessage("rdy");
-
                 // wait for other players to send the ready signal
                 while (otherReadyPlayers.keySet().size() < multiplayerMessaging.getJoinedParticipants().size() - 1) {
+                    // Broadcast the ready signal when client has all the data, ensures that everyone has all the necessary fields
+                    broadcastMessage("rdy");
                     waitForMessage(100l);
                 }
                 // Clear the messages just in case.
@@ -233,8 +232,10 @@ public class CharacterSelector implements Screen {
             if(oldIndex != -1) {
                 for(String key:playerData.keySet()){
                     // Only deselect if it is my selection
-                    if(playerData.get(key).getSel() == oldIndex)
+                    if(playerData.get(key).getSel() == oldIndex) {
+                        textButton[oldIndex].setText(playerData.get(key).getName()); //set to other player's name in case of conflict
                         return;
+                    }
                 }
                 textButton[oldIndex].setText("");
                 textButton[oldIndex].setChecked(false);
@@ -285,6 +286,9 @@ public class CharacterSelector implements Screen {
 
         if (multiplayerMessaging.getJoinedParticipants().size() == playerData.size()) {
             timeLeft -= delta;
+        } else if (otherReadyPlayers.keySet().size() < multiplayerMessaging.getJoinedParticipants().size() - 1){
+            //one or more clients dc
+            multiplayerMessaging.leaveGame();
         }
         min = (int) Math.floor(timeLeft / 60.0f);
         sec = (int) (timeLeft - min * 60.0f);
@@ -293,8 +297,7 @@ public class CharacterSelector implements Screen {
         parseMessages();
         // Switch screen to Play when time's up
         if (sec == 0) {
-            // not sure if buttons are disabled
-            waitForMessage(500l);
+            waitForMessage(1500l);
             //Clear the message buffer.
             multiplayerMessaging.getMessageBuffer('c');
             ArrayList<PlayerMetaData> metaData = new ArrayList<>();
@@ -324,7 +327,6 @@ public class CharacterSelector implements Screen {
             String type = message[2];
             int idx = Integer.valueOf(message[3]);
             switch (type) {
-                //TODO client will fail if client A have not received client B info, but host approves client B's request
                 case "host":
                     // Host = Kim Jong Un
                     Gdx.app.log(TAG, "Host selects " + idx);

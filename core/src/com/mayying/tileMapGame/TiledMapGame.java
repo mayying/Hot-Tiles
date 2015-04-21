@@ -114,13 +114,14 @@ public class TiledMapGame extends Game {
         Jukebox.load("buttonPressed");
         Jukebox.load("reminder");
         Jukebox.load("suicide");
+        Jukebox.load("bloodlust");
     }
 
     @Override
     public void create() {
         loadSound();
         if (mode.equals("desktop")) {
-            setScreen(new CharacterSelector());
+            setScreen(new Play());
         } else if (mode.equals("android")) {
             setScreen(new MainMenu(multiplayerMessaging));
         }

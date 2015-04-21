@@ -143,6 +143,11 @@ public class MessageParser {
                             }
                             break;
 
+                        case "haste":
+                            player.setHasted();
+                            player.setLastHitBy(senderId);
+                            break;
+
                     }
                     break;
                 case "score":
