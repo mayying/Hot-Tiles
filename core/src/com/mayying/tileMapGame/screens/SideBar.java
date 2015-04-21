@@ -64,7 +64,7 @@ public class SideBar implements Screen {
     private ArrayList<Score> score;
     private String powerUpName;
 
-    private boolean muteMusic = false, muteSfx = false, remind = false;
+    private boolean muteMusic = false, muteSfx = false, falseAlarm = false;
     private static boolean scoreUpdated = true;
     private float gameTime = 60 + 30;
     private int min, sec;
@@ -95,7 +95,9 @@ public class SideBar implements Screen {
         this.timeFrozen = false;
     }
 
-    public boolean isTimeFrozen() { return timeFrozen;}
+    public boolean isTimeFrozen() {
+        return timeFrozen;
+    }
 
     @Override
     public void show() {
@@ -284,26 +286,25 @@ public class SideBar implements Screen {
                 .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][1], ActorAccessor.RGB, .5f).target(0, 1, 0))
                 .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][1], ActorAccessor.RGB, .5f).target(1, 0, 0))
                 .end().repeat(Tween.INFINITY, 0).start(tweenManager);
-
-//        Timeline.createSequence().beginSequence()
-//                .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][0], ActorAccessor.POSITION, .5f).target(scoreBoardLabel[NUM_OF_PLAYER][0].getX() + 20f))
-//                .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][0], ActorAccessor.POSITION, .5f).target(scoreBoardLabel[NUM_OF_PLAYER][0].getX() - 20f))
-//                .end().repeat(Tween.INFINITY, .2f).start(tweenManager);
     }
 
+    float tick = 6f;
+
     public void render(float delta) {
+        Gdx.app.log("SideBar", "gameTime: " + gameTime);
         tweenManager.update(Gdx.graphics.getDeltaTime());
         if (timeLeft == 0) {
             timeLeft = 1; //Allow game to be restarted next time
             ((Game) (Gdx.app.getApplicationListener())).setScreen(new EndGame(world));
 //            Play.getMultiplayerMessaging().leaveGame();
-        } else if (timeLeft == 2 && !remind) {
-            Jukebox.play("reminder");
-            remind = true;
         } else {
             stage.act(delta);
             stage.draw();
             if (!timeFrozen) {
+                if ((gameTime < tick)) {
+                    Jukebox.play("reminder");
+                    tick-=1;
+                }
                 gameTime -= delta;
                 min = (int) Math.floor(gameTime / 60.0f);
                 sec = (int) (gameTime - min * 60.0f);
@@ -340,9 +341,11 @@ public class SideBar implements Screen {
                 }
             }
         }
+
     }
 
     // there was brave attempt to implement elegant methods. there was failure. tears were shed, rares were lost T_T
+
     public static void onScoreUpdated() {
         scoreUpdated = true;
     }
