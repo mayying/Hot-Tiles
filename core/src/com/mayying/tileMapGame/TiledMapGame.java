@@ -40,7 +40,7 @@ public class TiledMapGame extends Game {
 //                    s.showMenu();
 //                    break;
                 case SCREEN_SIGNIN:
-                    s.showMenuSignIn();
+                    s.showMenu(0);
                     break;
                 case SCREEN_LOADING:
                     s.showLoading();

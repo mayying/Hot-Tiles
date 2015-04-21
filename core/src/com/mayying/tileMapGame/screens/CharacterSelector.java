@@ -147,9 +147,13 @@ public class CharacterSelector implements Screen {
                     waitForMessage(300l);
                 }
                 Gdx.app.log(TAG,"Player Data Received: "+playerData);
-
+                Gdx.app.log(TAG, "Number of other players 0: "+(multiplayerMessaging.getJoinedParticipants().size()-1));
+                // Broadcast the ready signal when client has all the data, ensures that everyone has all the necessary fields
+                broadcastMessage("rdy");
                 // wait for other players to send the ready signal
                 while (otherReadyPlayers.keySet().size() < multiplayerMessaging.getJoinedParticipants().size() - 1) {
+                    Gdx.app.log(TAG, "Number of other players: "+(multiplayerMessaging.getJoinedParticipants().size()-1));
+                    Gdx.app.log(TAG, "Other Ready PLayers: "+otherReadyPlayers);
                     // Broadcast the ready signal when client has all the data, ensures that everyone has all the necessary fields
                     broadcastMessage("rdy");
                     waitForMessage(100l);

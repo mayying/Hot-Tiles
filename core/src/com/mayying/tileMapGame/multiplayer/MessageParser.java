@@ -131,15 +131,15 @@ public class MessageParser {
                         case "fire":
                             // Format: "effect","fire",["1"/"0"], victimID - 0 for animation, 1 to inform the client that he died from this
                             int mode = Integer.valueOf(message[3]);
-                            Gdx.app.log(TAG,"Fire message: "+inp);
-                            if(mode == 0){
+                            Gdx.app.log(TAG, "Fire message: " + inp);
+                            if (mode == 0) {
                                 world.getPlayer(senderId).setFireAnimation(); // TODO ADD THE ANIMATION TO THAT METHOD, PLAY SADISTIC AHHH SOUND
                             } else if (mode == 1) {
-                                if(message[4].equals(player.getID())) {
+                                if (message[4].equals(player.getID())) {
                                     player.burn(senderId);
                                 }
                                 Gdx.app.log(TAG, world.getPlayer(message[4]).getName() + " kena burn");
-                                Gdx.app.log(TAG , "I am: "+player.getName());
+                                Gdx.app.log(TAG, "I am: " + player.getName());
                             }
                             break;
 

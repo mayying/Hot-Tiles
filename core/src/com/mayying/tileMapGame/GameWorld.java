@@ -143,23 +143,21 @@ public class GameWorld {
             shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(new Color(Color.BLACK));
-//            shapeRenderer.setColor(0, 0, 0, 0.7f);
             shapeRenderer.rect(0, 0, Play.camera.viewportWidth, Play.camera.viewportHeight);
             shapeRenderer.end();
         }
-        if (devicePlayer.isHasted){
-            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(new Color(Color.BLACK));
-            shapeRenderer.setColor(1.0f, 0, 0, 0.3f);
-            shapeRenderer.rect(0, 0, Play.camera.viewportWidth, Play.camera.viewportHeight);
-            shapeRenderer.end();
-        }
+//        if (devicePlayer.isHasted){
+//            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+//            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//            shapeRenderer.setColor(1.0f, 0, 0, 0.3f);
+//            shapeRenderer.rect(0, 0, Play.camera.viewportWidth, Play.camera.viewportHeight);
+//            shapeRenderer.end();
+//        }
     }
 
     private long lastMovement = -1;
     public final static long MOVEMENT_FREQUENCY = 400;
-    public final static long MOVEMENT_FREQUENCY_HASTED = 225;
+    public final static long MOVEMENT_FREQUENCY_HASTED = 180;
 
     // Should separate into collision/bounds logic and update movement so that when we factor in concurrent
     // updates from server we can just update movement via setX / setY

@@ -34,6 +34,8 @@ public class Jukebox {
 
     public static void play(String name) {
         sounds.get(name).play(volume);
+        if (name.equals("suicide"))
+            sounds.get(name).loop();
     }
 
     public static void playMusic(String name) {

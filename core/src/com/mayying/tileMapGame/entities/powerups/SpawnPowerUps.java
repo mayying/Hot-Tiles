@@ -52,7 +52,7 @@ public class SpawnPowerUps implements Collidable {
                 // !created
                 // picking random stringID from list
                 powerUpIsPickedUp = false;
-                powerUp = powerUpFactory.createPowerUp(spawnRNG.nextInt(6));
+                powerUp = powerUpFactory.createPowerUp(spawnRNG.nextInt(7));
 //                powerUp = powerUpFactory.createPowerUp(4); //TODO - revert back to to previous line after done debugging
 
                 sprite = new Sprite(powerUp.getTextureVector());
@@ -67,7 +67,7 @@ public class SpawnPowerUps implements Collidable {
 
                 position.x = tileLayer.getTileWidth() / 2 - sprite.getWidth() / 2 + tileLayer.getTileWidth() * (coords.x + 4);
                 position.y = tileLayer.getTileHeight() / 4 + tileLayer.getTileHeight() * (coords.y + 1);
-//                Gdx.app.log(powerUp.getName() + " position", coords.x + ", " + coords.y);
+
                 sprite.setPosition(position.x, position.y);
                 Timeline.createSequence().beginSequence()
                         .push(Tween.set(sprite, SpriteAccessor.POSITION).target(position.x, position.y))

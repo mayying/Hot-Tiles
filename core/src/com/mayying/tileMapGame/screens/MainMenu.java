@@ -41,18 +41,18 @@ import aurelienribon.tweenengine.TweenManager;
 public class MainMenu implements Screen {
     private SpriteBatch batch;
     private Sprite background;
-    private TextButton buttonMinus, buttonFriends, buttonPlus, buttonTutorial, buttonExit, buttonInvite, buttonInbox;
+    private TextButton buttonMinus, buttonFriends, buttonPlus, buttonTutorial, buttonExit, buttonInvite, buttonJoin, buttonPlay, buttonBack;
     private Label heading;
     private Stage stage;
     private TextureAtlas buttonAtlas;
     private Skin skin;
     private TweenManager tweenManager;
-    private Table table;
+    private Table table, subTable;
     private OrthographicCamera camera;
 
     private MultiplayerMessaging multiplayerMessaging;
 
-    private List<Actor> menuActors = new ArrayList<Actor>();
+    private List<Actor> firstPageActors = new ArrayList<Actor>(), secondPageActors = new ArrayList<Actor>();
     private String mode;
     private boolean startGame;
 
@@ -85,32 +85,13 @@ public class MainMenu implements Screen {
         buttonAtlas = new TextureAtlas(Gdx.files.internal("mainMenu/buttonSkin.txt"));
         skin = new Skin(Gdx.files.internal("mainMenu/mainMenu.json"), buttonAtlas);
 
-        table = new Table(skin);
-        table.setFillParent(true);
-        table.setBounds(0, 0, Play.V_WIDTH, Play.V_HEIGHT);
-//        table.align(Align.top);
-
         heading = new Label("Hot Tiles", skin);
 
         multiplayerMessaging.setNoOfPlayers(2);
 
-        buttonMinus = new TextButton("-", skin, "plusMinus");
-        menuActors.add(buttonMinus);
-        buttonMinus.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                if (multiplayerMessaging.getNoOfPlayers() > 2) {
-                    int noOfPlayers = multiplayerMessaging.getNoOfPlayers() - 1;
-                    buttonFriends.setText(String.valueOf(noOfPlayers) + "P");
-                    multiplayerMessaging.setNoOfPlayers(noOfPlayers);
-                    Jukebox.play("buttonPressed");
-                }
-            }
-        });
-
-        buttonFriends = new TextButton("2P", skin);
-        menuActors.add(buttonFriends);
-        buttonFriends.addListener(new InputListener() {
+        buttonPlay = new TextButton("Play", skin);
+        firstPageActors.add(buttonPlay);
+        buttonPlay.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Jukebox.play("buttonPressed");
@@ -119,50 +100,12 @@ public class MainMenu implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (multiplayerMessaging.isLoggedIn()) {
-                    showLoading();
-                    multiplayerMessaging.startQuickGame();
-                } else {
-                    showLoading();
-                    multiplayerMessaging.signIn();
-                }
-            }
-        });
-
-        buttonPlus = new TextButton("+", skin, "plusMinus");
-        menuActors.add(buttonPlus);
-        buttonPlus.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                if (multiplayerMessaging.getNoOfPlayers() < 4) {
-                    int noOfPlayers = multiplayerMessaging.getNoOfPlayers() + 1;
-                    buttonFriends.setText(String.valueOf(noOfPlayers) + "P");
-                    multiplayerMessaging.setNoOfPlayers(noOfPlayers);
-                    Jukebox.play("buttonPressed");
-                }
-            }
-        });
-
-        buttonInvite = new TextButton("inv", skin);
-        menuActors.add(buttonInvite);
-        buttonInvite.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                multiplayerMessaging.sendInvitations();
-            }
-        });
-
-        buttonInbox = new TextButton("inbox", skin);
-        menuActors.add(buttonInbox);
-        buttonInbox.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                multiplayerMessaging.seeInvitations();
+                showMenu(1);
             }
         });
 
         buttonTutorial = new TextButton("Tutorial", skin);
-        menuActors.add(buttonTutorial);
+        firstPageActors.add(buttonTutorial);
         buttonTutorial.addListener(new InputListener() {
 
             @Override
@@ -183,10 +126,8 @@ public class MainMenu implements Screen {
             }
         });
 
-        Gdx.app.log("MainMenu.java", "switchScreen: " + startGame + " ConnectionHelper.STATE: " + ConnectionHelper.STATE);
-
         buttonExit = new TextButton("Exit", skin);
-        menuActors.add(buttonExit);
+        firstPageActors.add(buttonExit);
 
         buttonExit.addListener(new InputListener() {
             @Override
@@ -203,7 +144,87 @@ public class MainMenu implements Screen {
             }
         });
 
-        Gdx.app.log("Main Menu", "show called: " + buttonExit.getWidth() + " " + buttonExit.getHeight());
+        buttonMinus = new TextButton("-", skin, "plusMinus");
+        secondPageActors.add(buttonMinus);
+        buttonMinus.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (multiplayerMessaging.getNoOfPlayers() > 2) {
+                    int noOfPlayers = multiplayerMessaging.getNoOfPlayers() - 1;
+                    buttonFriends.setText(String.valueOf(noOfPlayers) + "P");
+                    multiplayerMessaging.setNoOfPlayers(noOfPlayers);
+                    Jukebox.play("buttonPressed");
+                }
+            }
+        });
+
+        buttonFriends = new TextButton("2P", skin);
+        secondPageActors.add(buttonFriends);
+        buttonFriends.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Jukebox.play("buttonPressed");
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (multiplayerMessaging.isLoggedIn()) {
+                    showLoading();
+                    multiplayerMessaging.startQuickGame();
+                } else {
+                    showLoading();
+                    multiplayerMessaging.signIn();
+                }
+            }
+        });
+
+        buttonPlus = new TextButton("+", skin, "plusMinus");
+        secondPageActors.add(buttonPlus);
+        buttonPlus.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Jukebox.play("buttonPressed");
+                if (multiplayerMessaging.getNoOfPlayers() < 4) {
+                    int noOfPlayers = multiplayerMessaging.getNoOfPlayers() + 1;
+                    buttonFriends.setText(String.valueOf(noOfPlayers) + "P");
+                    multiplayerMessaging.setNoOfPlayers(noOfPlayers);
+                    Jukebox.play("buttonPressed");
+                }
+            }
+        });
+
+        buttonInvite = new TextButton("Invite", skin);
+        secondPageActors.add(buttonInvite);
+        buttonInvite.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Jukebox.play("buttonPressed");
+                multiplayerMessaging.sendInvitations();
+            }
+        });
+
+        buttonJoin = new TextButton("Join", skin);
+        secondPageActors.add(buttonJoin);
+        buttonJoin.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Jukebox.play("buttonPressed");
+                multiplayerMessaging.seeInvitations();
+            }
+        });
+
+        buttonBack = new TextButton("Back", skin);
+        secondPageActors.add(buttonBack);
+        buttonBack.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Jukebox.play("buttonPressed");
+                showMenu(0);
+            }
+        });
+
+        Gdx.app.log("MainMenu.java", "switchScreen: " + startGame + " ConnectionHelper.STATE: " + ConnectionHelper.STATE);
 
         //tableMenu
         table = new Table(skin);
@@ -211,33 +232,24 @@ public class MainMenu implements Screen {
         table.setBounds(0, 0, Play.V_WIDTH, Play.V_HEIGHT);
         table.align(Align.top);
 
-        table.add(heading).height(210).colspan(3).expandX().row();
-        table.add(buttonMinus).right().padBottom(20);
-        table.add(buttonFriends).padBottom(20);
-        table.add(buttonPlus).left().padBottom(20).row();
-        table.add(buttonTutorial).colspan(3).padBottom(20).expandX().row();
-        table.add(buttonInvite).colspan(3).padBottom(20).expandX();
-        table.add(buttonInbox).colspan(3).padBottom(20).expandX().row();
-        table.add(buttonExit).colspan(3).expandX().row();
-
+        subTable = new Table(skin);
+        subTable.add(buttonMinus).padRight(Play.V_WIDTH / 10).padLeft(Play.V_WIDTH / 6);
+        subTable.add(buttonFriends);
+        subTable.add(buttonPlus).padLeft(Play.V_WIDTH / 10).padRight(Play.V_WIDTH / 6).row();
         stage.addActor(table);
 
-        showMenuSignIn();
+        showMenu(0);
 
         Timeline.createSequence().beginSequence()
                 .push(Tween.set(background, SpriteAccessor.ALPHA).target(0))
                 .push(Tween.set(heading, ActorAccessor.ALPHA).target(0))
-                .push(Tween.set(buttonMinus, ActorAccessor.ALPHA).target(0))
-                .push(Tween.set(buttonFriends, ActorAccessor.ALPHA).target(0))
-                .push(Tween.set(buttonPlus, ActorAccessor.ALPHA).target(0))
+                .push(Tween.set(buttonPlay, ActorAccessor.ALPHA).target(0))
                 .push(Tween.set(buttonTutorial, ActorAccessor.ALPHA).target(0))
                 .push(Tween.set(buttonExit, ActorAccessor.ALPHA).target(0))
                 .push(Tween.from(background, SpriteAccessor.ALPHA, 1f).target(0))
                 .push(Tween.to(background, SpriteAccessor.ALPHA, 1f).target(1))
                 .push(Tween.to(heading, ActorAccessor.ALPHA, .5f).target(1))
-                .push(Tween.to(buttonMinus, ActorAccessor.ALPHA, .2f).target(1))
-                .push(Tween.to(buttonFriends, ActorAccessor.ALPHA, .2f).target(1))
-                .push(Tween.to(buttonPlus, ActorAccessor.ALPHA, .2f).target(1))
+                .push(Tween.to(buttonPlay, ActorAccessor.ALPHA, .2f).target(1))
                 .push(Tween.to(buttonTutorial, ActorAccessor.ALPHA, .2f).target(1))
                 .push(Tween.to(buttonExit, ActorAccessor.ALPHA, .2f).target(1))
                 .end().start(tweenManager);
@@ -246,27 +258,27 @@ public class MainMenu implements Screen {
         Jukebox.playMusic("mainMenu");
     }
 
-    public void clearMenu() {
-        for (Actor actor : menuActors) {
-            actor.setVisible(false);
-        }
-    }
-
-    public void showMenuSignIn() {
-        clearMenu();
-        if (buttonTutorial != null && buttonFriends != null && buttonExit != null) {
-            buttonTutorial.setVisible(true);
-            buttonMinus.setVisible(true);
-            buttonFriends.setVisible(true);
-            buttonPlus.setVisible(true);
-            buttonInvite.setVisible(true);
-            buttonInbox.setVisible(true);
-            buttonExit.setVisible(true);
+    public void showMenu(int page) {
+        table.clear();
+        switch (page) {
+            case 0:
+                table.add(heading).height(210).colspan(3).expandX().row();
+                table.add(buttonPlay).colspan(3).padBottom(15).expandX().row();
+                table.add(buttonTutorial).colspan(3).padBottom(15).expandX().row();
+                table.add(buttonExit).colspan(3).expandX().row();
+                break;
+            case 1:
+                table.add(heading).height(210).colspan(2).expandX().row();
+                table.add(subTable).colspan(2).expandX().padBottom(15).row();
+                table.add(buttonInvite).right().padRight(Play.V_WIDTH / 30).padBottom(15);
+                table.add(buttonJoin).left().padLeft(Play.V_WIDTH / 30).padBottom(15).row();
+                table.add(buttonBack).colspan(2).expandX().row();
+                break;
         }
     }
 
     public void showLoading() {
-        clearMenu();
+        table.clear();
     }
 
     public void startGame() {

@@ -140,7 +140,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     public void startQuickGame() {
         // quick-start a game with 1 randomly selected opponent
 
-        final int MIN_OPPONENTS = noOfPlayers-1, MAX_OPPONENTS = noOfPlayers-1;
+        final int MIN_OPPONENTS = noOfPlayers - 1, MAX_OPPONENTS = noOfPlayers - 1;
         Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(MIN_OPPONENTS,
                 MAX_OPPONENTS, 0);
         RoomConfig.Builder rtmConfigBuilder = RoomConfig.builder(this);
@@ -613,8 +613,8 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         String msg = new String(buf);
         if (msg.startsWith(msgTag)) {
             //parse message
-            String msgStr = rtm.getSenderParticipantId() + "," + msg.substring(msgTag.length(), msg.length()-1);
-            msgBuf.add(msgStr, msg.charAt(msg.length()-1));
+            String msgStr = rtm.getSenderParticipantId() + "," + msg.substring(msgTag.length(), msg.length() - 1);
+            msgBuf.add(msgStr, msg.charAt(msg.length() - 1));
         }
 //        Log.d("Receiving", msg);
     }
@@ -647,7 +647,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
                 Games.RealTimeMultiplayer.sendUnreliableMessage(mGoogleApiClient, bytes, mRoomId, p.getParticipantId());
             }
         }
-        if (peers+1 < mParticipants.size()) {
+        if (peers + 1 < mParticipants.size()) {
             if (game.isInGame()) {
                 game.leaveGame();
             }
@@ -655,7 +655,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     }
 
     /**
-     *
      * @return List of participants IDs.
      */
     @Override
@@ -677,7 +676,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         }
         return participants;
     }
-
 
 
     @Override
@@ -705,7 +703,9 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     }
 
     @Override
-    public void clearMessageBufferExcept(char screenTag) { msgBuf.clearMessageBufferExcept(screenTag);}
+    public void clearMessageBufferExcept(char screenTag) {
+        msgBuf.clearMessageBufferExcept(screenTag);
+    }
 
     @Override
     public String getHostId() {
@@ -713,19 +713,20 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     }
 
     @Override
-    public void rematch(){
+    public void rematch() {
         //TODO fix this
-        if (this.getJoinedParticipants().size()>1){
+        if (this.getJoinedParticipants().size() > 1) {
             startGame();
         }
     }
 
     @Override
-    public void setNoOfPlayers(int noOfPlayers){
+    public void setNoOfPlayers(int noOfPlayers) {
         this.noOfPlayers = noOfPlayers;
     }
+
     @Override
-    public int getNoOfPlayers(){
+    public int getNoOfPlayers() {
         return noOfPlayers;
     }
 

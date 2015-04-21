@@ -67,11 +67,9 @@ public class PowerUp {
             case "Torch":
                 new Fire().use();
                 break;
-            case "Haste":
+            case "Frenzy":
                 new Haste().use();
                 break;
-
-
         }
     }
 }

@@ -129,6 +129,9 @@ public class Play implements Screen {
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("Background"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("Foreground"));
 
+        if (world.getDevicePlayer().isHasted)
+            renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("Frenzy"));
+
         // Screen
         world.playerMovement(delta);
         world.drawAndUpdate(renderer.getBatch());
