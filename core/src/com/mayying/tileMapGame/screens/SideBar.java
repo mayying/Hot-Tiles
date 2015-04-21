@@ -352,11 +352,9 @@ public class SideBar implements Screen {
     private void updateBoard() {
         score = scoreBoard.getScores();
         int index = NUM_OF_PLAYER - 1;
-        if (score.size() >= 2) {
-            for (int i = 0; i < NUM_OF_PLAYER; i++) {
-                playerStyle[i].background = skin.getDrawable(score.get(index).getPlayer().getModel() + "head");
-                scoreBoardLabel[i][1].setText("Score: " + score.get(index--).getScore());
-            }
+        for (int i = 0; i < NUM_OF_PLAYER; i++) {
+            playerStyle[i].background = skin.getDrawable(score.get(index).getPlayer().getModel() + "head");
+            scoreBoardLabel[i][1].setText("Score: " + score.get(index--).getScore());
         }
 
     }

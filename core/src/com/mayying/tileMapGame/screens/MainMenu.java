@@ -302,11 +302,12 @@ public class MainMenu implements Screen {
 
         if (startGame) {
             startGame = false;
-            if (mode.equals("desktop"))
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector());
-            else if (mode.equals("android")) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector(multiplayerMessaging));
-            }
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector(multiplayerMessaging));
+//            if (mode.equals("desktop"))
+//                ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector());
+//            else if (mode.equals("android")) {
+//                ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector(multiplayerMessaging));
+//            }
         }
     }
 

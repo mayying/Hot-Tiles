@@ -46,6 +46,7 @@ public class ScoreBoard {
 
     public void incrementKillsAndOrDeath(String killerID, String victimID) {
         // TODO - might have to fix this, send something more unique than a "null" string
+        Gdx.app.log("score", getScores().toString());
         if (!killerID.equals("null")) {
             playerMap.get(killerID).incrementKills();
         }

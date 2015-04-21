@@ -16,10 +16,11 @@ public class TiledMapGame extends Game {
     boolean inGame = false;
 
     public TiledMapGame() {
-        super();
+        //TODO: Remove this
+//        super();
         //desktop launch
-        mode = "desktop";
-        this.multiplayerMessaging = null;
+//        mode = "desktop";
+//        this.multiplayerMessaging = null;
     }
 
     public TiledMapGame(MultiplayerMessaging multiplayerMessaging) {
