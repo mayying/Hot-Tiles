@@ -198,9 +198,11 @@ public class CharacterSelector implements Screen {
             // In North Korea Kim Jong Un Selects You!
             int i = 1;
             for(String key:playerData.keySet()){
-                setPlayerSelection(i,key);
-                // what a reply
-                broadcastMessage("charsel", "reply", String.valueOf(i++), key);
+                if (key != Play.getMultiplayerMessaging().getMyId()) {
+                    setPlayerSelection(i, key);
+                    // what a reply
+                    broadcastMessage("charsel", "reply", String.valueOf(i++), key);
+                }
             }
         } else {
             // Client waits for supreme leader to choose where they belong

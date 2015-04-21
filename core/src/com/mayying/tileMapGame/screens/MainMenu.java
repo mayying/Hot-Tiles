@@ -57,7 +57,8 @@ public class MainMenu implements Screen {
     private boolean startGame;
 
     public MainMenu() {
-        mode = "desktop";
+        //TODO Remove this
+//        mode = "desktop";
     }
 
     public MainMenu(MultiplayerMessaging multiplayerMessaging) {

@@ -298,8 +298,8 @@ public class GameWorld {
     }
 
     public synchronized void removeThunder(Thunderbolt t) {
-        t.getTexture().dispose();
         t.setAlpha(0);
+        t.getTexture().dispose();
         thunder.remove(t);
     }
 
