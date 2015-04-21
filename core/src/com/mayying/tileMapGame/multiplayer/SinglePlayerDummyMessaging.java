@@ -73,6 +73,16 @@ public class SinglePlayerDummyMessaging implements MultiplayerMessaging {
     }
 
     @Override
+    public void sendInvitations() {
+
+    }
+
+    @Override
+    public void seeInvitations() {
+
+    }
+
+    @Override
     public void startQuickGame() {
         //do nothing
     }

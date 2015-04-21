@@ -232,6 +232,16 @@ public class Tutorial implements Screen, MultiplayerMessaging{
     }
 
     @Override
+    public void sendInvitations() {
+
+    }
+
+    @Override
+    public void seeInvitations() {
+
+    }
+
+    @Override
     public void startQuickGame() {
 
     }

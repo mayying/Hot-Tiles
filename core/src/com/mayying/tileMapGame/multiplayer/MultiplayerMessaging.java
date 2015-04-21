@@ -15,7 +15,8 @@ public interface MultiplayerMessaging {
     public List<String> getMessageBuffer(char screenTag);
     public void clearMessageBufferExcept(char screenTag);
     public String getHostId();
-
+    public void sendInvitations();
+    public void seeInvitations();
     //for main menu usages
     public void startQuickGame();
     public void signIn();

@@ -293,6 +293,8 @@ public class CharacterSelector implements Screen {
         parseMessages();
         // Switch screen to Play when time's up
         if (sec == 0) {
+            // not sure if buttons are disabled
+            waitForMessage(500l);
             //Clear the message buffer.
             multiplayerMessaging.getMessageBuffer('c');
             ArrayList<PlayerMetaData> metaData = new ArrayList<>();

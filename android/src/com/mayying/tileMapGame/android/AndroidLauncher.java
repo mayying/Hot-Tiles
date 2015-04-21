@@ -238,6 +238,8 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         Log.d(TAG, "Room created, waiting for it to be ready...");
     }
 
+
+
     // Handle the result of the invitation inbox UI, where the player can pick an invitation
     // to accept. We react by accepting the selected invitation, if any.
     private void handleInvitationInboxResult(int response, Intent data) {
@@ -616,7 +618,17 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         }
 //        Log.d("Receiving", msg);
     }
+    @Override
+    public void sendInvitations(){
+        Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, 1, 3);
+        startActivityForResult(intent, RC_SELECT_PLAYERS);
+    }
 
+    @Override
+    public void seeInvitations(){
+        Intent intent = Games.Invitations.getInvitationInboxIntent(mGoogleApiClient);
+        startActivityForResult(intent, RC_INVITATION_INBOX);
+    }
     @Override
     public void broadcastMessage(String msg) {
 //        Log.d("Sending", msg);

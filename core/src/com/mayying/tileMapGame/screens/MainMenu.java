@@ -41,7 +41,7 @@ import aurelienribon.tweenengine.TweenManager;
 public class MainMenu implements Screen {
     private SpriteBatch batch;
     private Sprite background;
-    private TextButton buttonMinus, buttonFriends, buttonPlus, buttonTutorial, buttonExit;
+    private TextButton buttonMinus, buttonFriends, buttonPlus, buttonTutorial, buttonExit, buttonInvite, buttonInbox;
     private Label heading;
     private Stage stage;
     private TextureAtlas buttonAtlas;
@@ -143,6 +143,24 @@ public class MainMenu implements Screen {
             }
         });
 
+        buttonInvite = new TextButton("inv", skin);
+        menuActors.add(buttonInvite);
+        buttonInvite.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                multiplayerMessaging.sendInvitations();
+            }
+        });
+
+        buttonInbox = new TextButton("inbox", skin);
+        menuActors.add(buttonInbox);
+        buttonInbox.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                multiplayerMessaging.seeInvitations();
+            }
+        });
+
         buttonTutorial = new TextButton("Tutorial", skin);
         menuActors.add(buttonTutorial);
         buttonTutorial.addListener(new InputListener() {
@@ -198,6 +216,8 @@ public class MainMenu implements Screen {
         table.add(buttonFriends).padBottom(20);
         table.add(buttonPlus).left().padBottom(20).row();
         table.add(buttonTutorial).colspan(3).padBottom(20).expandX().row();
+        table.add(buttonInvite).colspan(3).padBottom(20).expandX();
+        table.add(buttonInbox).colspan(3).padBottom(20).expandX().row();
         table.add(buttonExit).colspan(3).expandX().row();
 
         stage.addActor(table);
@@ -239,6 +259,8 @@ public class MainMenu implements Screen {
             buttonMinus.setVisible(true);
             buttonFriends.setVisible(true);
             buttonPlus.setVisible(true);
+            buttonInvite.setVisible(true);
+            buttonInbox.setVisible(true);
             buttonExit.setVisible(true);
         }
     }
