@@ -291,7 +291,6 @@ public class SideBar implements Screen {
     float tick = 5.05f;
 
     public void render(float delta) {
-        Gdx.app.log("SideBar", "gameTime: " + gameTime);
         tweenManager.update(Gdx.graphics.getDeltaTime());
         if (timeLeft == 0) {
             timeLeft = 1; //Allow game to be restarted next time
@@ -303,7 +302,7 @@ public class SideBar implements Screen {
             if (!timeFrozen) {
                 if ((gameTime < tick)) {
                     Jukebox.play("reminder");
-                    tick-=1;
+                    tick -= 1;
                 }
                 gameTime -= delta;
                 min = (int) Math.floor(gameTime / 60.0f);

@@ -125,7 +125,6 @@ public class TiledMapGame extends Game {
         } else if (mode.equals("android")) {
             setScreen(new MainMenu(multiplayerMessaging));
         }
-        // setScreen(new Splash());
     }
 
     @Override
