@@ -761,7 +761,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         boolean showInvPopup;
         if (mIncomingInvitationId == null) {
             // no invitation, so no popup
-            showInvPopup = false;
+                    showInvPopup = false;
         } else {
             // if in multiplayer, only show invitation on main screen
 //            showInvPopup = (mCurScreen == R.id.screen_main);

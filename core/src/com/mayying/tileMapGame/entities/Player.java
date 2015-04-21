@@ -29,6 +29,7 @@ public class Player extends Sprite implements Collidable {
     private boolean isInverted = false, fireAnimation = false;
     private String lastHitBy;
     private PlayerMetaData metaData;
+    private int deathCount = 0;
 
     public PowerUp[] powerUpList = new PowerUp[2];
     public boolean isInvulnerable = false, isDead = false, isFrozen = false, isSwapped = false, isOnFire = false, isHasted = false;
@@ -253,7 +254,8 @@ public class Player extends Sprite implements Collidable {
         if (!isInvulnerable) {
             isDead = true;
             toggleSwap(false);
-            fireAnimation = isOnFire = false;
+            fireAnimation = isOnFire = isHasted = false;
+            deathCount++;
             final int xCoordinate = new Random().nextInt(getCollisionLayer().getWidth() - 8);
             final int yCoordinate = new Random().nextInt(getCollisionLayer().getHeight() - 2);
             new DelayedThread(1500l, this) {
@@ -316,6 +318,7 @@ public class Player extends Sprite implements Collidable {
         // Remove from render list,
 //            gameWorld.removePlayer(this);
         isDead = true;
+        deathCount++;
         // Set Invulnerable for 4 secs
         isInvulnerable = true;
         new DelayedThread(4000l) {
@@ -424,12 +427,13 @@ public class Player extends Sprite implements Collidable {
             isOnFire = true;
             setFireAnimation();
             Jukebox.play("suicide");
+            final int temp = getDeathCount();
             new DelayedThread(8000l) {
                 @Override
                 public void run() {
                     super.run();
                     if (GameWorld.getInstance() != null) {
-                        if (isOnFire) { // this is false only if the player has died
+                        if (temp == getDeathCount()) { // this is false only if the player has died
                             isOnFire = false;
                             die();
                         }
@@ -456,12 +460,13 @@ public class Player extends Sprite implements Collidable {
         if (!isHasted) {
             isHasted = true;
             Jukebox.play("bloodlust");
+            final int temp = getDeathCount();
             new DelayedThread(4000l) {
                 @Override
                 public void run() {
                     super.run();
                     if (GameWorld.getInstance() != null) {
-                        if (isHasted) { // this is false only if the player has died
+                        if (temp == getDeathCount()) { // this is false only if the player has died
                             isHasted = false;
                         }
                     }
@@ -485,5 +490,9 @@ public class Player extends Sprite implements Collidable {
             if (p.getPlayerPosition().equals(this.getPlayerPosition()) && !p.isInvulnerable)
                 onCollisionDetected(p);
         }
+    }
+
+    public int getDeathCount() {
+        return deathCount;
     }
 }
