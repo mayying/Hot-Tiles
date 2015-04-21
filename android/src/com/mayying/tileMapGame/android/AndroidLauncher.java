@@ -1,14 +1,16 @@
 package com.mayying.tileMapGame.android;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.android.gms.common.ConnectionResult;
@@ -359,14 +361,32 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 
     // Called when we get an invitation to play a game. We react by showing that to the user.
     @Override
-    public void onInvitationReceived(Invitation invitation) {
+    public void onInvitationReceived(final Invitation invitation) {
         // We got an invitation to play a game! So, store it in
         // mIncomingInvitationId
         // and show the popup on the screen.
+        Gdx.app.log("INVITATION","Received an invitation!");
         mIncomingInvitationId = invitation.getInvitationId();
-        ((TextView) findViewById(R.id.incoming_invitation_text)).setText(
-                invitation.getInviter().getDisplayName() + " " +
-                        getString(R.string.is_inviting_you));
+        // accept invitation
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+        builder.setTitle("Game Invitation")
+                .setMessage(invitation.getInviter().getDisplayName()+": COME FIGHT ME NOOB!!")
+                .setPositiveButton("Accept",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        acceptInviteToRoom(invitation.getInvitationId());
+                    }
+                })
+                .setNegativeButton("Decline",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                         // cancel dialog
+                    }
+                });
+//        builder.create();
+        builder.show();
+
+
 //        switchToScreen(mCurScreen); // This will show the invitation popup
     }
 
