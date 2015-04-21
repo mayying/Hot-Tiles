@@ -2,6 +2,7 @@ package com.mayying.tileMapGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
+import aurelienribon.tweenengine.TweenManager;
+
 /**
  * Concurrency issues/ design choices:
  * ????
@@ -44,9 +47,13 @@ public class GameWorld {
     private final HashMap<String, Player> players = new HashMap<String, Player>();
     private final HashMap<String, Long> randomSeeds = new HashMap<>();
     private ShapeRenderer shapeRenderer;
+    private Sprite sprite;
+    private TweenManager tweenManager;
 
     private TiledMapTileLayer playableLayer;
     private Play play;
+
+    private int newX, newY;
 
     public static final long GAME_WAIT_OFFSET = 5000;
 
@@ -80,6 +87,7 @@ public class GameWorld {
         this.playableLayer = playableLayer;
         this.play = play;
         shapeRenderer = new ShapeRenderer();
+        sprite = new Sprite(new Texture(Gdx.files.internal("img/pointer.png")));
     }
 
     public static GameWorld getInstance(TiledMapTileLayer playableLayer, String myId, ArrayList<PlayerMetaData> metaData,
@@ -132,6 +140,9 @@ public class GameWorld {
             players.get(key).draw(batch);
         }
 
+        sprite.setPosition(devicePlayer.getX() + devicePlayer.getWidth() / 4, devicePlayer.getY() + devicePlayer.getHeight());
+        sprite.draw(batch);
+
         for (int i = 0; i < mines.size(); i++) {
             mines.get(i).draw(batch);
         }
@@ -146,13 +157,6 @@ public class GameWorld {
             shapeRenderer.rect(0, 0, Play.camera.viewportWidth, Play.camera.viewportHeight);
             shapeRenderer.end();
         }
-//        if (devicePlayer.isHasted){
-//            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-//            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//            shapeRenderer.setColor(1.0f, 0, 0, 0.3f);
-//            shapeRenderer.rect(0, 0, Play.camera.viewportWidth, Play.camera.viewportHeight);
-//            shapeRenderer.end();
-//        }
     }
 
     private long lastMovement = -1;
@@ -168,8 +172,8 @@ public class GameWorld {
         velocity.x = getMyTouchPad().getTouchPad().getKnobPercentX();
         velocity.y = getMyTouchPad().getTouchPad().getKnobPercentY();
         Player player = getDevicePlayer();
-        int newX = (int) player.getPlayerPosition().x;
-        int newY = (int) player.getPlayerPosition().y;
+        newX = (int) player.getPlayerPosition().x;
+        newY = (int) player.getPlayerPosition().y;
         boolean pressed = true;
 
         if (velocity.x > 0.5) {
@@ -189,18 +193,18 @@ public class GameWorld {
         }
 
         long freq = MOVEMENT_FREQUENCY;
-        if (getDevicePlayer().isHasted){
+        if (getDevicePlayer().isHasted) {
             freq = MOVEMENT_FREQUENCY_HASTED;
             if (!pressed) {
                 pressed = true;
                 int facing = player.getFacing();
-                if (facing==6) {
+                if (facing == 6) {
                     newX += player.getSpeed();
-                } else if (facing==4) {
+                } else if (facing == 4) {
                     newX -= player.getSpeed();
-                } else if (facing==2) {
+                } else if (facing == 2) {
                     newY += player.getSpeed();
-                } else if (facing==8) {
+                } else if (facing == 8) {
                     newY -= player.getSpeed();
                 }
             }
@@ -208,8 +212,9 @@ public class GameWorld {
         if (System.currentTimeMillis() - lastMovement >= freq) {
             if (pressed) {
                 lastMovement = System.currentTimeMillis();
-                if (!player.isDead)
+                if (!player.isDead) {
                     player.setPlayerPosition(newX, newY);
+                }
             }
         }
 

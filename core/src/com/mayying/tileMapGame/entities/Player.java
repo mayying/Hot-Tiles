@@ -89,6 +89,8 @@ public class Player extends Sprite implements Collidable {
         this.setPosition(_x, _y);
     }
 
+
+
     // Return matrix position
     public Vector2 getPlayerPosition() {
         Vector2 vector2 = new Vector2();

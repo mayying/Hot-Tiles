@@ -268,7 +268,7 @@ public class SideBar implements Screen {
         table.add(subTable).fill().colspan(3);
         stage.addActor(table);
 //        table.setDebug(true);
-        animateLightning();
+        animate(0);
     }
 
     public void showLightning(boolean show) {
@@ -280,12 +280,21 @@ public class SideBar implements Screen {
         }
     }
 
-    public void animateLightning() {
-        Timeline.createSequence().beginSequence()
-                .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][1], ActorAccessor.RGB, .5f).target(1, 1, 0))
-                .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][1], ActorAccessor.RGB, .5f).target(0, 1, 0))
-                .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][1], ActorAccessor.RGB, .5f).target(1, 0, 0))
-                .end().repeat(Tween.INFINITY, 0).start(tweenManager);
+    public void animate(int condition) {
+        switch (condition) {
+            case 0:
+                Timeline.createSequence().beginSequence()
+                        .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][1], ActorAccessor.RGB, .5f).target(1, 1, 0))
+                        .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][1], ActorAccessor.RGB, .5f).target(0, 1, 0))
+                        .push(Tween.to(scoreBoardLabel[NUM_OF_PLAYER][1], ActorAccessor.RGB, .5f).target(1, 0, 0))
+                        .end().repeat(Tween.INFINITY, 0).start(tweenManager);
+                break;
+            case 1:
+                Timeline.createSequence().beginSequence()
+                        .push(Tween.to(timer, ActorAccessor.RGB, .5f).target(1, 0, 0))
+                        .end().repeat(Tween.INFINITY, 0).start(tweenManager);
+                break;
+        }
     }
 
     float tick = 5.05f;
@@ -302,6 +311,7 @@ public class SideBar implements Screen {
             if (!timeFrozen) {
                 if ((gameTime < tick)) {
                     Jukebox.play("reminder");
+                    animate(1);
                     tick -= 1;
                 }
                 gameTime -= delta;
@@ -323,7 +333,6 @@ public class SideBar implements Screen {
                 labelStyle.background = skin.getDrawable(world.getPowerUp().getFilename());
                 descriptionImg.setStyle(labelStyle);
 
-//                Gdx.app.log("SideBar", "ButtonA: " + buttonA.isDisabled() + " ButtonB: " + buttonB.isDisabled());
                 if (buttonA.isDisabled()) {
                     buttonA.setDisabled(false);
                     buttonA.setChecked(false);

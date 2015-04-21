@@ -47,6 +47,7 @@ public class Play implements Screen {
     private long lastTouched = 0l;
     long lightningDelta;
     private boolean cooldown;
+
     public Play() {
         super();
         multiplayerMessaging = null;
@@ -129,12 +130,13 @@ public class Play implements Screen {
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("Background"));
         renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("Foreground"));
 
-        if (world.getDevicePlayer().isHasted)
-            renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("Frenzy"));
-
         // Screen
         world.playerMovement(delta);
         world.drawAndUpdate(renderer.getBatch());
+
+        if (world.getDevicePlayer().isHasted)
+            renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("Frenzy"));
+
 
         if (this.allPlayersReady) {
             if (SideBar.timeLeft > 0)
@@ -145,7 +147,7 @@ public class Play implements Screen {
         }
 
         lightningDelta = System.currentTimeMillis() - lastTouched;
-        if(lightningDelta > 3000l && !sideBar.isTimeFrozen()) {
+        if (lightningDelta > 3000l && !sideBar.isTimeFrozen()) {
             sideBar.showLightning(true);
             if (Gdx.input.justTouched()) {
                 Vector3 v3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -162,7 +164,7 @@ public class Play implements Screen {
                 }
                 sideBar.showLightning(false);
             }
-        }else{
+        } else {
             sideBar.showLightning(false);
         }
 
@@ -221,7 +223,6 @@ public class Play implements Screen {
         sideBar.dispose();
         world.dispose();
     }
-
 
 
     //TODO This is bullshit

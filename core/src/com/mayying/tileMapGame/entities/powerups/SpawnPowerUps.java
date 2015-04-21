@@ -68,11 +68,10 @@ public class SpawnPowerUps implements Collidable {
                 position.x = tileLayer.getTileWidth() / 2 - sprite.getWidth() / 2 + tileLayer.getTileWidth() * (coords.x + 4);
                 position.y = tileLayer.getTileHeight() / 4 + tileLayer.getTileHeight() * (coords.y + 1);
 
-                sprite.setPosition(position.x, position.y);
                 Timeline.createSequence().beginSequence()
                         .push(Tween.set(sprite, SpriteAccessor.POSITION).target(position.x, position.y))
                         .push(Tween.to(sprite, SpriteAccessor.POSITION, 0.05f).target(position.x, position.y + 5f).repeatYoyo(30, 0.2f))
-                        .end().start(tweenManager);
+                .end().start(tweenManager);
 
                 spawnTime = 0;        // count until 3s
                 countTime = 0;
@@ -121,7 +120,7 @@ public class SpawnPowerUps implements Collidable {
     }
 
     //Resets the power up when another play picks it up
-    public void reset(){
+    public void reset() {
         state = 0;
     }
 
@@ -131,11 +130,11 @@ public class SpawnPowerUps implements Collidable {
         // the rest of our implementation
         Player player = world.getDevicePlayer();
 //        for (Player player : world.getPlayers().values()) {
-            Vector2 playerPos = player.getPlayerPosition();
+        Vector2 playerPos = player.getPlayerPosition();
 //            Gdx.app.log("Player Coords: ", playerPos.toString());
-            if (playerPos.equals(this.coords)) {
-                onCollisionDetected(player);
-            }
+        if (playerPos.equals(this.coords)) {
+            onCollisionDetected(player);
+        }
     }
 
     public PowerUp getPowerUp() {
