@@ -60,10 +60,10 @@ public class EndGame implements Screen {
         batch = new SpriteBatch();
         atlas = new TextureAtlas(Gdx.files.internal("endGame/endGame.txt"));
         Player devicePlayer = world.getDevicePlayer();
-        if (scores.get(0).getPlayer().getName().equals(devicePlayer.getName()))
-            background = new Sprite(new Texture(Gdx.files.internal("endGame/backgroundLose.png")));
-        else {
+        if (scores.get(scores.size() - 1).getPlayer().getName().equals(devicePlayer.getName()))
             background = new Sprite(new Texture(Gdx.files.internal("endGame/" + devicePlayer.getModel() + "win.png")));
+        else {
+            background = new Sprite(new Texture(Gdx.files.internal("endGame/backgroundLose.png")));
         }
 
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -181,7 +181,7 @@ public class EndGame implements Screen {
             String command = message[1];
             // <host_id>, <rematchAcknowledged>, <client_id>, <rematchPoll>
             if (command.equals("rematchAcknowledged") && Play.getMultiplayerMessaging().getHostId().equals(message[0])) {
-                Gdx.app.log("EndGame","Rematch Acknowledged by server");
+                Gdx.app.log("EndGame", "Rematch Acknowledged by server");
                 rematchPoll.put(message[2], Boolean.valueOf(message[3]));
                 //client update text
                 if (Play.getMultiplayerMessaging().getMyId().equals(message[2])) {

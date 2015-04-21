@@ -22,19 +22,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f75184eb-7abc-43a3-bbf1-4b46b7b39042" name="Default" comment="improve frenzy effect, added frenzy vector and stuff">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/sounds/reminder.mp3" afterPath="$PROJECT_DIR$/android/assets/sounds/reminder.mp3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/tutorial/tutorial2.png" afterPath="$PROJECT_DIR$/android/assets/tutorial/tutorial2.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/EndGame.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/EndGame.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/SideBar.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/SideBar.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/android.iml" afterPath="$PROJECT_DIR$/android/android.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/TiledMapGame.java" afterPath="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/TiledMapGame.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/core.iml" afterPath="$PROJECT_DIR$/core/core.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/desktop/desktop.iml" afterPath="$PROJECT_DIR$/desktop/desktop.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/html/html.iml" afterPath="$PROJECT_DIR$/html/html.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ios/ios.iml" afterPath="$PROJECT_DIR$/ios/ios.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/play_services_6_5_87.xml" afterPath="$PROJECT_DIR$/.idea/libraries/play_services_6_5_87.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_annotations_21_0_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_annotations_21_0_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_21_0_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_v4_21_0_0.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="TiledMapGame.iws" />
@@ -61,8 +52,8 @@
       <file leaf-file-name="TiledMapGame.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/TiledMapGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="924" max-vertical-offset="3542">
-              <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2420" max-vertical-offset="3102">
+              <caret line="127" column="5" selection-start-line="127" selection-start-column="5" selection-end-line="127" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -91,8 +82,8 @@
       <file leaf-file-name="SideBar.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/SideBar.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5742972" vertical-offset="5522" max-vertical-offset="8184">
-              <caret line="302" column="19" selection-start-line="302" selection-start-column="19" selection-end-line="302" selection-end-column="19" />
+            <state vertical-scroll-proportion="0.39759037" vertical-offset="5654" max-vertical-offset="8162">
+              <caret line="304" column="30" selection-start-line="304" selection-start-column="30" selection-end-line="304" selection-end-column="30" />
               <folding>
                 <element signature="e#4469#4901#0" expanded="true" />
                 <element signature="e#4890#4891#0" expanded="true" />
@@ -108,7 +99,7 @@
       <file leaf-file-name="MainMenu.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/MainMenu.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="5742" max-vertical-offset="7612">
+            <state vertical-scroll-proportion="0.0" vertical-offset="4598" max-vertical-offset="6292">
               <caret line="261" column="0" selection-start-line="261" selection-start-column="0" selection-end-line="261" selection-end-column="0" />
               <folding />
             </state>
@@ -135,16 +126,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="gmap70x70.tmx" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/android/assets/map/gmap70x70.tmx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1584" max-vertical-offset="2530">
-              <caret line="91" column="17" selection-start-line="91" selection-start-column="17" selection-end-line="91" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="SpawnPowerUps.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/powerups/SpawnPowerUps.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -160,6 +141,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="550" max-vertical-offset="1914">
               <caret line="25" column="24" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EndGame.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/EndGame.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="792" max-vertical-offset="5170">
+              <caret line="59" column="34" selection-start-line="59" selection-start-column="34" selection-end-line="59" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -1566,12 +1557,10 @@
         <option value="$PROJECT_DIR$/android/assets/charSel/players.txt" />
         <option value="$PROJECT_DIR$/android/assets/charSel/charSel.json" />
         <option value="$PROJECT_DIR$/android/assets/skin/gameSkin.json" />
-        <option value="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/EndGame.java" />
         <option value="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/powerups/SpawnPowerUps.java" />
         <option value="$PROJECT_DIR$/android/src/com/mayying/tileMapGame/android/AndroidLauncher.java" />
         <option value="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/multiplayer/MultiplayerMessaging.java" />
         <option value="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/multiplayer/MessageParser.java" />
-        <option value="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/TiledMapGame.java" />
         <option value="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/powerups/factory/PowerUp.java" />
         <option value="$PROJECT_DIR$/android/assets/powerups/powerups.json" />
         <option value="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Jukebox.java" />
@@ -1581,6 +1570,8 @@
         <option value="$PROJECT_DIR$/android/assets/map/gmap70x70.tmx" />
         <option value="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/MainMenu.java" />
         <option value="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/Player.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/TiledMapGame.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/EndGame.java" />
         <option value="$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/SideBar.java" />
       </list>
     </option>
@@ -1777,38 +1768,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Hot-Tiles" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Hot-Tiles" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Hot-Tiles" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Hot-Tiles" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -1833,7 +1792,7 @@
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
-    <property name="AndroidTargetDevices" value="4300c7eb9afb5199 R32D202YTSK" />
+    <property name="AndroidTargetDevices" value="081685d2d00b1850 R32D202YTSK" />
     <property name="last_opened_file_path" value="$USER_HOME$/AndroidStudioApplication/Hot-Tiles" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="205" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
@@ -2322,7 +2281,15 @@
       <created>1429607510657</created>
       <updated>1429607510657</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="improve frenzy effect, added frenzy vector and stuff">
+      <created>1429610875438</created>
+      <updated>1429610875438</updated>
+    </task>
+    <task id="LOCAL-00060" summary="improve frenzy effect, added frenzy vector and stuff">
+      <created>1429611224941</created>
+      <updated>1429611224941</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -2671,14 +2638,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/EndGame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3572" max-vertical-offset="5170">
-          <caret line="193" column="22" selection-start-line="193" selection-start-column="22" selection-end-line="193" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/entities/powerups/FireMine.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="550">
@@ -2812,6 +2771,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/TiledMapGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2420" max-vertical-offset="3102">
+          <caret line="127" column="5" selection-start-line="127" selection-start-column="5" selection-end-line="127" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/MainMenu.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="5742" max-vertical-offset="7612">
@@ -2820,18 +2787,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/TiledMapGame.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/EndGame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="604" max-vertical-offset="3124">
-          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="792" max-vertical-offset="5170">
+          <caret line="59" column="34" selection-start-line="59" selection-start-column="34" selection-end-line="59" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mayying/tileMapGame/screens/SideBar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5742972" vertical-offset="5522" max-vertical-offset="8184">
-          <caret line="302" column="19" selection-start-line="302" selection-start-column="19" selection-end-line="302" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.39759037" vertical-offset="5654" max-vertical-offset="8162">
+          <caret line="304" column="30" selection-start-line="304" selection-start-column="30" selection-end-line="304" selection-end-column="30" />
           <folding>
             <element signature="e#4469#4901#0" expanded="true" />
             <element signature="e#4890#4891#0" expanded="true" />
