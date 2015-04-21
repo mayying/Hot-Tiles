@@ -1,3 +1,11 @@
+Power Ups/ normal game logic
+In order to prevent sending out too much data/ synchronizing too many things the design of game logic follows the following approach:
+1) Devices will constantly broadcast their character's position whenever they move.
+2) It is a device's responsibility to update others when their player has died, when they have used a power up, as well as when someone else has stepped on their mine.
+Devices will not update others upon picking up a power up, or placing a mine. As such, the other devices do not have to constantly run checks on their side.
+3) There was a debate on whether sending String data or Integer data would be better. Upon testing it was concluded that the transmission delay was insignificant compared
+to the propagation delay such that there was no significant difference in the RTT/ping for the different sizes of data. As such we used Strings as it was much easier to debug.
+
 Mines
 1) Player uses Mine power up
 2) Power up is placed locally, only player's device knows
@@ -22,10 +30,36 @@ BurningTiles
 1) Device only checks for itself
 2) Device updates itself if any player dies from fire. (Animation only)
 
-
-Notes:
+Player
 die() method is used if the player dies locally. A vector2 of the player's respawn coordinates is broadcast
 over the server. The device then broadcasts a message with the vector2, as well as score update.
 
 dieAndRespawn() is called when a device receives the broadcast that someone has died, and will respawn elsewhere.
 Only called by the MessageParser
+
+Character Selector
+
+* CharacterSelector Screen allowing players to choose their characters. Initially tried to do this by broadcasting
+ * directly each player's selection. We quickly realized that there was a concurrency issue where the other player selects the
+ * same character before the message was received, thereby allowing both players to use the same character.
+ * We attempted to solve this by adding on the timestamp as well, using it as the comparator to decide who gets to
+ * select it. However this design was not optimal as we would have to deselect and reselect the player's old selection
+ * when the concurrency issue mentioned above occurred, giving the player a less than optimal experience.
+ *
+ * The current implementation chooses one of the players as the host. The other clients have to send requests and poll
+ * for the characters that they want, and the host will decide whether they can select the character.
+
+ Synchronizing the Data
+ As our game is a real time arena style game, it is important to synchronize data such that both board states are synchronized. This
+ includes synchronizing power up spawn spots, location of the burning tiles and players, game time etc. As different devices have
+   different processing power, it is inevitable that some devices are faster than the other in various stages of the game.
+   One prime example is how a LibGDX Screen may be rendered much quickly in one screen than the other, allowing the code and logic in that game to
+   run first, causing both devices to not be out of sync. As such, we have designed our game to either block (for more minor parts) or freeze the timer
+   until an acknowledgement is received from the other device. For example when users opt for a rematch, when one device is faster than the other device,
+   the MessageParser is still parsing for a different screen, and causes the messages to be lost. As we have no more time to implement big changes involving centralizing
+   the whole MessageParser class, we opted for a synchronization approach in the CharacterSelector class.
+
+   Other concurrency issues
+   - Different threads reading & clearing from the MessageBuffer
+   - DelayedThread class conflicting, constrains us from doing stuff like extending power up duration if the same power up is used again to maintain thread safety
+   - ArrayList for players not synchronized - as the design was initially index based, this lead to a lot of problems where the same index will return a different player object.

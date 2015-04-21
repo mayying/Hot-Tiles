@@ -1,0 +1,14 @@
+{
+    "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+        "black":      { "file": "font/black36.fnt"}
+    },
+
+    "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+        "default":  { "font": "black"}
+    },
+
+    "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+        "mainMenu": {"up": "mainMenuBtn", "down": "mainMenuBtnP", "font": "black"}
+        "rematch":  {"up": "rematchBtn", "down": "rematchBtnP", "font": "black"}
+    }
+}

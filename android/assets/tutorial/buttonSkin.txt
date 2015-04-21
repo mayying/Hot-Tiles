@@ -1,0 +1,46 @@
+buttonSkin.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+leftButton
+  rotate: false
+  xy: 2, 2
+  size: 85, 74
+  orig: 85, 74
+  offset: 0, 0
+  index: -1
+leftButtonP
+  rotate: false
+  xy: 89, 2
+  size: 85, 74
+  orig: 85, 74
+  offset: 0, 0
+  index: -1
+rightButton
+  rotate: false
+  xy: 2, 78
+  size: 85, 74
+  orig: 85, 74
+  offset: 0, 0
+  index: -1
+rightButtonP
+  rotate: false
+  xy: 89, 78
+  size: 85, 74
+  orig: 85, 74
+  offset: 0, 0
+  index: -1
+skinSquareClose70x70
+  rotate: false
+  xy: 2, 154
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+skinSquareClose70x70P
+  rotate: false
+  xy: 74, 154
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1

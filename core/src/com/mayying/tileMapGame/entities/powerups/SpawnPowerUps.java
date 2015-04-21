@@ -9,6 +9,8 @@ import com.mayying.tileMapGame.GameWorld;
 import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUpFactory;
+import com.mayying.tileMapGame.multiplayer.MessageParser;
+import com.mayying.tileMapGame.screens.Play;
 import com.mayying.tileMapGame.tween.SpriteAccessor;
 
 import java.util.Random;
@@ -33,11 +35,11 @@ public class SpawnPowerUps implements Collidable {
     Vector2 position = new Vector2(), coords = new Vector2();
     private TweenManager tweenManager;
 
-    public SpawnPowerUps(TiledMapTileLayer tileLayer, GameWorld world) {
+    public SpawnPowerUps(TiledMapTileLayer tileLayer, GameWorld world, long seed) {
         this.tileLayer = tileLayer;
         this.world = world;
         powerUpFactory = PowerUpFactory.getInstance(world);
-        spawnRNG = new Random();
+        spawnRNG = new Random(seed);
         sprite = new Sprite();
 
         tweenManager = new TweenManager();
@@ -50,20 +52,21 @@ public class SpawnPowerUps implements Collidable {
                 // !created
                 // picking random stringID from list
                 powerUpIsPickedUp = false;
-                powerUp = powerUpFactory.createPowerUp(spawnRNG.nextInt(5)); //TODO - only 5? no hardcode?
+                powerUp = powerUpFactory.createPowerUp(spawnRNG.nextInt(7));
+
                 sprite = new Sprite(powerUp.getTextureVector());
 
                 // set random spawn time for powerup
-                randomSpawnTime = (float) new Random().nextInt(10);
+//                randomSpawnTime = (float) spawnRNG.nextInt(10);
+                randomSpawnTime = (float) spawnRNG.nextInt(1);
 
                 // sprite position
-                coords.x = new Random().nextInt(tileLayer.getWidth() - 8);
-                coords.y = new Random().nextInt(tileLayer.getHeight() - 2);
+                coords.x = spawnRNG.nextInt(tileLayer.getWidth() - 8);
+                coords.y = spawnRNG.nextInt(tileLayer.getHeight() - 2);
 
                 position.x = tileLayer.getTileWidth() / 2 - sprite.getWidth() / 2 + tileLayer.getTileWidth() * (coords.x + 4);
                 position.y = tileLayer.getTileHeight() / 4 + tileLayer.getTileHeight() * (coords.y + 1);
-//                Gdx.app.log(powerUp.getName() + " position", coords.x + ", " + coords.y);
-                sprite.setPosition(position.x, position.y);
+
                 Timeline.createSequence().beginSequence()
                         .push(Tween.set(sprite, SpriteAccessor.POSITION).target(position.x, position.y))
                         .push(Tween.to(sprite, SpriteAccessor.POSITION, 0.05f).target(position.x, position.y + 5f).repeatYoyo(30, 0.2f))
@@ -103,22 +106,30 @@ public class SpawnPowerUps implements Collidable {
 
     @Override
     public void onCollisionDetected(Player player) {
-//        Gdx.app.log("Player", "Player die from fire Q_Q");
-        if (player.canPickPowerUp()) {
+        // README: PowerUp disappear when a player steps over it.
+        // If not implemented this way, we will have to broadcast message if powerup is picked up etc.
+//        state = 0; // picked up, restart state
+        if (player.canPickPowerUp() && player.equals(world.getDevicePlayer())) {
+            Play.broadcastMessage(MessageParser.POWERUP_PICKED_UP);
+            state = 0; // picked up, restart state
             player.addPowerUp(powerUp);
             powerUpIsPickedUp = true;
-            state = 0; // picked up, restart state
-            Gdx.app.log("Powerup", powerUp.getName() + " picked up.");
+            Gdx.app.log("HT_Powerup", powerUp.getName() + " picked up.");
         }
+    }
+
+    //Resets the power up when another play picks it up
+    public void reset() {
+        state = 0;
     }
 
     @Override
     public void collisionCheck() {
-        // Only check for this device's player -  power ups appear to everyone differently
+        // Check for every player. Unless we want to do a client-host handshake implementation, this is more concurrent with
+        // the rest of our implementation
         Player player = world.getDevicePlayer();
-
         Vector2 playerPos = player.getPlayerPosition();
-//        Gdx.app.log("Player Coords: ", playerPos.toString());
+//            Gdx.app.log("Player Coords: ", playerPos.toString());
         if (playerPos.equals(this.coords)) {
             onCollisionDetected(player);
         }
@@ -131,4 +142,5 @@ public class SpawnPowerUps implements Collidable {
     public boolean isPowerUpPickedUp() {
         return powerUpIsPickedUp;
     }
+
 }

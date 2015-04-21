@@ -13,7 +13,7 @@
 	"filenameBtn"       : "confusedBtn",
 	"filename"          : "confusedImg",
 	"name"              : "Confusion",
-	"description"       : "Confuse all enemies by inverting their control",
+	"description"       : "Confuses all enemies by inverting their control",
 },
 {
 	"filenameVector"    : "freezemine.png",
@@ -30,10 +30,25 @@
 	"description"       : "Invulnerable to all damages for 2 seconds",
 },
 {
+	"filenameVector"    : "suicide.png",
+	"filenameBtn"       : "suicideBtn",
+	"filename"          : "suicideImg",
+	"name"              : "Torch",
+	"description"       : "BURNBURNBURNBURN MUAHAHAHAHA",
+},
+{
+	"filenameVector"    : "frenzy.png",
+	"filenameBtn"       : "frenzyBtn",
+	"filename"          : "frenzyImg",
+	"name"              : "Frenzy",
+	"description"       : "Causes enemy to run 99.29% faster",
+},
+
+{
 	"filenameVector"    : "swap.png",
 	"filenameBtn"       : "swapBtn",
 	"filename"          : "swapImg",
     "name"              : "Swap",
-    "description"       : "Exchange your position with your enemy's",
+    "description"       : "Exchanges your position with your enemy's",
 }]
 }

@@ -32,9 +32,9 @@ public class PowerUpFactory {
 
     public PowerUp createPowerUp(int id) {
         PowerUpPrototype powerUpPrototype = powerups.get(id);
+//        Gdx.app.log("PowerUpFactory.java", "fileName" + powerUpPrototype.filename);
         return new PowerUp(world, powerUpPrototype.filenameVector, powerUpPrototype.filenameBtn, powerUpPrototype.filename, powerUpPrototype.name, powerUpPrototype.description);
     }
-
 
     public void reset() {
         powerUpFactory = null;

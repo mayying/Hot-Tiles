@@ -1,11 +1,32 @@
-skinRect350x150.png
+buttonSkin.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 skinRect350x150
   rotate: false
   xy: 2, 2
-  size: 350, 150
-  orig: 350, 150
+  size: 354, 154
+  orig: 354, 154
+  offset: 0, 0
+  index: -1
+skinRect350x150P
+  rotate: false
+  xy: 358, 2
+  size: 354, 154
+  orig: 354, 154
+  offset: 0, 0
+  index: -1
+skinSquare70x70
+  rotate: false
+  xy: 714, 2
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+skinSquare70x70P
+  rotate: false
+  xy: 786, 2
+  size: 70, 70
+  orig: 70, 70
   offset: 0, 0
   index: -1

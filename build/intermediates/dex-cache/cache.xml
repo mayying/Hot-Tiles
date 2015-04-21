@@ -2,46 +2,11 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.5.3\903703e4eca4d27092cf61412b7a583aa26d14ad\gdx-backend-android-1.5.3.jar"
+        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\core\build\libs\core-1.0.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="903703e4eca4d27092cf61412b7a583aa26d14ad">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.5.3-fad1939bda943fc45621f7014aee1284e9c11be1.jar" />
-    </item>
-    <item
-        jar="D:\time2code\Hot-Tiles\core\build\libs\core-1.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="832f0dfd370d6777bdb70773ec1a5953f20fdfcb">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\core-1.0-7679bf07410e88a9de0adbe37813ade4043487b0.jar" />
-    </item>
-    <item
-        jar="D:\time2code\Hot-Tiles\libs\tween-engine-api-sources.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="b471c161e1bd73eb4a762a35d75b40eb5b4de3a1">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-sources-2e8e889bed9611c8b44a7400b51389caf458d11f.jar" />
-    </item>
-    <item
-        jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-box2d\1.5.3\52bc9ff881a6eb1731eb2f54b5016425cae05024\gdx-box2d-1.5.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="52bc9ff881a6eb1731eb2f54b5016425cae05024">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-box2d-1.5.3-fdb855e67e5ca7c5f6f74cf3c083a1fa1d0d6b1f.jar" />
-    </item>
-    <item
-        jar="D:\time2code\Hot-Tiles\libs\tween-engine-api.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="8be8beb70b7ccae059d523e56670f6e44fb1821f">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-48c55d1bc76052ac71826cf1e9c778a3896b88a5.jar" />
-    </item>
-    <item
-        jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.5.3\3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9\gdx-1.5.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9">
-        <dex dex="D:\time2code\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-b5aaad847bf3e7c7685fbf8ff3c53cb507fdc9ef.jar" />
+        sha1="72254ac2deaf262267f2675d001ca4a7ea76ba82">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\core-1.0-5a3adb6bbec24ec12b8671ce083d06e11f14e0a7.jar" />
     </item>
 
 </items>

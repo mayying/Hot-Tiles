@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.GameWorld;
+import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.entities.Player;
 
 /**
@@ -15,6 +16,7 @@ public class Mine extends Sprite implements Collidable, Usable {
     TiledMapTileLayer collisionLayer;
     Vector2 coords = new Vector2();
     long mineCreated = 0l;
+
     public Mine(Sprite sprite, Player player, TiledMapTileLayer collisionLayer) {
         super(sprite);
         // Must only draw to this player, specify by player index in main draw method?
@@ -29,7 +31,6 @@ public class Mine extends Sprite implements Collidable, Usable {
         position.y = GameWorld.TILE_HEIGHT / 4 + GameWorld.TILE_HEIGHT * (coords.y + 1);
 
         this.setPosition(position.x, position.y);
-//        mineCreated = System.currentTimeMillis();
     }
 
     @Override
@@ -37,27 +38,27 @@ public class Mine extends Sprite implements Collidable, Usable {
         update();
         super.draw(batch);
     }
+
     // Override this method if you want to do more than just checking collisions
     public void update() {
         // Trigger mine if player on top
         collisionCheck();
-
-
     }
+
     // Override this method to desired mine behavior
     @Override
     public void onCollisionDetected(Player hitPlayer) {
-        if (!hitPlayer.isInvulnerable) GameWorld.removeMine(this);
-        // TODO - KD logic for players, depending on the subclass type of mine
+        if (!hitPlayer.isInvulnerable) GameWorld.getInstance().removeMine(this);
     }
 
     @Override
     public void collisionCheck() {
         // Mine takes 2 seconds before activating
-        if(System.currentTimeMillis() - mineCreated > 2000l) {
+        if (System.currentTimeMillis() - mineCreated > 2000) {
             // Check for every player because only this device sees the mine, it has to tell the server if the mine hits.
-            for(int i=0; i<GameWorld.getNumPlayers(); i++) {
-                Player p = GameWorld.getPlayer(i);
+            GameWorld world = GameWorld.getInstance();
+            for (String key : world.getPlayers().keySet()) {
+                Player p = world.getPlayer(key);
                 if (p.getPlayerPosition().equals(coords))
                     onCollisionDetected(p);
             }
@@ -66,13 +67,12 @@ public class Mine extends Sprite implements Collidable, Usable {
     }
 
 
-
     @Override
-    public void use(Player[] players) {
+    public void use() {
         // To Delay the mine before it can explode
         mineCreated = System.currentTimeMillis();
-
+        Jukebox.play("freezeMine");
         // Add to render list
-        GameWorld.addMine(this);
+        GameWorld.getInstance().addMine(this);
     }
 }

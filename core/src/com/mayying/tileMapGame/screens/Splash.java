@@ -36,7 +36,7 @@ public class Splash implements Screen {
         Tween.to(splash, SpriteAccessor.ALPHA, 2).target(1).repeatYoyo(1, 2).setCallback(new TweenCallback() {
             @Override
             public void onEvent(int type, BaseTween<?> source) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(Play.getMultiPlayerMessaging()));
             }
         }).start(tweenManager);
     }
@@ -73,7 +73,7 @@ public class Splash implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override

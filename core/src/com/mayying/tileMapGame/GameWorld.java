@@ -2,80 +2,115 @@ package com.mayying.tileMapGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mayying.tileMapGame.entities.MyTouchpad;
+import com.mayying.tileMapGame.entities.Jukebox;
+import com.mayying.tileMapGame.entities.MyTouchPad;
 import com.mayying.tileMapGame.entities.Player;
+import com.mayying.tileMapGame.entities.PlayerMetaData;
 import com.mayying.tileMapGame.entities.ScoreBoard;
-import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.Mine;
 import com.mayying.tileMapGame.entities.powerups.SpawnPowerUps;
+import com.mayying.tileMapGame.entities.powerups.Thunderbolt;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUpFactory;
+import com.mayying.tileMapGame.multiplayer.MessageParser;
+import com.mayying.tileMapGame.screens.Play;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Vector;
 
-//import com.mayying.tileMapGame.entities.ScoreBoard;
-
 /**
- * Created by Luccan on 2/3/2015.
+ * Concurrency issues/ design choices:
+ * ????
  */
-public class GameWorld{
+
+// MAYBE CHANGE THIS TO A SINGLETON
+public class GameWorld {
     private static final String TAG = "GameWorld";
-    private MyTouchpad myTouchPad;
-    private SpawnPowerUps spawnPowerUps;
-    private PowerUp powerUp;
-    private Rectangle playerBound;
-    private TextureAtlas playerAtlas;
+    private static GameWorld instance;
+
+    private ShapeRenderer shapeRenderer;
+    private Sprite sprite;
+
+    private MyTouchPad myTouchPad;
+    private SpawnPowerUps spawnPowerUps = null;
+    private PowerUp powerUp = null;
     private Player devicePlayer;
-    private int countX = 0, countY = 0;
+    private TiledMapTileLayer playableLayer;
+    private Play play;
 
-    public static Rectangle screenBound;
-    public static float TILE_WIDTH, TILE_HEIGHT, delta;
-    private static boolean blackout = false;
+    private boolean blackout = false;
+    private final HashMap<String, Player> players = new HashMap<>();
+    private final HashMap<String, Long> randomSeeds = new HashMap<>();
 
-    public static final Vector<Sprite> bullets = new Vector<Sprite>();
-    public static final Vector<Mine> mines = new Vector<Mine>();
-    private static final ArrayList<Player> players = new ArrayList<>();
+    public static float TILE_WIDTH, TILE_HEIGHT;
+    public final Vector<Mine> mines = new Vector<>();
+    public final Vector<Sprite> thunder = new Vector<>();
 
-    public GameWorld(TiledMapTileLayer playableLayer) {
-        playerAtlas = new TextureAtlas("img/player3.txt");
+    private GameWorld(TiledMapTileLayer playableLayer, String myId, ArrayList<PlayerMetaData> metaData,
+                      Play play) {
+        this.play = play;
+        ScoreBoard.getInstance().reset();
         // Initialize all players
-        Player player = new Player(playerAtlas, playableLayer, this,0);
-        player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
-
-        register(player);
-        Gdx.app.log(TAG,"Players: "+players);
-
-        // Not sure what the index of device player will be
-        devicePlayer = players.get(0);
-        // TODO - create additional threads to manage the other player's interactions, positions etc
+        for (PlayerMetaData data : metaData) {
+            Player player = new Player(playableLayer, data);
+            player.spawn(); // sync multiplayer spawn positions using message parser and spawn(x,y)
+            register(player);
+        }
+        Gdx.app.log(TAG, "Players: " + players);
+        devicePlayer = players.get(myId);
 
         TILE_WIDTH = playableLayer.getTileWidth();
         TILE_HEIGHT = playableLayer.getTileHeight();
 
-        screenBound = new Rectangle(4 * TILE_WIDTH, TILE_HEIGHT, 10 * TILE_WIDTH, 8 * TILE_HEIGHT);
-        myTouchPad = new MyTouchpad();
-        spawnPowerUps = new SpawnPowerUps(playableLayer, this);
+        myTouchPad = new MyTouchPad();
+        //Moved to gameStart();
+        this.playableLayer = playableLayer;
+        this.play = play;
+        shapeRenderer = new ShapeRenderer();
+        sprite = new Sprite(new Texture(Gdx.files.internal("img/pointer.png")));
+    }
 
-        setPlayerBound();
+    public static GameWorld getInstance(TiledMapTileLayer playableLayer, String myId, ArrayList<PlayerMetaData> metaData,
+                                        Play play) {
+        if (instance == null) {
+            instance = new GameWorld(playableLayer, myId, metaData, play);
+        }
+        return instance;
+    }
+
+    // For methods that do not want to construct
+    public static GameWorld getInstance() {
+        return instance;
     }
 
     // Register a new player onto the scoreboard and add to the world render list
     private void register(Player p) {
         ScoreBoard scoreBoard = ScoreBoard.getInstance();
         scoreBoard.register(p);
-        players.add(p);
+        players.put(p.getID(), p);
     }
 
-    public ArrayList<Player> getPlayers() {
+    public void playerReady(String id, Long randomSeed) {
+        this.randomSeeds.put(id, randomSeed);
+        if (randomSeeds.size() == players.size()) {
+            this.gameStart();
+        }
+    }
+
+    public void gameStart() {
+        spawnPowerUps = new SpawnPowerUps(playableLayer, this, randomSeeds.get(Play.getMultiPlayerMessaging().getHostId()));
+        play.initializeBurningTiles(randomSeeds.get(Play.getMultiPlayerMessaging().getHostId()));
+    }
+
+    public HashMap<String, Player> getPlayers() {
         return players;
     }
 
@@ -84,32 +119,37 @@ public class GameWorld{
     }
 
     public void drawAndUpdate(Batch batch) {
-        spawnPowerUps.draw(batch);
-//        for (int i = 0; i < bullets.size(); i++) {
-//            bullets.get(i).draw(batch);
-//        }
-
-        for (int i = 0; i < players.size(); i++) {
-            players.get(i).draw(batch);
+        if (spawnPowerUps != null) {
+            spawnPowerUps.draw(batch);
+            powerUp = spawnPowerUps.getPowerUp();
         }
+
+        for (String key : players.keySet()) {
+            players.get(key).draw(batch);
+        }
+
+        sprite.setPosition(devicePlayer.getX() + devicePlayer.getWidth() / 4, devicePlayer.getY() + devicePlayer.getHeight());
+        sprite.draw(batch);
 
         for (int i = 0; i < mines.size(); i++) {
             mines.get(i).draw(batch);
         }
-        powerUp = spawnPowerUps.getPowerUp();
-
+        for (int i = 0; i < thunder.size(); i++) {
+            thunder.get(i).draw(batch);
+        }
 
         if (blackout) {
-            // This causes Player object to disappear for some reason
-            ShapeRenderer shapeRenderer = new ShapeRenderer();
-            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix()); ;
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(new Color(Color.BLACK));
-            shapeRenderer.rect(TILE_WIDTH * 4, TILE_HEIGHT + .5f, TILE_WIDTH * 10, TILE_HEIGHT * 8 );
-
+            shapeRenderer.rect(0, 0, Play.camera.viewportWidth, Play.camera.viewportHeight);
             shapeRenderer.end();
         }
     }
+
+    private long lastMovement = -1;
+    public final static long MOVEMENT_FREQUENCY = 400;
+    public final static long MOVEMENT_FREQUENCY_HASTED = 180;
 
     // Should separate into collision/bounds logic and update movement so that when we factor in concurrent
     // updates from server we can just update movement via setX / setY
@@ -119,61 +159,66 @@ public class GameWorld{
 
         velocity.x = getMyTouchPad().getTouchPad().getKnobPercentX();
         velocity.y = getMyTouchPad().getTouchPad().getKnobPercentY();
+        Player player = getDevicePlayer();
+        int newX = (int) player.getPlayerPosition().x;
+        int newY = (int) player.getPlayerPosition().y;
+        boolean pressed = true;
 
-        float screenLeft = screenBound.getX();
-        float screenBottom = screenBound.getY();
-        float screenTop = screenBottom + screenBound.getHeight();// + (world.getDevicePlayer().getHeight() / 2);
-        float screenRight = screenLeft + screenBound.getWidth();
-
-        float newX = getDevicePlayer().getX();
-        float newY = getDevicePlayer().getY();
         if (velocity.x > 0.5) {
-            // add back in leftpressed rightpressed etc for direction, if we are using the bullets and stuff
-            newX += TILE_WIDTH * getDevicePlayer().getSpeed();
-            getDevicePlayer().rightPressed();
+            newX += player.getSpeed();
+            player.rightPressed();
         } else if (velocity.x < -0.5) {
-            newX -= TILE_WIDTH * getDevicePlayer().getSpeed();
-            getDevicePlayer().leftPressed();
+            newX -= player.getSpeed();
+            player.leftPressed();
         } else if (velocity.y > 0.5) {
-            newY += TILE_HEIGHT * getDevicePlayer().getSpeed();
-            getDevicePlayer().upPressed();
+            newY += player.getSpeed();
+            player.upPressed();
         } else if (velocity.y < -0.5) {
-            newY -= TILE_HEIGHT * getDevicePlayer().getSpeed();
-            getDevicePlayer().downPressed();
+            newY -= player.getSpeed();
+            player.downPressed();
+        } else {
+            pressed = false;
         }
-        // Animate player movement
-        // if (velocity.x > 0.5 || velocity.x < -0.5 || velocity.y > 0.5 || velocity.y < -0.5)
-        getDevicePlayer().animate(delta);
 
-        countX++;
-        countY++;
-
-        if (!getDevicePlayer().isDead && newX >= screenLeft && newX + playerBound.getWidth() <= screenRight) {
-            if (myTouchPad.getTouchPad().getKnobPercentX() != 0 && countX > 17) {
-                getDevicePlayer().setX(newX);
-                countX = 0;
+        long freq = MOVEMENT_FREQUENCY;
+        if (getDevicePlayer().isHasted) {
+            freq = MOVEMENT_FREQUENCY_HASTED;
+            if (!pressed) {
+                pressed = true;
+                int facing = player.getFacing();
+                if (facing == 6) {
+                    newX += player.getSpeed();
+                } else if (facing == 4) {
+                    newX -= player.getSpeed();
+                } else if (facing == 2) {
+                    newY += player.getSpeed();
+                } else if (facing == 8) {
+                    newY -= player.getSpeed();
+                }
             }
         }
-        if (!getDevicePlayer().isDead && newY >= screenBottom && newY <= screenTop) {
-            if (myTouchPad.getTouchPad().getKnobPercentY() != 0 && countY > 17) {
-                getDevicePlayer().setY(newY);
-                countY = 0;
+        if (System.currentTimeMillis() - lastMovement >= freq) {
+            if (pressed) {
+                lastMovement = System.currentTimeMillis();
+                if (!player.isDead) {
+                    player.setPlayerPosition(newX, newY);
+                }
             }
         }
 
+        player.animate(delta);
     }
 
-    public MyTouchpad getMyTouchPad() {
+    public MyTouchPad getMyTouchPad() {
         return myTouchPad;
     }
 
-
     public boolean pickUpPowerUp() {
-        return spawnPowerUps.isPowerUpPickedUp();
+        return spawnPowerUps != null && spawnPowerUps.isPowerUpPickedUp();
     }
 
-    private void setPlayerBound() {
-        playerBound = getDevicePlayer().getBoundingRectangle();
+    public SpawnPowerUps getSpawnPowerUps() {
+        return spawnPowerUps;
     }
 
     /**
@@ -183,39 +228,24 @@ public class GameWorld{
         return devicePlayer;
     }
 
+    public String generateDevicePlayerCoordinatesBroadcastMessage() {
+        Vector2 xy = devicePlayer.getPlayerPosition();
+        return MessageParser.COMMAND_POSITION + "," + String.valueOf((int) xy.x) + "," + String.valueOf((int) xy.y) + "," + String.valueOf(devicePlayer.getFacing());
+
+    }
+
     /**
-     * @param idx player's index
+     * @param ID player's ID / key
      * @return player of specified index
      */
-    public static Player getPlayer(int idx) {
-        return players.get(idx);
+    public Player getPlayer(String ID) {
+        return players.get(ID);
     }
 
-    public static int getNumPlayers() {
-        return players.size();
-    }
-
-    // Custom Methods
-    // Currently unused to prevent excessive coupling
-    public static synchronized void addInstanceToRenderList(Sprite s) {
-        bullets.add(s);
-    }
-
-    public static synchronized void addBullet(Bullet bullet) {
-//        Bullet bullet = new Bullet(new Sprite(new Texture("img/shuriken.png")), 6, world.getDevicePlayer(), 2, (TiledMapTileLayer) map.getLayers().get(0));
-        bullets.add(bullet);
-    }
-
-    public static synchronized void removeBullet(Bullet bullet) {
-        bullet.setAlpha(0);
-        bullets.remove(bullet);
-        // causes the black box to appear, but probably necessary? not sure how garbage collection works
-        bullet.getTexture().dispose();
-    }
-
-    public static void setBlackout() {
+    public void setBlackout() {
         if (!blackout) {
             blackout = true;
+            Jukebox.play("blackout");
             new DelayedThread(3000l) {
                 @Override
                 public void run() {
@@ -226,58 +256,57 @@ public class GameWorld{
         }
     }
 
-    public static synchronized void addMine(Mine mine) {
+    public synchronized void addMine(Mine mine) {
         mines.add(mine);
     }
 
-    public static synchronized void removeMine(Mine mine) {
+    public synchronized void removeMine(Mine mine) {
         mine.getTexture().dispose();
         mine.setAlpha(0);
         mines.remove(mine);
     }
 
-    // players should not be modified as it leads to a lot of problems
-//    public void removePlayer(Player player) {
-//        synchronized (players) {
-//            players.remove(player.getIndex());
-//        }
-//    }
-//
-//    public void addPlayer(Player player) {
-//        synchronized (players) {
-//            players.add(player.getIndex(), player);
-//        }
-//    }
+    public synchronized void addThunder(Thunderbolt t) {
+        thunder.add(t);
+    }
 
-//    public void swipe(){
-//        InputMultiplexer inputMultiplexer=new InputMultiplexer();
-//        Stage stage=new Stage();
-//        stage.addActor(getMyTouchpad().getTouchpad());
-//
-//        inputMultiplexer.addProcessor(stage);
-//        inputMultiplexer.addProcessor(directionGestureDetector);
-//        Gdx.input.setInputProcessor(inputMultiplexer);
-//    }
+    public synchronized void removeThunder(Thunderbolt t) {
+        t.setAlpha(0);
+        t.getTexture().dispose();
+        thunder.remove(t);
+    }
 
-    public static void setPlayerPosition(int playerIndex, Vector2 pos) {
-        Player p = players.get(playerIndex);
+    public void setPlayerPosition(String playerId, Vector2 pos, int facing) {
+        Player p = players.get(playerId);
         if (p != null) {
-            p.setPosition(pos.x, pos.y);
+            p.setFacing(facing);
+            p.setPlayerPosition((int) pos.x, (int) pos.y);
+        } else {
+            Gdx.app.log(TAG, "Error while setting player's position. Player is null");
         }
     }
 
-
     public void dispose() {
-        Gdx.app.log(TAG,"disposing");
-        for(int i=0; i<players.size(); i++){
-            players.get(i).getTexture().dispose();
-            players.remove(i);
+        Gdx.app.log(TAG, "disposing");
+        for (String key : players.keySet()) {
+            players.get(key).getTexture().dispose();
         }
-        for(int i=0; i<mines.size(); i++){
+        players.clear();
+
+        for (int i = 0; i < mines.size(); i++) {
             mines.get(i).getTexture().dispose();
             mines.remove(i);
         }
-        ScoreBoard.getInstance().reset();
         PowerUpFactory.getInstance(this).reset();
+        instance = null;
+    }
+
+    public void lightningAt(final Float x, final Float y, final String senderId) {
+        new Thunderbolt(x, y, playableLayer);
+        Jukebox.play("lightning");
+        if (devicePlayer.getPlayerPosition().equals(new Vector2(x, y))) {
+            devicePlayer.setLastHitBy(senderId);
+            devicePlayer.die();
+        }
     }
 }

@@ -1,0 +1,158 @@
+player1.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+player_1_backward
+  rotate: false
+  xy: 72, 218
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 1
+player_1_backward
+  rotate: false
+  xy: 142, 218
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 2
+player_1_burnt
+  rotate: false
+  xy: 2, 218
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 1
+player_1_burnt
+  rotate: false
+  xy: 212, 218
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 2
+player_1_forward
+  rotate: false
+  xy: 212, 146
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 1
+player_1_forward
+  rotate: false
+  xy: 72, 290
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 2
+player_1_freeze
+  rotate: false
+  xy: 2, 382
+  size: 80, 90
+  orig: 80, 90
+  offset: 0, 0
+  index: 1
+player_1_freeze
+  rotate: false
+  xy: 142, 290
+  size: 80, 90
+  orig: 80, 90
+  offset: 0, 0
+  index: 2
+player_1_left
+  rotate: false
+  xy: 2, 290
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 1
+player_1_left
+  rotate: false
+  xy: 142, 146
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 2
+player_1_right
+  rotate: false
+  xy: 2, 2
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 1
+player_1_right
+  rotate: false
+  xy: 72, 146
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 2
+player_1_suicide_backward
+  rotate: false
+  xy: 142, 2
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 1
+player_1_suicide_backward
+  rotate: false
+  xy: 212, 2
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 2
+player_1_suicide_forward
+  rotate: false
+  xy: 72, 2
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 1
+player_1_suicide_forward
+  rotate: false
+  xy: 2, 74
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 2
+player_1_suicide_left
+  rotate: false
+  xy: 72, 74
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 1
+player_1_suicide_left
+  rotate: false
+  xy: 212, 74
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 2
+player_1_suicide_right
+  rotate: false
+  xy: 2, 146
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 1
+player_1_suicide_right
+  rotate: false
+  xy: 142, 74
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: 2
+player_1_swap
+  rotate: false
+  xy: 84, 382
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 1
+player_1_swap
+  rotate: false
+  xy: 186, 382
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 2

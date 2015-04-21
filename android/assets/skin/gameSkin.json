@@ -1,32 +1,35 @@
 {
-    "com.badlogic.gdx.graphics.Color": {
-        "white": { "r": 1, "g": 1, "b": 1, "a": 1}
-    },
-
     "com.badlogic.gdx.graphics.g2d.BitmapFont": {
-        "black": { "file": "font/black.fnt"}
+        "black": { "file": "font/black28.fnt"}
+        "white": { "file": "font/white.fnt"}
+        "black20": { "file": "font/black20.fnt"}
+        "black36": { "file": "font/black36.fnt"}
     },
 
     "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
-        "timer":        { "font": "black", "fontColor": "white", "background": "skinRect210x140"}
-        "scoreboard":   { "font": "black", "fontColor": "white"}
-        "description":  { "font": "black"}
+        "default":      { "font": "black"}
+        "timer":        { "font": "white"}
+        "description":  { "font": "black20"}
+        "lightningFont":{ "font": "black36"}
+        "lightning":    { "font": "black36", "background": "lightning"}
+        "player_1_head":{ "font": "black", "background": "player_1_head"}
+        "player_2_head":{ "font": "black", "background": "player_2_head"}
+        "player_3_head":{ "font": "black", "background": "player_3_head"}
+        "player_4_head":{ "font": "black", "background": "player_4_head"}
+        "player_5_head":{ "font": "black", "background": "player_5_head"}
+        "player_6_head":{ "font": "black", "background": "player_6_head"}
+        "player_7_head":{ "font": "black", "background": "player_7_head"}
+        "player_8_head":{ "font": "black", "background": "player_8_head"}
     },
 
     "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
-        "default": {"up": "skinRound140x140", "down": "skinRound140x140"}
-        "sound": {"imageUp": "skinSquareSoundOn70x70", "imageChecked": "skinSquareSoundOff70x70"}
-        "question": {"up": "skinSquareQuestion70x70", "down": "skinSquareQuestion70x70"}
-        "close": {"up": "skinSquareClose70x70", "down": "skinSquareClose70x70"}
+        "default": {"up": "skinRound140x140", "down": "skinRound140x140P"}
+        "sound": {"imageUp": "skinSquareSfx", "imageChecked": "skinSquareSfxMute"}
+        "music": {"imageUp": "skinSquareSoundOn70x70", "imageChecked": "skinSquareSoundOff70x70"}
+        "close": {"up": "skinSquareClose70x70", "down": "skinSquareClose70x70P"}
     },
 
     com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
-       default: { background: "skinRound210x210", knob: "touchKnob" }
+       default: { background: "touchPad", knob: "touchKnob" }
     }
-
-
-
-
-
-
 }
