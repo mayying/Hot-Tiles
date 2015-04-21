@@ -10,7 +10,6 @@ import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.screens.Play;
 
 import java.util.Arrays;
-//import com.mayying.tileMapGame.entities.ScoreBoard;
 
 /**
  * Created by User on 28/3/15.
@@ -133,7 +132,7 @@ public class MessageParser {
                             int mode = Integer.valueOf(message[3]);
                             Gdx.app.log(TAG, "Fire message: " + inp);
                             if (mode == 0) {
-                                world.getPlayer(senderId).setFireAnimation(); // TODO ADD THE ANIMATION TO THAT METHOD, PLAY SADISTIC AHHH SOUND
+                                world.getPlayer(senderId).setFireAnimation();
                             } else if (mode == 1) {
                                 if (message[4].equals(player.getID())) {
                                     player.burn(senderId);

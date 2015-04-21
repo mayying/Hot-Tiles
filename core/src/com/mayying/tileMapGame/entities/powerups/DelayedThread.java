@@ -5,7 +5,6 @@ package com.mayying.tileMapGame.entities.powerups;
  */
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.mayying.tileMapGame.entities.Player;
 
 /**
@@ -16,18 +15,14 @@ public class DelayedThread extends Thread {
     private long delay;
     private Player player;
     private String message1, message2, message3;
-    private TiledMapTileLayer playableLayer;
 
-    //    long start;
     public DelayedThread(long millis) {
         this.delay = millis;
-//        start = System.currentTimeMillis();
     }
 
     public DelayedThread(long millis, Player player) {
         this.delay = millis;
         this.player = player;
-//        start = System.currentTimeMillis();
     }
 
     public DelayedThread(long millis, Player player, String message1, String message2) {
@@ -35,14 +30,6 @@ public class DelayedThread extends Thread {
         this.player = player;
         this.message1 = message1;
         this.message2 = message2;
-//        start = System.currentTimeMillis();
-    }
-
-    public DelayedThread(long millis, Player player, TiledMapTileLayer playableLayer, String message1, String message2, String message3) {
-        this(millis, player, message1, message2);
-        this.playableLayer = playableLayer;
-        this.message3 = message3;
-//        start = System.currentTimeMillis();
     }
 
     public Player getPlayer() {
@@ -54,9 +41,6 @@ public class DelayedThread extends Thread {
         return msg;
     }
 
-    public TiledMapTileLayer getPlayableLayer(){
-        return playableLayer;
-    }
     @Override
     public void run() {
         synchronized (this) {

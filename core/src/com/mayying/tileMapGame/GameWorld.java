@@ -7,14 +7,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.entities.Jukebox;
-import com.mayying.tileMapGame.entities.MyTouchpad;
+import com.mayying.tileMapGame.entities.MyTouchPad;
 import com.mayying.tileMapGame.entities.Player;
 import com.mayying.tileMapGame.entities.PlayerMetaData;
 import com.mayying.tileMapGame.entities.ScoreBoard;
-import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.Mine;
 import com.mayying.tileMapGame.entities.powerups.SpawnPowerUps;
@@ -28,8 +26,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
-import aurelienribon.tweenengine.TweenManager;
-
 /**
  * Concurrency issues/ design choices:
  * ????
@@ -38,31 +34,25 @@ import aurelienribon.tweenengine.TweenManager;
 // MAYBE CHANGE THIS TO A SINGLETON
 public class GameWorld {
     private static final String TAG = "GameWorld";
-    private MyTouchpad myTouchPad;
+    private static GameWorld instance;
+
+    private ShapeRenderer shapeRenderer;
+    private Sprite sprite;
+
+    private MyTouchPad myTouchPad;
     private SpawnPowerUps spawnPowerUps = null;
     private PowerUp powerUp = null;
     private Player devicePlayer;
-    private boolean blackout = false;
-    private static GameWorld instance;
-    private final HashMap<String, Player> players = new HashMap<String, Player>();
-    private final HashMap<String, Long> randomSeeds = new HashMap<>();
-    private ShapeRenderer shapeRenderer;
-    private Sprite sprite;
-    private TweenManager tweenManager;
-
     private TiledMapTileLayer playableLayer;
     private Play play;
 
-    private int newX, newY;
+    private boolean blackout = false;
+    private final HashMap<String, Player> players = new HashMap<>();
+    private final HashMap<String, Long> randomSeeds = new HashMap<>();
 
-    public static final long GAME_WAIT_OFFSET = 5000;
-
-    public Rectangle screenBound;
     public static float TILE_WIDTH, TILE_HEIGHT;
-    public static final Vector<Sprite> bullets = new Vector<Sprite>();
-    public final Vector<Mine> mines = new Vector<Mine>();
+    public final Vector<Mine> mines = new Vector<>();
     public final Vector<Sprite> thunder = new Vector<>();
-
 
     private GameWorld(TiledMapTileLayer playableLayer, String myId, ArrayList<PlayerMetaData> metaData,
                       Play play) {
@@ -76,13 +66,11 @@ public class GameWorld {
         }
         Gdx.app.log(TAG, "Players: " + players);
         devicePlayer = players.get(myId);
-        // TODO - create additional threads to manage the other player's interactions, positions etc (?)
 
         TILE_WIDTH = playableLayer.getTileWidth();
         TILE_HEIGHT = playableLayer.getTileHeight();
 
-        screenBound = new Rectangle(4 * TILE_WIDTH, TILE_HEIGHT, 10 * TILE_WIDTH, 8 * TILE_HEIGHT);
-        myTouchPad = new MyTouchpad();
+        myTouchPad = new MyTouchPad();
         //Moved to gameStart();
         this.playableLayer = playableLayer;
         this.play = play;
@@ -118,8 +106,8 @@ public class GameWorld {
     }
 
     public void gameStart() {
-        spawnPowerUps = new SpawnPowerUps(playableLayer, this, randomSeeds.get(Play.getMultiplayerMessaging().getHostId()));
-        play.initializeBurningTiles(randomSeeds.get(Play.getMultiplayerMessaging().getHostId()));
+        spawnPowerUps = new SpawnPowerUps(playableLayer, this, randomSeeds.get(Play.getMultiPlayerMessaging().getHostId()));
+        play.initializeBurningTiles(randomSeeds.get(Play.getMultiPlayerMessaging().getHostId()));
     }
 
     public HashMap<String, Player> getPlayers() {
@@ -172,8 +160,8 @@ public class GameWorld {
         velocity.x = getMyTouchPad().getTouchPad().getKnobPercentX();
         velocity.y = getMyTouchPad().getTouchPad().getKnobPercentY();
         Player player = getDevicePlayer();
-        newX = (int) player.getPlayerPosition().x;
-        newY = (int) player.getPlayerPosition().y;
+        int newX = (int) player.getPlayerPosition().x;
+        int newY = (int) player.getPlayerPosition().y;
         boolean pressed = true;
 
         if (velocity.x > 0.5) {
@@ -218,14 +206,12 @@ public class GameWorld {
             }
         }
 
-        // Animate player movement
         player.animate(delta);
     }
 
-    public MyTouchpad getMyTouchPad() {
+    public MyTouchPad getMyTouchPad() {
         return myTouchPad;
     }
-
 
     public boolean pickUpPowerUp() {
         return spawnPowerUps != null && spawnPowerUps.isPowerUpPickedUp();
@@ -254,24 +240,6 @@ public class GameWorld {
      */
     public Player getPlayer(String ID) {
         return players.get(ID);
-    }
-
-    // Custom Methods
-    // Currently unused to prevent excessive coupling
-    public static synchronized void addInstanceToRenderList(Sprite s) {
-        bullets.add(s);
-    }
-
-    public static synchronized void addBullet(Bullet bullet) {
-//        Bullet bullet = new Bullet(new Sprite(new Texture("img/shuriken.png")), 6, world.getDevicePlayer(), 2, (TiledMapTileLayer) map.getLayers().get(0));
-        bullets.add(bullet);
-    }
-
-    public static synchronized void removeBullet(Bullet bullet) {
-        bullet.setAlpha(0);
-        bullets.remove(bullet);
-        // causes the black box to appear, but probably necessary? not sure how garbage collection works
-        bullet.getTexture().dispose();
     }
 
     public void setBlackout() {

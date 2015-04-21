@@ -17,15 +17,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.entities.Jukebox;
-import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
+import com.mayying.tileMapGame.multiplayer.MultiPlayerMessaging;
 import com.mayying.tileMapGame.multiplayer.SinglePlayerDummyMessaging;
 
-import java.util.List;
 
 /**
  * Created by May on 18/4/2015.
  */
-public class Tutorial implements Screen, MultiplayerMessaging{
+public class Tutorial implements Screen{
     private SpriteBatch spriteBatch;
     private Sprite[] sprite;
     private OrthographicCamera camera;
@@ -33,14 +32,13 @@ public class Tutorial implements Screen, MultiplayerMessaging{
     private TextureAtlas buttonAtlas;
     private Skin skin;
     private Table table;
-    private Texture[] texture;
     private ImageButton closeButton, leftButton, rightButton;
 
-    private MultiplayerMessaging multiplayerMessaging;
+    private MultiPlayerMessaging multiplayerMessaging;
 
     private int currentPage = 1;
 
-    public Tutorial(MultiplayerMessaging multiplayerMessaging) {
+    public Tutorial(MultiPlayerMessaging multiplayerMessaging) {
         this.multiplayerMessaging = multiplayerMessaging;
     }
 
@@ -49,8 +47,6 @@ public class Tutorial implements Screen, MultiplayerMessaging{
         camera = new OrthographicCamera();
 
         spriteBatch = new SpriteBatch();
-
-        texture = new Texture[3];
 
         sprite = new Sprite[3];
 
@@ -75,7 +71,7 @@ public class Tutorial implements Screen, MultiplayerMessaging{
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                leaveGame();
+                new SinglePlayerDummyMessaging().leaveGame();
             }
         });
 
@@ -184,105 +180,5 @@ public class Tutorial implements Screen, MultiplayerMessaging{
         spriteBatch.dispose();
         buttonAtlas.dispose();
         skin.dispose();
-    }
-
-    @Override
-    public void broadcastMessage(String msg) {
-
-    }
-
-    @Override
-    public List<String> getParticipants() {
-        return null;
-    }
-
-    @Override
-    public List<String> getJoinedParticipants() {
-        return null;
-    }
-
-    @Override
-    public List<String> getJoinedParticipantsName() {
-        return null;
-    }
-
-    @Override
-    public String getMyId() {
-        return null;
-    }
-
-    @Override
-    public String getMyName() {
-        return null;
-    }
-
-    @Override
-    public List<String> getMessageBuffer(char screenTag) {
-        return null;
-    }
-
-    @Override
-    public void clearMessageBufferExcept(char screenTag) {
-
-    }
-
-    @Override
-    public String getHostId() {
-        return null;
-    }
-
-    @Override
-    public void sendInvitations() {
-
-    }
-
-    @Override
-    public void seeInvitations() {
-
-    }
-
-    @Override
-    public void startQuickGame() {
-
-    }
-
-    @Override
-    public void signIn() {
-
-    }
-
-    @Override
-    public void exit() {
-
-    }
-
-    @Override
-    public void leaveGame() {
-        if (this.multiplayerMessaging!=null) {
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(this.multiplayerMessaging));
-        } else {
-            //TODO used in desktop mode
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(this));
-        }
-    }
-
-    @Override
-    public boolean isLoggedIn() {
-        return false;
-    }
-
-    @Override
-    public void rematch() {
-
-    }
-
-    @Override
-    public void setNoOfPlayers(int noOfPlayers) {
-
-    }
-
-    @Override
-    public int getNoOfPlayers() {
-        return 0;
     }
 }

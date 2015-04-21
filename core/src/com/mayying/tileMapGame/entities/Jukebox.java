@@ -61,10 +61,6 @@ public class Jukebox {
         }
     }
 
-//    public static void loop(String name) {
-//        sounds.get(name).loop();
-//    }
-
     public static void stop(String name) {
         sounds.get(name).stop();
     }

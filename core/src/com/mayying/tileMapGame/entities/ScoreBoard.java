@@ -14,12 +14,12 @@ import java.util.HashMap;
 public class ScoreBoard {
     private static final String TAG = "HT_ScoreBoard";
     private static ScoreBoard instance;
-    private HashMap<String,Score> playerMap;
+    private HashMap<String, Score> playerMap;
     private ArrayList<Score> scores;
 
     private ScoreBoard() {
         instance = this;
-        scores = new ArrayList<Score>();
+        scores = new ArrayList<>();
         playerMap = new HashMap<>();
     }
 
@@ -37,7 +37,6 @@ public class ScoreBoard {
     }
 
 
-
     public void register(Player player) {
         Score s = new Score(player);
         playerMap.put(player.getID(), s);
@@ -45,12 +44,9 @@ public class ScoreBoard {
     }
 
     public void incrementKillsAndOrDeath(String killerID, String victimID) {
-        // TODO - might have to fix this, send something more unique than a "null" string
         Gdx.app.log("score", getScores().toString());
-        if (!killerID.equals("null")) {
+        if (!killerID.equals("null"))
             playerMap.get(killerID).incrementKills();
-        }
-
         playerMap.get(victimID).incrementDeath();
         updateScores();
     }
@@ -92,22 +88,21 @@ public class ScoreBoard {
             return player;
         }
 
-        public int getKills(){
+        public int getKills() {
             return kills;
         }
 
-        public int getDeath(){
+        public int getDeath() {
             return death;
         }
 
-        @Override
         public int compareTo(Object another) {
             return this.getScore() < ((Score) another).getScore() ? -1 : 1;
         }
 
         @Override
         public String toString() {
-            return String.format("\nPlayer %s - %s / %s | Score: %s" , player.getModel(), kills, death, this.getScore());
+            return String.format("\nPlayer %s - %s / %s | Score: %s", player.getModel(), kills, death, this.getScore());
         }
     }
 

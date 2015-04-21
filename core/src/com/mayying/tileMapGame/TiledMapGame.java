@@ -3,7 +3,7 @@ package com.mayying.tileMapGame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.mayying.tileMapGame.entities.Jukebox;
-import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
+import com.mayying.tileMapGame.multiplayer.MultiPlayerMessaging;
 import com.mayying.tileMapGame.screens.CharacterSelector;
 import com.mayying.tileMapGame.screens.EndGame;
 import com.mayying.tileMapGame.screens.MainMenu;
@@ -12,18 +12,10 @@ import com.mayying.tileMapGame.screens.Play;
 public class TiledMapGame extends Game {
 
     String mode;
-    MultiplayerMessaging multiplayerMessaging;
+    MultiPlayerMessaging multiplayerMessaging;
     boolean inGame = false;
 
-    public TiledMapGame() {
-        //TODO: Remove this
-//        super();
-        //desktop launch
-//        mode = "desktop";
-//        this.multiplayerMessaging = null;
-    }
-
-    public TiledMapGame(MultiplayerMessaging multiplayerMessaging) {
+    public TiledMapGame(MultiPlayerMessaging multiplayerMessaging) {
         super();
         mode = "android";
         this.multiplayerMessaging = multiplayerMessaging;

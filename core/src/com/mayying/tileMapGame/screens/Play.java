@@ -16,7 +16,7 @@ import com.mayying.tileMapGame.entities.BurningTiles;
 import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.entities.PlayerMetaData;
 import com.mayying.tileMapGame.multiplayer.MessageParser;
-import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
+import com.mayying.tileMapGame.multiplayer.MultiPlayerMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +37,7 @@ public class Play implements Screen {
     private SideBar sideBar;
     private BurningTiles[] burningTiles;
     private int count = 0;
-    private float spawnNewTile = 0f;
-    private static MultiplayerMessaging multiplayerMessaging;
+    private static MultiPlayerMessaging multiPlayerMessaging;
     private boolean allPlayersReady = false;
     private Long randomSeed;
     private long initializedTimeStamp;
@@ -46,17 +45,18 @@ public class Play implements Screen {
     private TiledMapTileLayer collisionLayer;
     private long lastTouched = 0l;
     long lightningDelta;
-    private boolean cooldown;
+
+    public static final long GAME_SETUP_TIME = 5000;
 
     public Play() {
         super();
-        multiplayerMessaging = null;
+        multiPlayerMessaging = null;
         randomSeed = new Random().nextLong();
     }
 
-    public Play(MultiplayerMessaging mmsg, ArrayList<PlayerMetaData> metaData) {
+    public Play(MultiPlayerMessaging mmsg, ArrayList<PlayerMetaData> metaData) {
         super();
-        multiplayerMessaging = mmsg;
+        multiPlayerMessaging = mmsg;
         randomSeed = new Random().nextLong();
         this.metaData = metaData;
 
@@ -74,13 +74,12 @@ public class Play implements Screen {
         viewport = new StretchViewport(1260, 700, camera);
         viewport.apply();
 
-        List<String> participants = new ArrayList<String>();
+        String myPlayerId = "";
 
-        //TODO shouldve removed this line....
-        String myPlayerId = "me";
-        if (multiplayerMessaging != null) {
-            myPlayerId = multiplayerMessaging.getMyId();
-        }
+        if (multiPlayerMessaging != null)
+            myPlayerId = multiPlayerMessaging.getMyId();
+
+
         collisionLayer = (TiledMapTileLayer) map.getLayers().get("Background");
         world = GameWorld.getInstance(collisionLayer, myPlayerId, metaData, this);
 
@@ -91,7 +90,7 @@ public class Play implements Screen {
 
         Jukebox.stopMusic("mainMenu");
         Jukebox.playMusic("background");
-        multiplayerMessaging.clearMessageBufferExcept('p');
+        multiPlayerMessaging.clearMessageBufferExcept('p');
     }
 
     public void initializeBurningTiles(Long randomSeed) {
@@ -102,6 +101,7 @@ public class Play implements Screen {
             burningTiles[i] = new BurningTiles(map, world, (TiledMapTileLayer) map.getLayers().get("Foreground"), randomSeed + i + randomBase);
             burningTiles[i].create();
         }
+
         //start timer
         sideBar.unfreezeGameTimer();
         allPlayersReady = true;
@@ -119,7 +119,7 @@ public class Play implements Screen {
     public void render(float delta) {
         if (leavingGame) {
             leavingGame = false;
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(Play.getMultiplayerMessaging()));
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(Play.multiPlayerMessaging));
         }
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -137,10 +137,9 @@ public class Play implements Screen {
         if (world.getDevicePlayer().isHasted)
             renderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("Frenzy"));
 
-
         if (this.allPlayersReady) {
             if (SideBar.timeLeft > 0)
-                count = Math.min(5 + (90 - SideBar.timeLeft) / 10 * TILES_PER_INTERVAL, MAX_TILES); //testing
+                count = Math.min(5 + (90 - SideBar.timeLeft) / 10 * TILES_PER_INTERVAL, MAX_TILES);
 
             for (int i = 0; i < count; i++)
                 burningTiles[i].render(delta);
@@ -171,9 +170,8 @@ public class Play implements Screen {
         renderer.getBatch().end();
         sideBar.render(delta);
 
-        // TODO - Might be better to create an additional thread that handles all the incoming messages
-        if (multiplayerMessaging != null) {
-            List<String> msgs = multiplayerMessaging.getMessageBuffer('p');
+        if (multiPlayerMessaging != null) {
+            List<String> msgs = multiPlayerMessaging.getMessageBuffer('p');
             for (String msg : msgs) {
                 MessageParser.parse(msg);
             }
@@ -183,14 +181,12 @@ public class Play implements Screen {
                 broadcastMessage(world.generateDevicePlayerCoordinatesBroadcastMessage());
 
                 if (!allPlayersReady && iAmReady()) {
-                    world.playerReady(multiplayerMessaging.getMyId(), randomSeed);
+                    world.playerReady(multiPlayerMessaging.getMyId(), randomSeed);
                     broadcastMessage("ready," + randomSeed.toString());
                 }
             }
         }
     }
-
-    public static final long GAME_SETUP_TIME = 5000;
 
     private boolean iAmReady() {
         return System.currentTimeMillis() - initializedTimeStamp > GAME_SETUP_TIME;
@@ -224,15 +220,13 @@ public class Play implements Screen {
         world.dispose();
     }
 
-
-    //TODO This is bullshit
-    public static MultiplayerMessaging getMultiplayerMessaging() {
-        return multiplayerMessaging;
+    public static MultiPlayerMessaging getMultiPlayerMessaging() {
+        return multiPlayerMessaging;
     }
 
     public static void broadcastMessage(String msg) {
 //        Gdx.app.log(TAG, "Broadcasting message: " + msg);
-        multiplayerMessaging.broadcastMessage(msg);
+        multiPlayerMessaging.broadcastMessage(msg);
     }
 
     public static void broadcastMessage(String... args) {
@@ -241,6 +235,6 @@ public class Play implements Screen {
             msg += arg + ",";
         }
 //        Gdx.app.log(TAG, "Broadcasting message: " + msg);
-        multiplayerMessaging.broadcastMessage(msg);
+        multiPlayerMessaging.broadcastMessage(msg);
     }
 }

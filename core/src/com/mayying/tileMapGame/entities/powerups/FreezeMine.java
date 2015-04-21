@@ -17,8 +17,8 @@ import com.mayying.tileMapGame.screens.Play;
  */
 public class FreezeMine extends Mine {
 
-    public FreezeMine(Player player, TiledMapTileLayer collisionLayer){
-        super(new Sprite(new Texture(Gdx.files.internal("powerups/freezeMineS.png"))),player,collisionLayer);
+    public FreezeMine(Player player, TiledMapTileLayer collisionLayer) {
+        super(new Sprite(new Texture(Gdx.files.internal("powerups/freezeMineS.png"))), player, collisionLayer);
     }
 
     @Override
@@ -28,6 +28,6 @@ public class FreezeMine extends Mine {
         String hitPlayerID = hitPlayer.getID();
         hitPlayer.freeze(hitPlayerID);
         // Format: "effect","freeze",playerIdx, user
-        Play.broadcastMessage("effect","freeze", hitPlayerID, GameWorld.getInstance().getDevicePlayer().getID());
+        Play.broadcastMessage("effect", "freeze", hitPlayerID, GameWorld.getInstance().getDevicePlayer().getID());
     }
 }

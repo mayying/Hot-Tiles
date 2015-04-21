@@ -21,7 +21,7 @@ public class Swap implements Usable {
         GameWorld world = GameWorld.getInstance();
         Player p = world.getDevicePlayer();
         String deviceID = p.getID();
-        if (world.getPlayers().size()>1) {
+        if (world.getPlayers().size() > 1) {
             // Add all other IDs into one LinkedList
             LinkedList<String> targets = new LinkedList<>();
             for (String key : world.getPlayers().keySet()) {

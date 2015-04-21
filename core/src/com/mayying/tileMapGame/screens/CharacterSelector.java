@@ -19,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.entities.Jukebox;
 import com.mayying.tileMapGame.entities.PlayerMetaData;
-import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
+import com.mayying.tileMapGame.multiplayer.MultiPlayerMessaging;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,24 +48,23 @@ public class CharacterSelector implements Screen {
     private Stage stage;
     private TextureAtlas charAtlas;
     private Skin skin;
-    private Label heading, timer;
+    private Label timer;
     private TextButton[] textButton;
 
-    private HashMap<String, PlayerData> playerData = new HashMap<String, PlayerData>();
-    private HashMap<String, Boolean> otherReadyPlayers = new HashMap<String, Boolean>();
+    private HashMap<String, PlayerData> playerData = new HashMap<>();
+    private HashMap<String, Boolean> otherReadyPlayers = new HashMap<>();
     private float timeLeft = 10;
-    private int min, sec;
     private String mode;
     private boolean imTheHost;
 
-    private MultiplayerMessaging multiplayerMessaging;
+    private MultiPlayerMessaging multiplayerMessaging;
 
 
     public CharacterSelector() {
         mode = "desktop";
     }
 
-    public CharacterSelector(MultiplayerMessaging multiplayerMessaging) {
+    public CharacterSelector(MultiPlayerMessaging multiplayerMessaging) {
         mode = "android";
         this.multiplayerMessaging = multiplayerMessaging;
     }
@@ -87,7 +86,7 @@ public class CharacterSelector implements Screen {
         charSelTable.setBounds(0, 0, Play.V_WIDTH, Play.V_HEIGHT);
         charSelTable.align(Align.center);
 
-        heading = new Label("Please select your character", skin);
+        Label heading = new Label("Please select your character", skin);
 
         subTable = new Table(skin);
 
@@ -146,14 +145,14 @@ public class CharacterSelector implements Screen {
                     broadcastMyInfo();
                     waitForMessage(300l);
                 }
-                Gdx.app.log(TAG,"Player Data Received: "+playerData);
-                Gdx.app.log(TAG, "Number of other players 0: "+(multiplayerMessaging.getJoinedParticipants().size()-1));
+                Gdx.app.log(TAG, "Player Data Received: " + playerData);
+                Gdx.app.log(TAG, "Number of other players 0: " + (multiplayerMessaging.getJoinedParticipants().size() - 1));
                 // Broadcast the ready signal when client has all the data, ensures that everyone has all the necessary fields
                 broadcastMessage("rdy");
                 // wait for other players to send the ready signal
                 while (otherReadyPlayers.keySet().size() < multiplayerMessaging.getJoinedParticipants().size() - 1) {
-                    Gdx.app.log(TAG, "Number of other players: "+(multiplayerMessaging.getJoinedParticipants().size()-1));
-                    Gdx.app.log(TAG, "Other Ready PLayers: "+otherReadyPlayers);
+                    Gdx.app.log(TAG, "Number of other players: " + (multiplayerMessaging.getJoinedParticipants().size() - 1));
+                    Gdx.app.log(TAG, "Other Ready PLayers: " + otherReadyPlayers);
                     // Broadcast the ready signal when client has all the data, ensures that everyone has all the necessary fields
                     broadcastMessage("rdy");
                     waitForMessage(100l);
@@ -197,8 +196,8 @@ public class CharacterSelector implements Screen {
             toggleButton(0);
             // In North Korea Kim Jong Un Selects You!
             int i = 1;
-            for(String key:playerData.keySet()){
-                if (key != multiplayerMessaging.getMyId()) {
+            for (String key : playerData.keySet()) {
+                if (!key.equals(multiplayerMessaging.getMyId())) {
                     setPlayerSelection(i, key);
                     // what a reply
                     broadcastMessage("charsel", "reply", String.valueOf(i++), key);
@@ -208,7 +207,7 @@ public class CharacterSelector implements Screen {
             // Client waits for supreme leader to choose where they belong
             Gdx.app.log(TAG, "Client awaiting selection");
             PlayerData myData = playerData.get(multiplayerMessaging.getMyId());
-            while(myData.getSel() == -1)
+            while (myData.getSel() == -1)
                 waitForMessage(200l);
 
         }
@@ -216,12 +215,13 @@ public class CharacterSelector implements Screen {
 
     /**
      * Sets a player's selection
-     * @param index       index of his selection
-     * @param playerId    ID of player
+     *
+     * @param index    index of his selection
+     * @param playerId ID of player
      */
     private void setPlayerSelection(int index, String playerId) {
         if (!playerData.containsKey(playerId)) {
-            Gdx.app.log(TAG,"Missing playerID in playerData!!!!!");
+            Gdx.app.log(TAG, "Missing playerID in playerData!!!!!");
             return;
         }
 
@@ -235,10 +235,10 @@ public class CharacterSelector implements Screen {
             textButton[index].setDisabled(true);
 
             //Deselect old selection if any
-            if(oldIndex != -1) {
-                for(String key:playerData.keySet()){
+            if (oldIndex != -1) {
+                for (String key : playerData.keySet()) {
                     // Only deselect if it is my selection
-                    if(playerData.get(key).getSel() == oldIndex) {
+                    if (playerData.get(key).getSel() == oldIndex) {
                         textButton[oldIndex].setText(playerData.get(key).getName()); //set to other player's name in case of conflict
                         return;
                     }
@@ -292,12 +292,13 @@ public class CharacterSelector implements Screen {
 
         if (multiplayerMessaging.getJoinedParticipants().size() == playerData.size()) {
             timeLeft -= delta;
-        } else if (otherReadyPlayers.keySet().size() < multiplayerMessaging.getJoinedParticipants().size() - 1){
+        } else if (otherReadyPlayers.keySet().size() < multiplayerMessaging.getJoinedParticipants().size() - 1) {
             //one or more clients dc
             multiplayerMessaging.leaveGame();
         }
-        min = (int) Math.floor(timeLeft / 60.0f);
-        sec = (int) (timeLeft - min * 60.0f);
+
+        int min = (int) Math.floor(timeLeft / 60.0f);
+        int sec = (int) (timeLeft - min * 60.0f);
         timer.setText(String.format("%01d", sec));
 
         parseMessages();
@@ -307,13 +308,9 @@ public class CharacterSelector implements Screen {
             //Clear the message buffer.
             multiplayerMessaging.getMessageBuffer('c');
             ArrayList<PlayerMetaData> metaData = new ArrayList<>();
-            for (String key : playerData.keySet()) {
+            for (String key : playerData.keySet())
                 metaData.add(new PlayerMetaData().setID(playerData.get(key).getId()).setModel(String.valueOf(playerData.get(key).getSel() + 1)).setName(playerData.get(key).getName()));
-            }
-//            if (mode.equals("android")) {
-//                if (otherPlayerId != null)
-//                    metaData.add(new PlayerMetaData().setID(otherPlayerId).setModel(String.valueOf(otherPlayerSel + 1)).setName(otherPlayerName));
-//            }
+
             Gdx.app.log(TAG, "Metadata: " + metaData);
             ((Game) Gdx.app.getApplicationListener()).setScreen(new Play(multiplayerMessaging, metaData));
         }
@@ -329,53 +326,57 @@ public class CharacterSelector implements Screen {
     private void parse(String msg) {
         String[] message = msg.split(",");
         String command = message[1];
-        if (command.equals("charsel")) {
-            String type = message[2];
-            int idx = Integer.valueOf(message[3]);
-            switch (type) {
-                case "host":
-                    // Host = Kim Jong Un
-                    Gdx.app.log(TAG, "Host selects " + idx);
-                    setPlayerSelection(idx, message[0]);
-                    break;
-                case "request":
-                    //else, ignore request.
-                    if (imTheHost) {
-                        // Check for index collision, reply if no collision, else ignore the user because I'm Kim
-                        Gdx.app.log(TAG, "Client requested " + idx);
-                        if (playerData.containsKey(message[0])) { //if info not received, no go.
-                            for (String key : playerData.keySet()) {
-                                if (playerData.get(key).getSel() == idx) {
-                                    Gdx.app.log(TAG, "Clash with player " + key);
-                                    return; //this character is taken
+        switch (command) {
+            case "charsel":
+                String type = message[2];
+                int idx = Integer.valueOf(message[3]);
+                switch (type) {
+                    case "host":
+                        // Host = Kim Jong Un
+                        Gdx.app.log(TAG, "Host selects " + idx);
+                        setPlayerSelection(idx, message[0]);
+                        break;
+                    case "request":
+                        //else, ignore request.
+                        if (imTheHost) {
+                            // Check for index collision, reply if no collision, else ignore the user because I'm Kim
+                            Gdx.app.log(TAG, "Client requested " + idx);
+                            if (playerData.containsKey(message[0])) { //if info not received, no go.
+                                for (String key : playerData.keySet()) {
+                                    if (playerData.get(key).getSel() == idx) {
+                                        Gdx.app.log(TAG, "Clash with player " + key);
+                                        return; //this character is taken
+                                    }
                                 }
+                                // Give client the ok signal
+                                broadcastMessage("charsel", "reply", String.valueOf(idx), message[0]);
+                                // Set client's selection
+                                setPlayerSelection(idx, message[0]);
                             }
-                            // Give client the ok signal
-                            broadcastMessage("charsel", "reply", String.valueOf(idx), message[0]);
-                            // Set client's selection
-                            setPlayerSelection(idx, message[0]);
                         }
-                    }
-                    break;
-                case "reply":
-                    // lowly client
-                    Gdx.app.log(TAG, "The Great Leader Approves of " + playerData.get(message[4]).getName() + "'s selection: " + idx);
-                    setPlayerSelection(idx, message[4]);
-                    break;
+                        break;
+                    case "reply":
+                        // lowly client
+                        Gdx.app.log(TAG, "The Great Leader Approves of " + playerData.get(message[4]).getName() + "'s selection: " + idx);
+                        setPlayerSelection(idx, message[4]);
+                        break;
 
 
-            }
-        } else if (command.equals("info")) {
-            // charsel, info, playerID, playerName
-            String otherPlayerId = message[2];
-            String otherPlayerName = message[3];
-            playerData.put(otherPlayerId, new PlayerData(otherPlayerName, otherPlayerId, -1));
-            Gdx.app.log(TAG, "Player info from " + message[3] + " received.");
-
-        } else if (command.equals("rdy")) {
-            otherReadyPlayers.put(message[0], true);
-        } else {
-            Gdx.app.log("HT_CHARSEL", "Unknown message format: " + msg);
+                }
+                break;
+            case "info":
+                // charsel, info, playerID, playerName
+                String otherPlayerId = message[2];
+                String otherPlayerName = message[3];
+                playerData.put(otherPlayerId, new PlayerData(otherPlayerName, otherPlayerId, -1));
+                Gdx.app.log(TAG, "Player info from " + message[3] + " received.");
+                break;
+            case "rdy":
+                otherReadyPlayers.put(message[0], true);
+                break;
+            default:
+                Gdx.app.log("HT_CHARSEL", "Unknown message format: " + msg);
+                break;
         }
     }
 
@@ -452,7 +453,7 @@ public class CharacterSelector implements Screen {
 
         @Override
         public String toString() {
-            return playerName+"|"+playerId+"|"+sel;
+            return playerName + "|" + playerId + "|" + sel;
         }
     }
 

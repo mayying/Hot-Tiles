@@ -18,6 +18,4 @@ public class Blackout implements Usable {
     }
 
 
-
-
 }

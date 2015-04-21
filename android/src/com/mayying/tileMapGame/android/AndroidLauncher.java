@@ -31,14 +31,14 @@ import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.google.android.gms.plus.Plus;
 import com.mayying.tileMapGame.TiledMapGame;
 import com.mayying.tileMapGame.multiplayer.MessageBuffer;
-import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
+import com.mayying.tileMapGame.multiplayer.MultiPlayerMessaging;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class AndroidLauncher extends AndroidApplication implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, RealTimeMessageReceivedListener,
-        RoomStatusUpdateListener, RoomUpdateListener, OnInvitationReceivedListener, MultiplayerMessaging {
+        RoomStatusUpdateListener, RoomUpdateListener, OnInvitationReceivedListener, MultiPlayerMessaging {
 
    /*
      * API INTEGRATION SECTION. This section contains the code that integrates
@@ -87,7 +87,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     private View gameView;
 
     private TiledMapGame game;
-    private ArrayList<String> participants = new ArrayList<String>();
+    private ArrayList<String> participants = new ArrayList<>();
     private int noOfPlayers = 2;
 
     public AndroidLauncher() {
@@ -241,7 +241,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     }
 
 
-
     // Handle the result of the invitation inbox UI, where the player can pick an invitation
     // to accept. We react by accepting the selected invitation, if any.
     private void handleInvitationInboxResult(int response, Intent data) {
@@ -365,22 +364,22 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         // We got an invitation to play a game! So, store it in
         // mIncomingInvitationId
         // and show the popup on the screen.
-        Gdx.app.log("INVITATION","Received an invitation!");
+        Gdx.app.log("INVITATION", "Received an invitation!");
         mIncomingInvitationId = invitation.getInvitationId();
         // accept invitation
         AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
         builder.setTitle("Game Invitation")
-                .setMessage(invitation.getInviter().getDisplayName()+": COME FIGHT ME NOOB!!")
-                .setPositiveButton("Accept",new DialogInterface.OnClickListener() {
+                .setMessage(invitation.getInviter().getDisplayName() + ": COME FIGHT ME NOOB!!")
+                .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         acceptInviteToRoom(invitation.getInvitationId());
                     }
                 })
-                .setNegativeButton("Decline",new DialogInterface.OnClickListener() {
+                .setNegativeButton("Decline", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                         // cancel dialog
+                        // cancel dialog
                     }
                 });
 //        builder.create();
@@ -638,17 +637,19 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         }
 //        Log.d("Receiving", msg);
     }
+
     @Override
-    public void sendInvitations(){
+    public void sendInvitations() {
         Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, 1, 3);
         startActivityForResult(intent, RC_SELECT_PLAYERS);
     }
 
     @Override
-    public void seeInvitations(){
+    public void seeInvitations() {
         Intent intent = Games.Invitations.getInvitationInboxIntent(mGoogleApiClient);
         startActivityForResult(intent, RC_INVITATION_INBOX);
     }
+
     @Override
     public void broadcastMessage(String msg) {
 //        Log.d("Sending", msg);
@@ -674,17 +675,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         }
     }
 
-    /**
-     * @return List of participants IDs.
-     */
-    @Override
-    public List<String> getParticipants() {
-        participants.clear();
-        for (Participant p : mParticipants) {
-            participants.add(p.getParticipantId());
-        }
-        return participants;
-    }
 
     @Override
     public List<String> getJoinedParticipants() {
@@ -695,21 +685,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
             participants.add(p.getParticipantId());
         }
         return participants;
-    }
-
-
-    @Override
-    public List<String> getJoinedParticipantsName() {
-        List<String> name = new ArrayList<>();
-
-        for (Participant p : mParticipants) {
-            if (p.getStatus() != Participant.STATUS_JOINED)
-                continue;
-            name.add(p.getDisplayName());
-            Log.d("NAME", p.getDisplayName());
-        }
-
-        return name;
     }
 
     @Override
@@ -734,7 +709,6 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
 
     @Override
     public void rematch() {
-        //TODO fix this
         if (this.getJoinedParticipants().size() > 1) {
             startGame();
         }
@@ -781,7 +755,7 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         boolean showInvPopup;
         if (mIncomingInvitationId == null) {
             // no invitation, so no popup
-                    showInvPopup = false;
+            showInvPopup = false;
         } else {
             // if in multiplayer, only show invitation on main screen
 //            showInvPopup = (mCurScreen == R.id.screen_main);

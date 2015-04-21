@@ -24,7 +24,7 @@ public class Thunderbolt extends Sprite {
             public void run() {
                 super.run();
                 GameWorld world = GameWorld.getInstance();
-                if(world!=null) {
+                if (world != null) {
                     world.removeThunder(Thunderbolt.this);
                 }
             }

@@ -31,7 +31,6 @@ public class Mine extends Sprite implements Collidable, Usable {
         position.y = GameWorld.TILE_HEIGHT / 4 + GameWorld.TILE_HEIGHT * (coords.y + 1);
 
         this.setPosition(position.x, position.y);
-//        mineCreated = System.currentTimeMillis();
     }
 
     @Override

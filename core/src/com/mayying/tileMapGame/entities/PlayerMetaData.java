@@ -10,9 +10,6 @@ public class PlayerMetaData {
     private String name, model, ID;
     private TextureAtlas atlas;
 
-    public PlayerMetaData() {
-    }
-
     @Override
     public String toString() {
         return String.format("%s - %s, %s", ID, name, model);

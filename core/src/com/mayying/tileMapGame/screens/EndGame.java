@@ -37,15 +37,14 @@ public class EndGame implements Screen {
     private Stage stage;
     private Skin skin;
     private Table table, scoreBoard;
-    private TextButton mainMenu, rematch;
     private TextureAtlas atlas;
-    private ArrayList<Label> label = new ArrayList<>();
-    //    private ArrayList<ScoreBoard.Score> scores;
-    HashMap<String, Boolean> rematchPoll = new HashMap<>();
+    private TextButton rematch;
+
+    private HashMap<String, Boolean> rematchPoll = new HashMap<>();
 
     public EndGame(GameWorld world) {
         this.world = world;
-        for (String p : Play.getMultiplayerMessaging().getJoinedParticipants()) {
+        for (String p : Play.getMultiPlayerMessaging().getJoinedParticipants()) {
             rematchPoll.put(p, false);
         }
     }
@@ -96,7 +95,7 @@ public class EndGame implements Screen {
             // Score
             scoreBoard.add(getCenteredLabel(String.valueOf(s.getScore()), skin)).padTop(10).width(150).row();
         }
-        mainMenu = new TextButton("Main Menu", skin, "mainMenu");
+        TextButton mainMenu = new TextButton("Main Menu", skin, "mainMenu");
         mainMenu.addListener(new InputListener() {
 
             @Override
@@ -107,7 +106,7 @@ public class EndGame implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Play.getMultiplayerMessaging().leaveGame();
+                Play.getMultiPlayerMessaging().leaveGame();
             }
         });
 
@@ -134,7 +133,7 @@ public class EndGame implements Screen {
         table.add(rematch);
         stage.addActor(table);
 
-        Play.getMultiplayerMessaging().clearMessageBufferExcept('e');
+        Play.getMultiPlayerMessaging().clearMessageBufferExcept('e');
     }
 
     private Label getCenteredLabel(String s, Skin skin) {
@@ -157,17 +156,17 @@ public class EndGame implements Screen {
 
     public void rematchButtonClicked() {
         //im the host
-        if (Play.getMultiplayerMessaging().getMyId().equals(Play.getMultiplayerMessaging().getHostId())) {
-            setRematch(!rematchPoll.get(Play.getMultiplayerMessaging().getMyId()));
-            Play.broadcastMessage("rematchAcknowledged," + Play.getMultiplayerMessaging().getMyId()
-                    + "," + String.valueOf(rematchPoll.get(Play.getMultiplayerMessaging().getMyId())));
+        if (Play.getMultiPlayerMessaging().getMyId().equals(Play.getMultiPlayerMessaging().getHostId())) {
+            setRematch(!rematchPoll.get(Play.getMultiPlayerMessaging().getMyId()));
+            Play.broadcastMessage("rematchAcknowledged," + Play.getMultiPlayerMessaging().getMyId()
+                    + "," + String.valueOf(rematchPoll.get(Play.getMultiPlayerMessaging().getMyId())));
         } else {
-            Play.broadcastMessage("rematchRequest," + String.valueOf(!rematchPoll.get(Play.getMultiplayerMessaging().getMyId())));
+            Play.broadcastMessage("rematchRequest," + String.valueOf(!rematchPoll.get(Play.getMultiPlayerMessaging().getMyId())));
         }
     }
 
     public void setRematch(Boolean stat) {
-        rematchPoll.put(Play.getMultiplayerMessaging().getMyId(), stat);
+        rematchPoll.put(Play.getMultiPlayerMessaging().getMyId(), stat);
         if (stat) {
             rematch.setText("cancel rematch");
         } else {
@@ -176,21 +175,21 @@ public class EndGame implements Screen {
     }
 
     public void rematchCheck() {
-        for (String msg : Play.getMultiplayerMessaging().getMessageBuffer('e')) {
+        for (String msg : Play.getMultiPlayerMessaging().getMessageBuffer('e')) {
             String[] message = msg.split(",");
             String command = message[1];
             // <host_id>, <rematchAcknowledged>, <client_id>, <rematchPoll>
-            if (command.equals("rematchAcknowledged") && Play.getMultiplayerMessaging().getHostId().equals(message[0])) {
+            if (command.equals("rematchAcknowledged") && Play.getMultiPlayerMessaging().getHostId().equals(message[0])) {
                 Gdx.app.log("EndGame", "Rematch Acknowledged by server");
                 rematchPoll.put(message[2], Boolean.valueOf(message[3]));
                 //client update text
-                if (Play.getMultiplayerMessaging().getMyId().equals(message[2])) {
+                if (Play.getMultiPlayerMessaging().getMyId().equals(message[2])) {
                     setRematch(Boolean.valueOf(message[3]));
                 }
             }
             //im the host
             // <client_id>, <rematchRequest>, <rematchPoll>
-            if (Play.getMultiplayerMessaging().getMyId().equals(Play.getMultiplayerMessaging().getHostId())) {
+            if (Play.getMultiPlayerMessaging().getMyId().equals(Play.getMultiPlayerMessaging().getHostId())) {
                 if (command.equals("rematchRequest")) {
                     rematchPoll.put(message[0], Boolean.valueOf(message[2]));
                     Play.broadcastMessage("rematchAcknowledged," + message[0] + "," + message[2]);
@@ -201,18 +200,19 @@ public class EndGame implements Screen {
             if (!rematchPoll.get(key))
                 return;
         }
-        Play.getMultiplayerMessaging().rematch();
+
+        Play.getMultiPlayerMessaging().rematch();
     }
 
     @Override
     public void render(float delta) {
         if (leavingGame) {
             leavingGame = false;
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(Play.getMultiplayerMessaging()));
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(Play.getMultiPlayerMessaging()));
         }
         if (startGame) {
             startGame = false;
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector(Play.getMultiplayerMessaging()));
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector(Play.getMultiPlayerMessaging()));
         }
         rematchCheck();
         Gdx.gl.glClearColor(0, 0, 0, 1);

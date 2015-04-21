@@ -53,7 +53,6 @@ public class SpawnPowerUps implements Collidable {
                 // picking random stringID from list
                 powerUpIsPickedUp = false;
                 powerUp = powerUpFactory.createPowerUp(spawnRNG.nextInt(7));
-//                powerUp = powerUpFactory.createPowerUp(4); //TODO - revert back to to previous line after done debugging
 
                 sprite = new Sprite(powerUp.getTextureVector());
 
@@ -71,7 +70,7 @@ public class SpawnPowerUps implements Collidable {
                 Timeline.createSequence().beginSequence()
                         .push(Tween.set(sprite, SpriteAccessor.POSITION).target(position.x, position.y))
                         .push(Tween.to(sprite, SpriteAccessor.POSITION, 0.05f).target(position.x, position.y + 5f).repeatYoyo(30, 0.2f))
-                .end().start(tweenManager);
+                        .end().start(tweenManager);
 
                 spawnTime = 0;        // count until 3s
                 countTime = 0;
@@ -129,7 +128,6 @@ public class SpawnPowerUps implements Collidable {
         // Check for every player. Unless we want to do a client-host handshake implementation, this is more concurrent with
         // the rest of our implementation
         Player player = world.getDevicePlayer();
-//        for (Player player : world.getPlayers().values()) {
         Vector2 playerPos = player.getPlayerPosition();
 //            Gdx.app.log("Player Coords: ", playerPos.toString());
         if (playerPos.equals(this.coords)) {

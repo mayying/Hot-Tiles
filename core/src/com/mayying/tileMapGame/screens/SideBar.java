@@ -39,20 +39,18 @@ import aurelienribon.tweenengine.TweenManager;
 /**
  * Created by May on 17/3/2015.
  */
-
-
 public class SideBar implements Screen {
 
     private Stage stage;
     private Label timer, descriptionImg, descriptionText;
     private Skin skin;
     private GameWorld world;
-    private ImageButton buttonA, buttonB, music, sound, close;
     private TextureAtlas buttonAtlas;
     private OrthographicCamera hudCamera;
     private Table table, descriptionTable, subTable, scoreBoardTable;
     private LabelStyle labelStyle;
     private TweenManager tweenManager;
+    private ImageButton buttonA, buttonB;
     private ImageButtonStyle imageButtonAStyle, imageButtonBStyle;
 
     private Label[][] scoreBoardLabel;
@@ -61,10 +59,7 @@ public class SideBar implements Screen {
 
     private ScoreBoard scoreBoard;
 
-    private ArrayList<Score> score;
-    private String powerUpName;
-
-    private boolean muteMusic = false, muteSfx = false, falseAlarm = false;
+    private boolean muteMusic = false, muteSfx = false;
     private static boolean scoreUpdated = true;
     private float gameTime = 60 + 30;
     private int min, sec;
@@ -123,7 +118,7 @@ public class SideBar implements Screen {
         timer = new Label(min + ":" + sec, skin, "timer");
         timer.setAlignment(Align.center);
 
-        music = new ImageButton(skin, "music");
+        ImageButton music = new ImageButton(skin, "music");
         music.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -138,24 +133,22 @@ public class SideBar implements Screen {
             }
         });
 
-        sound = new ImageButton(skin, "sound");
+        ImageButton sound = new ImageButton(skin, "sound");
         sound.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (!muteSfx) {
+                if (!muteSfx)
                     muteSfx = true;
-                    Jukebox.toggleMuteSfx(muteSfx);
-                } else {
+                else
                     muteSfx = false;
-                    Jukebox.toggleMuteSfx(muteSfx);
-                }
+                Jukebox.toggleMuteSfx(muteSfx);
             }
         });
 
-        close = new ImageButton(skin, "close");
+        ImageButton close = new ImageButton(skin, "close");
         close.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                Play.getMultiplayerMessaging().leaveGame();
+                Play.getMultiPlayerMessaging().leaveGame();
             }
         });
 
@@ -328,7 +321,7 @@ public class SideBar implements Screen {
             }
 
             if (world.pickUpPowerUp()) {
-                powerUpName = world.getPowerUp().getName();
+                String powerUpName = world.getPowerUp().getName();
                 descriptionText.setText(powerUpName + "\n" + world.getPowerUp().getDescription());
                 labelStyle.background = skin.getDrawable(world.getPowerUp().getFilename());
                 descriptionImg.setStyle(labelStyle);
@@ -359,7 +352,7 @@ public class SideBar implements Screen {
     }
 
     private void updateBoard() {
-        score = scoreBoard.getScores();
+        ArrayList<Score> score = scoreBoard.getScores();
         int index = NUM_OF_PLAYER - 1;
         for (int i = 0; i < NUM_OF_PLAYER; i++) {
             playerStyle[i].background = skin.getDrawable(score.get(index).getPlayer().getModel() + "head");

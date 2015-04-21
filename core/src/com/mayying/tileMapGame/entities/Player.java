@@ -1,7 +1,6 @@
 package com.mayying.tileMapGame.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.mayying.tileMapGame.GameWorld;
-import com.mayying.tileMapGame.entities.powerups.Bullet;
 import com.mayying.tileMapGame.entities.powerups.Collidable;
 import com.mayying.tileMapGame.entities.powerups.DelayedThread;
 import com.mayying.tileMapGame.entities.powerups.factory.PowerUp;
@@ -25,15 +23,14 @@ public class Player extends Sprite implements Collidable {
     private TiledMapTileLayer collisionLayer;
     private Animation forward, backward, left, right, burnt, swap, freeze, suicide_forward, suicide_backward, suicide_left, suicide_right;
     private float speed = 1, animationTime = 0f;
-    private long lastPressed = 0l, lastHitTime = 0l; // in case of null pointer or whatever;
-    private boolean isInverted = false, fireAnimation = false;
+    private long lastHitTime = 0l; // in case of null pointer or whatever;
+    private boolean fireAnimation = false;
     private String lastHitBy;
     private PlayerMetaData metaData;
     private int deathCount = 0;
 
     public PowerUp[] powerUpList = new PowerUp[2];
     public boolean isInvulnerable = false, isDead = false, isFrozen = false, isSwapped = false, isOnFire = false, isHasted = false;
-
 
     public Player(TiledMapTileLayer collisionLayer, PlayerMetaData data) {
         super(new Animation(1 / 2f, data.getAtlas().findRegions(data.getModel() + "forward")).getKeyFrame(0));
@@ -89,8 +86,6 @@ public class Player extends Sprite implements Collidable {
         this.setPosition(_x, _y);
     }
 
-
-
     // Return matrix position
     public Vector2 getPlayerPosition() {
         Vector2 vector2 = new Vector2();
@@ -107,18 +102,6 @@ public class Player extends Sprite implements Collidable {
         }
         if (isOnFire) collisionCheck();
         super.draw(batch);
-    }
-
-    private void fireBullet() {
-        if (System.currentTimeMillis() - lastPressed > 200) {
-            lastPressed = System.currentTimeMillis();
-            Bullet bullet = new Bullet(new Sprite(new Texture("img/shuriken.png")), facing, this, 2, collisionLayer);
-            GameWorld.addInstanceToRenderList(bullet);
-        }
-    }
-
-    public void spacePressed() {
-        fireBullet();
     }
 
     public int getFacing() {
@@ -143,7 +126,6 @@ public class Player extends Sprite implements Collidable {
 
     public void toggleSwap(boolean yesNo) {
         isSwapped = yesNo;
-//        Gdx.app.log("Player", "is Swapped? " + isSwapped);
     }
 
     public void animate(float delta) {
@@ -154,20 +136,6 @@ public class Player extends Sprite implements Collidable {
                                 suicide_forward.getKeyFrame(animationTime)) : facing == 4 ? left.getKeyFrame(animationTime) :
                         facing == 6 ? right.getKeyFrame(animationTime) : facing == 2 ? backward.getKeyFrame(animationTime) :
                                 forward.getKeyFrame(animationTime));
-    }
-
-    // shuriken
-    public boolean isHit(float x, float y) {
-        //bottom right
-        float x_1 = getX() + getWidth() / 2;
-        float y_1 = getY() - getHeight() / 2;
-
-        //top left
-        float x_2 = getX() - getWidth() / 2;
-        float y_2 = getY() + getHeight() / 2;
-
-        return ((x - x_2) <= getWidth() && (x - x_2) >= 0) &&
-                ((y - y_1) >= 0 && (y - y_1) <= getHeight());
     }
 
     public TiledMapTileLayer getCollisionLayer() {
@@ -299,7 +267,7 @@ public class Player extends Sprite implements Collidable {
 
     private void updateScore() {
         String lastHit = getLastHitBy();
-        String killerID = lastHit.equals(getID())? "null":lastHit;
+        String killerID = lastHit.equals(getID()) ? "null" : lastHit;
         Gdx.app.log("Player " + getID(), "Killed by Player " + killerID);
         ScoreBoard.getInstance().incrementKillsAndOrDeath(killerID.equals(getID()) ? "null" : killerID, getID());
 
@@ -341,9 +309,7 @@ public class Player extends Sprite implements Collidable {
                 spawn(x, y);
             }
         }.start();
-
         // server will send a message to update score
-
     }
 
     public void shield() {
@@ -479,14 +445,14 @@ public class Player extends Sprite implements Collidable {
 
     @Override
     public void onCollisionDetected(Player player) {
-        Play.broadcastMessage("effect", "fire", "1",player.getID());
+        Play.broadcastMessage("effect", "fire", "1", player.getID());
     }
 
     @Override
     public void collisionCheck() {
         GameWorld world = GameWorld.getInstance();
         for (String key : world.getPlayers().keySet()) {
-            if(key.equals(getID())) continue;
+            if (key.equals(getID())) continue;
 
             Player p = world.getPlayer(key);
             if (p.getPlayerPosition().equals(this.getPlayerPosition()) && !p.isInvulnerable)

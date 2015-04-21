@@ -11,40 +11,29 @@ import java.util.List;
 /**
  * Created by Luccan on 9/4/2015.
  */
-public class SinglePlayerDummyMessaging implements MultiplayerMessaging {
+public class SinglePlayerDummyMessaging implements MultiPlayerMessaging {
 
     private List<String> participants = new ArrayList<>();
     private List<String> messageBuffer = new ArrayList<>();
-    private MultiplayerMessaging realMessaging;
+    private MultiPlayerMessaging realMessaging;
 
 
-    public SinglePlayerDummyMessaging(){
+    public SinglePlayerDummyMessaging() {
         participants.add("me");
         this.realMessaging = null;
     }
-    public  SinglePlayerDummyMessaging(MultiplayerMessaging realMessaging){
+
+    public SinglePlayerDummyMessaging(MultiPlayerMessaging realMessaging) {
         this();
         this.realMessaging = realMessaging;
     }
 
     @Override
     public void broadcastMessage(String msg) {
-        //do nothin
-    }
-
-
-    @Override
-    public List<String> getParticipants() {
-        return participants;
     }
 
     @Override
     public List<String> getJoinedParticipants() {
-        return participants;
-    }
-
-    @Override
-    public List<String> getJoinedParticipantsName() {
         return participants;
     }
 
@@ -100,13 +89,12 @@ public class SinglePlayerDummyMessaging implements MultiplayerMessaging {
 
     @Override
     public void leaveGame() {
-        if (this.realMessaging!=null) {
+        if (this.realMessaging != null)
             //used in practice
             ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(this.realMessaging));
-        } else {
-            //TODO used in desktop mode
+        else
             ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(this));
-        }
+
     }
 
     @Override
@@ -115,7 +103,7 @@ public class SinglePlayerDummyMessaging implements MultiplayerMessaging {
     }
 
     @Override
-    public void rematch(){
+    public void rematch() {
         //replay
         ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector(this));
     }

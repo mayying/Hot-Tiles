@@ -8,12 +8,12 @@ import com.mayying.tileMapGame.screens.Play;
  */
 
 /**
- *  Inverts all players passed in the parameters.
+ * Inverts all players passed in the parameters.
  */
 public class Confusion implements Usable {
     @Override
     public void use() {
         Jukebox.play("confused");
-        Play.broadcastMessage("effect","invert");
+        Play.broadcastMessage("effect", "invert");
     }
 }

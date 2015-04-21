@@ -23,8 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mayying.tileMapGame.entities.Jukebox;
-import com.mayying.tileMapGame.multiplayer.ConnectionHelper;
-import com.mayying.tileMapGame.multiplayer.MultiplayerMessaging;
+import com.mayying.tileMapGame.multiplayer.MultiPlayerMessaging;
 import com.mayying.tileMapGame.tween.ActorAccessor;
 import com.mayying.tileMapGame.tween.SpriteAccessor;
 
@@ -50,19 +49,12 @@ public class MainMenu implements Screen {
     private Table table, subTable;
     private OrthographicCamera camera;
 
-    private MultiplayerMessaging multiplayerMessaging;
+    private MultiPlayerMessaging multiplayerMessaging;
 
-    private List<Actor> firstPageActors = new ArrayList<Actor>(), secondPageActors = new ArrayList<Actor>();
-    private String mode;
+    private List<Actor> firstPageActors = new ArrayList<>(), secondPageActors = new ArrayList<>();
     private boolean startGame;
 
-    public MainMenu() {
-        //TODO Remove this
-//        mode = "desktop";
-    }
-
-    public MainMenu(MultiplayerMessaging multiplayerMessaging) {
-        mode = "android";
+    public MainMenu(MultiPlayerMessaging multiplayerMessaging) {
         this.multiplayerMessaging = multiplayerMessaging;
     }
 
@@ -224,8 +216,6 @@ public class MainMenu implements Screen {
                 showMenu(0);
             }
         });
-
-        Gdx.app.log("MainMenu.java", "switchScreen: " + startGame + " ConnectionHelper.STATE: " + ConnectionHelper.STATE);
 
         //tableMenu
         table = new Table(skin);
