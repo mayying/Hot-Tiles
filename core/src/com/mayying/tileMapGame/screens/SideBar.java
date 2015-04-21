@@ -288,7 +288,7 @@ public class SideBar implements Screen {
                 .end().repeat(Tween.INFINITY, 0).start(tweenManager);
     }
 
-    float tick = 6f;
+    float tick = 5.05f;
 
     public void render(float delta) {
         Gdx.app.log("SideBar", "gameTime: " + gameTime);
