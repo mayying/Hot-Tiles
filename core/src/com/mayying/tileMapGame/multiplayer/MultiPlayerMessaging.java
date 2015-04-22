@@ -24,4 +24,6 @@ public interface MultiPlayerMessaging {
     public void rematch();
     public void setNoOfPlayers(int noOfPlayers);
     public int getNoOfPlayers();
+    // for achievement unlock
+    public void achievementUnlocked(String achievement);
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">HAWT TILES</string>
+    <string name="app_name">Hot Tiles</string>
 
     <string name="signing_in">Signing in with Google</string>
     <string name="signing_out">Signing out</string>
-    <string name="game_title">Hot-Tiles</string>
+    <string name="game_title">Hot Tiles</string>
     <string name="game_blurb">Dodge the Hot-Tiles to survive! To play this game with friends, you must sign in with Google.</string>
     <string name="single_player">Practice Game</string>
     <string name="single_player_explanation">Get some practice in a single-player Mode!</string>

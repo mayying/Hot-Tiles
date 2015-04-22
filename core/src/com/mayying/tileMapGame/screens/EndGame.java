@@ -56,6 +56,11 @@ public class EndGame implements Screen {
         Jukebox.stopMusic("background");
         Jukebox.playMusic("mainMenu");
         ArrayList<ScoreBoard.Score> scores = ScoreBoard.getInstance().getScores();
+
+        if (scores.size() == 4) {
+            Play.getMultiPlayerMessaging().achievementUnlocked("popularKids");
+        }
+
         batch = new SpriteBatch();
         atlas = new TextureAtlas(Gdx.files.internal("endGame/endGame.txt"));
         Player devicePlayer = world.getDevicePlayer();
@@ -94,6 +99,14 @@ public class EndGame implements Screen {
             scoreBoard.add(getCenteredLabel(s.getKills() + "/" + s.getDeath(), skin)).padTop(10).width(150);
             // Score
             scoreBoard.add(getCenteredLabel(String.valueOf(s.getScore()), skin)).padTop(10).width(150).row();
+
+            if (p.getName().equals(devicePlayer.getName())) {
+                if (s.getKills() >= 10)
+                    Play.getMultiPlayerMessaging().achievementUnlocked("crazyKiller");
+                else if (s.getDeath() >= 10)
+                    Play.getMultiPlayerMessaging().achievementUnlocked("unlimitedLives");
+            }
+
         }
         TextButton mainMenu = new TextButton("Main Menu", skin, "mainMenu");
         mainMenu.addListener(new InputListener() {

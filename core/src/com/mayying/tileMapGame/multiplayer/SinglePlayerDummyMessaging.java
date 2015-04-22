@@ -117,4 +117,9 @@ public class SinglePlayerDummyMessaging implements MultiPlayerMessaging {
     public int getNoOfPlayers() {
         return 4;
     }
+
+    @Override
+    public void achievementUnlocked(String achievement) {
+
+    }
 }

@@ -47,6 +47,7 @@ public class GameWorld {
     private Play play;
 
     private boolean blackout = false;
+    private int killViaLightning = 0;
     private final HashMap<String, Player> players = new HashMap<>();
     private final HashMap<String, Long> randomSeeds = new HashMap<>();
 
@@ -307,6 +308,10 @@ public class GameWorld {
         if (devicePlayer.getPlayerPosition().equals(new Vector2(x, y))) {
             devicePlayer.setLastHitBy(senderId);
             devicePlayer.die();
+            if (!devicePlayer.isInvulnerable)
+                killViaLightning++;
+            if (killViaLightning >= 10)
+                Play.getMultiPlayerMessaging().achievementUnlocked("theThor");
         }
     }
 }

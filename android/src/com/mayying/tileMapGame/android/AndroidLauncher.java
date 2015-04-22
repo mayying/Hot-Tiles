@@ -715,6 +715,28 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     }
 
     @Override
+    public void achievementUnlocked(String achievement){
+        switch (achievement){
+            case "popularKids":
+                Games.Achievements.unlock(mGoogleApiClient, "CggIpu2ln3MQAhAE");
+                break;
+            case "crazyKiller":
+                Games.Achievements.unlock(mGoogleApiClient, "CggIpu2ln3MQAhAD");
+                break;
+            case "unlimitedLives":
+                Games.Achievements.unlock(mGoogleApiClient, "CggIpu2ln3MQAhAF");
+                break;
+            case "theThor":
+                Games.Achievements.unlock(mGoogleApiClient, "CggIpu2ln3MQAhAG");
+                break;
+//            case "addicted":
+//                Games.Achievements.unlock(mGoogleApiClient, "CggIpu2ln3MQAhAE");
+//                break;
+        }
+    }
+
+
+    @Override
     public void setNoOfPlayers(int noOfPlayers) {
         this.noOfPlayers = noOfPlayers;
     }
