@@ -9,6 +9,13 @@
         <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-6aa53bbfa243d3849ae8c7cf068afb0902c35b6c.jar" />
     </item>
     <item
+        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\classes-2c780fb04c45bafce880f2c8385499b3f42d422d.jar" />
+    </item>
+    <item
         jar="C:\Users\May\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-box2d\1.5.3\52bc9ff881a6eb1731eb2f54b5016425cae05024\gdx-box2d-1.5.3.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -23,11 +30,11 @@
         <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.5.3-9d6a16be9c2184798103c3cafe53451e202aa843.jar" />
     </item>
     <item
-        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\classes.jar"
+        jar="C:\adt-bundle-windows-x86_64-20140702\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.0\support-annotations-21.0.0.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="686344a780033e4ba22b926cd225f8d4941247e6">
-        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\classes-52fe4522e9e07679d84bc5e6d989a5607c2141c2.jar" />
+        sha1="1a578b9607b36266c63d43a4fa0ab5664dbe911e">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\support-annotations-21.0.0-892b5137c61b7abc511575015de224d00b13e92a.jar" />
     </item>
     <item
         jar="C:\Users\May\Documents\GitHub\Hot-Tiles\libs\tween-engine-api-sources.jar"
@@ -37,25 +44,18 @@
         <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\tween-engine-api-sources-97f832bc16b83be87a0da65e3805d7f95e1ce0f8.jar" />
     </item>
     <item
+        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="686344a780033e4ba22b926cd225f8d4941247e6">
+        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\classes-52fe4522e9e07679d84bc5e6d989a5607c2141c2.jar" />
+    </item>
+    <item
         jar="C:\Users\May\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.5.3\3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9\gdx-1.5.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="3b8f2a7e697b097735ec8fd2b9d576d0959cb7c9">
         <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\gdx-1.5.3-38166ae41fdb97bfafc7ed7a5b1e8141b30b7bc8.jar" />
-    </item>
-    <item
-        jar="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
-        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\classes-2c780fb04c45bafce880f2c8385499b3f42d422d.jar" />
-    </item>
-    <item
-        jar="C:\adt-bundle-windows-x86_64-20140702\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.0\support-annotations-21.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="1a578b9607b36266c63d43a4fa0ab5664dbe911e">
-        <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\support-annotations-21.0.0-892b5137c61b7abc511575015de224d00b13e92a.jar" />
     </item>
     <item
         jar="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\libs\internal_impl-21.0.0.jar"
@@ -68,7 +68,7 @@
         jar="C:\Users\May\Documents\GitHub\Hot-Tiles\core\build\libs\core-1.0.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="5dc2f1d331aeb5989e7dcf896d959d6ba21eafe8">
+        sha1="a0d2944f88c01aa03185b41679273f8d2e088371">
         <dex dex="C:\Users\May\Documents\GitHub\Hot-Tiles\android\build\intermediates\pre-dexed\debug\core-1.0-5a3adb6bbec24ec12b8671ce083d06e11f14e0a7.jar" />
     </item>
 

@@ -57,7 +57,7 @@ public class EndGame implements Screen {
         Jukebox.playMusic("mainMenu");
         ArrayList<ScoreBoard.Score> scores = ScoreBoard.getInstance().getScores();
 
-        if (scores.size() == 4) {
+        if (scores.size() == 4 && MainMenu.friendsPlay) {
             Play.getMultiPlayerMessaging().achievementUnlocked("popularKids");
         }
 
@@ -105,6 +105,7 @@ public class EndGame implements Screen {
                     Play.getMultiPlayerMessaging().achievementUnlocked("crazyKiller");
                 else if (s.getDeath() >= 10)
                     Play.getMultiPlayerMessaging().achievementUnlocked("unlimitedLives");
+                Play.getMultiPlayerMessaging().submitLeaderBoardScore(s.getScore());
             }
 
         }

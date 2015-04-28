@@ -27,7 +27,7 @@ import java.util.Random;
  */
 
 public class Play implements Screen {
-    public static final int V_WIDTH = 1260, V_HEIGHT = 700, TILES_PER_INTERVAL = 3, MAX_TILES = 25;
+    public static final int V_WIDTH = 1260, V_HEIGHT = 700, TILES_PER_INTERVAL = 3, MAX_TILES = 15;
     private static final String TAG = "HT_Play";
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;

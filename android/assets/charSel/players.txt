@@ -5,112 +5,112 @@ repeat: none
 player_1
   rotate: false
   xy: 2, 2
-  size: 280, 280
-  orig: 280, 280
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: 1
 player_1_sel
   rotate: false
-  xy: 284, 2
-  size: 280, 280
-  orig: 280, 280
+  xy: 204, 2
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: -1
 player_2
   rotate: false
-  xy: 566, 2
-  size: 280, 280
-  orig: 280, 280
+  xy: 406, 2
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: 2
 player_2_sel
   rotate: false
-  xy: 848, 2
-  size: 280, 280
-  orig: 280, 280
+  xy: 608, 2
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: -1
 player_3
   rotate: false
-  xy: 1130, 2
-  size: 280, 280
-  orig: 280, 280
+  xy: 810, 2
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: 3
 player_3_sel
   rotate: false
-  xy: 1412, 2
-  size: 280, 280
-  orig: 280, 280
+  xy: 1012, 2
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: -1
 player_4
   rotate: false
-  xy: 2, 284
-  size: 280, 280
-  orig: 280, 280
+  xy: 1214, 2
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: 4
 player_4_sel
   rotate: false
-  xy: 284, 284
-  size: 280, 280
-  orig: 280, 280
+  xy: 1416, 2
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: -1
 player_5
   rotate: false
-  xy: 566, 284
-  size: 280, 280
-  orig: 280, 280
+  xy: 2, 204
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: 5
 player_5_sel
   rotate: false
-  xy: 848, 284
-  size: 280, 280
-  orig: 280, 280
+  xy: 204, 204
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: -1
 player_6
   rotate: false
-  xy: 1130, 284
-  size: 280, 280
-  orig: 280, 280
+  xy: 406, 204
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: 6
 player_6_sel
   rotate: false
-  xy: 1412, 284
-  size: 280, 280
-  orig: 280, 280
+  xy: 608, 204
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: -1
 player_7
   rotate: false
-  xy: 2, 566
-  size: 280, 280
-  orig: 280, 280
+  xy: 810, 204
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: 7
 player_7_sel
   rotate: false
-  xy: 284, 566
-  size: 280, 280
-  orig: 280, 280
+  xy: 1012, 204
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: -1
 player_8
   rotate: false
-  xy: 566, 566
-  size: 280, 280
-  orig: 280, 280
+  xy: 1214, 204
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: 8
 player_8_sel
   rotate: false
-  xy: 848, 566
-  size: 280, 280
-  orig: 280, 280
+  xy: 1416, 204
+  size: 200, 200
+  orig: 200, 200
   offset: 0, 0
   index: -1

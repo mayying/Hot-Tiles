@@ -12,11 +12,9 @@ import java.util.List;
  * Created by Luccan on 9/4/2015.
  */
 public class SinglePlayerDummyMessaging implements MultiPlayerMessaging {
-
     private List<String> participants = new ArrayList<>();
     private List<String> messageBuffer = new ArrayList<>();
     private MultiPlayerMessaging realMessaging;
-
 
     public SinglePlayerDummyMessaging() {
         participants.add("me");
@@ -120,6 +118,21 @@ public class SinglePlayerDummyMessaging implements MultiPlayerMessaging {
 
     @Override
     public void achievementUnlocked(String achievement) {
+
+    }
+
+    @Override
+    public void displayAchievement() {
+
+    }
+
+    @Override
+    public void submitLeaderBoardScore(int score) {
+
+    }
+
+    @Override
+    public void displayLeaderBoardScore() {
 
     }
 }

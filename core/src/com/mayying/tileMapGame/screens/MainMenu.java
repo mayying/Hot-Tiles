@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -38,15 +39,17 @@ import aurelienribon.tweenengine.TweenManager;
  * Created by May on 2/4/2015.
  */
 public class MainMenu implements Screen {
+    public static boolean friendsPlay = false;
     private SpriteBatch batch;
     private Sprite background;
     private TextButton buttonMinus, buttonFriends, buttonPlus, buttonTutorial, buttonExit, buttonInvite, buttonJoin, buttonPlay, buttonBack;
+    private ImageButton buttonAchievement, buttonLeaderBoard, buttonSettings;
     private Label heading;
     private Stage stage;
     private TextureAtlas buttonAtlas;
     private Skin skin;
     private TweenManager tweenManager;
-    private Table table, subTable;
+    private Table table, subTable, sideTable;
     private OrthographicCamera camera;
 
     private MultiPlayerMessaging multiplayerMessaging;
@@ -81,6 +84,39 @@ public class MainMenu implements Screen {
         heading = new Label("Hot Tiles", skin);
 
         multiplayerMessaging.setNoOfPlayers(2);
+
+        buttonAchievement = new ImageButton(skin, "achievement");
+        buttonAchievement.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Jukebox.play("buttonPressed");
+                multiplayerMessaging.displayAchievement();
+            }
+        });
+
+        buttonLeaderBoard = new ImageButton(skin, "leaderBoard");
+        buttonLeaderBoard.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Jukebox.play("buttonPressed");
+                multiplayerMessaging.displayLeaderBoardScore();
+            }
+        });
+
+        buttonSettings = new ImageButton(skin, "settings");
+        buttonSettings.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Jukebox.play("buttonPressed");
+            }
+        });
+
+        sideTable = new Table();
+        sideTable.setFillParent(true);
+        sideTable.align(Align.topLeft);
+        sideTable.add(buttonAchievement).padTop(Play.V_HEIGHT * 0.1f).padBottom(20).row();
+        sideTable.add(buttonLeaderBoard).padBottom(20).row();
+        sideTable.add(buttonSettings).row();
 
         buttonPlay = new TextButton("Play", skin);
         firstPageActors.add(buttonPlay);
@@ -194,6 +230,7 @@ public class MainMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Jukebox.play("buttonPressed");
                 multiplayerMessaging.sendInvitations();
+                friendsPlay = true;
             }
         });
 
@@ -204,6 +241,7 @@ public class MainMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Jukebox.play("buttonPressed");
                 multiplayerMessaging.seeInvitations();
+                friendsPlay = true;
             }
         });
 
@@ -228,6 +266,7 @@ public class MainMenu implements Screen {
         subTable.add(buttonFriends);
         subTable.add(buttonPlus).padLeft(Play.V_WIDTH / 10).padRight(Play.V_WIDTH / 6).row();
         stage.addActor(table);
+        stage.addActor(sideTable);
 
         showMenu(0);
 
@@ -250,7 +289,8 @@ public class MainMenu implements Screen {
     }
 
     public void showMenu(int page) {
-        table.clear();
+        if (heading != null)
+            table.clear();
         switch (page) {
             case 0:
                 table.add(heading).height(210).colspan(3).expandX().row();
@@ -293,11 +333,6 @@ public class MainMenu implements Screen {
         if (startGame) {
             startGame = false;
             ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector(multiplayerMessaging));
-//            if (mode.equals("desktop"))
-//                ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector());
-//            else if (mode.equals("android")) {
-//                ((Game) Gdx.app.getApplicationListener()).setScreen(new CharacterSelector(multiplayerMessaging));
-//            }
         }
     }
 
@@ -305,6 +340,12 @@ public class MainMenu implements Screen {
     public void resize(int width, int height) {
         table.invalidateHierarchy();
         table.setSize(width, height);
+
+        subTable.invalidateHierarchy();
+        subTable.setSize(width, height);
+
+        sideTable.invalidateHierarchy();
+        sideTable.setSize(width, height);
     }
 
     @Override

@@ -2,30 +2,72 @@ buttonSkin.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+achievement
+  rotate: false
+  xy: 146, 2
+  size: 87, 60
+  orig: 87, 60
+  offset: 0, 0
+  index: -1
+achievementP
+  rotate: false
+  xy: 91, 74
+  size: 87, 60
+  orig: 87, 60
+  offset: 0, 0
+  index: -1
+leaderBoard
+  rotate: false
+  xy: 269, 74
+  size: 87, 60
+  orig: 87, 60
+  offset: 0, 0
+  index: -1
+leaderBoardP
+  rotate: false
+  xy: 180, 74
+  size: 87, 60
+  orig: 87, 60
+  offset: 0, 0
+  index: -1
+settings
+  rotate: false
+  xy: 235, 2
+  size: 87, 60
+  orig: 87, 60
+  offset: 0, 0
+  index: -1
+settingsP
+  rotate: false
+  xy: 2, 74
+  size: 87, 60
+  orig: 87, 60
+  offset: 0, 0
+  index: -1
 skinRect350x150
   rotate: false
-  xy: 2, 2
+  xy: 2, 292
   size: 354, 154
   orig: 354, 154
   offset: 0, 0
   index: -1
 skinRect350x150P
   rotate: false
-  xy: 358, 2
+  xy: 2, 136
   size: 354, 154
   orig: 354, 154
   offset: 0, 0
   index: -1
 skinSquare70x70
   rotate: false
-  xy: 714, 2
+  xy: 74, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 skinSquare70x70P
   rotate: false
-  xy: 786, 2
+  xy: 2, 2
   size: 70, 70
   orig: 70, 70
   offset: 0, 0

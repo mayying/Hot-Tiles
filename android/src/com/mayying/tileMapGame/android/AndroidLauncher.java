@@ -715,8 +715,8 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
     }
 
     @Override
-    public void achievementUnlocked(String achievement){
-        switch (achievement){
+    public void achievementUnlocked(String achievement) {
+        switch (achievement) {
             case "popularKids":
                 Games.Achievements.unlock(mGoogleApiClient, "CggIpu2ln3MQAhAE");
                 break;
@@ -735,6 +735,21 @@ public class AndroidLauncher extends AndroidApplication implements GoogleApiClie
         }
     }
 
+    @Override
+    public void displayAchievement() {
+        startActivityForResult(Games.Achievements.getAchievementsIntent(mGoogleApiClient), 0);
+    }
+
+    @Override
+    public void submitLeaderBoardScore(int score) {
+        Games.Leaderboards.submitScore(mGoogleApiClient, "CggIpu2ln3MQAhAL", score);
+    }
+
+    @Override
+    public void displayLeaderBoardScore() {
+        startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient,
+                "CggIpu2ln3MQAhAL"), 1);
+    }
 
     @Override
     public void setNoOfPlayers(int noOfPlayers) {

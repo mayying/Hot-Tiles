@@ -26,4 +26,8 @@ public interface MultiPlayerMessaging {
     public int getNoOfPlayers();
     // for achievement unlock
     public void achievementUnlocked(String achievement);
+    public void displayAchievement();
+    // for leaderboard
+    public void submitLeaderBoardScore(int score);
+    public void displayLeaderBoardScore();
 }
