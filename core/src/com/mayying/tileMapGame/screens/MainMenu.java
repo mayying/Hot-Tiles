@@ -289,7 +289,8 @@ public class MainMenu implements Screen {
     }
 
     public void showMenu(int page) {
-        if (heading != null)
+        Gdx.app.log("MainMenu", "table is null: " + String.valueOf(table == null));
+        if (table != null)
             table.clear();
         switch (page) {
             case 0:

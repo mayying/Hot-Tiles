@@ -154,7 +154,6 @@ public class GameWorld {
 
     // Should separate into collision/bounds logic and update movement so that when we factor in concurrent
     // updates from server we can just update movement via setX / setY
-    // Movement logic shouldn't be here. OH WELL
     public void playerMovement(float delta) {
         Vector2 velocity = new Vector2();
 
